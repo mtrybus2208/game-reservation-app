@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const GameConfig = styled.div`
     padding: 20px;
     background: rgba(29, 26, 29, 0.3);
-    display:  ${props => (props.isOpen ? 'flex' : 'none')}};
+    display:  ${props => (props.isOpen ? 'flex' : 'none')};
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
