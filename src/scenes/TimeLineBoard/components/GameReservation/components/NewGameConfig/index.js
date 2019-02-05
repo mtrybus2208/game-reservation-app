@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import UserInfo from '../UserInfo';
-import BaseButton from '../../../../components/Button';
+import UserInfo from '../../../UserInfo';
+import BaseButton from '../../../../../../components/Button';
 import GameConfig from './styles';
 
 const propTypes = {

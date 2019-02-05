@@ -3,6 +3,7 @@ import * as actionTypes from './../actions/actionTypes';
 
 export const initialState = {
   endLastReservation: moment('09:00 am', 'HH:mm a'),
+  actualTime: moment.now(),
   gameConfigOpen: false,
   games: [
     {
@@ -22,12 +23,12 @@ export const timeLineReducer = (state = initialState, action) => {
       return {
         ...state,
         endLastReservation: state.endLastReservation.add(action.payload.time, 'm'),
-      }
+      };
     case actionTypes.CHANGE_GAME_CONFIG_STATE:
       return {
         ...state,
         gameConfigOpen: action.payload,
-      } 
+      };
     default:
       return state;
   }

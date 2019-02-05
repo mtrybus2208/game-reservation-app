@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as fromActions from '../../actions';
-import NewGameConfig from '../NewGameConfig';
+import NewGameConfig from './components/NewGameConfig';
 
 const propTypes = {
   timeLine: PropTypes.object.isRequired,
@@ -10,7 +10,7 @@ const propTypes = {
   changeGameConfigState: PropTypes.func.isRequired,
 };
 
-class TimeLine extends Component {
+class GameReservation extends Component {
   componentDidMount() { } 
 
   setGameTime = this.setGameTime.bind(this);
@@ -51,5 +51,5 @@ const mapDispatchToProps = dispatch => {
   }
 };
 
-TimeLine.propTypes = propTypes;
-export default connect(mapStateToProps, mapDispatchToProps)(TimeLine);
+GameReservation.propTypes = propTypes;
+export default connect(mapStateToProps, mapDispatchToProps)(GameReservation);

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import AppGrid from '../../components/AppGrid';
-import TimeLine  from './components/TimeLine';
+import GameReservation  from './components/GameReservation';
 import BaseButton from '../../components/Button';
 import * as fromActions from './actions';
 
@@ -76,7 +76,7 @@ class TimeLineBoard extends Component {
             <AppMain.CtaWrap>
               <BaseButton.Cta onClick={this.openGameConfig}>Reserve Game + </BaseButton.Cta>
             </AppMain.CtaWrap>
-            <TimeLine />
+            <GameReservation />
           </AppMain>
         </AppGrid.Main>
       </AppGrid>
