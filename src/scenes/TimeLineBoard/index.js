@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 import AppGrid from '../../components/AppGrid';
 import GameReservation  from './components/GameReservation';
+import TimeLine  from './components/TimeLine';
 import BaseButton from '../../components/Button';
 import * as fromActions from './actions';
 
@@ -69,9 +70,7 @@ class TimeLineBoard extends Component {
         <AppGrid.Main>
           <AppMain>
             <AppMain.CopyWrap>
-              <p>Nulla aliqua occaecat qui duis tempor amet.</p>
-              <p>Nulla aliqua occaecat qui duis tempor amet.</p>
-              <p>Nulla aliqua occaecat qui duis tempor amet.</p>
+              <TimeLine />
             </AppMain.CopyWrap>
             <AppMain.CtaWrap>
               <BaseButton.Cta onClick={this.openGameConfig}>Reserve Game + </BaseButton.Cta>

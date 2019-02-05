@@ -3,7 +3,7 @@ import * as actionTypes from './../actions/actionTypes';
 
 export const initialState = {
   endLastReservation: moment('09:00 am', 'HH:mm a'),
-  actualTime: moment.now(),
+  actualTime: moment(),
   gameConfigOpen: false,
   games: [
     {
