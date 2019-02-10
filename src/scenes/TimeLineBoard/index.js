@@ -28,18 +28,25 @@ const AppSidebar = styled.div`
 `;
 
 const AppMain = styled.main`
-  padding: 20px;
+  overflow-y: hidden; 
+  padding-top: 50px;
   text-align: center;
+  display: grid; 
+  grid-template-rows: [timeline] 60vh [cta-row] 1fr;
 `;
 
-AppMain.CtaWrap = styled.main`
-  padding: 15px;
-  margin: 20px auto;
+AppMain.CtaWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
-
-AppMain.CopyWrap = styled.main`
-  padding: 15px;
-  margin-top: 30px;
+AppMain.TimeWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  /* overflow-y: scroll;
+  padding: 20px; */
+  /* background: orange; */
+  overflow-y: auto;
 `;
 
 const propTypes = {
@@ -69,15 +76,16 @@ class TimeLineBoard extends Component {
         </AppGrid.Header>
         <AppGrid.Main>
           <AppMain>
-            <AppMain.CopyWrap>
+            <AppMain.TimeWrap>
               <TimeLine />
-            </AppMain.CopyWrap>
+            </AppMain.TimeWrap>
+
             <AppMain.CtaWrap>
               <BaseButton.Cta onClick={this.openGameConfig}>Reserve Game + </BaseButton.Cta>
             </AppMain.CtaWrap>
-            <GameReservation />
           </AppMain>
         </AppGrid.Main>
+        <GameReservation />
       </AppGrid>
     );
   } 

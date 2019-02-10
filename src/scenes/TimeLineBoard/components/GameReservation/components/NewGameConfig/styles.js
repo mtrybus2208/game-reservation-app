@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const GameConfig = styled.div`
     padding: 20px;
-    background: rgba(29, 26, 29, 0.3);
+    background: rgb(39, 25, 39);
     display:  ${props => (props.isOpen ? 'flex' : 'none')};
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
@@ -11,6 +11,12 @@ const GameConfig = styled.div`
     width: 70%;
     margin: 20px auto;
     border-radius: 5px;
+    position: fixed;
+    left: 217px;
+    right: -37px;
+    top: 115px;
+    max-width: 100%;
+    z-index: 2;
 `;
 
 GameConfig.Col = styled.div`
