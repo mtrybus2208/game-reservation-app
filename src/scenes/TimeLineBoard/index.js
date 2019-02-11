@@ -42,11 +42,27 @@ AppMain.CtaWrap = styled.div`
 `;
 AppMain.TimeWrap = styled.div`
   display: flex;
-  justify-content: center;
-  /* overflow-y: scroll;
-  padding: 20px; */
-  /* background: orange; */
-  overflow-y: auto;
+  justify-content: flex-start;
+  align-items: center;
+  background: #00000017;
+  border-radius: 10px;
+  padding: 40px;
+  box-shadow: rgba(0,0,0,.12) 0 10px 16px;
+  overflow-x: auto;
+  max-width: 80%;
+  margin: 0 auto;
+  &::-webkit-scrollbar-trac{
+    background-color: rgba(255, 255, 255, .4);
+  }
+
+  &::-webkit-scrollbar{
+    background-color: rgba(255, 255, 255, .4);    
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb{
+    background-color: #5b4269;
+  }
 `;
 
 const propTypes = {

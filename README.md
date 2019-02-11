@@ -1,7 +1,7 @@
 # Game reservation app
 A tool for reserving Fifa match queue
 
-## Frontend techology stack
+## Frontend technology stack
 * React
 * Redux
 * Styled components

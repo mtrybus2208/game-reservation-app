@@ -23,6 +23,6 @@ AppGrid.Header = styled.div`
 AppGrid.Main = styled.div`
   grid-column: main-content / horizontal-end;
   display: grid;
-`;
+`; 
 
 export default AppGrid;
