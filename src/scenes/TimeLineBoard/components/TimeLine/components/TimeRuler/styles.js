@@ -22,11 +22,11 @@ Ruler.HoursDivider = styled.div`
   background: red;
 
   &:after {
-    /* content: "${props => (props.time)}";
+    content: "${props => (props.time)}";
     position: absolute;
     left: -80%;
     top: -50%;
-    transform: translate(-50%, -50%); */
+    transform: translate(-50%, -50%);
   }
 `;
 

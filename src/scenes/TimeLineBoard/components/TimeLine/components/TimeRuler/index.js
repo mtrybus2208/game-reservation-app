@@ -20,7 +20,7 @@ const TimeRuler = ({ workdayInPixels, arrayOfWorkdayHours, timeConverter }) => {
         (
           <Ruler.HoursDivider
             key={`t-${i}`}
-            position={hoursToPixels(i + 1)}
+            position={hoursToPixels(i)}
             time={h}
           />
         ))}
