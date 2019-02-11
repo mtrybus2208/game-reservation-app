@@ -2,20 +2,18 @@ import styled from 'styled-components';
 
 const GameConfig = styled.div`
     padding: 20px;
-    background: rgb(39, 25, 39);
+    background: rgb(39, 34, 39);
     display:  ${props => (props.isOpen ? 'flex' : 'none')};
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
-    min-height: 300px;
-    width: 70%;
+    min-height: 76%;
     margin: 20px auto;
     border-radius: 5px;
     position: fixed;
-    left: 217px;
-    right: -37px;
-    top: 115px;
-    max-width: 100%;
+    left: 278px;
+    right: 30px;
+    top: 90px;
     z-index: 2;
 `;
 

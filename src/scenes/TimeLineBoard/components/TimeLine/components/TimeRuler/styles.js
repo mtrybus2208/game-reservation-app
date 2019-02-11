@@ -11,13 +11,17 @@ const Ruler = styled.div`
     min-width: ${props => (props.height)}px;
 `;
 
+Ruler.Wrapper = styled.div`
+  padding: 0 100px;
+`;
+
 Ruler.HoursDivider = styled.div` 
   position: absolute;
   left: ${props => (props.position)}px;
   top: 50%;
   transform: translateY(-50%);
-  height: 70px;
-  width: 2px;
+  height: 60px;
+  width: 1px;
   background: #b3bdc5;
 
   &:after {

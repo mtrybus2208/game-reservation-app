@@ -51,16 +51,17 @@ AppMain.TimeWrap = styled.div`
   overflow-x: auto;
   max-width: 80%;
   margin: 0 auto;
-  &::-webkit-scrollbar-trac{
+
+  &::-webkit-scrollbar-track {
     background-color: rgba(255, 255, 255, .4);
   }
 
-  &::-webkit-scrollbar{
+  &::-webkit-scrollbar {
     background-color: rgba(255, 255, 255, .4);    
     width: 5px;
   }
 
-  &::-webkit-scrollbar-thumb{
+  &::-webkit-scrollbar-thumb {
     background-color: #5b4269;
   }
 `;
