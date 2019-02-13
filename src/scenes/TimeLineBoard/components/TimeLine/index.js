@@ -14,17 +14,59 @@ const propTypes = {
 };
 
 class TimeLine extends Component {
-  componentDidMount() {
-    console.log(this.props.arrayOfWorkdayHours);
-  } 
+  state = {
+    isDown: false,
+    startX: undefined,
+    scrollLeft: undefined,
+  };
+
+  wrapRef = null;
+
+  mouseLeave = () => () => {
+    this.setState({
+      isDown: false,
+    });
+  };
+
+  mouseMove = () => (e) => { 
+    if (!this.state.isDown) return;
+    e.preventDefault();
+    const x = e.pageX - this.wrapRef.offsetLeft;
+    const walk = (x - this.state.startX);
+    this.wrapRef.scrollLeft = this.state.scrollLeft - walk;
+  };
+
+  mouseUp = () => () => {
+    this.setState({
+      isDown: false,
+    });
+  };
+
+  mouseDown = () => (e) => {
+    this.setState({
+      isDown: true,
+      startX: e.pageX - this.wrapRef.offsetLeft,
+      scrollLeft: this.wrapRef.scrollLeft,
+    });
+  };
 
   render() {
     return (
-      <TimeRuler
-        workdayInPixels={this.props.workdayInPixels}
-        arrayOfWorkdayHours={this.props.arrayOfWorkdayHours}
-        timeConverter={this.props.timeConverter}
-      />
+      <TimeLineBox
+        innerRef={(el) => {
+          this.wrapRef = el;
+        }}
+        onMouseDown={this.mouseDown()}
+        onMouseLeave={this.mouseLeave()}
+        onMouseUp={this.mouseUp()}
+        onMouseMove={this.mouseMove()}
+      >
+        <TimeRuler
+          workdayInPixels={this.props.workdayInPixels}
+          arrayOfWorkdayHours={this.props.arrayOfWorkdayHours}
+          timeConverter={this.props.timeConverter}
+        />
+      </TimeLineBox>
     );
   }
 }
