@@ -12,7 +12,7 @@ const Ruler = styled.div`
 `;
 
 Ruler.Box = styled.div`
-    padding: 0 100px;  
+    padding: 0 ${props => props.theme.padding.lg * 2}px;  
     display: flex; 
     align-items: center;
 `;

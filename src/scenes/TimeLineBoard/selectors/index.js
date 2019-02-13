@@ -7,12 +7,23 @@ export const getWorkdayInMinutes = state => {
   return moment.duration(workdayEnd.diff(workdayStart)).asMinutes();
 };
 
+export const getActualDateMinutes = state => {
+  const { workdayStart, actualTime } = getTimeLine(state);
+  return moment.duration(actualTime.diff(workdayStart)).asMinutes();
+};
+
 export const getWorkdayInHours = state => (getWorkdayInMinutes(state) / 60);
 
 export const getWorkdayInPixels = state => {
   const { timeConverter } = getTimeLine(state);
   const workdayInMin = getWorkdayInMinutes(state);
   return workdayInMin * timeConverter;
+};
+
+export const getActualDateInPixels = state => {
+  const { timeConverter } = getTimeLine(state);
+  const actualDateInMin = getActualDateMinutes(state);
+  return actualDateInMin * timeConverter;
 };
 
 export const getArrayOfWorkdayHours = state => {

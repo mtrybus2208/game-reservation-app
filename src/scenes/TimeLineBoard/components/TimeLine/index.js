@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as fromActions from '../../actions';
-import { getTimeLine, getWorkdayInPixels, getArrayOfWorkdayHours } from '../../selectors';
+import { getTimeLine, getWorkdayInPixels, getArrayOfWorkdayHours, getActualDateInPixels } from '../../selectors';
 import TimeRuler from './components/TimeRuler';
 import TimeLineBox from './styles';
 
 const propTypes = {
   timeLine: PropTypes.object.isRequired,
   workdayInPixels: PropTypes.number,
+  actualDateInPixels: PropTypes.number,
   arrayOfWorkdayHours: PropTypes.array,
   timeConverter: PropTypes.number,
 };
@@ -19,6 +20,8 @@ class TimeLine extends Component {
     startX: undefined,
     scrollLeft: undefined,
   };
+
+  componentDidMount() { }
 
   wrapRef = null;
 
@@ -61,6 +64,13 @@ class TimeLine extends Component {
         onMouseUp={this.mouseUp()}
         onMouseMove={this.mouseMove()}
       >
+        <TimeLineBox.ActualTime
+          distanceFromStart={
+            Number(this.props.actualDateInPixels.toFixed())
+          }
+        >
+          {this.props.timeLine.actualTime.format('HH:mm')}
+        </TimeLineBox.ActualTime>
         <TimeRuler
           workdayInPixels={this.props.workdayInPixels}
           arrayOfWorkdayHours={this.props.arrayOfWorkdayHours}
@@ -75,6 +85,7 @@ const mapStateToProps = (state) => (
   {
     timeLine: getTimeLine(state),
     workdayInPixels: getWorkdayInPixels(state),
+    actualDateInPixels: getActualDateInPixels(state),
     timeConverter: state.timeLine.timeConverter,
     arrayOfWorkdayHours: getArrayOfWorkdayHours(state),
   }
