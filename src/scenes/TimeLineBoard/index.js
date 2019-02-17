@@ -14,7 +14,7 @@ const AppHeader = styled.header`
   background: #363030;
   height: 100%;
   box-shadow: rgba(0,0,0,.12) 0 1px 6px;
-  border-bottom: border-right: 1px solid #3c3838;
+  border-bottom: 1px solid #3c3838;
   border-bottom: 1px solid #3c3838; 
 `;
 
