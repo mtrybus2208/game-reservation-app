@@ -6,6 +6,7 @@ import thunk from 'redux-thunk';
 import createHistory from 'history/createBrowserHistory';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 import { injectGlobal } from 'styled-components';
+import WebFont from 'webfontloader';
 
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
@@ -37,13 +38,20 @@ ReactDOM.render(
 );
 registerServiceWorker();
 
+WebFont.load({
+  google: {
+    families: ['Roboto:400,500', 'sans-serif'],
+  },
+});
+
 injectGlobal`
   body {
-    background-image: url(${bg}); 
+    /* background-image: url(${bg});  */
     margin: 0;
     padding: 0; 
     font-family: 'Roboto', sans-serif;
-    color: #f2f2f2;
+    color: #747a81;
     overflow-y: scroll;
+    background: #141619;
   }
-`
+`;

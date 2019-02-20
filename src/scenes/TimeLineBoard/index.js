@@ -11,39 +11,39 @@ import * as fromActions from './actions';
 
 
 const AppHeader = styled.header`
-  background: #363030;
-  height: 100%;
-  box-shadow: rgba(0,0,0,.12) 0 1px 6px;
-  border-bottom: 1px solid #3c3838;
-  border-bottom: 1px solid #3c3838; 
+    background: #141619;
+    height: 100%;
+    box-shadow: rgba(0,0,0,.12) 0 1px 6px;
 `;
 
 const AppSidebar = styled.div`
-  display: flex;
-  background: #624f63;
-  background: #332c2c;
-  box-shadow: rgba(0,0,0,.12) 0 1px 6px;
-  border-right: 1px solid #3c3838;
+  display: flex; 
   padding: 15px;
+  background: #16181b;
 `;
 
 const AppMain = styled.main`
-  overflow-y: hidden; 
-  padding-top: 50px;
-  text-align: center;
-  display: grid; 
-  grid-template-rows: [timeline] 60vh [cta-row] 1fr;
+    overflow-y: hidden; 
+    text-align: center;
+    display: grid;
+    grid-template-rows: [timeline] 60vh [cta-row] 1fr;
+    padding: 0;
+    margin: 0;
 `;
 
 AppMain.CtaWrap = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
+  background:  ${props => props.theme.base.light};
+  height: 80px;
+  padding: 0;
+  margin: 0;
+  justify-content: flex-start;
+  align-items: stretch;
 `;
+
 AppMain.TimeWrap = styled.div` 
   overflow-x: auto;
-  max-width: 80%;
-  margin: 0 auto;
+  border-radius: 0;
 `;
 
 const propTypes = {
@@ -76,7 +76,12 @@ class TimeLineBoard extends Component {
             </AppMain.TimeWrap>
 
             <AppMain.CtaWrap>
-              <BaseButton.Cta onClick={this.openGameConfig}>Reserve Game + </BaseButton.Cta>
+              <BaseButton.Cta
+                maxWidth={'480px'}
+                onClick={this.openGameConfig}
+              >
+                <span>Reserve Game</span>
+              </BaseButton.Cta>
             </AppMain.CtaWrap>
           </AppMain>
         </AppGrid.Main>

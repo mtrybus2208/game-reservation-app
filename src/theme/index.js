@@ -1,12 +1,16 @@
 const theme = {
   headerBg: '#363030',
   primary: '#b36bc5',
-  accent: '#9b5706',
+  accent: '#bd790b',
   secondary: '#fff',
   borderColor: '#ccc',
   baseFontColor: '#484747',
+  darkFontColor: '#111315',
   borderRadius: {
     button: '25px',
+  },
+  base: {
+    light: '#23272d',
   },
   grey: {
     base: '#eee',

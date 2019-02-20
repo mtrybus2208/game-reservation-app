@@ -21,14 +21,18 @@ class TimeRuler extends Component {
           height={this.props.workdayInPixels}
           timeConverter={this.props.timeConverter}
         >
-          {this.props.arrayOfWorkdayHours.map((h, i) =>
-            (
+          {this.props.arrayOfWorkdayHours.map((h, i) => {
+            console.log(i)
+            return  (
               <Ruler.HoursDivider
                 key={`t-${i}`}
+                width={60 * this.props.timeConverter}
                 position={this.hoursToPixels(i)}
                 time={h}
               />
-            ))}
+            
+            )}
+            )}
         </Ruler>
       </Ruler.Box>
     );

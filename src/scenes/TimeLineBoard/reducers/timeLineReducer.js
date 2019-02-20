@@ -7,7 +7,7 @@ export const initialState = {
   workdayStart: moment('08:00 am', 'HH:mm a'),
   workdayEnd: moment('24:00 pm', 'HH:mm a'),
   gameConfigOpen: false,
-  timeConverter: 4,
+  timeConverter: 12,
   games: [
     {
       type: 'fifa',

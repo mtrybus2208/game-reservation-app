@@ -6,38 +6,39 @@ const Ruler = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #e3d3d6;
-  height: 1px;
+  height: 100%;
   min-width: ${props => (props.height)}px;
+  background: #15181b;
 `;
 
 Ruler.Box = styled.div`
-    padding: 0 ${props => props.theme.padding.lg * 2}px;  
     display: flex; 
     align-items: center;
+    height: 100%;
 `;
 
 Ruler.HoursDivider = styled.div` 
   position: absolute;
-  left: ${props => (props.position)}px;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 60px;
-  width: 1px;
-  background: #b3bdc5;
+  left: ${props => props.position}px;
+  top: 0;
+  height: 100px;
+  width:  ${props => props.width}px;
+  background: #23272d;
+  box-shadow: inset 0px 9px 24px -4px rgba(056, 60, 69, 0.6);
 
   &:after {
     content: "${props => (props.time)}";
     position: absolute;
-    left: -80%;
-    top: -50%;
+    left: 50%;
     transform: translate(-50%, -50%);
+    top: 50%;
   }
 `;
 
 Ruler.HoursDivider.propTypes = {
   position: PropTypes.number,
   time: PropTypes.string,
+  width: PropTypes.number,
 };
 
 export default Ruler;

@@ -8,7 +8,7 @@ import StyledLink from './StyledLink';
  
 
 const BasicHeader = styled.header`
-  background-color: ${({theme}) => theme.secondary};
+  background-color: #16181b;
 `
  const Header = () => {
     return (

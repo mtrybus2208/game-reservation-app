@@ -7,7 +7,7 @@ const BaseButton = styled.button`
   box-sizing: border-box;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   box-shadow: none;
-  border-radius:  ${props => props.borderRadius || props.theme.borderRadius.button}};
+  border-radius:  ${props => props.borderRadius || 0}};
   display: inline-block;
   cursor: pointer;
   font-weight: 400;
@@ -19,23 +19,49 @@ const BaseButton = styled.button`
   border: none; 
   outline: none!important;
 `;
- 
+
 BaseButton.propTypes = {
   bg: PropTypes.string,
   borderRadius: PropTypes.string,
-};  
+};
 
 BaseButton.Cta = styled(BaseButton)`
-  padding: 15px; 
-  background: #9b5706;
-  color: #f2f2f2;
+  background: ${props => props.bg || props.theme.accent}};
+  color: ${props => props.color || props.theme.darkFontColor}};
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px auto;
+  text-transform: uppercase;
+  height: ${props => props.maxHeight || '100%'}}
+  width: 100%;
+  max-width: ${props => props.maxWidth || '100%'}};
+  font-size: 18px;
+  font-weight: 500;
+  position: relative;
+
+  span {
+    position: relative;
+    z-index: 1;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    bottom: 10px;
+    right: 10px;
+    background: #f5ba00;
+    filter: blur(5px);
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 0;
+  }
 
   &:hover {
-    opacity: .8;
+    &:after {
+      opacity: .4;
+    } 
   }
 `; 
 
