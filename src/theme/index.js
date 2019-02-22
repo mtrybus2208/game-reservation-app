@@ -11,6 +11,7 @@ const theme = {
   },
   base: {
     light: '#23272d',
+    avatarBg: '#2e333b',
   },
   grey: {
     base: '#eee',
