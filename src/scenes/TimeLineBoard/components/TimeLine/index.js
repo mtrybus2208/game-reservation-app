@@ -64,13 +64,13 @@ class TimeLine extends Component {
         onMouseUp={this.mouseUp()}
         onMouseMove={this.mouseMove()}
       >
-        <TimeLineBox.ActualTime
+        {/* <TimeLineBox.ActualTime
           distanceFromStart={
             Number(this.props.actualDateInPixels.toFixed())
           }
         >
           {this.props.timeLine.actualTime.format('HH:mm')}
-        </TimeLineBox.ActualTime>
+        </TimeLineBox.ActualTime> */}
         <TimeRuler
           workdayInPixels={this.props.workdayInPixels}
           arrayOfWorkdayHours={this.props.arrayOfWorkdayHours}

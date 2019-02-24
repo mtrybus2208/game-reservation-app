@@ -8,7 +8,6 @@ const Ruler = styled.div`
   align-items: center;
   height: 100%;
   min-width: ${props => (props.height)}px;
-  background: #15181b;
 `;
 
 Ruler.Box = styled.div`
@@ -22,9 +21,9 @@ Ruler.HoursDivider = styled.div`
   left: ${props => props.position}px;
   top: 0;
   height: 100px;
-  width:  ${props => props.width}px;
+  width:  ${props => props.width - 1}px;
   background: #23272d;
-  box-shadow: inset 0px 9px 24px -4px rgba(056, 60, 69, 0.6);
+  box-shadow: inset 0px 9px 24px -4px rgba(056, 60, 69, .6);
 
   &:after {
     content: "${props => (props.time)}";

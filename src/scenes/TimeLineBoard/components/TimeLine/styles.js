@@ -13,6 +13,8 @@ const TimeLineBox = styled.div`
     border-radius: 0;
     padding: 0;
     min-height: 450px;
+    background-image: url(https://res.cloudinary.com/dfmqgkkbx/image/upload/v1551046589/rt.png);
+    background-size: auto;
 `;
 
 TimeLineBox.ActualTime = styled.div`

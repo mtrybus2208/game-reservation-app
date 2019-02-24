@@ -5,7 +5,7 @@ export const initialState = {
   endLastReservation: moment('09:00 am', 'HH:mm a'),
   actualTime: moment(),
   workdayStart: moment('08:00 am', 'HH:mm a'),
-  workdayEnd: moment('5:00 pm', 'HH:mm a'),
+  workdayEnd: moment('05:00 pm', 'HH:mm a'),
   gameConfigOpen: false,
   timeConverter: 12,
   games: [
