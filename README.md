@@ -1,5 +1,5 @@
-# Game reservation app
-A tool for reserving Fifa match queue
+# Reservly
+Reservly is a tool for reserving game match queue
 
 ## Frontend technology stack
 * React
@@ -7,4 +7,4 @@ A tool for reserving Fifa match queue
 * Styled components
 
 ## Backend
-Backend repository available [here](https://github.com/xenonso/Queserver) 
+Backend repository available [here](https://github.com/xenonso/Reservly) 
