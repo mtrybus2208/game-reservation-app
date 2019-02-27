@@ -7,14 +7,9 @@ import AppGrid from '../../components/AppGrid';
 import GameReservation  from './components/GameReservation';
 import TimeLine  from './components/TimeLine';
 import BaseButton from '../../components/Button';
+import Header from '../../components/Header';
 import * as fromActions from './actions';
 
-
-const AppHeader = styled.header`
-    background: #141619;
-    height: 100%;
-    box-shadow: rgba(0,0,0,.12) 0 1px 6px;
-`;
 
 const AppSidebar = styled.div`
   display: flex; 
@@ -34,7 +29,7 @@ const AppMain = styled.main`
 AppMain.CtaWrap = styled.div`
   display: flex;
   background:  ${props => props.theme.base.light};
-  height: 80px;
+  height: 85px;
   padding: 0;
   margin: 0;
   justify-content: flex-start;
@@ -67,7 +62,7 @@ class TimeLineBoard extends Component {
           <AppSidebar>Sidebar</AppSidebar>
         </AppGrid.Sidebar>
         <AppGrid.Header>
-          <AppHeader>Header</AppHeader>
+          <Header />
         </AppGrid.Header>
         <AppGrid.Main>
           <AppMain>

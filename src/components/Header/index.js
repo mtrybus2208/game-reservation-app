@@ -1,30 +1,26 @@
-import React from 'react'; 
-import styled from 'styled-components';
+import React from 'react';
+import PropTypes from 'prop-types';
+import MainNav from './components/MainNav';
+import Logo from '../Logo';
+import * as S from './styles';
 
-import Nav from './Nav';
-import NavList from './NavList';
-import NavItem from './NavItem';
-import StyledLink from './StyledLink';
- 
+const propTypes = { 
+};
 
-const BasicHeader = styled.header`
-  background-color: #16181b;
-`
- const Header = () => {
-    return (
-      <BasicHeader>
-        <Nav>
-          <NavList>
-            <NavItem>
-              <StyledLink exact activeClassName="active" to="/">New game</StyledLink>  
-            </NavItem>
-            <NavItem>
-              <StyledLink activeClassName="active" to="/best-results">Best results</StyledLink>  
-            </NavItem>
-          </NavList>
-        </Nav>
-      </BasicHeader>
-    )
+const defaultProps = { 
 }; 
-//export default withRouter(Header);
+
+const Header = () => {
+  return (
+    <S.Header>
+      <S.Header.LogoWrapper>
+        <Logo />
+      </S.Header.LogoWrapper>
+      <MainNav />
+    </S.Header>
+  );
+};
+
+Header.propTypes = propTypes;
+Header.defaultProps = defaultProps;
 export default Header;
