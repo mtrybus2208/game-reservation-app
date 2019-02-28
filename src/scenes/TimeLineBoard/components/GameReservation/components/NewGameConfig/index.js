@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import UserInfo from '../../../UserInfo';
 import BaseButton from '../../../../../../components/Button';
-import GameConfig from './styles';
+import Avatar from '../../../../../../components/Avatar';
+import * as S from './styles';
 
 const propTypes = {
   setGameTime: PropTypes.func.isRequired,
@@ -16,25 +17,44 @@ class NewGameConfig extends Component {
 
   render() {
     return (
-      <GameConfig isOpen={this.props.isOpen}>
-        <GameConfig.ColTop>
-          <GameConfig.StartField>
-            <p># You can start Game at:</p>
-            <p># {this.props.lastGame.format('HH:mm')}</p>
-          </GameConfig.StartField>
-        </GameConfig.ColTop>
-        <GameConfig.ColBottom>
-          <GameConfig.ButtonsWrapper>
-            <UserInfo />
-          </GameConfig.ButtonsWrapper>
-          <p># How long You want to play?</p>
-          <GameConfig.ButtonsWrapper>
-            <BaseButton.Time onClick={this.props.setGameTime} value="10">10 min </BaseButton.Time>
-            <BaseButton.Time onClick={this.props.setGameTime} value="15">15 min </BaseButton.Time>
-            <BaseButton.Time onClick={this.props.setGameTime} value="20">20 min </BaseButton.Time>
-          </GameConfig.ButtonsWrapper>
-        </GameConfig.ColBottom>
-      </GameConfig>
+      <S.NewGameConfig isOpen={this.props.isOpen}>
+        <S.ColTop>
+          <S.StartField>
+            <S.StartItem>
+              <span>You can start Game at:</span>
+            </S.StartItem>
+            <S.StartItem>
+              <span>
+                {this.props.lastGame.format('HH:mm')}
+              </span>
+            </S.StartItem>
+          </S.StartField>
+        </S.ColTop>
+        <S.ColBottom>
+          <S.ColItem>
+            <Avatar />
+          </S.ColItem>
+          <S.ColItem>
+            {/* <p>How long You want to play?</p> */}
+            <S.ButtonsWrapper>
+              {['10', '15', '20'].map((val) => {
+                return (
+                  <S.ButtonsBox>
+                    <BaseButton.Cta
+                      onClick={this.props.setGameTime}
+                      value={val}
+                      padding=" 10px 15px"
+                    >
+                      {val} min
+                    </BaseButton.Cta>
+                  </S.ButtonsBox>
+                )
+              }
+              )}
+            </S.ButtonsWrapper>
+          </S.ColItem>
+        </S.ColBottom>
+      </S.NewGameConfig>
     )
   }  
 }

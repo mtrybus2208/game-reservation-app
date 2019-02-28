@@ -17,25 +17,25 @@ const GameCard = ({ user, display }) => {
       size={display.size}
       left={display.left}
     >
-      <S.GameCard.Info>
+      <S.Info>
         <span>{display.gameTime}</span>
-      </S.GameCard.Info>
-      <S.GameCard.Body>
+      </S.Info>
+      <S.Body>
         <Avatar
           path={user.avatarImg}
         />
-        <S.GameCard.Body.TitleBox>
-          <S.GameCard.Body.Title>
+        <S.TitleBox>
+          <S.Title>
             {user.name}
-          </S.GameCard.Body.Title>
-          <S.GameCard.Body.SubTitle>
+          </S.Title>
+          <S.SubTitle>
             {user.profession}
-          </S.GameCard.Body.SubTitle>
-        </S.GameCard.Body.TitleBox>
-      </S.GameCard.Body>
-      <S.GameCard.Info>
+          </S.SubTitle>
+        </S.TitleBox>
+      </S.Body>
+      <S.Info>
         <span>{display.gameType}</span>
-      </S.GameCard.Info>
+      </S.Info>
     </S.GameCard>
   );
 };

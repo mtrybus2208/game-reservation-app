@@ -1,50 +1,69 @@
 import styled from 'styled-components';
 
-const GameConfig = styled.div`
-    padding: 20px;
-    background: rgb(39, 34, 39);
-    display:  ${props => (props.isOpen ? 'flex' : 'none')};
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
+export const NewGameConfig = styled.div`
+    background: #141619;
+    transform:  translateY(${props => (props.isOpen ? '-250px' : '0')});
+    transition: transform .3s ease-in-out;
+    padding: 0;
+    margin: 0;
+    height: 250px;
+    display: flex;
     flex-direction: column;
-    min-height: 76%;
-    margin: 20px auto;
-    border-radius: 5px;
-    position: fixed;
-    left: 278px;
-    right: 30px;
-    top: 90px;
-    z-index: 2;
 `;
 
-GameConfig.Col = styled.div`
+export const Col = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-GameConfig.ColTop = styled(GameConfig.Col)`
-  height: 60%;
-  border-bottom: 1px solid #43414c;
+export const ColTop = styled(Col)`
+    background: #23272d;
+    box-shadow: inset 0px 9px 24px -4px rgba(056,60,69,.6);
+    height: 70px;
+    display: flex;
+    align-items: stretch;
 `;
 
-GameConfig.ColBottom = styled(GameConfig.Col)`
+export const ColBottom = styled(Col)`
   flex: 1 1 auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
 `;
 
-GameConfig.StartField = styled.div`
-  text-align: center;
-  font-size: 24px;
+export const StartField = styled.div`
+  display: flex;
+  align-items: stretch;
+  font-size: 20px;
+`; 
+
+export const StartItem = styled.div`
+  margin: 0;
+  padding: 0 20px;
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  &:last-child {
+    border-left: none;
+  }
 `;
 
-GameConfig.ButtonsWrapper = styled.div`
+export const ColItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  margin: 0 10px;
 `;
 
-export default GameConfig;
+export const ButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`; 
+export const ButtonsBox = styled.div`
+ border-right: 1px solid black;
+`; 

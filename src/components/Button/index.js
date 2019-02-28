@@ -8,6 +8,7 @@ const BaseButton = styled.button`
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   box-shadow: none;
   border-radius:  ${props => props.borderRadius || 0}};
+  padding:  ${props => props.padding || 0}};
   display: inline-block;
   cursor: pointer;
   font-weight: 400;
@@ -23,6 +24,7 @@ const BaseButton = styled.button`
 BaseButton.propTypes = {
   bg: PropTypes.string,
   borderRadius: PropTypes.string,
+  padding: PropTypes.string,
 };
 
 BaseButton.Cta = styled(BaseButton)`

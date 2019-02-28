@@ -7,14 +7,15 @@ const TimeLineBox = styled.div`
     align-items: flex-start;
     background: #1b1f23;
     overflow-x: hidden;
-    height: 70%;
     cursor: -webkit-grab;
     position: relative;
     border-radius: 0;
     padding: 0;
-    min-height: 450px;
+    height: 100%;
     background-image: url(https://res.cloudinary.com/dfmqgkkbx/image/upload/v1551046589/rt.png);
     background-size: auto;
+    transform:  translateY(${props => (props.isOpen ? '0' : '-250px')});
+    transition: transform .3s ease-in-out;
 `;
 
 TimeLineBox.ActualTime = styled.div`

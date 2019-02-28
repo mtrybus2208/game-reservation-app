@@ -63,6 +63,7 @@ class TimeLine extends Component {
         onMouseLeave={this.mouseLeave()}
         onMouseUp={this.mouseUp()}
         onMouseMove={this.mouseMove()}
+        isOpen={!this.props.timeLine.gameConfigOpen}
       >
         {/* <TimeLineBox.ActualTime
           distanceFromStart={

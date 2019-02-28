@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-
 import AppGrid from '../../components/AppGrid';
 import GameReservation  from './components/GameReservation';
 import TimeLine  from './components/TimeLine';
 import BaseButton from '../../components/Button';
 import Header from '../../components/Header';
 import * as fromActions from './actions';
-
 
 const AppSidebar = styled.div`
   display: flex; 
@@ -39,6 +37,8 @@ AppMain.CtaWrap = styled.div`
 AppMain.TimeWrap = styled.div` 
   overflow-x: auto;
   border-radius: 0;
+  overflow-y: hidden;
+  height: 60vh;
 `;
 
 const propTypes = {
@@ -68,6 +68,7 @@ class TimeLineBoard extends Component {
           <AppMain>
             <AppMain.TimeWrap>
               <TimeLine />
+              <GameReservation />
             </AppMain.TimeWrap>
 
             <AppMain.CtaWrap>
@@ -80,7 +81,6 @@ class TimeLineBoard extends Component {
             </AppMain.CtaWrap>
           </AppMain>
         </AppGrid.Main>
-        <GameReservation />
       </AppGrid>
     );
   } 

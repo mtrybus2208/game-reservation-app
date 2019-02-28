@@ -21,7 +21,7 @@ GameCard.propTypes = {
   left: PropTypes.number,
 };
 
-GameCard.Info = styled.div`
+export const Info = styled.div`
   background: #15181b;
   display: flex;
   justify-content: center;
@@ -32,7 +32,7 @@ GameCard.Info = styled.div`
   font-weight: 500;
 `;
 
-GameCard.Body = styled.div`
+export const Body = styled.div`
     background: #23272d;
     position: relative;
     flex: 1 1 auto;
@@ -44,7 +44,7 @@ GameCard.Body = styled.div`
     border-bottom: 1px solid #494e54;
 `;
 
-GameCard.Body.TitleBox = styled.div`
+export const TitleBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -52,14 +52,14 @@ GameCard.Body.TitleBox = styled.div`
   font-weight: 500;
 `;
 
-GameCard.Body.Title = styled.div`
+export const Title = styled.div`
   color: #fff;
   font-size: 12px;
   text-transform: uppercase;
   margin: 20px 0px 10px;
 `;
 
-GameCard.Body.SubTitle = styled.div`
+export const SubTitle = styled.div`
   color: #747a81;
   font-size: 10px;
 `;

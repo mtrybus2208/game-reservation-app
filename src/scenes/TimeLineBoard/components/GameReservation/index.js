@@ -25,13 +25,11 @@ class GameReservation extends Component {
 
   render() {
     return (
-      <div>
-        <NewGameConfig
-          setGameTime={this.setGameTime}
-          lastGame={this.props.timeLine.endLastReservation}
-          isOpen={this.props.timeLine.gameConfigOpen}
-        />
-      </div>
+      <NewGameConfig
+        setGameTime={this.setGameTime}
+        lastGame={this.props.timeLine.endLastReservation}
+        isOpen={this.props.timeLine.gameConfigOpen}
+      />
     );
   }
 }

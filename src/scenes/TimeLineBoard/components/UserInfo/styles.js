@@ -7,7 +7,6 @@ const UserInfoCard = styled.div`
     margin: 20px auto; 
     width: 100%;
     align-items: center;
-    border-bottom: 1px solid #43414c;
 `;
 
 UserInfoCard.Avatar = styled.div`
