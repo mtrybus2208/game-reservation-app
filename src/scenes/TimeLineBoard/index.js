@@ -19,7 +19,7 @@ const AppMain = styled.main`
     overflow-y: hidden; 
     text-align: center;
     display: grid;
-    grid-template-rows: [timeline] 60vh [cta-row] 1fr;
+    grid-template-rows: [timeline] 55vh [cta-row] 1fr;
     padding: 0;
     margin: 0;
 `;
@@ -38,7 +38,7 @@ AppMain.TimeWrap = styled.div`
   overflow-x: auto;
   border-radius: 0;
   overflow-y: hidden;
-  height: 60vh;
+  height: 55vh;
 `;
 
 const propTypes = {
