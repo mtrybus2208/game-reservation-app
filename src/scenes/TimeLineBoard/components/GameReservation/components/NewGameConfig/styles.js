@@ -8,7 +8,8 @@ export const NewGameConfig = styled.div`
     margin: 0;
     height: 250px;
     display: grid;
-    grid-template-columns: [game-start] 15% [game-type] 28% [game-avatar] 1fr [game-type] 28% [game-action] 15%;
+    grid-template-columns:
+      [game-start] 15% [game-type] 28% [game-avatar] 1fr [game-type] 28% [game-action] 15%;
     grid-template-rows: [top] 1fr [top-end]; 
 `;
 
