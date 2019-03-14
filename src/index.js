@@ -10,7 +10,7 @@ import WebFont from 'webfontloader';
 
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
-import { timeLineReducer } from './scenes/TimeLineBoard/reducers';
+import { homeReducer } from './home/state/reducers';
 
 import bg from './assets/img/game-bg.png';
 
@@ -19,7 +19,7 @@ const middleware = routerMiddleware(history);
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
-  timeLine: timeLineReducer,
+  timeLine: homeReducer,
   router: routerReducer,
 });
 
