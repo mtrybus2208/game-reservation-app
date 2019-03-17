@@ -8,7 +8,7 @@ export const GameCard = styled.div`
   position: absolute;
   z-index: 1;
   left: ${props => props.left}px;
-  top: 101px;
+  top: 71px;
   bottom: 1px;
   max-width: 300px;
   background: #23272d;

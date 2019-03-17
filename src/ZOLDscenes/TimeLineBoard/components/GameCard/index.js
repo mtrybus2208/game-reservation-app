@@ -20,7 +20,7 @@ const GameCard = ({ user, display }) => {
       <S.Info>
         <span>{display.gameTime}</span>
       </S.Info>
-      <S.Body>
+      <S.Body>94
         <Avatar
           path={user.avatarImg}
         />

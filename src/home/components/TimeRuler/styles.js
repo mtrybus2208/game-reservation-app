@@ -20,7 +20,7 @@ export const HoursDivider = styled.div`
   position: absolute;
   left: ${props => props.position}px;
   top: 0;
-  height: 100px;
+  height: 70px;
   width:  ${props => props.width - 1}px;
   background: #23272d;
   box-shadow: inset 0px 9px 24px -4px rgba(056, 60, 69, .6);

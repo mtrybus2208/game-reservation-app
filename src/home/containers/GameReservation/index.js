@@ -17,6 +17,7 @@ class GameReservation extends Component {
   componentDidMount() { } 
 
   setGameTime = this.setGameTime.bind(this);
+  openGameConfig = this.openGameConfig.bind(this);
 
   setGameTime({ target }) {
     const payload = {
@@ -24,6 +25,11 @@ class GameReservation extends Component {
     };
     this.props.changeGameConfigState(false);
     this.props.setGameTime(payload);
+  }
+
+  openGameConfig() {
+    console.log('open tutaj ma byc dispatch akcji do redux thunka')
+    this.props.changeGameConfigState(false);
   }
 
   render() {
@@ -37,7 +43,7 @@ class GameReservation extends Component {
         <S.CtaWrapper>
           <BaseButton.Cta
             maxWidth="480px"
-            // onClick={this.openGameConfig}
+            onClick={this.openGameConfig}
           >
             <span>Reserve Game</span>
           </BaseButton.Cta>

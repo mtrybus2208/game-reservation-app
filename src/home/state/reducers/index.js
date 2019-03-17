@@ -27,7 +27,7 @@ export const homeReducer = (state = initialState, action) => {
         ...state,
         endLastReservation: state.endLastReservation.add(action.payload.time, 'm'),
       };
-    case actionTypes.CHANGE_GAME_CONFIG_STATE:
+    case actionTypes.CHANGE_GAME_CONFIG_STATE
       return {
         ...state,
         gameConfigOpen: action.payload,

@@ -17,7 +17,7 @@ const GameCard = ({ user, display }) => {
       size={display.size}
       left={display.left}
     >
-      {/* <S.Info>
+      <S.Info>
         <span>{display.gameTime}</span>
       </S.Info>
       <S.Body>
@@ -35,7 +35,7 @@ const GameCard = ({ user, display }) => {
       </S.Body>
       <S.Info>
         <span>{display.gameType}</span>
-      </S.Info> */}
+      </S.Info>
     </S.GameCard>
   );
 };
