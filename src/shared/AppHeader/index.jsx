@@ -12,7 +12,7 @@ const AppHeader = ({}) => {
   return (
     <S.AppHeader>
       <S.LogoWrapper>
-        {/* <Logo /> */}
+        <Logo />
       </S.LogoWrapper>
       <MainNav />
     </S.AppHeader>

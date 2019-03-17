@@ -6,8 +6,8 @@ import AppGrid from './shared/AppGrid';
 import AppHeader from './shared/AppHeader';
 import ChatWrapper from './chat/components/ChatWrapper';
 import HomeWrapper from './home';
-
 import theme from './theme';
+
 class App extends Component {
   componentDidMount() {}
 
@@ -17,18 +17,14 @@ class App extends Component {
         <ThemeProvider theme={theme}>
           <Router history={this.props.history}>
             <AppGrid>
-              <AppGrid.Sidebar>
+              <AppGrid.SidebarArea>
                 <ChatWrapper />
-              </AppGrid.Sidebar>
+              </AppGrid.SidebarArea>
 
-              <AppGrid.Header>
+              <AppGrid.HeaderArea>
                 <AppHeader />
-              </AppGrid.Header>
-
-              <AppGrid.Main>
-                <Route exact path="/" component={HomeWrapper} />
-              </AppGrid.Main>
-
+              </AppGrid.HeaderArea>
+              <Route exact path="/" component={HomeWrapper} />
             </AppGrid>
           </Router>
         </ThemeProvider>

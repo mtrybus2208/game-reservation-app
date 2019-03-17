@@ -3,26 +3,49 @@ import PropTypes from 'prop-types';
 
 const AppGrid = styled.div`
   display: grid;
-  min-height: 100vh;
-  grid-template-columns: [sidebar] 250px [main-content] 1fr [column-end];
-  grid-template-rows: [top] 80px [top-end] 1fr [vertical-end];
+  height: 100vh;
+  grid-template-columns: 0 1fr;
+  grid-template-rows: 80px 1.3fr 1fr;
+  grid-template-areas: 
+    "header header"
+    "sidebar timeline"
+    "sidebar reservation";
+  background-color: #17191c;
+  @media ${({theme}) => theme.media.laptop} {
+    grid-template-columns: 250px 1fr;
+    grid-template-areas: 
+      "sidebar header"
+      "sidebar timeline"
+      "sidebar reservation";
+  }
 `;
 
-AppGrid.Sidebar = styled.div`
-    grid-column: sidebar / main-content;
-    grid-row: top / vertical-end;
-    display: grid;
+AppGrid.SidebarArea = styled.div`
+    grid-area: sidebar;
     background: #222;
 `;
 
-AppGrid.Header = styled.div`
-  grid-column: main-content / column-end;
-  display: grid;
+AppGrid.HeaderArea = styled.div`
+  grid-area: header;
 `;
 
-AppGrid.Main = styled.div`
-  grid-column: main-content / column-end;
-  display: grid;
+AppGrid.ReservationArea = styled.div`
+  grid-area: reservation;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  @media ${({theme}) => theme.media.laptopL} {
+    padding: 0 40px 40px;
+  }
+`;
+
+AppGrid.TimeLineArea = styled.div`
+  grid-area: timeline;
+  overflow-x: hidden;
+  padding: 0;
+  @media ${({theme}) => theme.media.laptopL} {
+    padding: 40px 40px 0;
+  }
 `;
 
 export default AppGrid;

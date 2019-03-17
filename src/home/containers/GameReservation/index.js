@@ -28,18 +28,17 @@ class GameReservation extends Component {
   }
 
   openGameConfig() {
-    console.log('open tutaj ma byc dispatch akcji do redux thunka')
     this.props.changeGameConfigState(false);
   }
 
   render() {
     return (
       <React.Fragment>
-        {/* <NewGameConfig
+        <NewGameConfig
           setGameTime={this.setGameTime}
           lastGame={this.props.timeLine.endLastReservation}
           isOpen={this.props.timeLine.gameConfigOpen}
-        /> */}
+        />
         <S.CtaWrapper>
           <BaseButton.Cta
             maxWidth="480px"

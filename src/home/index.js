@@ -9,14 +9,17 @@ const propTypes = {};
 
 const defaultProps = {}; 
 
-const HomeWrapper = ({}) => {
-  return (
-    <S.HomeWrapper>
+const HomeWrapper = ({}) => ( 
+  <React.Fragment>
+    <AppGrid.TimeLineArea>
       <TimeLine />
+    </AppGrid.TimeLineArea>
+
+    <AppGrid.ReservationArea>
       <GameReservation />
-    </S.HomeWrapper>
-  );
-};
+    </AppGrid.ReservationArea>
+  </React.Fragment>
+);
 
 HomeWrapper.propTypes = propTypes;
 HomeWrapper.defaultProps = defaultProps;

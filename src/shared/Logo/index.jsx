@@ -13,7 +13,7 @@ const defaultProps = {
 const Logo = ({ path }) => {
   return (
     <S.Logo>
-      <S.Logo.Image src={path} />
+      <S.Image src={path} />
     </S.Logo>
   );
 };

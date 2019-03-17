@@ -18,7 +18,7 @@ const BaseButton = styled.button`
   font-size: 1rem;
   line-height: 1.5;
   border: none; 
-  outline: none!important;
+  outline: none;
 `;
 
 BaseButton.propTypes = {
@@ -37,8 +37,8 @@ BaseButton.Cta = styled(BaseButton)`
   height: ${props => props.maxHeight || '100%'}}
   width: 100%;
   max-width: ${props => props.maxWidth || '100%'}};
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 600;
   position: relative;
 
   span {

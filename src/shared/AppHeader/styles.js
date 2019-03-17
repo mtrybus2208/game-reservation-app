@@ -12,6 +12,6 @@ export const AppHeader = styled.div`
 
 export const LogoWrapper = styled.div`
     width: 100%;
-    max-width: 200px;
+    max-width: 170px;
     margin-left: 20px;
 `;
