@@ -10,7 +10,7 @@ const MainNav = ({}) => {
   return (
     <S.MainNav>
       <S.Item>
-        <S.Link to="/">Home</S.Link>
+        <S.Link exact to="/">Home</S.Link>
       </S.Item>
       <S.Item>
         <S.Link to="/about">About</S.Link>

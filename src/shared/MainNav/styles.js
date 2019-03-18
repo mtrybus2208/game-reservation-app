@@ -12,19 +12,28 @@ export const Item = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 60px;
-
-  &:hover > a {
-    color: #fff;
-  }
 `;
 
 export const Link = styled(NavLink)`
-  color: #747a81;
-  font-size: 13px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 60px;
+  text-align: left;
   text-decoration: none;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: .4px;
+  color: #fff;
+
+  &:hover {
+    cursor: pointer;
+    background-image: linear-gradient(to top, #1f252a, #22282e 50%, #262d35 76%, #28303b);
+  }
 
   &.active {
-    color: #c27f0a;
+    background-image: linear-gradient(to top, #1f252a, #22282e 50%, #262d35 76%, #28303b);
   }
 `;

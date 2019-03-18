@@ -7,13 +7,21 @@ const propTypes = {
 };
 
 const defaultProps = {
-  path: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1551280372/logo.png',
+  path: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1552903737/gamepad-controller.svg',
 };
 
 const Logo = ({ path }) => {
   return (
     <S.Logo>
       <S.Image src={path} />
+      <S.Title>
+        <S.Header>
+          Reser
+          <S.HeaderHighlighted>v</S.HeaderHighlighted> 
+          ly
+        </S.Header>
+        <S.Description>Reserve your game!</S.Description>
+      </S.Title>
     </S.Logo>
   );
 };
