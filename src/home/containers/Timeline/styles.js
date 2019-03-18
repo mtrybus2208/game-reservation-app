@@ -4,8 +4,10 @@ import PropTypes from 'prop-types';
 export const TimeLineWrapper = styled.div` 
   overflow-x: auto;
   border-radius: 0;
-  overflow-y: hidden;
   height: 100%;
+  @media ${({ theme }) => theme.media.tablet} {
+    overflow-y: hidden;
+  }
 `;
 
 export const TimeLine = styled.div`
@@ -18,11 +20,13 @@ export const TimeLine = styled.div`
     position: relative;
     border-radius: 0;
     padding: 0;
-    height: 100%;
     background-image: url(https://res.cloudinary.com/dfmqgkkbx/image/upload/v1551046589/rt.png);
     background-size: auto;
     transform:  translateY(${props => (props.isOpen ? '0' : '-250px')});
     transition: transform .3s ease-in-out;
+    @media ${({ theme }) => theme.media.tablet} {
+      height: 100%;
+    }
 `;
 
 export const ActualTime = styled.div`

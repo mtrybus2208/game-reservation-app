@@ -6,8 +6,13 @@ export const TimeRuler = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  min-width: ${props => (props.height)}px;
+  min-height: ${props => (props.height)}px;
+  @media ${({ theme }) => theme.media.tablet} {
+    min-width: ${props => (props.height)}px;
+    width: 100%;
+    height: 100%;
+    min-height: auto;
+  }
 `;
 
 export const Wrapper = styled.div`
@@ -18,12 +23,19 @@ export const Wrapper = styled.div`
 
 export const HoursDivider = styled.div` 
   position: absolute;
-  left: ${props => props.position}px;
-  top: 0;
-  height: 100px;
-  width:  ${props => props.width - 1}px;
+  left: 0;
+  top:  ${props => props.position}px;
+  height:  ${props => props.width - 1}px;
   background: #23272d;
+  width: 70px;
   box-shadow: inset 0px 9px 24px -4px rgba(056, 60, 69, .6);
+  z-index: 3;
+  @media ${({ theme }) => theme.media.tablet} {
+    width:  ${props => props.width - 1}px;
+    left: ${props => props.position}px;
+    top:  0;
+    height: 100px;
+  }
 
   &:after {
     content: "${props => (props.time)}";

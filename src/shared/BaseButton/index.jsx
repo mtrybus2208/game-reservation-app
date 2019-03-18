@@ -36,10 +36,17 @@ BaseButton.Cta = styled(BaseButton)`
   text-transform: uppercase;
   height: ${props => props.maxHeight || '100%'}}
   width: 100%;
-  max-width: ${props => props.maxWidth || '100%'}};
-  font-size: 15px;
+  max-width: 100%;
   font-weight: 600;
+  line-height: 1;
   position: relative;
+  font-size: 13px;
+  box-shadow: 13px 17px 30px -13px rgba(0,0,0,0.52);
+  @media ${({ theme }) => theme.media.tablet} {
+    font-size: 15px;
+    box-shadow: none;
+    max-width: ${props => props.maxWidth || '100%'}};
+  }
 
   span {
     position: relative;
