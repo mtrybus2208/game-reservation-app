@@ -8,12 +8,15 @@ export const AppHeader = styled.div`
   align-items: center;
   background: #141619;
   height: 100%;
-  box-shadow: rgba(0,0,0,.12) 0 1px 6px;
+  box-shadow: rgba(0, 0, 0, .12) 0 1px 6px;
 `;
 
 export const LogoWrapper = styled(NavLink)`
-    width: 100%;
-    max-width: 200px;
-    color: #747a81;
-    text-decoration: none;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 200px;
+  color: #747a81;
+  text-decoration: none;
 `;
