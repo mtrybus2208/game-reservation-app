@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 
 export const AppHeader = styled.div`
   display: flex;
@@ -10,7 +11,9 @@ export const AppHeader = styled.div`
   box-shadow: rgba(0,0,0,.12) 0 1px 6px;
 `;
 
-export const LogoWrapper = styled.div`
+export const LogoWrapper = styled(NavLink)`
     width: 100%;
     max-width: 200px;
+    color: #747a81;
+    text-decoration: none;
 `;

@@ -11,7 +11,7 @@ const defaultProps = {};
 const AppHeader = ({}) => {
   return (
     <S.AppHeader>
-      <S.LogoWrapper>
+      <S.LogoWrapper exact to="/">
         <Logo />
       </S.LogoWrapper>
       <MainNav />

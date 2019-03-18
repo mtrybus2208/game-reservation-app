@@ -9,9 +9,13 @@ export const MainNav = styled.ul`
 `;
 
 export const Item = styled.li`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: none;
+
+  @media ${({theme}) => theme.media.laptop} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 export const Link = styled(NavLink)`
