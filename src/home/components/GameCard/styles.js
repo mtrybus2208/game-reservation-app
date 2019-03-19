@@ -7,13 +7,23 @@ export const GameCard = styled.div`
   justify-content: space-between;
   position: absolute;
   z-index: 1;
-  left: ${props => props.left}px;
-  top: 101px;
+  left: 86px;
+  right: 18px;
+  top: ${props => props.left}px;
   bottom: 1px;
-  max-width: 300px;
+  max-width: 100%;
   background: #23272d;
-  width: ${props => props.size}px;;
+  width: auto;
   box-shadow: 3px 2px 20px 0px rgba(0,0,0,.41);
+  height: ${props => props.size}px;
+  @media ${({ theme }) => theme.media.tablet} {
+    left: ${props => props.left}px;
+    right: auto;
+    width: ${props => props.size}px;
+    top: 101px;
+    height: initial;
+    max-width: 300px;
+  }
 `;
 
 GameCard.propTypes = {

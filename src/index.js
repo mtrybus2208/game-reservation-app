@@ -51,7 +51,6 @@ injectGlobal`
     padding: 0; 
     font-family: 'Roboto', sans-serif;
     color: #747a81;
-    overflow-y: scroll;
     background: #141619;
   }
 `;

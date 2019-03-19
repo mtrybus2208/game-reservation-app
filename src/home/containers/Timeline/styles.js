@@ -5,6 +5,14 @@ export const TimeLineWrapper = styled.div`
   overflow-x: auto;
   border-radius: 0;
   height: 100%;
+  position: relative;
+  &::-webkit-scrollbar {
+    width: 0px; 
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+      background: #FF0000;
+  }
   @media ${({ theme }) => theme.media.tablet} {
     overflow-y: hidden;
   }

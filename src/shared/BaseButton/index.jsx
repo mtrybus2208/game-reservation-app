@@ -42,11 +42,7 @@ BaseButton.Cta = styled(BaseButton)`
   position: relative;
   font-size: 13px;
   box-shadow: 13px 17px 30px -13px rgba(0,0,0,0.52);
-  @media ${({ theme }) => theme.media.tablet} {
-    font-size: 15px;
-    box-shadow: none;
-    max-width: ${props => props.maxWidth || '100%'}};
-  }
+
 
   span {
     position: relative;

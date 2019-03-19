@@ -14,4 +14,8 @@ export const LogoWrapper = styled.div`
     width: 100%;
     max-width: 170px;
     margin-left: 20px;
+    display: none;
+    @media ${({ theme }) => theme.media.tablet} {
+      display: block;
+    }
 `;
