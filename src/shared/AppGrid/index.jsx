@@ -5,14 +5,16 @@ const AppGrid = styled.div`
   display: grid;
   height: 100vh;
   grid-template-columns: 0 1fr;
-  grid-template-rows: 80px 1.3fr 1fr;
+  grid-template-rows: 60px 1.3fr 1fr;
   grid-template-areas: 
     "header header"
     "sidebar timeline"
     "sidebar reservation";
   background-color: #17191c;
+  
   @media ${({theme}) => theme.media.laptop} {
     grid-template-columns: 250px 1fr;
+    grid-template-rows: 80px 1.3fr 1fr;
     grid-template-areas: 
       "sidebar header"
       "sidebar timeline"
@@ -21,8 +23,8 @@ const AppGrid = styled.div`
 `;
 
 AppGrid.SidebarArea = styled.div`
-    grid-area: sidebar;
-    background: #222;
+  grid-area: sidebar;
+  background: #222;
 `;
 
 AppGrid.HeaderArea = styled.div`
@@ -34,6 +36,7 @@ AppGrid.ReservationArea = styled.div`
   padding: 0;
   display: flex;
   flex-direction: column;
+
   @media ${({theme}) => theme.media.laptopL} {
     padding: 0 40px 40px;
   }
@@ -43,6 +46,7 @@ AppGrid.TimeLineArea = styled.div`
   grid-area: timeline;
   overflow-x: hidden;
   padding: 0;
+
   @media ${({theme}) => theme.media.laptopL} {
     padding: 40px 40px 0;
   }

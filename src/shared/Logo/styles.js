@@ -8,7 +8,7 @@ export const Logo = styled.div`
 
 export const Image = styled.img`
     height: auto;
-    width: 28px;
+    width: 26px;
     padding: 0 21px;
 
     @media ${({theme}) => theme.media.laptop} {
@@ -50,7 +50,7 @@ export const HeaderHighlighted = styled.span`
 
 export const Description = styled.div`
     font-family: Roboto;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 300;
     line-height: 1.94;
     letter-spacing: .2px;
@@ -59,6 +59,7 @@ export const Description = styled.div`
 
     @media ${({theme}) => theme.media.laptop} {
         margin-top: 5px;
+        font-size: 11px;
         line-height: 1.45;
         letter-spacing: .3px;
     }

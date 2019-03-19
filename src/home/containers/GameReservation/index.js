@@ -44,7 +44,7 @@ class GameReservation extends Component {
             maxWidth="480px"
             onClick={this.openGameConfig}
           >
-            <span>Reserve Game</span>
+            <span>reserve Game</span>
           </BaseButton.Cta>
         </S.CtaWrapper>
       </React.Fragment>
