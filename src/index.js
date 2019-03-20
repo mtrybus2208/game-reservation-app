@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-unused-expressions */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
@@ -16,6 +18,7 @@ import bg from './assets/img/game-bg.png';
 
 const history = createHistory();
 const middleware = routerMiddleware(history);
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
@@ -25,10 +28,8 @@ const rootReducer = combineReducers({
 
 const store = createStore(
   rootReducer,
-  composeEnhancers(
-    applyMiddleware(middleware, thunk),
-  )
-); 
+  composeEnhancers(applyMiddleware(middleware, thunk)),
+);
 
 ReactDOM.render(
   <Provider store={store}>
@@ -44,8 +45,7 @@ WebFont.load({
   },
 });
 
-injectGlobal`
-  body {
+injectGlobal`body {
     /* background-image: url(${bg});  */
     margin: 0;
     padding: 0; 
