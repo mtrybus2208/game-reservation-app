@@ -3,28 +3,73 @@ import { NavLink } from 'react-router-dom';
 
 export const MainNav = styled.ul`
   display: flex;
-  padding: 0;
+  flex-direction: row-reverse;
+  padding-right: 25px;
   margin: 0;
   height: 100%;
+
+  
+  @media ${({theme}) => theme.media.laptop} {
+    flex-direction: row;
+  }
 `;
 
 export const Item = styled.li`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 60px;
+  padding-top: 7px;
 
-  &:hover > a {
-    color: #fff;
+  @media ${({theme}) => theme.media.laptop} {
+    &:last-child {
+      display: none;
+    }
   }
 `;
 
-export const Link = styled(NavLink)`
-  color: #747a81;
-  font-size: 13px;
-  text-decoration: none;
+export const DesktopLink = styled(NavLink)`
+  display: none;
 
-  &.active {
-    color: #c27f0a;
-  }
+  @media ${({theme}) => theme.media.laptop} {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 60px;
+    text-align: left;
+    text-decoration: none;
+    font-family: Roboto;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: .4px;
+    color: #fff;
+
+    &:hover {
+      cursor: pointer;
+      background-image: linear-gradient(to top, #1f252a, #22282e 50%, #262d35 76%, #28303b);
+    }
+
+    &.active {
+      background-image: linear-gradient(to top, #1f252a, #22282e 50%, #262d35 76%, #28303b);
+    }
+  } 
+`;
+
+export const MobileLink = styled(NavLink)`
+  padding: 0 13px;
+
+  @media ${({theme}) => theme.media.laptop} {
+    display: none;
+  } 
+`;
+
+export const ImageLink = styled.img`
+  width: 23px;
+`;
+
+export const MobileChatTrigger = styled.button`
+  margin: 0;
+  padding: 0 10px;
+  background: none;
+  border: none;
 `;

@@ -2,18 +2,45 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as S from './styles';
 
-const propTypes = {};
+const propTypes = {
+  loginImagePath: PropTypes.string,
+  chatImagePath: PropTypes.string,
+};
 
-const defaultProps = {};
+const defaultProps = {
+  loginImagePath: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553015547/login.svg',
+  chatImagePath: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553015547/message.svg',
+};
 
-const MainNav = ({}) => {
+const MainNav = ({ loginImagePath, chatImagePath }) => {
   return (
     <S.MainNav>
       <S.Item>
-        <S.Link to="/">Timeline</S.Link>
+        <S.DesktopLink exact to="/">
+          Home
+        </S.DesktopLink>
       </S.Item>
+
       <S.Item>
-        <S.Link to="/login">Login</S.Link>
+        <S.DesktopLink to="/about">
+          About
+        </S.DesktopLink>
+      </S.Item>
+
+      <S.Item>
+        <S.DesktopLink to="/login">
+          Login
+        </S.DesktopLink>
+
+        <S.MobileLink to="/login">
+          <S.ImageLink src={loginImagePath}></S.ImageLink>
+        </S.MobileLink>
+      </S.Item>
+
+      <S.Item>
+        <S.MobileChatTrigger>
+          <S.ImageLink src={chatImagePath}></S.ImageLink>
+        </S.MobileChatTrigger>
       </S.Item>
     </S.MainNav>
   );

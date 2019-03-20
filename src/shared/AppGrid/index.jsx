@@ -6,7 +6,7 @@ const AppGrid = styled.div`
   height: 100vh;
   overflow: hidden;
   grid-template-columns: 100vw 1fr;
-  grid-template-rows: 80px 1fr;
+  grid-template-rows: 60px 1fr;
   grid-template-areas: 
     "header header"
     "sidebar timeline"
@@ -15,7 +15,7 @@ const AppGrid = styled.div`
   margin-left: -100vw;
   position: relative;
 
-  @media ${({theme}) => theme.media.tablet} {
+  @media ${({ theme }) => theme.media.tablet} {
     grid-template-columns: 250px 1fr;
     grid-template-rows: 80px 1.3fr 1fr;
     grid-template-areas: 
@@ -24,7 +24,7 @@ const AppGrid = styled.div`
       "sidebar reservation";
       margin-left: 0;
   }
-  @media ${({theme}) => theme.media.laptopL} {
+  @media ${({ theme }) => theme.media.laptopL} {
     &:after {
       content: '';
       position: absolute;
@@ -52,14 +52,14 @@ const AppGrid = styled.div`
 `;
 
 AppGrid.SidebarArea = styled.div`
-    grid-area: sidebar;
-    background: #222;
+  grid-area: sidebar;
+  background: #222;
 `;
 
 AppGrid.HeaderArea = styled.div`
   grid-area: header;
   margin-left: 100vw;
-  @media ${({theme}) => theme.media.tablet} {
+  @media ${({ theme }) => theme.media.tablet} {
       margin-left: 0;
   }
 `;
@@ -70,7 +70,7 @@ AppGrid.ReservationArea = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  @media ${({theme}) => theme.media.laptopL} {
+  @media ${({ theme }) => theme.media.laptopL} {
     margin: 0 40px 40px;
   }
 `;
@@ -80,6 +80,7 @@ AppGrid.TimeLineArea = styled.div`
   padding: 0;
   overflow-y: hidden;
   position: relative;
+  
   @media ${({ theme }) => theme.media.tablet} {
     overflow-x: hidden;
     overflow-y: unset;
