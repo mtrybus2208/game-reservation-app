@@ -9,18 +9,18 @@ const propTypes = {};
 
 const defaultProps = {}; 
 
-const HomeWrapper = ({}) => ( 
-  <React.Fragment>
-    <AppGrid.TimeLineArea>
+const Home = ({}) => ( 
+  <S.Home>
+    <S.TimeLineWrapper>
       <TimeLine />
-    </AppGrid.TimeLineArea>
+    </S.TimeLineWrapper>
 
-    <AppGrid.ReservationArea>
+    <S.ReservationWrapper>
       <GameReservation />
-    </AppGrid.ReservationArea>
-  </React.Fragment>
+    </S.ReservationWrapper>
+  </S.Home>
 );
 
-HomeWrapper.propTypes = propTypes;
-HomeWrapper.defaultProps = defaultProps;
-export default HomeWrapper;
+Home.propTypes = propTypes;
+Home.defaultProps = defaultProps;
+export default Home;

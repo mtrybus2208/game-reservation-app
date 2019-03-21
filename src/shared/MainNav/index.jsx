@@ -28,18 +28,18 @@ const MainNav = ({ loginImagePath, chatImagePath }) => {
       </S.Item>
 
       <S.Item>
-        <S.DesktopLink to="/login">
+        <S.DesktopLink to="/auth/login">
           Login
         </S.DesktopLink>
 
-        <S.MobileLink to="/login">
-          <S.ImageLink src={loginImagePath}></S.ImageLink>
+        <S.MobileLink to="/auth//login">
+          <S.ImageLink src={loginImagePath} />
         </S.MobileLink>
       </S.Item>
 
       <S.Item>
         <S.MobileChatTrigger>
-          <S.ImageLink src={chatImagePath}></S.ImageLink>
+          <S.ImageLink src={chatImagePath} />
         </S.MobileChatTrigger>
       </S.Item>
     </S.MainNav>

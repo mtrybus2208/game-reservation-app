@@ -35,6 +35,7 @@ export const GameCard = styled.div`
       "content"
       "info"
       "type";
+      overflow-y: auto;
   }
 `;
 
