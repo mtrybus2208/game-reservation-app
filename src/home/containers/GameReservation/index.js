@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as fromActions from '../../state/actions';
-import BaseButton from '../../../shared/BaseButton';
+import BaseButton from '../../../shared/components/BaseButton';
 import NewGameConfig from '../../components/NewGameConfig';
 import * as S from './styles';
 

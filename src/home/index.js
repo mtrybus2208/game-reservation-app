@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AppGrid from '../shared/AppGrid';
+import AppGrid from '../shared/components/AppGrid';
 import TimeLine from './containers/Timeline';
 import GameReservation from './containers/GameReservation';
 import * as S from './styles';

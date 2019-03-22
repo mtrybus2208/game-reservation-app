@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Avatar from '../../../shared/Avatar';
+import Avatar from '../../../shared/components/Avatar';
 import * as S from './styles';
 
 const propTypes = {

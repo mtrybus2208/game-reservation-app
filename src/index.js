@@ -13,6 +13,7 @@ import WebFont from 'webfontloader';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { homeReducer } from './home/state/reducers';
+import { uiReducer } from './shared/state/reducers';
 
 import bg from './assets/img/game-bg.png';
 
@@ -24,6 +25,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const rootReducer = combineReducers({
   timeLine: homeReducer,
   router: routerReducer,
+  ui: uiReducer,
 });
 
 const store = createStore(
