@@ -5,7 +5,7 @@ import * as S from './styles';
 const propTypes = {
   loginImagePath: PropTypes.string,
   chatImagePath: PropTypes.string,
-  openLeftSidebar: PropTypes.bool,
+  openLeftSidebar: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -29,12 +29,12 @@ const MainNav = ({ loginImagePath, chatImagePath, openLeftSidebar }) => {
       </S.Item>
 
       <S.Item>
-        <S.DesktopLink to="/login">
+        <S.DesktopLink to="/auth/login">
           Login
         </S.DesktopLink>
 
-        <S.MobileLink to="/login">
-          <S.ImageLink src={loginImagePath}></S.ImageLink>
+        <S.MobileLink to="/auth//login">
+          <S.ImageLink src={loginImagePath} />
         </S.MobileLink>
       </S.Item>
 

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom'; 
+import { Route, Switch, Redirect } from 'react-router-dom'; 
 import { ConnectedRouter as Router } from 'react-router-redux';
 import { ThemeProvider } from 'styled-components';
 import AppGrid from './shared/components/AppGrid';
 import AppHeader from './shared/containers/AppHeader';
 import ChatWrapper from './chat/components/ChatWrapper';
-import HomeWrapper from './home';
+import Home from './home';
+import Auth from './auth';
 import theme from './theme';
 
 class App extends Component {
@@ -24,7 +25,10 @@ class App extends Component {
               <AppGrid.HeaderArea>
                 <AppHeader />
               </AppGrid.HeaderArea>
-              <Route exact path="/" component={HomeWrapper} />
+              <Switch>
+                <Route exact path="/" component={Home} />
+                <Route path="/auth" component={Auth} />
+              </Switch>
             </AppGrid>
           </Router>
         </ThemeProvider>
