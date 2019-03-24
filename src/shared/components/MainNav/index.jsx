@@ -33,14 +33,14 @@ const MainNav = ({ loginImagePath, chatImagePath, openLeftSidebar }) => {
           Login
         </S.DesktopLink>
 
-        <S.MobileLink to="/auth//login">
+        <S.MobileLink to="/auth/login">
           <S.ImageLink src={loginImagePath} />
         </S.MobileLink>
       </S.Item>
 
       <S.Item>
         <S.MobileChatTrigger onClick={openLeftSidebar}>
-          <S.ImageLink src={chatImagePath}></S.ImageLink>
+          <S.ImageLink src={chatImagePath} />
         </S.MobileChatTrigger>
       </S.Item>
     </S.MainNav>
