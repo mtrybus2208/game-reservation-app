@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Route, Switch, Redirect } from 'react-router-dom'; 
 import { ConnectedRouter as Router } from 'react-router-redux';
+import { connect } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import AppGrid from './shared/components/AppGrid';
 import AppHeader from './shared/containers/AppHeader';
@@ -9,6 +11,11 @@ import Home from './home';
 import Auth from './auth';
 import theme from './theme';
 
+const propTypes = {
+  ui: PropTypes.object.isRequired
+};
+
+const defaultProps = {}; 
 class App extends Component {
   componentDidMount() {}
 
@@ -17,12 +24,12 @@ class App extends Component {
       <React.Fragment>
         <ThemeProvider theme={theme}>
           <Router history={this.props.history}>
-            <AppGrid>
+            <AppGrid leftGridOpen={this.props.ui.leftSidebarOpened}>
               <AppGrid.SidebarArea>
                 <ChatWrapper />
               </AppGrid.SidebarArea>
 
-              <AppGrid.HeaderArea>
+              <AppGrid.HeaderArea leftGridOpen={this.props.ui.leftSidebarOpened}>
                 <AppHeader />
               </AppGrid.HeaderArea>
               <Switch>
@@ -37,4 +44,15 @@ class App extends Component {
   }
 }
 
-export default App;
+
+const mapStateToProps = ({ ui }) => (
+  { ui }
+);
+
+const mapDispatchToProps = dispatch => {
+  return { }
+};
+
+App.propTypes = propTypes;
+App.defaultProps = defaultProps;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -7,7 +7,7 @@ import MainNav from '../../components/MainNav';
 import * as S from './styles';
 
 const propTypes = {
-  openLeftSidebar: PropTypes.func.isRequired,
+  toggleLeftSidebar: PropTypes.func.isRequired,
 };
 
 const defaultProps = {}; 
@@ -15,10 +15,10 @@ const defaultProps = {};
 class AppHeader extends Component {
   componentDidMount() { } 
 
-  openLeftSidebar = this.openLeftSidebar.bind(this);
+  toggleLeftSidebar = this.toggleLeftSidebar.bind(this);
 
-  openLeftSidebar() {
-    this.props.openLeftSidebar();
+  toggleLeftSidebar() {
+    this.props.toggleLeftSidebar();
   }
 
   render() {
@@ -28,7 +28,7 @@ class AppHeader extends Component {
           <Logo />
         </S.LogoWrapper>
         <MainNav 
-          openLeftSidebar = {this.openLeftSidebar}
+          toggleLeftSidebar = {this.toggleLeftSidebar}
         />
       </S.AppHeader>
     );
@@ -41,8 +41,8 @@ const mapStateToProps = ({ }) => (
 
 const mapDispatchToProps = dispatch => {
   return {
-    openLeftSidebar: () => {
-      dispatch(fromActions.openLeftSidebar())
+    toggleLeftSidebar: () => {
+      dispatch(fromActions.toggleLeftSidebar())
     },
   }
 };

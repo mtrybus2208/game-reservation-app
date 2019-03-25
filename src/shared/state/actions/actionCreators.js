@@ -1,11 +1,6 @@
 import * as actionTypes from './actionTypes';
 
-export const openLeftSidebar = () =>
+export const toggleLeftSidebar = () =>
 ({
-  type: actionTypes.OPEN_LEFT_SIDEBAR
-});
-
-export const closeLeftSidebar = () =>
-({
-  type: actionTypes.CLOSE_LEFT_SIDEBAR
+  type: actionTypes.TOGGLE_LEFT_SIDEBAR
 });
