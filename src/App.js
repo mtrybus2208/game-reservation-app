@@ -26,8 +26,8 @@ class App extends Component {
                 <AppHeader />
               </AppGrid.HeaderArea>
               <Switch>
-                <Route exact path="/" component={Home} />
                 <Route path="/auth" component={Auth} />
+                <Route exact path="/" component={Home} />
               </Switch>
             </AppGrid>
           </Router>

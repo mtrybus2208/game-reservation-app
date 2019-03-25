@@ -54,5 +54,6 @@ injectGlobal`body {
     font-family: 'Roboto', sans-serif;
     color: #747a81;
     background: #141619;
+    overflow-y: hidden;
   }
 `;
