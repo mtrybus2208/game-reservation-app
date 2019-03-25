@@ -1,4 +1,4 @@
-import * as actionTypes from './actionTypes';
+import { actionTypes } from './actionTypes';
 
 export const setGameTime = (payload) =>
   ({
@@ -11,3 +11,5 @@ export const changeGameConfigState = (payload) =>
     type: actionTypes.CHANGE_GAME_CONFIG_STATE,
     payload,
   });
+
+export const fetchReservedGames = () => ({ type: actionTypes.FETCH_RESERVED_GAMES });

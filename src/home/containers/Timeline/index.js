@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import * as fromActions from '../../state/actions';
 import { getTimeLine, getWorkdayInPixels, getArrayOfWorkdayHours, getActualDateInPixels } from '../../state/selectors';
 import TimeRuler from '../../components/TimeRuler';
 import * as S from './styles';
@@ -21,7 +22,9 @@ class TimeLine extends Component {
     scrollLeft: undefined,
   };
 
-  componentDidMount() { }
+  componentDidMount() {
+    this.props.fetchReservedGames();
+  }
 
   wrapRef = null;
 
@@ -31,7 +34,7 @@ class TimeLine extends Component {
     });
   };
 
-  mouseMove = () => (e) => { 
+  mouseMove = () => (e) => {
     if (!this.state.isDown) return;
     e.preventDefault();
     const x = e.pageX - this.wrapRef.offsetLeft;
@@ -95,7 +98,11 @@ const mapStateToProps = (state) => (
 );
 
 const mapDispatchToProps = dispatch => {
-  return { }
+  return {
+    fetchReservedGames: () => {
+      dispatch(fromActions.fetchReservedGames());
+    },
+  }
 };
 
 TimeLine.propTypes = propTypes;

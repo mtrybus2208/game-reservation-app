@@ -1,5 +1,5 @@
 import moment from 'moment';
-import * as actionTypes from './../actions/actionTypes';
+import { actionTypes } from './../actions/actionTypes';
 
 export const initialState = {
   endLastReservation: moment('09:00 am', 'HH:mm a'),
@@ -20,7 +20,7 @@ export const initialState = {
   ],
 };
 
-export const homeReducer = (state = initialState, action) => {
+export const timeLineReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_GAME_TIME:
       return {
@@ -31,6 +31,16 @@ export const homeReducer = (state = initialState, action) => {
       return {
         ...state,
         gameConfigOpen: action.payload,
+      };
+    case actionTypes.FETCH_RESERVED_GAMES_SUCCESS:
+      return {
+        ...state,
+        games: action.payload,
+      };
+    case actionTypes.FETCH_RESERVED_GAMES_FAIL:
+      return {
+        ...state,
+        games: [],
       };
     default:
       return state;
