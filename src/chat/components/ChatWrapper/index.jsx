@@ -9,43 +9,57 @@ const defaultProps = {};
 const ChatWrapper = ({}) => {
   return (
     <S.ChatWrapper>
-      <S.MessageWrapper>
         <S.Message>
-          <S.MessageTime>
-            5:07
-          </S.MessageTime>
+          <S.MessageHeader>
+            <S.PlayerName>
+              <S.PlayerNameText>
+                Jakub Stanisławczyk
+              </S.PlayerNameText>
+            </S.PlayerName>
+
+            <S.PlayerDirectChat>
+              
+            </S.PlayerDirectChat>
+            
+            <S.PlayerPictureWrapper>
+              <S.PlayerPicture>
+              
+              </S.PlayerPicture>
+            </S.PlayerPictureWrapper>
+          </S.MessageHeader>
           
-          <S.MessageText>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-          </S.MessageText>
+          <S.MessageBody>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </S.MessageBody>
         </S.Message>
 
-        <S.MessageAuthor>
-          <S.MessageAuthorPicture>
-            
-          </S.MessageAuthorPicture>
-        </S.MessageAuthor>
-      </S.MessageWrapper>
-
-      <S.MessageWrapper>
         <S.Message>
-          <S.MessageTime>
-            5:07
-          </S.MessageTime>
-          
-          <S.MessageText>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-          </S.MessageText>
-        </S.Message>
+          <S.MessageHeader>
+            <S.PlayerName>
+              <S.PlayerNameText>
+                Michał Trybus
+              </S.PlayerNameText>
+            </S.PlayerName>
 
-        <S.MessageAuthor>
-          <S.MessageAuthorPicture>
+            <S.PlayerDirectChat>
+              
+            </S.PlayerDirectChat>
             
-          </S.MessageAuthorPicture>
-        </S.MessageAuthor>
-      </S.MessageWrapper>
+            <S.PlayerPictureWrapper>
+              <S.PlayerPicture>
+              
+              </S.PlayerPicture>
+            </S.PlayerPictureWrapper>
+          </S.MessageHeader>
+          
+          <S.MessageBody>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </S.MessageBody>
+        </S.Message>
     </S.ChatWrapper>
   );
 };
