@@ -11,7 +11,19 @@ export const ChatWrapper = styled.div`
 export const MessagesWrapper = styled.div`
   width: 100%;
   height: calc(100% - 200px);
-  overflow-y: scroll;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: #111315;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #1b1e22;
+  }
 `;
 
 export const Message = styled.div`
@@ -28,7 +40,7 @@ export const MessageHeader = styled.div`
 
 export const MessageBody = styled.div`  
   padding: 40px 19px 13px;
-  background-color: #111;
+  background: #111315;
   font-family: Roboto;
   font-size: 12px;
   font-weight: 300;
@@ -68,12 +80,13 @@ export const PlayerNameText = styled.span`
   }
 `;
 
-export const PlayerDirectChat = styled.div`
+export const PlayerDirectChat = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
   height: 46px;
   width: 58px;
+  border: none;
   box-shadow: inset 0 5px 20px -7px rgba(056, 60, 69, .6);
   background: #181c1f;
 `;
@@ -131,7 +144,7 @@ export const MessageInput = styled.textarea`
 export const MessageButtonsWrapper = styled.div`
   width: 100%;
   height: 60px;
-  background-color: #181c1f;
+  background: #181c1f;
 `;
 
 export const MessageButton = styled.button`
