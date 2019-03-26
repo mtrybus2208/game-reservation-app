@@ -13,9 +13,9 @@ const Auth = ({ match }) => {
   return (
     <S.Auth>
       <Switch>
-        <Redirect exact from="/auth" to="/auth/login" />
         <Route path={`${match.path}/login`} component={Login} />
         <Route path={`${match.path}/register`} component={Register} />
+        <Redirect exact from="/auth" to="/auth/login" />
       </Switch>
     </S.Auth>
   );

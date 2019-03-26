@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom'; 
+import { Route, Switch } from 'react-router-dom'; 
 import { ConnectedRouter as Router } from 'react-router-redux';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
-import AppGrid from './shared/AppGrid';
-import AppHeader from './shared/AppHeader';
+import AppGrid from './shared/components/AppGrid';
+import AppHeader from './shared/containers/AppHeader';
 import ChatWrapper from './chat/components/ChatWrapper';
 import Home from './home';
 import Auth from './auth';
@@ -36,8 +36,8 @@ class App extends Component {
                 <AppHeader />
               </AppGrid.HeaderArea>
               <Switch>
-                <Route exact path="/" component={Home} />
                 <Route path="/auth" component={Auth} />
+                <Route exact path="/" component={Home} />
               </Switch>
             </AppGrid>
           </Router>

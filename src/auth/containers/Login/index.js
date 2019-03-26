@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import AuthWrapper from '../../components/AuthWrapper';
 import * as S from './styles';
 
 const propTypes = {
@@ -10,9 +11,9 @@ const defaultProps = {
 
 const Login = ({  }) => {
   return (
-    <S.Login>
+    <AuthWrapper>
         Login
-    </S.Login>
+    </AuthWrapper>
   );
 };
 

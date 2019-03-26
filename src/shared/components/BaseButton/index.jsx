@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 
 const BaseButton = styled.button`
   color: #fff;
-  background-color: ${props => props.bg || props.theme.primary}};
+  background-color: ${props => props.bg || props.theme.primary};
   box-sizing: border-box;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   box-shadow: none;
-  border-radius:  ${props => props.borderRadius || 0}};
-  padding:  ${props => props.padding || 0}};
+  border-radius:  ${props => props.borderRadius || 0};
+  padding:  ${props => props.padding || 0};
   display: inline-block;
   cursor: pointer;
   font-weight: 400;
@@ -28,21 +28,20 @@ BaseButton.propTypes = {
 };
 
 BaseButton.Cta = styled(BaseButton)`
-  background: ${props => props.bg || props.theme.accent}};
-  color: ${props => props.color || props.theme.darkFontColor}};
+  background: ${props => props.bg || props.theme.accent};
+  color: ${props => props.color || props.theme.darkFontColor};
   display: flex;
   justify-content: center;
   align-items: center;
   text-transform: uppercase;
-  height: ${props => props.maxHeight || '100%'}}
+  height: ${props => props.maxHeight || '100%'};
   width: 100%;
   max-width: 100%;
   font-weight: 600;
   line-height: 1;
   position: relative;
   font-size: 13px;
-  box-shadow: 13px 17px 30px -13px rgba(0,0,0,0.52);
-
+  box-shadow: 13px 17px 30px -13px rgba(0, 0, 0, 0.52);
 
   span {
     position: relative;

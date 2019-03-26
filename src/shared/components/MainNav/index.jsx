@@ -5,6 +5,7 @@ import * as S from './styles';
 const propTypes = {
   loginImagePath: PropTypes.string,
   chatImagePath: PropTypes.string,
+  openLeftSidebar: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -12,7 +13,7 @@ const defaultProps = {
   chatImagePath: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553015547/message.svg',
 };
 
-const MainNav = ({ loginImagePath, chatImagePath }) => {
+const MainNav = ({ loginImagePath, chatImagePath, openLeftSidebar }) => {
   return (
     <S.MainNav>
       <S.Item>
@@ -32,13 +33,13 @@ const MainNav = ({ loginImagePath, chatImagePath }) => {
           Login
         </S.DesktopLink>
 
-        <S.MobileLink to="/auth//login">
+        <S.MobileLink to="/auth/login">
           <S.ImageLink src={loginImagePath} />
         </S.MobileLink>
       </S.Item>
 
       <S.Item>
-        <S.MobileChatTrigger>
+        <S.MobileChatTrigger onClick={openLeftSidebar}>
           <S.ImageLink src={chatImagePath} />
         </S.MobileChatTrigger>
       </S.Item>
