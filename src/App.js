@@ -24,12 +24,12 @@ class App extends Component {
       <React.Fragment>
         <ThemeProvider theme={theme}>
           <Router history={this.props.history}>
-            <AppGrid leftGridOpen={this.props.ui.leftSidebarOpened}>
-              <AppGrid.SidebarArea>
+            <AppGrid>
+              <AppGrid.SidebarArea leftGridOpen={this.props.ui.leftSidebarOpened}>
                 <ChatWrapper />
               </AppGrid.SidebarArea>
 
-              <AppGrid.HeaderArea leftGridOpen={this.props.ui.leftSidebarOpened}>
+              <AppGrid.HeaderArea>
                 <AppHeader />
               </AppGrid.HeaderArea>
               <Switch>

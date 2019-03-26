@@ -8,9 +8,8 @@ const AppGrid = styled.div`
   grid-template-rows: 60px 1fr;
   grid-template-areas: "header header" "sidebar content" "sidebar content";
   background-color: #17191c;
-  margin-left: ${props => (props.leftGridOpen ? '0' : '-100vw')};
+  margin-left: -100vw;
   position: relative;
-  transition: all linear 400ms;
 
   @media ${({ theme }) => theme.media.tablet} {
     grid-template-columns: 250px 1fr;
@@ -22,16 +21,24 @@ const AppGrid = styled.div`
     margin-left: 0;
     overflow: hidden;
   }
+
+  @media ${({ theme }) => theme.media.laptop} {
+    grid-template-columns: 300px 1fr;
+  }
 `;
 
 AppGrid.SidebarArea = styled.div`
+  transition: all linear 400ms;
   grid-area: sidebar;
+  position: relative;
+  left: ${props => (props.leftGridOpen ? '100%' : '0')};
+  z-index: 10;
   background: #222;
 `;
 
 AppGrid.HeaderArea = styled.div`
   grid-area: header;
-  margin-left: ${props => (props.leftGridOpen ? '0' : '100vw')};
+  margin-left: 100vw;
 
   @media ${({ theme }) => theme.media.tablet} {
       margin-left: 0;

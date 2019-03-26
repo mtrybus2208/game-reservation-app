@@ -8,6 +8,12 @@ export const ChatWrapper = styled.div`
   background: #1b1e22;
 `;
 
+export const MessagesWrapper = styled.div`
+  width: 100%;
+  height: calc(100% - 200px);
+  overflow-y: scroll;
+`;
+
 export const Message = styled.div`
   width: 100%;
   background: #111;
@@ -21,7 +27,7 @@ export const MessageHeader = styled.div`
 `;
 
 export const MessageBody = styled.div`  
-  margin: 40px 19px 13px;
+  padding: 40px 19px 13px;
   background-color: #111;
   font-family: Roboto;
   font-size: 12px;
@@ -38,7 +44,7 @@ export const PlayerName = styled.div`
   align-items: center;
   height: 46px;
   width: calc(100% - 58px);
-  background-color: #181c1f;
+  background: #181c1f;
   border-right: 1.5px solid #111;
   text-align: left;
 `;
@@ -49,16 +55,31 @@ export const PlayerNameText = styled.span`
   font-family: Roboto;
   font-size: 12px;
   font-weight: 500;
-  line-height: .88;
+  line-height: 1.4;
   letter-spacing: .3px;
   color: #ce8d08;
+
+  @media ${({ theme }) => theme.media.tablet} {
+    margin-left: 50%;
+  }
+
+  @media ${({ theme }) => theme.media.laptop} {
+    margin-left: 44%;
+  }
 `;
 
 export const PlayerDirectChat = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 46px;
   width: 58px;
   box-shadow: inset 0 5px 20px -7px rgba(056, 60, 69, .6);
-  background-color: #181c1f;
+  background: #181c1f;
+`;
+
+export const PlayerDirectChatIcon = styled.img`
+  width: 17px;
 `;
 
 export const PlayerPictureWrapper = styled.div`
@@ -71,13 +92,60 @@ export const PlayerPictureWrapper = styled.div`
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  box-shadow: 0 6px 15px 0 rgba(0, 0, 0, .54), inset 0 2px 4px 0 rgba(255, 255, 255, .1);
-  background-color: #484f5a;
+  background: #484f5a;
+  box-shadow: -1px 1px 30px -3px rgba(0, 0, 0, .61);
 `;
 
 export const PlayerPicture = styled.div`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background-color: #fff;
+  background: #fff;
+`;
+
+export const MessageInputWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 140px;
+  margin-top: 40px;
+  background: #111315;
+`;
+
+export const MessageInput = styled.textarea`
+  width: 85%;
+  height: 75px;
+  background: #111315;
+  border: none;
+  font-family: Roboto;
+  font-size: 11px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: .3px;
+  text-align: left;
+  color: #747a81;
+  resize: none;
+`;
+
+export const MessageButtonsWrapper = styled.div`
+  width: 100%;
+  height: 60px;
+  background-color: #181c1f;
+`;
+
+export const MessageButton = styled.button`
+  width: 49%;
+  height: 60px;
+  background: #181c1f;;
+  border: none;
+
+  &:first-child {
+    border-right: 1.5px solid #111;
+    margin-right: 1%;
+  }
+`;
+
+export const MessageButtonIcon = styled.img`
+  width: 25px;
 `;
