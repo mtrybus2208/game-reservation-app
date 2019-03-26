@@ -9,18 +9,21 @@ const propTypes = {
 const defaultProps = { 
 };
 
-const socialImages = {
-  facebook: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553528530/facebook-logo_1.svg',
-}
+const SocialBox = ({ }) => {
+  const socialImages = {
+    facebook: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553528530/facebook-logo_1.svg',
+    google: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553594853/search.svg',
+  };
 
-const SocialBox = ({ }) => {  
   return (
     <S.SocialBox>
       <S.SocialButton>
-        <S.SocialImage src={socialImages.facebook}/>
+        <S.SocialImage src={socialImages.facebook} />
       </S.SocialButton>
       <S.Divider />
-      <S.SocialButton bg="#ff624d">g</S.SocialButton>
+      <S.SocialButton bg="#ff624d">
+        <S.SocialImage src={socialImages.google} />
+      </S.SocialButton>
     </S.SocialBox>
   );
 };

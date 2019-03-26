@@ -3,23 +3,20 @@ import PropTypes from 'prop-types';
 import AuthTop from './../AuthTop';
 import SocialBox from './../SocialBox';
 import AuthBody from './../AuthBody';
+import OptionDivider from './../OptionDivider';
 import * as S from './styles';
 
 const propTypes = {
+  children: PropTypes.node,
 };
 
 const defaultProps = { 
 }; 
 
-const AuthWrapper = ({ }) => {
+const AuthWrapper = ({ children }) => {
   return (
     <S.AuthWrapper>
-      <AuthTop>
-        <span>Sign In</span>
-      </AuthTop>
-      <AuthBody>
-        <SocialBox />
-      </AuthBody>
+      { children }
     </S.AuthWrapper>
   );
 };
