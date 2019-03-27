@@ -31,7 +31,7 @@ const MainNav = ({ loginImagePath, chatImagePath, activeChatImagePath, isLeftSid
           Login
         </S.DesktopLink>
 
-        <S.MobileLink to={ROUTES.LOGIN} onClick={isLeftSidebarOpened ? toggleLeftSidebar : ''}>
+        <S.MobileLink to={ROUTES.LOGIN} onClick={isLeftSidebarOpened ? toggleLeftSidebar : null}>
           <S.ImageLink src={loginImagePath} />
         </S.MobileLink>
       </S.Item>
