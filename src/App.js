@@ -6,13 +6,14 @@ import { connect } from 'react-redux';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import AppGrid from './shared/components/AppGrid';
 import AppHeader from './shared/containers/AppHeader';
-import ChatWrapper from './chat/components/ChatWrapper';
+import GlobalChatWrapper from './chat/components/GlobalChatWrapper';
+import DirectChatWrapper from './chat/components/DirectChatWrapper';
 import Home from './home';
 import Auth from './auth';
 import theme from './theme';
 
 const propTypes = {
-  ui: PropTypes.object.isRequired
+  ui: PropTypes.object.isRequired,
 };
 
 const defaultProps = {};
@@ -38,7 +39,11 @@ class App extends Component {
           <Router history={this.props.history}>
             <AppGrid>
               <AppGrid.SidebarArea leftGridOpen={this.props.ui.leftSidebarOpened}>
-                <ChatWrapper />
+                {this.props.ui.chatMode !== 'GLOBAL' ? (
+                  <DirectChatWrapper />
+                ) : (
+                  <GlobalChatWrapper />
+                )}
               </AppGrid.SidebarArea>
 
               <AppGrid.HeaderArea>
@@ -61,8 +66,8 @@ const mapStateToProps = ({ ui }) => (
   { ui }
 );
 
-const mapDispatchToProps = dispatch => {
-  return { }
+const mapDispatchToProps = () => {
+  return { };
 };
 
 App.propTypes = propTypes;
