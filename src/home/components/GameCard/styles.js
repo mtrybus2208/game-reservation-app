@@ -18,7 +18,7 @@ export const GameCard = styled.div`
   max-width: 100%;
   background: #23272d;
   width: auto;
-  box-shadow: 3px 2px 20px 0px rgba(0,0,0,.41);
+  box-shadow: 3px 2px 20px 0 rgba(0,0,0,.41);
   height: ${props => props.size}px;
   
   @media ${({ theme }) => theme.media.tablet} {
@@ -75,7 +75,7 @@ export const Body = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    box-shadow: inset 0px 9px 24px -4px rgba(056,60,69,.6);
+    box-shadow: inset 0 9px 24px -4px rgba(056,60,69,.6);
 
     @media ${({ theme }) => theme.media.tablet} { 
       grid-area: content;
@@ -104,7 +104,7 @@ export const Title = styled.div`
   color: #fff;
   font-size: 12px;
   text-transform: uppercase;
-  margin: 20px 0px 10px;
+  margin: 20px 0 10px;
 `;
 
 export const SubTitle = styled.div`

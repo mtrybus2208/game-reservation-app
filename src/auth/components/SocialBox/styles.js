@@ -10,7 +10,7 @@ export const SocialBox = styled.div`
 
 export const SocialButton = styled(BaseButton)`
     background-color:  ${props => (props.bg ? props.bg : '#5450f2')};
-    box-shadow: 0px 17px 24px 0 rgba(0, 0, 0, 0.33), inset 0px 2px 3px 0 rgba(255, 255, 255, 0.1);
+    box-shadow: 0 17px 24px 0 rgba(0, 0, 0, 0.33), inset 0 2px 3px 0 rgba(255, 255, 255, 0.1);
     display: flex;
     justify-content: center;
     align-items: center;
