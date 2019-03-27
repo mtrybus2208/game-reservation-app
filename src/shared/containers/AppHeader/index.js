@@ -7,7 +7,8 @@ import MainNav from '../../components/MainNav';
 import * as S from './styles';
 
 const propTypes = {
-  openLeftSidebar: PropTypes.func.isRequired,
+  toggleLeftSidebar: PropTypes.func.isRequired,
+  isLeftSidebarOpened: PropTypes.bool,
 };
 
 const defaultProps = {}; 
@@ -15,34 +16,38 @@ const defaultProps = {};
 class AppHeader extends Component {
   componentDidMount() { } 
 
-  openLeftSidebar = this.openLeftSidebar.bind(this);
+  toggleLeftSidebar = this.toggleLeftSidebar.bind(this);
 
-  openLeftSidebar() {
-    this.props.openLeftSidebar();
+  toggleLeftSidebar() {
+    this.props.toggleLeftSidebar();
   }
 
   render() {
     return (
       <S.AppHeader>
         <S.LogoWrapper exact to="/">
-          <Logo />
+          <Logo 
+            isLeftSidebarOpened ={this.props.ui.leftSidebarOpened}
+            toggleLeftSidebar = {this.toggleLeftSidebar}
+          />
         </S.LogoWrapper>
         <MainNav 
-          openLeftSidebar = {this.openLeftSidebar}
+          isLeftSidebarOpened ={this.props.ui.leftSidebarOpened}
+          toggleLeftSidebar = {this.toggleLeftSidebar}
         />
       </S.AppHeader>
     );
   }
 }
 
-const mapStateToProps = ({ }) => (
-  { }
+const mapStateToProps = ({ ui }) => (
+  { ui }
 );
 
 const mapDispatchToProps = dispatch => {
   return {
-    openLeftSidebar: () => {
-      dispatch(fromActions.openLeftSidebar())
+    toggleLeftSidebar: () => {
+      dispatch(fromActions.toggleLeftSidebar())
     },
   }
 };

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom'; 
+import PropTypes from 'prop-types';
+import { Route, Switch } from 'react-router-dom';
 import { ConnectedRouter as Router } from 'react-router-redux';
+import { connect } from 'react-redux';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import AppGrid from './shared/components/AppGrid';
 import AppHeader from './shared/containers/AppHeader';
@@ -8,6 +10,12 @@ import ChatWrapper from './chat/components/ChatWrapper';
 import Home from './home';
 import Auth from './auth';
 import theme from './theme';
+
+const propTypes = {
+  ui: PropTypes.object.isRequired
+};
+
+const defaultProps = {};
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -18,6 +26,7 @@ const GlobalStyle = createGlobalStyle`
     background: #141619;
   }
 `;
+
 class App extends Component {
   componentDidMount() {}
 
@@ -28,7 +37,7 @@ class App extends Component {
         <ThemeProvider theme={theme}>
           <Router history={this.props.history}>
             <AppGrid>
-              <AppGrid.SidebarArea>
+              <AppGrid.SidebarArea leftGridOpen={this.props.ui.leftSidebarOpened}>
                 <ChatWrapper />
               </AppGrid.SidebarArea>
 
@@ -47,4 +56,15 @@ class App extends Component {
   }
 }
 
-export default App;
+
+const mapStateToProps = ({ ui }) => (
+  { ui }
+);
+
+const mapDispatchToProps = dispatch => {
+  return { }
+};
+
+App.propTypes = propTypes;
+App.defaultProps = defaultProps;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

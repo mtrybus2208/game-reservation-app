@@ -4,15 +4,17 @@ import * as S from './styles';
 
 const propTypes = {
   path: PropTypes.string,
+  toggleLeftSidebar: PropTypes.func.isRequired,
+  isLeftSidebarOpened: PropTypes.bool,
 };
 
 const defaultProps = {
   path: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1552903737/gamepad-controller.svg',
 };
 
-const Logo = ({ path }) => {
+const Logo = ({ path, isLeftSidebarOpened, toggleLeftSidebar }) => {
   return (
-    <S.Logo>
+    <S.Logo onClick={isLeftSidebarOpened ? toggleLeftSidebar : ''}>
       <S.Image src={path} />
       <S.Title>
         <S.Header>
