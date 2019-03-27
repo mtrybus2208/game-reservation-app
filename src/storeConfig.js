@@ -4,12 +4,14 @@ import promiseMiddleWare from 'redux-promise';
 import createSagaMiddleware from 'redux-saga';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 import { timeLineReducer } from './home/state/reducers';
+import { uiReducer} from './shared/state/reducers';
 import timeLineSaga from './home/state/sagas';
 
 export default function configureStore(history) {
   const rootReducer = combineReducers({
     timeLine: timeLineReducer,
     router: routerReducer,
+    ui: uiReducer,
   });
 
   const sagaMiddleware = createSagaMiddleware();

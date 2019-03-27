@@ -28,7 +28,7 @@ export const HoursDivider = styled.div`
   height:  ${props => props.width - 1}px;
   background: #23272d;
   width: 70px;
-  box-shadow: inset 0px 9px 24px -4px rgba(056, 60, 69, .6);
+  box-shadow: inset 0 9px 24px -4px rgba(056, 60, 69, .6);
   z-index: 3;
   @media ${({ theme }) => theme.media.tablet} {
     width:  ${props => props.width - 1}px;
