@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Route, Switch, Redirect } from 'react-router-dom'; 
+import { Route, Switch, Redirect } from 'react-router-dom';
 import Register from './containers/Register';
 import Login from './containers/Login';
 import * as S from './styles';
 
 const propTypes = {};
 
-const defaultProps = {}; 
+const defaultProps = {};
 
 const Auth = ({ match }) => {
   return (
