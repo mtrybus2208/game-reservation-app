@@ -1,53 +1,52 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { NavLink } from 'react-router-dom';
 import BaseButton from '../../../shared/components/BaseButton';
 import useForm from '../../helpers/useForm';
+import AuthInput from '../../components/AuthInput';
 import * as S from './styles';
 
 const propTypes = {
   submitHandler: PropTypes.func.isRequired,
   changeHandler: PropTypes.func.isRequired,
+  formType: PropTypes.string,
+  fields: PropTypes.array,
 };
 
 const defaultProps = {}; 
 
-const AuthForm = ({ submitHandler, changeHandler }) => {
+const AuthForm = ({ formType, fields, changeHandler, submitHandler }) => {
   const { values, handleChange, handleSubmit } = useForm(submitHandler, changeHandler);
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} autoComplete="off">
+      {fields.map((field) => (
+        <S.FormItem key={field.id}>
+          <S.Label>{field.name}</S.Label>
+          <S.Control>
+            <AuthInput
+              type={field.type}
+              name={field.name}
+              placeholder={field.placeholder}
+              onChange={handleChange}
+              value={values.password ? values.password : ''}
+            />
+          </S.Control>
+        </S.FormItem>
+      ))}
       <S.FormItem>
-        {/* <S.Label>Email Address</S.Label> */}
-        <S.Control>
-          <S.Input
-            type="email"
-            name="email"
-            placeholder="Username"
-            onChange={handleChange}
-            value={values.email ? values.email : ''}
-          />
-        </S.Control>
-      </S.FormItem>
-
-      <S.FormItem>
-        {/* <S.Label>Password</S.Label> */}
-        <S.Control>
-          <S.Input
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={handleChange}
-            value={values.password ? values.password : ''}
-          />
-        </S.Control>
         <S.ButtonWrapper>
-          <BaseButton.Cta>Login</BaseButton.Cta>
+          <BaseButton.Cta>{formType}</BaseButton.Cta>
         </S.ButtonWrapper>
       </S.FormItem>
 
       <S.FormItem>
         <S.FormInfo>
-          <S.InfoCopy>Remember Me</S.InfoCopy>
+          <S.InfoCopy>
+            {formType === 'register'
+              ? (<S.InfoLink to="/auth/login">Already registered? Sign in!</S.InfoLink>)
+              : (<S.InfoLink to="/auth/register" >Not a member? Register!</S.InfoLink>)}
+          </S.InfoCopy>
           <S.InfoCopy>Reset Password?</S.InfoCopy>
         </S.FormInfo>
       </S.FormItem>

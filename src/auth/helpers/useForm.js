@@ -9,8 +9,9 @@ const useForm = (submitCb, changeCb = null) => {
   }, [values]);
 
   const handleSubmit = (event) => {
+    console.log('????')
     if (event) event.preventDefault();
-    submitCb();
+    submitCb(values);
   };
 
   const handleChange = (event) => {
