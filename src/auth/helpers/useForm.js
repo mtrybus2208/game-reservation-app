@@ -11,6 +11,7 @@ const useForm = (submitCb, changeCb = null) => {
   const handleSubmit = (event) => {
     console.log('????')
     if (event) event.preventDefault();
+    console.log(values)
     submitCb(values);
   };
 

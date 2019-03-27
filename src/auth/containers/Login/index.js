@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import shortid from 'shortid';
+import  { FirebaseContext } from '@/shared/components/Firebase';
 import AuthWrapper from '../../components/AuthWrapper';
 import AuthTop from '../../components/AuthTop';
 import SocialBox from '../../components/SocialBox';
@@ -55,6 +56,12 @@ class Login extends Component {
   render() {
     return (
       <AuthWrapper>
+        <FirebaseContext.Consumer>
+          {firebase => {
+            console.log(firebase)
+            return <div>I've access to Firebase and render something.z</div>;
+          }}
+        </FirebaseContext.Consumer>
         <AuthTop name="Sign In" />
         <AuthBody>
           <SocialBox />

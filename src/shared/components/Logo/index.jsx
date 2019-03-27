@@ -14,7 +14,7 @@ const defaultProps = {
 
 const Logo = ({ path, isLeftSidebarOpened, toggleLeftSidebar }) => {
   return (
-    <S.Logo onClick={isLeftSidebarOpened ? toggleLeftSidebar : ''}>
+    <S.Logo onClick={isLeftSidebarOpened ? toggleLeftSidebar : null}>
       <S.Image src={path} />
       <S.Title>
         <S.Header>

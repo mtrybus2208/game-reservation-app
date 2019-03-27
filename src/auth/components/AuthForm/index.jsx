@@ -5,6 +5,9 @@ import BaseButton from '../../../shared/components/BaseButton';
 import useForm from '../../helpers/useForm';
 import AuthInput from '../../components/AuthInput';
 import * as S from './styles';
+/**
+ * Need to use Auth Input instead S.Input
+ */
 
 const propTypes = {
   submitHandler: PropTypes.func.isRequired,
@@ -17,19 +20,18 @@ const defaultProps = {};
 
 const AuthForm = ({ formType, fields, changeHandler, submitHandler }) => {
   const { values, handleChange, handleSubmit } = useForm(submitHandler, changeHandler);
-
   return (
     <form onSubmit={handleSubmit} autoComplete="off">
       {fields.map((field) => (
         <S.FormItem key={field.id}>
           <S.Label>{field.name}</S.Label>
           <S.Control>
-            <AuthInput
+            <S.Input
               type={field.type}
               name={field.name}
               placeholder={field.placeholder}
               onChange={handleChange}
-              value={values.password ? values.password : ''}
+              value={values[field.name] ? values[field.name] : ''}
             />
           </S.Control>
         </S.FormItem>

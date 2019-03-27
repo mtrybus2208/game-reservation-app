@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import shortid from 'shortid';
+import  { FirebaseContext } from '@/shared/components/Firebase';
 import AuthWrapper from '../../components/AuthWrapper';
 import AuthTop from '../../components/AuthTop';
 import SocialBox from '../../components/SocialBox';
@@ -16,6 +17,14 @@ const defaultProps = {
 };
 
 class Register extends Component {
+
+  static contextType = FirebaseContext;
+
+  componentDidMount() {
+    console.log('kajsdhkasdhkjasdh');
+    console.log(this.context);
+    console.log(this.contextType); 
+ }
 
   getFields = () => (
     [
@@ -54,8 +63,20 @@ class Register extends Component {
   }
 
   submitHandler(data) {
-    console.log('Register  submitHandler');
-    console.log(this);
+    console.log('@@Register  submitHandler');
+    console.log(this.props.firebase);
+    const { email, password } = data;
+
+    // this.props.firebase
+    //   .doCreateUserWithEmailAndPassword(email, passwordOne)
+    //   .then(authUser => {
+    //     this.setState({ ...INITIAL_STATE });
+    //   })
+    //   .catch(error => {
+    //     this.setState({ error });
+    //   });
+
+    event.preventDefault();
   }
 
   render() {
