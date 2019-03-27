@@ -34,6 +34,10 @@ AppGrid.SidebarArea = styled.div`
   left: ${props => (props.leftGridOpen ? '100%' : '0')};
   z-index: 10;
   background: #222;
+
+  @media ${({ theme }) => theme.media.tablet} {     
+    left: 0;
+  }
 `;
 
 AppGrid.HeaderArea = styled.div`

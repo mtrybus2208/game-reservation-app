@@ -8,6 +8,7 @@ import * as S from './styles';
 
 const propTypes = {
   toggleLeftSidebar: PropTypes.func.isRequired,
+  isLeftSidebarOpened: PropTypes.bool,
 };
 
 const defaultProps = {}; 
@@ -25,9 +26,13 @@ class AppHeader extends Component {
     return (
       <S.AppHeader>
         <S.LogoWrapper exact to="/">
-          <Logo />
+          <Logo 
+            isLeftSidebarOpened ={this.props.ui.leftSidebarOpened}
+            toggleLeftSidebar = {this.toggleLeftSidebar}
+          />
         </S.LogoWrapper>
         <MainNav 
+          isLeftSidebarOpened ={this.props.ui.leftSidebarOpened}
           toggleLeftSidebar = {this.toggleLeftSidebar}
         />
       </S.AppHeader>
@@ -35,8 +40,8 @@ class AppHeader extends Component {
   }
 }
 
-const mapStateToProps = ({ }) => (
-  { }
+const mapStateToProps = ({ ui }) => (
+  { ui }
 );
 
 const mapDispatchToProps = dispatch => {

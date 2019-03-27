@@ -2,11 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as S from './styles';
 
-const propTypes = {};
+const propTypes = {
+  directChatIcon: PropTypes.string,
+  emojiIcon: PropTypes.string,
+  directChatIcon: PropTypes.string,
+};
 
-const defaultProps = {}; 
+const defaultProps = {
+  directChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg',
+  emojiIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595074/smiling-emoticon.svg',
+  sendMessageIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg',
+}; 
 
-const ChatWrapper = ({}) => {
+const ChatWrapper = ({ directChatIcon, emojiIcon, sendMessageIcon }) => {
   return (
     <S.ChatWrapper>
         <S.MessagesWrapper>
@@ -19,7 +27,7 @@ const ChatWrapper = ({}) => {
               </S.PlayerName>
 
               <S.PlayerDirectChat>
-                <S.PlayerDirectChatIcon src="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg" />
+                <S.PlayerDirectChatIcon src={directChatIcon} />
               </S.PlayerDirectChat>
               
               <S.PlayerPictureWrapper>
@@ -45,7 +53,7 @@ const ChatWrapper = ({}) => {
               </S.PlayerName>
 
               <S.PlayerDirectChat>
-                <S.PlayerDirectChatIcon src="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg" />
+                <S.PlayerDirectChatIcon src={directChatIcon} />
               </S.PlayerDirectChat>
               
               <S.PlayerPictureWrapper>
@@ -70,7 +78,7 @@ const ChatWrapper = ({}) => {
               </S.PlayerName>
 
               <S.PlayerDirectChat>
-                <S.PlayerDirectChatIcon src="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg" />
+                <S.PlayerDirectChatIcon src={directChatIcon} />
               </S.PlayerDirectChat>
               
               <S.PlayerPictureWrapper>
@@ -96,7 +104,7 @@ const ChatWrapper = ({}) => {
               </S.PlayerName>
 
               <S.PlayerDirectChat>
-                <S.PlayerDirectChatIcon src="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg" />
+                <S.PlayerDirectChatIcon src={directChatIcon} />
               </S.PlayerDirectChat>
               
               <S.PlayerPictureWrapper>
@@ -120,11 +128,11 @@ const ChatWrapper = ({}) => {
 
         <S.MessageButtonsWrapper>
           <S.MessageButton>
-            <S.MessageButtonIcon src="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595074/smiling-emoticon.svg" />
+            <S.MessageButtonIcon src={emojiIcon} />
           </S.MessageButton>
 
           <S.MessageButton>
-            <S.MessageButtonIcon src="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg"/>
+            <S.MessageButtonIcon src={sendMessageIcon} />
           </S.MessageButton>
         </S.MessageButtonsWrapper>
     </S.ChatWrapper>
