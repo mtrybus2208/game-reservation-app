@@ -6,13 +6,16 @@ export const TimeLineWrapper = styled.div`
   border-radius: 0;
   height: 100%;
   position: relative;
+
   &::-webkit-scrollbar {
-    width: 0px; 
+    width: 0; 
     background: transparent;
   }
+
   &::-webkit-scrollbar-thumb {
       background: #FF0000;
   }
+
   @media ${({ theme }) => theme.media.tablet} {
     overflow-y: hidden;
   }
@@ -32,6 +35,7 @@ export const TimeLine = styled.div`
     background-size: auto;
     transform:  translateY(${props => (props.isOpen ? '0' : '-250px')});
     transition: transform .3s ease-in-out;
+
     @media ${({ theme }) => theme.media.tablet} {
       height: 100%;
     }
@@ -55,7 +59,7 @@ export const ActualTime = styled.div`
     width: 1px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, .1);
   }
 `;
 

@@ -19,8 +19,8 @@ const theme = {
     dark: '#f0e5e5',
   },
   shadow: {
-    base: 'rgba(0,0,0,0.12) 0px 1px 6px',
-    dark: 'rgba(0,0,0,0.2) 0px 1px 6px',
+    base: 'rgba(0, 0, 0, .12) 0 1px 6px',
+    dark: 'rgba(0, 0, 0, .2) 0 1px 6px',
   },
   padding: {
     sm: 10,

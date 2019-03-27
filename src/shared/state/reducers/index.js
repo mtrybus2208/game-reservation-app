@@ -9,15 +9,10 @@ export const initialState = {
 
 export const uiReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.OPEN_LEFT_SIDEBAR:
+    case actionTypes.TOGGLE_LEFT_SIDEBAR:
       return {
         ...state,
-        leftSidebarOpened: true,
-      };
-    case actionTypes.CLOSE_LEFT_SIDEBAR:
-      return {
-        ...state,
-        leftSidebarOpened: false,
+        leftSidebarOpened: !state.leftSidebarOpened,
       };
     default:
       return state;
