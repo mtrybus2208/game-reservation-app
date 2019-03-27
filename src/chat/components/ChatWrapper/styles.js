@@ -89,6 +89,10 @@ export const PlayerDirectChat = styled.button`
   border: none;
   box-shadow: inset 0 5px 20px -7px rgba(056, 60, 69, .6);
   background: #181c1f;
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export const PlayerDirectChatIcon = styled.img`
@@ -152,6 +156,10 @@ export const MessageButton = styled.button`
   height: 60px;
   background: #181c1f;;
   border: none;
+
+  &:hover {
+    cursor: pointer;
+  }
 
   &:first-child {
     border-right: 1.5px solid #111;
