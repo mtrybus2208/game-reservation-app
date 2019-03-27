@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import * as fromActions from '../../state/actions';
 import { getTimeLine, getWorkdayInPixels, getArrayOfWorkdayHours, getActualDateInPixels } from '../../state/selectors';
 import TimeRuler from '../../components/TimeRuler';
 import * as S from './styles';
@@ -12,6 +13,7 @@ const propTypes = {
   actualDateInPixels: PropTypes.number,
   arrayOfWorkdayHours: PropTypes.array,
   timeConverter: PropTypes.number,
+  fetchReservedGames: PropTypes.func,
 };
 
 class TimeLine extends Component {
@@ -21,9 +23,11 @@ class TimeLine extends Component {
     scrollLeft: undefined,
   };
 
-  componentDidMount() { }
+  componentDidMount() {
+    this.props.fetchReservedGames();
+  }
 
-  wrapRef = null;
+  wrapRef = React.createRef();
 
   mouseLeave = () => () => {
     this.setState({
@@ -31,12 +35,13 @@ class TimeLine extends Component {
     });
   };
 
-  mouseMove = () => (e) => { 
+  mouseMove = () => (e) => {
+    const { current } = this.wrapRef;
     if (!this.state.isDown) return;
     e.preventDefault();
-    const x = e.pageX - this.wrapRef.offsetLeft;
+    const x = e.pageX - current.offsetLeft;
     const walk = (x - this.state.startX);
-    this.wrapRef.scrollLeft = this.state.scrollLeft - walk;
+    current.scrollLeft = this.state.scrollLeft - walk;
   };
 
   mouseUp = () => () => {
@@ -46,10 +51,11 @@ class TimeLine extends Component {
   };
 
   mouseDown = () => (e) => {
+    const { current } = this.wrapRef;
     this.setState({
       isDown: true,
-      startX: e.pageX - this.wrapRef.offsetLeft,
-      scrollLeft: this.wrapRef.scrollLeft,
+      startX: e.pageX - current.offsetLeft,
+      scrollLeft: current.scrollLeft,
     });
   };
 
@@ -57,9 +63,7 @@ class TimeLine extends Component {
     return (
       <S.TimeLineWrapper>
         <S.TimeLine
-          innerRef={(el) => {
-            this.wrapRef = el;
-          }}
+          ref={this.wrapRef}
           onMouseDown={this.mouseDown()}
           onMouseLeave={this.mouseLeave()}
           onMouseUp={this.mouseUp()}
@@ -95,7 +99,11 @@ const mapStateToProps = (state) => (
 );
 
 const mapDispatchToProps = dispatch => {
-  return { }
+  return {
+    fetchReservedGames: () => {
+      dispatch(fromActions.fetchReservedGames());
+    },
+  }
 };
 
 TimeLine.propTypes = propTypes;
