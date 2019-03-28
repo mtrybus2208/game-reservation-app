@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import shortid from 'shortid';
-import { doSignInWithGoogle } from '@/services/firebase';
+import { connect } from 'react-redux';
+import * as fromActions from '@/auth/state/actions';
 import AuthWrapper from '../../components/AuthWrapper';
 import AuthTop from '../../components/AuthTop';
 import SocialBox from '../../components/SocialBox';
@@ -11,6 +12,7 @@ import AuthForm from '../../components/AuthForm';
 import * as S from './styles';
 
 const propTypes = {
+  socialAuthGoogle: PropTypes.func,
 };
 
 const defaultProps = {
@@ -49,6 +51,7 @@ class Register extends Component {
   changeHandler = this.changeHandler.bind(this);
   submitHandler = this.submitHandler.bind(this);
   doSignInWithGoogle = this.doSignInWithGoogle.bind(this);
+  doSignInWithGithub = this.doSignInWithGithub.bind(this);
 
   changeHandler(data) {
     console.log('Register  changeHandler');
@@ -62,13 +65,17 @@ class Register extends Component {
   }
 
   doSignInWithGoogle() {
-    doSignInWithGoogle()
-      .then((res) => {
-        console.log(res)
-      })
-      .catch(() => {
-        console.log(res)
-      })
+    this.props.socialAuthGoogle();
+  }
+  
+  doSignInWithGithub() {
+    // doSignInWithGithub()
+    //   .then((res) => {
+    //     console.log(res)
+    //   })
+    //   .catch((res) => {
+    //     console.log(res)
+    //   })
   }
 
   render() {
@@ -78,6 +85,8 @@ class Register extends Component {
         <AuthBody>
           <SocialBox
             doSignInWithGoogle={this.doSignInWithGoogle}
+            doSignInWithTwitter={this.doSignInWithTwitter}
+            doSignInWithGithub={this.doSignInWithGithub}
           />
           <OptionDivider />
           <AuthForm
@@ -92,6 +101,21 @@ class Register extends Component {
   }
 };
 
+const mapStateToProps = ({ messageState, sessionState }) => (
+  {
+    messageState,
+    sessionState,
+  }
+);
+
+const mapDispatchToProps = dispatch => {
+  return {
+    socialAuthGoogle: () => {
+      dispatch(fromActions.socialAuthGoogle());
+    },
+  };
+};
+
 Register.propTypes = propTypes;
 Register.defaultProps = defaultProps;
-export default Register;
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

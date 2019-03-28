@@ -10,9 +10,10 @@ const fetchGames = (page) => {
 };
 /** This should be moved to separate API folder */
 
-export function* workFetchReservedGames() {
+function* workFetchReservedGames() {
   try {
     const games = yield call(fetchGames, 1);
+    console.log('games');
     console.log(games);
     yield put({ type: actionTypes.FETCH_RESERVED_GAMES_SUCCESS, games });
   } catch (e) {
