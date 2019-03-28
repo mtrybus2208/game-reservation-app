@@ -9,7 +9,9 @@ module.exports = {
     'object-curly-newline': 'off',
     'no-mixed-operators': 'off',
     "arrow-parens": 'off',
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
   },
   env: {
     browser: true,

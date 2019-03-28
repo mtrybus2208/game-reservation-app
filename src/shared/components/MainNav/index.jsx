@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import * as ROUTES from '@/constants/routes';
 import * as S from './styles';
 
 const propTypes = {
@@ -19,23 +20,17 @@ const defaultProps = {
 const MainNav = ({ loginImagePath, chatImagePath, activeChatImagePath, isLeftSidebarOpened, toggleLeftSidebar }) => (
   <S.MainNav>
     <S.Item>
-      <S.DesktopLink exact to="/">
+      <S.DesktopLink exact to={ROUTES.HOME}>
         Home
       </S.DesktopLink>
     </S.Item>
 
     <S.Item>
-      <S.DesktopLink to="/about">
-        About
-      </S.DesktopLink>
-    </S.Item>
-
-    <S.Item>
-      <S.DesktopLink to="/auth/login">
+      <S.DesktopLink to={ROUTES.LOGIN}>
         Login
       </S.DesktopLink>
 
-      <S.MobileLink to="/auth/login" onClick={isLeftSidebarOpened ? toggleLeftSidebar : null}>
+      <S.MobileLink to={ROUTES.LOGIN} onClick={isLeftSidebarOpened ? toggleLeftSidebar : null}>
         <S.ImageLink src={loginImagePath} />
       </S.MobileLink>
     </S.Item>
