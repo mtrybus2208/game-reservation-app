@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createBrowserHistory } from 'history';
 import WebFont from 'webfontloader';
-import Firebase, { FirebaseContext } from '@/components/Firebase';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import configureStore from './storeConfig';
@@ -13,9 +12,7 @@ const store = configureStore(history);
 
 ReactDOM.render(
   <Provider store={store}>
-    <FirebaseContext.Provider value={new Firebase()}>
-      <App history={history} />
-    </FirebaseContext.Provider>
+    <App history={history} />
   </Provider>,
   document.getElementById('root'),
 );

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import shortid from 'shortid';
-import  { FirebaseContext } from '@/shared/components/Firebase';
+import { doSignInWithGoogle } from '@/services/firebase';
 import AuthWrapper from '../../components/AuthWrapper';
 import AuthTop from '../../components/AuthTop';
 import SocialBox from '../../components/SocialBox';
@@ -17,14 +17,6 @@ const defaultProps = {
 };
 
 class Register extends Component {
-
-  static contextType = FirebaseContext;
-
-  componentDidMount() {
-    console.log('kajsdhkasdhkjasdh');
-    console.log(this.context);
-    console.log(this.contextType); 
- }
 
   getFields = () => (
     [
@@ -56,6 +48,7 @@ class Register extends Component {
 
   changeHandler = this.changeHandler.bind(this);
   submitHandler = this.submitHandler.bind(this);
+  doSignInWithGoogle = this.doSignInWithGoogle.bind(this);
 
   changeHandler(data) {
     console.log('Register  changeHandler');
@@ -64,19 +57,18 @@ class Register extends Component {
 
   submitHandler(data) {
     console.log('@@Register  submitHandler');
-    console.log(this.props.firebase);
     const { email, password } = data;
-
-    // this.props.firebase
-    //   .doCreateUserWithEmailAndPassword(email, passwordOne)
-    //   .then(authUser => {
-    //     this.setState({ ...INITIAL_STATE });
-    //   })
-    //   .catch(error => {
-    //     this.setState({ error });
-    //   });
-
     event.preventDefault();
+  }
+
+  doSignInWithGoogle() {
+    doSignInWithGoogle()
+      .then((res) => {
+        console.log(res)
+      })
+      .catch(() => {
+        console.log(res)
+      })
   }
 
   render() {
@@ -84,7 +76,9 @@ class Register extends Component {
       <AuthWrapper>
         <AuthTop name="Register" />
         <AuthBody>
-          <SocialBox />
+          <SocialBox
+            doSignInWithGoogle={this.doSignInWithGoogle}
+          />
           <OptionDivider />
           <AuthForm
             formType="register"
