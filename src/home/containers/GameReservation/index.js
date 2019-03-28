@@ -14,7 +14,7 @@ const propTypes = {
 };
 
 class GameReservation extends Component {
-  componentDidMount() { } 
+  componentDidMount() {}
 
   setGameTime = this.setGameTime.bind(this);
   openGameConfig = this.openGameConfig.bind(this);
@@ -56,16 +56,14 @@ const mapStateToProps = ({ timeLine }) => (
   { timeLine }
 );
 
-const mapDispatchToProps = dispatch => {
-  return {
-    setGameTime: (payload) => {
-      dispatch(fromActions.setGameTime(payload))
-    },
-    changeGameConfigState: (payload) => {
-      dispatch(fromActions.changeGameConfigState(payload))
-    },
-  }
-};
+const mapDispatchToProps = dispatch => ({
+  setGameTime: (payload) => {
+    dispatch(fromActions.setGameTime(payload));
+  },
+  changeGameConfigState: (payload) => {
+    dispatch(fromActions.changeGameConfigState(payload));
+  },
+});
 
 GameReservation.propTypes = propTypes;
 export default connect(mapStateToProps, mapDispatchToProps)(GameReservation);

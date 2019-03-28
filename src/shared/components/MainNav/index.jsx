@@ -16,39 +16,37 @@ const defaultProps = {
   activeChatImagePath: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg',
 };
 
-const MainNav = ({ loginImagePath, chatImagePath, activeChatImagePath, isLeftSidebarOpened, toggleLeftSidebar }) => {
-  return (
-    <S.MainNav>
-      <S.Item>
-        <S.DesktopLink exact to="/">
-          Home
-        </S.DesktopLink>
-      </S.Item>
+const MainNav = ({ loginImagePath, chatImagePath, activeChatImagePath, isLeftSidebarOpened, toggleLeftSidebar }) => (
+  <S.MainNav>
+    <S.Item>
+      <S.DesktopLink exact to="/">
+        Home
+      </S.DesktopLink>
+    </S.Item>
 
-      <S.Item>
-        <S.DesktopLink to="/about">
-          About
-        </S.DesktopLink>
-      </S.Item>
+    <S.Item>
+      <S.DesktopLink to="/about">
+        About
+      </S.DesktopLink>
+    </S.Item>
 
-      <S.Item>
-        <S.DesktopLink to="/auth/login">
-          Login
-        </S.DesktopLink>
+    <S.Item>
+      <S.DesktopLink to="/auth/login">
+        Login
+      </S.DesktopLink>
 
-        <S.MobileLink to="/auth/login" onClick={isLeftSidebarOpened ? toggleLeftSidebar : ''}>
-          <S.ImageLink src={loginImagePath} />
-        </S.MobileLink>
-      </S.Item>
+      <S.MobileLink to="/auth/login" onClick={isLeftSidebarOpened ? toggleLeftSidebar : null}>
+        <S.ImageLink src={loginImagePath} />
+      </S.MobileLink>
+    </S.Item>
 
-      <S.Item>
-        <S.MobileChatTrigger onClick={toggleLeftSidebar}>
-          <S.ImageLink src={isLeftSidebarOpened ? activeChatImagePath : chatImagePath} />
-        </S.MobileChatTrigger>
-      </S.Item>
-    </S.MainNav>
-  );
-};
+    <S.Item>
+      <S.MobileChatTrigger onClick={toggleLeftSidebar}>
+        <S.ImageLink src={isLeftSidebarOpened ? activeChatImagePath : chatImagePath} />
+      </S.MobileChatTrigger>
+    </S.Item>
+  </S.MainNav>
+);
 
 MainNav.propTypes = propTypes;
 MainNav.defaultProps = defaultProps;

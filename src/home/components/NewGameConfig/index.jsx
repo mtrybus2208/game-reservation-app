@@ -8,21 +8,19 @@ const propTypes = {
   isOpen: PropTypes.bool,
 };
 
-const defaultProps = {}; 
+const defaultProps = {};
 
-const NewGameConfig = ({isOpen}) => {
-  return (
-    <S.NewGameConfig isOpen={isOpen}>
-      <InfoCard>time</InfoCard>
-      <InfoCard>type</InfoCard>
-      <InfoCard>
-        <Avatar />
-      </InfoCard>
-      <InfoCard>play</InfoCard>
-      <InfoCard>cta</InfoCard>
-    </S.NewGameConfig>
-  );
-};
+const NewGameConfig = ({ isOpen }) => (
+  <S.NewGameConfig isOpen={isOpen}>
+    <InfoCard>time</InfoCard>
+    <InfoCard>type</InfoCard>
+    <InfoCard>
+      <Avatar />
+    </InfoCard>
+    <InfoCard>play</InfoCard>
+    <InfoCard>cta</InfoCard>
+  </S.NewGameConfig>
+);
 
 NewGameConfig.propTypes = propTypes;
 NewGameConfig.defaultProps = defaultProps;

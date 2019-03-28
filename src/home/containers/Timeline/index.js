@@ -88,23 +88,19 @@ class TimeLine extends Component {
   }
 }
 
-const mapStateToProps = (state) => (
-  {
-    timeLine: getTimeLine(state),
-    workdayInPixels: getWorkdayInPixels(state),
-    actualDateInPixels: getActualDateInPixels(state),
-    timeConverter: state.timeLine.timeConverter,
-    arrayOfWorkdayHours: getArrayOfWorkdayHours(state),
-  }
-);
+const mapStateToProps = (state) => ({
+  timeLine: getTimeLine(state),
+  workdayInPixels: getWorkdayInPixels(state),
+  actualDateInPixels: getActualDateInPixels(state),
+  timeConverter: state.timeLine.timeConverter,
+  arrayOfWorkdayHours: getArrayOfWorkdayHours(state),
+});
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchReservedGames: () => {
-      dispatch(fromActions.fetchReservedGames());
-    },
-  }
-};
+const mapDispatchToProps = dispatch => ({
+  fetchReservedGames: () => {
+    dispatch(fromActions.fetchReservedGames());
+  },
+});
 
 TimeLine.propTypes = propTypes;
 export default connect(mapStateToProps, mapDispatchToProps)(TimeLine);

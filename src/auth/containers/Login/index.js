@@ -3,19 +3,15 @@ import PropTypes from 'prop-types';
 import AuthWrapper from '../../components/AuthWrapper';
 import * as S from './styles';
 
-const propTypes = {
-};
+const propTypes = {};
 
-const defaultProps = {
-};
+const defaultProps = {};
 
-const Login = ({  }) => {
-  return (
-    <AuthWrapper>
-        Login
-    </AuthWrapper>
-  );
-};
+const Login = () => (
+  <AuthWrapper>
+      Login
+  </AuthWrapper>
+);
 
 Login.propTypes = propTypes;
 Login.defaultProps = defaultProps;

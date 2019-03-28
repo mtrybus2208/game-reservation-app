@@ -36,7 +36,7 @@ const theme = {
     laptopL: '(min-width: 1440px)',
     desktop: '(min-width: 1920px)',
     desktopL: '(min-width: 2560px)',
-  }
+  },
 };
 
 export default theme;

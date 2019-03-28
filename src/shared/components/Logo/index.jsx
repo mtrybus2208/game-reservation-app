@@ -12,21 +12,19 @@ const defaultProps = {
   path: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1552903737/gamepad-controller.svg',
 };
 
-const Logo = ({ path, isLeftSidebarOpened, toggleLeftSidebar }) => {
-  return (
-    <S.Logo onClick={isLeftSidebarOpened ? toggleLeftSidebar : ''}>
-      <S.Image src={path} />
-      <S.Title>
-        <S.Header>
-          Reser
-          <S.HeaderHighlighted>v</S.HeaderHighlighted> 
-          ly
-        </S.Header>
-        <S.Description>Reserve your game!</S.Description>
-      </S.Title>
-    </S.Logo>
-  );
-};
+const Logo = ({ path, isLeftSidebarOpened, toggleLeftSidebar }) => (
+  <S.Logo onClick={isLeftSidebarOpened ? toggleLeftSidebar : null}>
+    <S.Image src={path} />
+    <S.Title>
+      <S.Header>
+        Reser
+        <S.HeaderHighlighted>v</S.HeaderHighlighted>
+        ly
+      </S.Header>
+      <S.Description>Reserve your game!</S.Description>
+    </S.Title>
+  </S.Logo>
+);
 
 Logo.propTypes = propTypes;
 Logo.defaultProps = defaultProps;
