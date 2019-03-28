@@ -34,7 +34,8 @@ export default function configureStore(history) {
     enhancers,
   );
 
-  sagaMiddleware.run(authSaga);
+  [authSaga, timeLineSaga]
+    .map(saga => sagaMiddleware.run(saga));
 
   return store;
 }
