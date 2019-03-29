@@ -1,15 +1,17 @@
+import { actionTypes } from '../actions/actionTypes';
+
 const INITIAL_STATE = {
   authUser: null,
 };
 
 const applySetAuthUser = (state, action) => ({
   ...state,
-  authUser: action.authUser,
+  authUser: action.payload,
 });
 
 export const sessionReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case 'AUTH_USER_SET': {
+    case actionTypes.SOCIAL_AUTH_SUCCESS: {
       return applySetAuthUser(state, action);
     }
     default:

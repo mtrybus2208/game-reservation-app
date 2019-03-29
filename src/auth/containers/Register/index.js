@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import shortid from 'shortid';
 import { connect } from 'react-redux';
 import * as fromActions from '@/auth/state/actions';
+import { doSignInWithGithub } from '@/services/firebase';
 import AuthWrapper from '../../components/AuthWrapper';
 import AuthTop from '../../components/AuthTop';
 import SocialBox from '../../components/SocialBox';
@@ -69,13 +70,7 @@ class Register extends Component {
   }
   
   doSignInWithGithub() {
-    // doSignInWithGithub()
-    //   .then((res) => {
-    //     console.log(res)
-    //   })
-    //   .catch((res) => {
-    //     console.log(res)
-    //   })
+    this.props.socialAuthGithub();
   }
 
   render() {
@@ -112,6 +107,9 @@ const mapDispatchToProps = dispatch => {
   return {
     socialAuthGoogle: () => {
       dispatch(fromActions.socialAuthGoogle());
+    },
+    socialAuthGithub: () => {
+      dispatch(fromActions.socialAuthGithub());
     },
   };
 };
