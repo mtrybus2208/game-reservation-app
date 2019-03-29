@@ -31,7 +31,7 @@ AppGrid.SidebarArea = styled.div`
   transition: all linear 400ms;
   grid-area: sidebar;
   position: relative;
-  left: ${props => (props.leftGridOpen ? '100%' : '0')};
+  left: ${props => (props.leftGridOpen ? '100vw' : '0')};
   z-index: 10;
   background: #222;
 
