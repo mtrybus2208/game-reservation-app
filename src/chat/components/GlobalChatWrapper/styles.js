@@ -91,6 +91,7 @@ export const PlayerDirectChat = styled.button`
   background: #181c1f;
 
   &:hover {
+    background: #111315;
     cursor: pointer;
   }
 `;
@@ -152,18 +153,18 @@ export const MessageButtonsWrapper = styled.div`
 `;
 
 export const MessageButton = styled.button`
-  width: 49%;
+  width: 50%;
   height: 60px;
-  background: #181c1f;;
+  background: #181c1f;
   border: none;
 
   &:hover {
+    background: #111315;
     cursor: pointer;
   }
 
   &:first-child {
     border-right: 1.5px solid #111;
-    margin-right: 1%;
   }
 `;
 
