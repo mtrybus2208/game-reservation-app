@@ -23,25 +23,95 @@ const DirectChatWrapper = ({ globalChatIcon }) => (
     </S.DirectChatPlayerInfo>
 
     <S.MessagesWrapper>
-      
+      <S.IncomingMessageWrapper>
+        <S.Message>
+          <S.MessageTime>
+            21:37
+          </S.MessageTime>
+
+          <S.MessageText>
+            Gentrify viral seitan, flexitarian  neutra meh
+            jianbing food truck yolu ender  mixtape.
+            Lomo trust fund Gentrify viral seitan,
+            flexitarian neutra help
+            meh jianbing food  truck mixtape.
+          </S.MessageText>
+        </S.Message>
+
+        <S.MessageAuthorPictureWrapper>
+          <S.MessageAuthorPicture />
+        </S.MessageAuthorPictureWrapper>
+      </S.IncomingMessageWrapper>
+
+      <S.OutgoingMessageWrapper> 
+        <S.Message>
+          <S.MessageTime>
+            21:37
+          </S.MessageTime>
+
+          <S.MessageText>
+            Gentrify viral seitan, flexitarian  neutra meh
+            jianbing food truck yolu ender  mixtape.
+            Lomo trust fund Gentrify viral seitan,
+            flexitarian neutra help
+            meh jianbing food  truck mixtape.
+          </S.MessageText>
+        </S.Message>
+      </S.OutgoingMessageWrapper>
+
+      <S.OutgoingMessageWrapper> 
+        <S.Message>
+          <S.MessageTime>
+            21:37
+          </S.MessageTime>
+
+          <S.MessageText>
+            Gentrify viral seitan, flexitarian  neutra meh
+            jianbing food truck yolu ender  mixtape.
+            Lomo trust fund Gentrify viral seitan,
+            flexitarian neutra help
+            meh jianbing food  truck mixtape.
+          </S.MessageText>
+        </S.Message>
+      </S.OutgoingMessageWrapper>
+
+      <S.IncomingMessageWrapper>
+        <S.Message>
+          <S.MessageTime>
+            21:37
+          </S.MessageTime>
+
+          <S.MessageText>
+            Gentrify viral seitan, flexitarian  neutra meh
+            jianbing food truck yolu ender  mixtape.
+            Lomo trust fund Gentrify viral seitan,
+            flexitarian neutra help
+            meh jianbing food  truck mixtape.
+          </S.MessageText>
+        </S.Message>
+
+        <S.MessageAuthorPictureWrapper>
+          <S.MessageAuthorPicture />
+        </S.MessageAuthorPictureWrapper>
+      </S.IncomingMessageWrapper>
     </S.MessagesWrapper>
 
-    <S.MessageInputWrapper>
-      <S.MessageInput>
-
-      </S.MessageInput>
+    <S.MessageInputSectionWrapper>
+      <S.MessageInputWrapper>
+        <S.MessageInput max={200} />
+      </S.MessageInputWrapper>
 
       <S.MessageButtonsWrapper>
         <S.MessageButton>
-
+          <S.MessageButtonImage src="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595074/smiling-emoticon.svg" />
         </S.MessageButton>
 
 
         <S.MessageButton>
-          
+          <S.MessageButtonImage src="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg" />  
         </S.MessageButton>
       </S.MessageButtonsWrapper>
-    </S.MessageInputWrapper>
+    </S.MessageInputSectionWrapper>
   </S.DirectChatWrapper>
 );
 
