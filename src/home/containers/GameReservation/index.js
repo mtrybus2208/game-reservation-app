@@ -9,6 +9,7 @@ import * as S from './styles';
 
 const propTypes = {
   timeLine: PropTypes.object.isRequired,
+  sessionState: PropTypes.object.isRequired,
   setGameTime: PropTypes.func.isRequired,
   changeGameConfigState: PropTypes.func.isRequired,
 };
@@ -35,6 +36,7 @@ class GameReservation extends Component {
     return (
       <React.Fragment>
         <NewGameConfig
+          authUser={this.props.sessionState.authUser}
           setGameTime={this.setGameTime}
           lastGame={this.props.timeLine.endLastReservation}
           isOpen={this.props.timeLine.gameConfigOpen}
@@ -52,8 +54,11 @@ class GameReservation extends Component {
   }
 }
 
-const mapStateToProps = ({ timeLine }) => (
-  { timeLine }
+const mapStateToProps = ({ timeLine, sessionState }) => (
+  {
+    timeLine,
+    sessionState,
+  }
 );
 
 const mapDispatchToProps = dispatch => {

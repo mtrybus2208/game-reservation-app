@@ -6,9 +6,9 @@ import { mapUserData  } from '../../helpers/mapUserData';
 
 function* workSocialAuthGoogle() {
   try {
-  const data = yield call(doSignInWithGoogle);
-  const mappedUser = mapUserData(data.user);
-    yield put({ type: actionTypes.SOCIAL_AUTH_SUCCESS, payload: mappedUser });
+    const data = yield call(doSignInWithGoogle);
+    const mappedUser = mapUserData(data.user);
+    yield put({ type: actionTypes.SET_AUTH_USER, payload: mappedUser });
   } catch (e) {
     yield put({ type: actionTypes.SOCIAL_AUTH_FAIL, message: e.message });
   }
@@ -18,7 +18,7 @@ function* workSocialAuthGithub() {
   try {
     const data = yield call(doSignInWithGithub);
     const mappedUser = mapUserData(data.user);
-    yield put({ type: actionTypes.SOCIAL_AUTH_SUCCESS, payload: mappedUser  });
+    yield put({ type: actionTypes.SET_AUTH_USER, payload: mappedUser });
   } catch (e) {
     yield put({ type: actionTypes.SOCIAL_AUTH_FAIL, message: e.message });
   }

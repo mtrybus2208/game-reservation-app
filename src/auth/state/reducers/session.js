@@ -11,7 +11,7 @@ const applySetAuthUser = (state, action) => ({
 
 export const sessionReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case actionTypes.SOCIAL_AUTH_SUCCESS: {
+    case actionTypes.SET_AUTH_USER: {
       return applySetAuthUser(state, action);
     }
     default:

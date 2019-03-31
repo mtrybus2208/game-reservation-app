@@ -24,3 +24,9 @@ export const socialAuth = (payload) =>
     payload,
   });
 
+export const setAuthUser = (payload) =>
+  ({
+    type: actionTypes.SET_AUTH_USER,
+    payload,
+  });
+
