@@ -6,15 +6,13 @@ const propTypes = {
   children: PropTypes.node,
 };
 
-const defaultProps = {}; 
+const defaultProps = {};
 
-const InfoCard = ({ children }) => {
-  return (
-    <S.InfoCard>
-      {children}
-    </S.InfoCard>
-  );
-};
+const InfoCard = ({ children }) => (
+  <S.InfoCard>
+    {children}
+  </S.InfoCard>
+);
 
 InfoCard.propTypes = propTypes;
 InfoCard.defaultProps = defaultProps;

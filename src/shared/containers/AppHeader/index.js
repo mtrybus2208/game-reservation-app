@@ -8,13 +8,14 @@ import * as S from './styles';
 
 const propTypes = {
   toggleLeftSidebar: PropTypes.func.isRequired,
-  isLeftSidebarOpened: PropTypes.bool,
+  leftSidebarOpened: PropTypes.bool,
+  ui: PropTypes.object,
 };
 
-const defaultProps = {}; 
+const defaultProps = {};
 
 class AppHeader extends Component {
-  componentDidMount() { } 
+  componentDidMount() { }
 
   toggleLeftSidebar = this.toggleLeftSidebar.bind(this);
 
@@ -26,14 +27,14 @@ class AppHeader extends Component {
     return (
       <S.AppHeader>
         <S.LogoWrapper exact to="/">
-          <Logo 
-            isLeftSidebarOpened ={this.props.ui.leftSidebarOpened}
-            toggleLeftSidebar = {this.toggleLeftSidebar}
+          <Logo
+            isLeftSidebarOpened={this.props.ui.leftSidebarOpened}
+            toggleLeftSidebar={this.toggleLeftSidebar}
           />
         </S.LogoWrapper>
-        <MainNav 
-          isLeftSidebarOpened ={this.props.ui.leftSidebarOpened}
-          toggleLeftSidebar = {this.toggleLeftSidebar}
+        <MainNav
+          isLeftSidebarOpened={this.props.ui.leftSidebarOpened}
+          toggleLeftSidebar={this.toggleLeftSidebar}
         />
       </S.AppHeader>
     );
@@ -44,13 +45,10 @@ const mapStateToProps = ({ ui }) => (
   { ui }
 );
 
-const mapDispatchToProps = dispatch => {
-  return {
-    toggleLeftSidebar: () => {
-      dispatch(fromActions.toggleLeftSidebar())
-    },
-  }
-};
+const mapDispatchToProps = dispatch => ({
+  toggleLeftSidebar: () =>
+    dispatch(fromActions.toggleLeftSidebar()),
+});
 
 AppHeader.propTypes = propTypes;
 AppHeader.defaultProps = defaultProps;

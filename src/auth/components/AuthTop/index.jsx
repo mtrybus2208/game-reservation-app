@@ -3,18 +3,16 @@ import PropTypes from 'prop-types';
 import * as S from './styles';
 
 const propTypes = {
+  name: PropTypes.string,
 };
 
-const defaultProps = { 
-}; 
+const defaultProps = {};
 
-const AuthTop = ({ }) => {
-  return (
-    <S.AuthTop>
-        Auth
-    </S.AuthTop>
-  );
-};
+const AuthTop = ({ name }) => (
+  <S.AuthTop>
+    <span>{ name }</span>
+  </S.AuthTop>
+);
 
 AuthTop.propTypes = propTypes;
 AuthTop.defaultProps = defaultProps;

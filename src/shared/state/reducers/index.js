@@ -5,6 +5,7 @@ export const initialState = {
   rightSidebarOpened: false,
   modalOpened: false,
   modalName: '',
+  chatMode: 'GLOBAL',
 };
 
 export const uiReducer = (state = initialState, action) => {
@@ -13,6 +14,16 @@ export const uiReducer = (state = initialState, action) => {
       return {
         ...state,
         leftSidebarOpened: !state.leftSidebarOpened,
+      };
+    case actionTypes.SET_GLOBAL_CHAT_MODE:
+      return {
+        ...state,
+        chatMode: 'GLOBAL',
+      };
+    case actionTypes.SET_DIRECT_CHAT_MODE:
+      return {
+        ...state,
+        chatMode: 'DIRECT',
       };
     default:
       return state;

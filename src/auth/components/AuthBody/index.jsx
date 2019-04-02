@@ -6,14 +6,11 @@ const propTypes = {
   children: PropTypes.node,
 };
 
-const defaultProps = { 
-}; 
+const defaultProps = {};
 
-const AuthBody = ({ children }) => {
-  return (
-    <S.AuthBody>{children}</S.AuthBody>
-  );
-};
+const AuthBody = ({ children }) => (
+  <S.AuthBody>{children}</S.AuthBody>
+);
 
 AuthBody.propTypes = propTypes;
 AuthBody.defaultProps = defaultProps;

@@ -14,9 +14,9 @@ const defaultProps = {
   sendMessageIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg',
 }; 
 
-const ChatWrapper = ({ directChatIcon, emojiIcon, sendMessageIcon }) => {
+const GlobalChatWrapper = ({ directChatIcon, emojiIcon, sendMessageIcon }) => {
   return (
-    <S.ChatWrapper>
+    <S.GlobalChatWrapper>
         <S.MessagesWrapper>
           <S.Message>
             <S.MessageHeader>
@@ -135,10 +135,10 @@ const ChatWrapper = ({ directChatIcon, emojiIcon, sendMessageIcon }) => {
             <S.MessageButtonIcon src={sendMessageIcon} />
           </S.MessageButton>
         </S.MessageButtonsWrapper>
-    </S.ChatWrapper>
+    </S.GlobalChatWrapper>
   );
 };
 
-ChatWrapper.propTypes = propTypes;
-ChatWrapper.defaultProps = defaultProps;
-export default ChatWrapper;
+GlobalChatWrapper.propTypes = propTypes;
+GlobalChatWrapper.defaultProps = defaultProps;
+export default GlobalChatWrapper;

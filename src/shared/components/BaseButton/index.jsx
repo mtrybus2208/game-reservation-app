@@ -67,11 +67,11 @@ BaseButton.Cta = styled(BaseButton)`
       opacity: .4;
     } 
   }
-`; 
+`;
 
 BaseButton.Time = styled(BaseButton.Cta)`
   margin: 10px 20px;
   background: #896e4c;
-`; 
+`;
 
 export default BaseButton;
