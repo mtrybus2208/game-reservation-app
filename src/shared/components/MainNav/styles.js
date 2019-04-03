@@ -20,7 +20,7 @@ export const Item = styled.li`
   align-items: center;
   padding-top: 7px;
 
-  @media ${({theme}) => theme.media.laptop} {
+  @media ${({ theme }) => theme.media.laptop} {
     &:last-child {
       display: none;
     }
@@ -30,7 +30,7 @@ export const Item = styled.li`
 export const DesktopLink = styled(NavLink)`
   display: none;
 
-  @media ${({theme}) => theme.media.laptop} {
+  @media ${({ theme }) => theme.media.laptop} {
     display: flex;
     align-items: center;
     height: 100%;
@@ -58,7 +58,7 @@ export const DesktopLink = styled(NavLink)`
 export const MobileLink = styled(NavLink)`
   padding: 0 13px;
 
-  @media ${({theme}) => theme.media.laptop} {
+  @media ${({ theme }) => theme.media.laptop} {
     display: none;
   } 
 `;

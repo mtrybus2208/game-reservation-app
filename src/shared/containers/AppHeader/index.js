@@ -16,7 +16,9 @@ const propTypes = {
 const defaultProps = {}; 
 
 class AppHeader extends Component {
-  componentDidMount() { 
+  componentDidMount() {
+    console.log('this.props.authUser');
+    console.log(this.props.authUser);
   } 
 
   toggleLeftSidebar = this.toggleLeftSidebar.bind(this);
