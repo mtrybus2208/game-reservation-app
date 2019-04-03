@@ -19,11 +19,10 @@ const defaultProps = {
 
 const NavItem = ({ clickHandler, mobileIcon, redirect, children }) => {
   return (
-    <S.NavItem
-      onClick={clickHandler}
-    >
+    <S.NavItem>
       <NavLink
         to={redirect}
+        onClick={clickHandler}
       >
         {mobileIcon && <S.LinkIcon src={mobileIcon} alt="item" />}
         {children && <S.LinkTxt>{children}</S.LinkTxt>}

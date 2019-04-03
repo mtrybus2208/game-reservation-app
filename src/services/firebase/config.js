@@ -1,10 +1,10 @@
 const config = {
-  apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-  databaseURL: process.env.REACT_APP_DATABASE_URL,
-  projectId: process.env.REACT_APP_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  apiKey: "AIzaSyDN5JIvnmIrEyy6d2cHZw8m5WdHIvIy0jg",
+  authDomain: "reservly-7ad87.firebaseapp.com",
+  databaseURL: "https://reservly-7ad87.firebaseio.com",
+  projectId: "reservly-7ad87",
+  storageBucket: "reservly-7ad87.appspot.com",
+  messagingSenderId: "628715983841"
 };
 
 export default config;

@@ -11,6 +11,7 @@ import { uiReducer } from './shared/state/reducers';
 import { messageReducer, sessionReducer } from './auth/state/reducers';
 import timeLineSaga from './home/state/sagas/';
 import authSaga from './auth/state/sagas/';
+import uiSaga from './shared/state/sagas/';
 
 export default function configureStore(history) {
   const persistedState = loadState();
@@ -38,7 +39,7 @@ export default function configureStore(history) {
     enhancers,
   );
 
-  [authSaga, timeLineSaga]
+  [authSaga, timeLineSaga, uiSaga]
     .map(saga => sagaMiddleware.run(saga));
 
   store.subscribe(throttled(500, () => {

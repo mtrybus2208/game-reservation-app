@@ -5,7 +5,7 @@ import { actionTypes } from './../actions/actionTypes';
 import { mapUserData } from '../../helpers/mapUserData';
 
 function* workSocialAuth(type) {
-  const socialTypes = {
+  const socialTypes = { 
     google: doSignInWithGoogle,
     github: doSignInWithGithub,
   };

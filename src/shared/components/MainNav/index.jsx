@@ -5,9 +5,8 @@ import * as S from './styles';
 import NavItem from '../NavItem';
 
 const propTypes = {
-  toggleLeftSidebar: PropTypes.func.isRequired,
-  isLeftSidebarOpened: PropTypes.bool,
-  userAuth: PropTypes.object,
+  redirectHandler: PropTypes.func,
+  authUser: PropTypes.object,
 };
 
 const defaultProps = {
@@ -19,42 +18,33 @@ const mobileIcons = {
   activeChat: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg',
 }
 
-const MainNav = ({ isLeftSidebarOpened, toggleLeftSidebar, userAuth }) => {
-  const toogleSidebar = (e) => {
+const MainNav = ({ authUser, redirectHandler }) => {
+  const itemClickHandler = (path) => (e) => {
     e.preventDefault();
-    console.log('toogleSidebar')
-  }
-  const logoutHandler = (e) => {
-    e.preventDefault();
-    console.log('toogleSidebar')
-  }
-  const loginHandler = (e) => {
-    e.preventDefault();
-    console.log('toogleSidebar')
-  }
-  console.log('{name: userAuth}');
-  console.log(userAuth);
+    redirectHandler(path);
+  };
+
   return (
     <S.MainNav>
       <NavItem redirect={ROUTES.HOME}>
         Home
       </NavItem>
       {
-        !!userAuth
+        !!authUser
           ? (
-            <NavItem mobileIcon={mobileIcons.login} clickHandler={loginHandler}>
-              Login
+            <NavItem mobileIcon={mobileIcons.login} clickHandler={itemClickHandler(ROUTES.REGISTER)} redirect={ROUTES.REGISTER}>
+              Logout
             </NavItem>
           )
           : (
-            <NavItem mobileIcon={mobileIcons.login} clickHandler={logoutHandler}>
-              Logout
+            <NavItem mobileIcon={mobileIcons.login} clickHandler={itemClickHandler(ROUTES.LOGIN)} redirect={ROUTES.LOGIN}>
+              Login
             </NavItem>
           )
       }
       <NavItem
         mobileIcon={mobileIcons.chat}
-        clickHandler={toogleSidebar}
+        clickHandler={itemClickHandler(false)}
       />
     </S.MainNav>
   );

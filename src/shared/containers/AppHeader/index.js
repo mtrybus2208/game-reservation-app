@@ -8,7 +8,6 @@ import MainNav from '@/shared/components/MainNav';
 import * as S from './styles';
 
 const propTypes = {
-  toggleLeftSidebar: PropTypes.func.isRequired,
   ui: PropTypes.object,
   authUser: PropTypes.object,
 };
@@ -16,30 +15,24 @@ const propTypes = {
 const defaultProps = {}; 
 
 class AppHeader extends Component {
-  componentDidMount() {
-    console.log('this.props.authUser');
-    console.log(this.props.authUser);
-  } 
 
-  toggleLeftSidebar = this.toggleLeftSidebar.bind(this);
+  redirectHandler = this.redirectHandler.bind(this);
 
-  toggleLeftSidebar() {
-    this.props.toggleLeftSidebar();
+  redirectHandler(path) {
+    return path
+      ? this.props.closeChatWithRedirect(path)
+      : this.props.toggleLeftSidebar(!this.props.ui.leftSidebarOpened);
   }
-
+  
   render() {
     return (
       <S.AppHeader>
         <S.LogoWrapper exact to="/">
-          <Logo
-            isLeftSidebarOpened={this.props.ui.leftSidebarOpened}
-            toggleLeftSidebar={this.toggleLeftSidebar}
-          />
+          <Logo redirectHandler={this.redirectHandler} />
         </S.LogoWrapper>
         <MainNav
-          isLeftSidebarOpened={this.props.ui.leftSidebarOpened}
-          toggleLeftSidebar={this.toggleLeftSidebar}
           authUser={this.props.authUser}
+          redirectHandler={this.redirectHandler}
         />
       </S.AppHeader>
     );
@@ -57,8 +50,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    toggleLeftSidebar: () => {
-      dispatch(fromActions.toggleLeftSidebar());
+    closeChatWithRedirect: (path) => {
+      dispatch(fromActions.closeChatWithRedirect(path));
+    },
+    toggleLeftSidebar: (visible) => {
+      dispatch(fromActions.toggleLeftSidebar(visible));
     },
   };
 };

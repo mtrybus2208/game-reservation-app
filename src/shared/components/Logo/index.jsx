@@ -1,20 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import * as ROUTES from '@/constants/routes';
 import * as S from './styles';
 
 const propTypes = {
   path: PropTypes.string,
-  toggleLeftSidebar: PropTypes.func.isRequired,
-  isLeftSidebarOpened: PropTypes.bool,
+  redirectHandler: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   path: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1552903737/gamepad-controller.svg',
 };
 
-const Logo = ({ path, isLeftSidebarOpened, toggleLeftSidebar }) => {
+const Logo = ({ path, redirectHandler }) => {
+  const logoClickHandler = (path) => (e) => {
+    e.preventDefault();
+    redirectHandler(path);
+  };
+
   return (
-    <S.Logo onClick={isLeftSidebarOpened ? toggleLeftSidebar : null}>
+    <S.Logo onClick={logoClickHandler(ROUTES.HOME)}>
       <S.Image src={path} />
       <S.Title>
         <S.Header>

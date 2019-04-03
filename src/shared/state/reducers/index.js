@@ -1,4 +1,4 @@
-import * as actionTypes from './../actions/actionTypes';
+import { actionTypes } from '../actions/actionTypes';
 
 export const initialState = {
   leftSidebarOpened: false,
@@ -12,7 +12,7 @@ export const uiReducer = (state = initialState, action) => {
     case actionTypes.TOGGLE_LEFT_SIDEBAR:
       return {
         ...state,
-        leftSidebarOpened: !state.leftSidebarOpened,
+        leftSidebarOpened: action.visible,
       };
     default:
       return state;
