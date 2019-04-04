@@ -5,10 +5,13 @@ export const NavItem = styled.li`
   display: flex;  
   margin: 0;
   padding: 0;
+`;
 
-  
-  @media ${({ theme }) => theme.media.laptop} {
-  }
+export const NavButton = styled.button`
+  display: flex;  
+  margin: 0;
+  padding: 0;
+  background: red;
 `;
 
 export const LinkIcon = styled.img`

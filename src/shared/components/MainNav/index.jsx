@@ -43,6 +43,7 @@ const MainNav = ({ authUser, redirectHandler }) => {
           )
       }
       <NavItem
+        isLink={false}
         mobileIcon={mobileIcons.chat}
         clickHandler={itemClickHandler(false)}
       />

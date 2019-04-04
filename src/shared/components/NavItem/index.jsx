@@ -9,24 +9,27 @@ const propTypes = {
   redirect: PropTypes.string,
   clickHandler: PropTypes.func,
   children: PropTypes.node,
+  isLink: PropTypes.bool,
 };
 
 const defaultProps = {
   mobileIcon: null,
   redirect: '',
   clickHandler: null,
+  isLink: true,
 };
 
-const NavItem = ({ clickHandler, mobileIcon, redirect, children }) => {
+const NavItem = ({ clickHandler, mobileIcon, redirect, children, isLink }) => {
+  const LinkComponent = !isLink ? S.NavButton : NavLink;
   return (
     <S.NavItem>
-      <NavLink
+      <LinkComponent
         to={redirect}
         onClick={clickHandler}
       >
         {mobileIcon && <S.LinkIcon src={mobileIcon} alt="item" />}
         {children && <S.LinkTxt>{children}</S.LinkTxt>}
-      </NavLink>
+      </LinkComponent>
     </S.NavItem>
   );
 };
