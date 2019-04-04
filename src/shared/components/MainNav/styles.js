@@ -73,3 +73,15 @@ export const MobileChatTrigger = styled.button`
   background: none;
   border: none;
 `;
+
+export const IconButton = styled.button`
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+
+  @media ${({ theme }) => theme.media.laptop} {
+    display: none;
+  } 
+`;
+

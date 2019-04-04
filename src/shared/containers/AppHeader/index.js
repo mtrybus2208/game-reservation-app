@@ -30,10 +30,12 @@ class AppHeader extends Component {
         <S.LogoWrapper exact to="/">
           <Logo redirectHandler={this.redirectHandler} />
         </S.LogoWrapper>
-        <MainNav
-          authUser={this.props.authUser}
-          redirectHandler={this.redirectHandler}
-        />
+        <S.NavigationWrapper>
+          <MainNav
+            authUser={this.props.authUser}
+            redirectHandler={this.redirectHandler}
+          />
+        </S.NavigationWrapper>
       </S.AppHeader>
     );
   }

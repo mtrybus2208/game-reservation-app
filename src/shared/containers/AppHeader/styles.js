@@ -20,3 +20,11 @@ export const LogoWrapper = styled(NavLink)`
   color: #747a81;
   text-decoration: none; 
 `;
+export const NavigationWrapper = styled.div`
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`;

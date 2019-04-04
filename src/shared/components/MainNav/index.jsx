@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import * as ROUTES from '@/constants/routes';
 import * as S from './styles';
 import NavItem from '../NavItem';
+import BaseIcon from '../BaseIcon';
 
 const propTypes = {
   redirectHandler: PropTypes.func,
@@ -25,29 +26,37 @@ const MainNav = ({ authUser, redirectHandler }) => {
   };
 
   return (
-    <S.MainNav>
-      <NavItem redirect={ROUTES.HOME}>
-        Home
-      </NavItem>
-      {
-        !!authUser
-          ? (
-            <NavItem mobileIcon={mobileIcons.login} clickHandler={itemClickHandler(ROUTES.REGISTER)} redirect={ROUTES.REGISTER}>
-              Logout
-            </NavItem>
-          )
-          : (
-            <NavItem mobileIcon={mobileIcons.login} clickHandler={itemClickHandler(ROUTES.LOGIN)} redirect={ROUTES.LOGIN}>
-              Login
-            </NavItem>
-          )
-      }
-      <NavItem
-        isLink={false}
-        mobileIcon={mobileIcons.chat}
-        clickHandler={itemClickHandler(false)}
-      />
-    </S.MainNav>
+    <React.Fragment>
+      <S.IconButton onClick={itemClickHandler(false)}>
+        <BaseIcon />
+      </S.IconButton>
+      <S.MainNav>
+        <NavItem redirect={ROUTES.HOME}>
+          Home
+        </NavItem>
+        {
+          !!authUser
+            ? (
+              <NavItem
+                mobileIcon={mobileIcons.login}
+                clickHandler={itemClickHandler(ROUTES.REGISTER)}
+                redirect={ROUTES.REGISTER}
+              >
+                Logout
+              </NavItem>
+            )
+            : (
+              <NavItem
+                mobileIcon={mobileIcons.login}
+                clickHandler={itemClickHandler(ROUTES.LOGIN)}
+                redirect={ROUTES.LOGIN}
+              >
+                Login
+              </NavItem>
+            )
+        }
+      </S.MainNav>
+    </React.Fragment>
   );
 };
 
