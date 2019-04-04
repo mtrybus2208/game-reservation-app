@@ -50,7 +50,7 @@ const GlobalChatWrapper = ({ directChatIcon, emojiIcon, sendMessageIcon, message
                 </S.PlayerName>
 
                 <S.PlayerDirectChat>
-                  <S.PlayerDirectChatIcon src={directChatIcon} />
+                  <S.PlayerDirectChatIcon id={value.playerId} src={directChatIcon} />
                 </S.PlayerDirectChat>
                 
                 <S.PlayerPictureWrapper>
