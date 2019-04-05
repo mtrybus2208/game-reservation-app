@@ -8,6 +8,7 @@ import BaseIcon from '../BaseIcon';
 const propTypes = {
   redirectHandler: PropTypes.func,
   authUser: PropTypes.object,
+  location: PropTypes.object,
 };
 
 const defaultProps = {
@@ -19,7 +20,7 @@ const mobileIcons = {
   activeChat: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg',
 }
 
-const MainNav = ({ authUser, redirectHandler }) => {
+const MainNav = ({ authUser, redirectHandler, location }) => {
   const itemClickHandler = (path) => (e) => {
     e.preventDefault();
     redirectHandler(path);
@@ -31,7 +32,7 @@ const MainNav = ({ authUser, redirectHandler }) => {
         <BaseIcon />
       </S.IconButton>
       <S.MainNav>
-        <NavItem redirect={ROUTES.HOME}>
+        <NavItem redirect={ROUTES.HOME} location={location}>
           Home
         </NavItem>
         {
@@ -41,6 +42,7 @@ const MainNav = ({ authUser, redirectHandler }) => {
                 mobileIcon={mobileIcons.login}
                 clickHandler={itemClickHandler(ROUTES.REGISTER)}
                 redirect={ROUTES.REGISTER}
+                location={location}
               >
                 Logout
               </NavItem>
@@ -50,6 +52,7 @@ const MainNav = ({ authUser, redirectHandler }) => {
                 mobileIcon={mobileIcons.login}
                 clickHandler={itemClickHandler(ROUTES.LOGIN)}
                 redirect={ROUTES.LOGIN}
+                location={location}
               >
                 Login
               </NavItem>

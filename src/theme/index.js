@@ -36,7 +36,18 @@ const theme = {
     laptopL: '(min-width: 1440px)',
     desktop: '(min-width: 1920px)',
     desktopL: '(min-width: 2560px)',
-  }
+  },
+  link: {
+    bg: {
+      active: `linear-gradient(
+        to top,
+        rgb(31, 37, 42),
+        rgb(34, 40, 46) 50%,
+        rgb(38, 45, 53) 76%,
+        rgb(40, 48, 59));`,
+      normal: 'transparent',
+    },
+  },
 };
 
 export default theme;

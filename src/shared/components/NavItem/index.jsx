@@ -8,18 +8,25 @@ const propTypes = {
   mobileIcon: PropTypes.string,
   redirect: PropTypes.string,
   clickHandler: PropTypes.func,
-  children: PropTypes.node, 
+  children: PropTypes.node,
+  location: PropTypes.object,
 };
 
 const defaultProps = {
   mobileIcon: null,
   redirect: '',
-  clickHandler: null, 
+  clickHandler: null,
 };
 
-const NavItem = ({ clickHandler, mobileIcon, redirect, children }) => { 
-  return (
-    <S.NavItem>
+const NavItem = ({
+  clickHandler,
+  mobileIcon,
+  redirect,
+  children,
+  location }) => (
+    <S.NavItem
+      isActive={location.pathname === redirect}
+    >
       <NavLink
         to={redirect}
         onClick={clickHandler}
@@ -28,8 +35,7 @@ const NavItem = ({ clickHandler, mobileIcon, redirect, children }) => {
         {children && <S.LinkTxt>{children}</S.LinkTxt>}
       </NavLink>
     </S.NavItem>
-  );
-};
+);
 
 NavItem.propTypes = propTypes;
 NavItem.defaultProps = defaultProps;

@@ -10,6 +10,7 @@ import * as S from './styles';
 const propTypes = {
   ui: PropTypes.object,
   authUser: PropTypes.object,
+  location: PropTypes.object,
 };
 
 const defaultProps = {}; 
@@ -34,6 +35,7 @@ class AppHeader extends Component {
           <MainNav
             authUser={this.props.authUser}
             redirectHandler={this.redirectHandler}
+            location={this.props.location}
           />
         </S.NavigationWrapper>
       </S.AppHeader>
@@ -41,14 +43,13 @@ class AppHeader extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return (
-    {
-      ui: getUiState(state),
-      authUser: getAuthUser(state),
-    }
-  );
-} 
+const mapStateToProps = (state) => (
+  {
+    ui: getUiState(state),
+    authUser: getAuthUser(state),
+    location: state.router.location,
+  }
+);
 
 const mapDispatchToProps = dispatch => {
   return {

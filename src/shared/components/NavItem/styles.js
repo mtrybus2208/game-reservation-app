@@ -13,7 +13,6 @@ export const NavItem = styled.li`
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: Roboto;
       font-size: 14px;
       font-weight: 500;
       line-height: 1;
@@ -21,7 +20,7 @@ export const NavItem = styled.li`
       color: ${rgba('#fff', 0.7)};
       padding: 0px 60px;
       text-decoration: none;
-      background: linear-gradient(to top, rgb(31, 37, 42), rgb(34, 40, 46) 50%, rgb(38, 45, 53) 76%, rgb(40, 48, 59));
+      background: ${({ theme, isActive }) => isActive ? theme.link.bg.active : theme.link.bg.normal};
     }
   }
 `;

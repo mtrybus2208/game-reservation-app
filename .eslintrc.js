@@ -13,6 +13,7 @@ module.exports = {
     "import/no-unresolved": "off",
     "import/extensions": "off",
     "no-extra-boolean-cast": "off",
+    "no-confusing-arrow": "off",
   },
   env: {
     browser: true,
