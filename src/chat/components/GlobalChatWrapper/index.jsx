@@ -42,6 +42,9 @@ const GlobalChatWrapper = ({
       .then(author => { 
         updateMessagesList(author, message);
       })
+      .catch(() =>
+        console.log('Couldn\'t update messages list')
+      )
     };
   }
 
@@ -59,7 +62,7 @@ const GlobalChatWrapper = ({
     const playerMessage = JSON.parse(
       `{ 
         "playerId": "2",
-        "message": "${typedMessage}" 
+        "message": "${typedMessage.trim()}" 
       }`
     );
 
@@ -67,6 +70,9 @@ const GlobalChatWrapper = ({
       .post(sendMessageApiUrl, playerMessage)
       .then(() => 
         updateTypedMessage('')
+      )   
+      .catch(() => 
+        console.log('Validation error')
       );
   }
 
