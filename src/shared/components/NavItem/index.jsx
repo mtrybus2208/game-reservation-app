@@ -6,30 +6,31 @@ import { NavLink } from 'react-router-dom';
 
 const propTypes = {
   mobileIcon: PropTypes.string,
-  redirect: PropTypes.string,
-  clickHandler: PropTypes.func,
+  url: PropTypes.string,
+  onLinkClick: PropTypes.func,
   children: PropTypes.node,
   location: PropTypes.object,
 };
 
 const defaultProps = {
   mobileIcon: null,
-  redirect: '',
-  clickHandler: null,
+  url: '',
+  onLinkClick: null,
 };
 
+
 const NavItem = ({
-  clickHandler,
+  onLinkClick,
   mobileIcon,
-  redirect,
+  url,
   children,
   location }) => (
     <S.NavItem
-      isActive={location.pathname === redirect}
+      isActive={location.pathname === url}
     >
       <NavLink
-        to={redirect}
-        onClick={clickHandler}
+        to={url}
+        onClick={onLinkClick(url)}
       >
         {mobileIcon && <S.LinkIcon src={mobileIcon} alt="item" />}
         {children && <S.LinkTxt>{children}</S.LinkTxt>}

@@ -20,6 +20,7 @@ export const LogoWrapper = styled(NavLink)`
   color: #747a81;
   text-decoration: none; 
 `;
+
 export const NavigationWrapper = styled.div`
   padding: 0;
   margin: 0;
@@ -27,4 +28,15 @@ export const NavigationWrapper = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
+`;
+
+export const IconButton = styled.button`
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+
+  @media ${({ theme }) => theme.media.laptop} {
+    display: none;
+  } 
 `;

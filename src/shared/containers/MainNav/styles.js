@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 export const MainNav = styled.ul`
   display: flex;
   flex-direction: row-reverse;
+  align-items: center;
   padding-right: 25px;
   margin: 0;
   height: 100%;
@@ -11,6 +12,7 @@ export const MainNav = styled.ul`
   
   @media ${({theme}) => theme.media.laptop} {
     flex-direction: row;
+    align-items: stretch;
   }
 `;
 
@@ -73,15 +75,3 @@ export const MobileChatTrigger = styled.button`
   background: none;
   border: none;
 `;
-
-export const IconButton = styled.button`
-  margin: 0;
-  padding: 0;
-  background: none;
-  border: none;
-
-  @media ${({ theme }) => theme.media.laptop} {
-    display: none;
-  } 
-`;
-

@@ -5,33 +5,25 @@ import * as S from './styles';
 
 const propTypes = {
   path: PropTypes.string,
-  redirectHandler: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   path: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1552903737/gamepad-controller.svg',
 };
 
-const Logo = ({ path, redirectHandler }) => {
-  const logoClickHandler = (path) => (e) => {
-    e.preventDefault();
-    redirectHandler(path);
-  };
-
-  return (
-    <S.Logo onClick={logoClickHandler(ROUTES.HOME)}>
-      <S.Image src={path} />
-      <S.Title>
-        <S.Header>
-          Reser
-          <S.HeaderHighlighted>v</S.HeaderHighlighted> 
-          ly
-        </S.Header>
-        <S.Description>Reserve your game!</S.Description>
-      </S.Title>
-    </S.Logo>
-  );
-};
+const Logo = ({ path }) => (
+  <S.Logo>
+    <S.Image src={path} />
+    <S.Title>
+      <S.Header>
+        Reser
+        <S.HeaderHighlighted>v</S.HeaderHighlighted> 
+        ly
+      </S.Header>
+      <S.Description>Reserve your game!</S.Description>
+    </S.Title>
+  </S.Logo>
+);
 
 Logo.propTypes = propTypes;
 Logo.defaultProps = defaultProps;

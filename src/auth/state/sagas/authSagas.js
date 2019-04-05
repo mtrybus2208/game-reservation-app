@@ -1,6 +1,7 @@
 /* eslint no-use-before-define: 0 */
 import { call, put, takeEvery } from 'redux-saga/effects';
-import { doSignInWithGoogle, doSignInWithGithub } from '@/services/firebase';
+import { doSignInWithGoogle, doSignInWithGithub, signOut } from '@/services/firebase';
+import { actionTypes as uiActionTypes } from '@/shared/state/actions/actionTypes';
 import { actionTypes } from './../actions/actionTypes';
 import { mapUserData } from '../../helpers/mapUserData';
 
@@ -18,6 +19,15 @@ function* workSocialAuth(type) {
     yield put({ type: actionTypes.SOCIAL_AUTH_FAIL, message: e.message });
   }
 }
+function* workSignOut() {
+  try {
+    yield call(signOut);
+    yield put({ type: actionTypes.SET_AUTH_USER, payload: null });
+    yield put({ type: uiActionTypes.CLOSE_CHAT_WITH_REDIRECT, path: '/' });
+  } catch (e) {
+    yield put({ type: actionTypes.SIGN_OUT_FAIL });
+  }
+}
 
 export function* watchSocialAuthGoogle() {
   yield takeEvery(actionTypes.SOCIAL_AUTH_GOOGLE, workSocialAuth, 'google');
@@ -25,4 +35,8 @@ export function* watchSocialAuthGoogle() {
 
 export function* watchSocialAuthGithub() {
   yield takeEvery(actionTypes.SOCIAL_AUTH_GITHUB, workSocialAuth, 'github');
+}
+
+export function* watchSignOut() {
+  yield takeEvery(actionTypes.SIGN_OUT, workSignOut);
 }

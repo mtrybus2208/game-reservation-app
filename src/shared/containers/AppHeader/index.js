@@ -1,42 +1,44 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getAuthUser, getUiState } from '@/auth/state/selectors';
-import * as fromActions from '@/shared/state/actions';
+import { getUiState } from '@/auth/state/selectors';
 import Logo from '@/shared/components/Logo';
-import MainNav from '@/shared/components/MainNav';
+import MainNav from '@/shared/containers/MainNav';
+import BaseIcon from '@/shared/components/BaseIcon';
+import * as ROUTES from '@/constants/routes';
+import * as fromActions from '@/shared/state/actions';
 import * as S from './styles';
 
 const propTypes = {
   ui: PropTypes.object,
-  authUser: PropTypes.object,
-  location: PropTypes.object,
+  toggleLeftSidebar: PropTypes.func,
+  closeChatWithRedirect: PropTypes.func,
 };
 
 const defaultProps = {}; 
 
 class AppHeader extends Component {
 
-  redirectHandler = this.redirectHandler.bind(this);
-
-  redirectHandler(path) {
-    return path
-      ? this.props.closeChatWithRedirect(path)
-      : this.props.toggleLeftSidebar(!this.props.ui.leftSidebarOpened);
+  handleToggleSidebar = () => () => {
+    this.props.toggleLeftSidebar(!this.props.ui.leftSidebarOpened);
   }
-  
+
+  handleRedirect = (path) => e => {
+    e.preventDefault();
+    this.props.closeChatWithRedirect(path);
+  }
+
   render() {
     return (
       <S.AppHeader>
-        <S.LogoWrapper exact to="/">
-          <Logo redirectHandler={this.redirectHandler} />
+        <S.LogoWrapper to={ROUTES.HOME} onClick={this.handleRedirect(ROUTES.HOME)}>
+          <Logo />
         </S.LogoWrapper>
         <S.NavigationWrapper>
-          <MainNav
-            authUser={this.props.authUser}
-            redirectHandler={this.redirectHandler}
-            location={this.props.location}
-          />
+          <S.IconButton onClick={this.handleToggleSidebar()}>
+            <BaseIcon />
+          </S.IconButton>
+          <MainNav />
         </S.NavigationWrapper>
       </S.AppHeader>
     );
@@ -46,18 +48,16 @@ class AppHeader extends Component {
 const mapStateToProps = (state) => (
   {
     ui: getUiState(state),
-    authUser: getAuthUser(state),
-    location: state.router.location,
   }
 );
 
 const mapDispatchToProps = dispatch => {
   return {
-    closeChatWithRedirect: (path) => {
-      dispatch(fromActions.closeChatWithRedirect(path));
-    },
     toggleLeftSidebar: (visible) => {
       dispatch(fromActions.toggleLeftSidebar(visible));
+    },
+    closeChatWithRedirect: (path) => {
+      dispatch(fromActions.closeChatWithRedirect(path));
     },
   };
 };

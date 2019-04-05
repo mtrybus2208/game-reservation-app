@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import shortid from 'shortid';
 import { connect } from 'react-redux';
 import * as fromActions from '@/auth/state/actions';
-import { doSignInWithGithub } from '@/services/firebase';
 import AuthWrapper from '../../components/AuthWrapper';
 import AuthTop from '../../components/AuthTop';
 import SocialBox from '../../components/SocialBox';

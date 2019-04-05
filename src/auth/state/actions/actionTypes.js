@@ -4,4 +4,7 @@ export const actionTypes = {
   SOCIAL_AUTH_SUCCESS: '[Auth] SOCIAL_AUTH_SUCCESS',
   SOCIAL_AUTH_FAIL: '[Auth] SOCIAL_AUTH_FAIL',
   SET_AUTH_USER: '[Auth] SET_AUTH_USER',
+  SIGN_OUT: '[Auth] SIGN_OUT',
+  // SIGN_OUT_SUCCESS: '[Auth] SIGN_OUT_SUCCESS',
+  // SIGN_OUT_FAIL: '[Auth] SIGN_OUT_FAIL',
 };

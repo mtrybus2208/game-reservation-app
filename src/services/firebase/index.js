@@ -7,6 +7,8 @@ export const doSignInWithGoogle = () =>
 export const doSignInWithGithub = () =>
   authRef.signInWithPopup(githubProvider);
 
+export const signOut = () => authRef.signOut();
+
  // class Firebase {
 //   constructor() {
 //     app.initializeApp(config);
