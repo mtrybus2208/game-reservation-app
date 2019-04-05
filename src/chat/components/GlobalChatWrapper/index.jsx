@@ -7,35 +7,68 @@ const propTypes = {
   directChatIcon: PropTypes.string,
   emojiIcon: PropTypes.string,
   directChatIcon: PropTypes.string,
-  messages: PropTypes.array,
+  socketConnectionApiUrl: PropTypes.string,
+  getPlayerApiUrl: PropTypes.string,
+  sendMessageApiUrl: PropTypes.string
 };
 
 const defaultProps = {
   directChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg',
   emojiIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595074/smiling-emoticon.svg',
   sendMessageIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg',
-  messages: [],
+  socketConnectionApiUrl: 'ws://localhost:9000/socket/chat/global',
+  getPlayerApiUrl: 'http://localhost:9000/players',
+  sendMessageApiUrl: 'http://localhost:9000/chat/global',
 }; 
 
-const GlobalChatWrapper = ({ directChatIcon, emojiIcon, sendMessageIcon, messages }) => {
+const GlobalChatWrapper = ({ 
+    directChatIcon, emojiIcon, sendMessageIcon, socketConnectionApiUrl, getPlayerApiUrl, sendMessageApiUrl 
+  }) => {
+
+  const [messages, updateMessages] = useState([]);
+  const [typedMessage, updateTypedMessage] = useState('');
 
   useEffect(() => {
-    const websocket = new WebSocket('ws://localhost:9000/socket/chat/global');
+    const websocket = new WebSocket(socketConnectionApiUrl);
 
+    setWebsocketMessageReceiveHandler(websocket);
+  });
+
+  const setWebsocketMessageReceiveHandler = (websocket) => {
     websocket.onmessage = (event) => {
       let message = JSON.parse(event.data);
 
-      axios.get(`http://localhost:9000/players/${message.playerId}`, {
-            headers: {
-              'Content-Type': 'application/json'
-            }
-        })
-        .then(response => { 
-          message.playerName = response.data.displayName;
-          messages.push(message);
-        })
+      getMessageAuthorById(message.playerId)
+      .then(author => { 
+        updateMessagesList(author, message);
+      })
     };
-  });
+  }
+
+  const getMessageAuthorById = (playerId) => {
+    return axios.get(`${getPlayerApiUrl}/${playerId}`);
+  }
+
+  const updateMessagesList = (author, message) => {
+    message.playerName = author.data.displayName;
+          
+    updateMessages([...messages, message]);
+  }
+
+  const sendMessageHandler = () => {
+    const playerMessage = JSON.parse(
+      `{ 
+        "playerId": "2",
+        "message": "${typedMessage}" 
+      }`
+    );
+
+    axios
+      .post(sendMessageApiUrl, playerMessage)
+      .then(() => 
+        updateTypedMessage('')
+      );
+  }
 
   return (
     <S.GlobalChatWrapper>
@@ -68,7 +101,13 @@ const GlobalChatWrapper = ({ directChatIcon, emojiIcon, sendMessageIcon, message
         </S.MessagesWrapper>
 
         <S.MessageInputWrapper>
-          <S.MessageInput placeholder="Type message" maxLength={200}/>
+          <S.MessageInput 
+            value={typedMessage}
+            onChange={event => updateTypedMessage(event.target.value)}
+            placeholder="Type message"
+            minLength={2}
+            maxLength={200}
+          />
         </S.MessageInputWrapper>
 
         <S.MessageButtonsWrapper>
@@ -76,7 +115,7 @@ const GlobalChatWrapper = ({ directChatIcon, emojiIcon, sendMessageIcon, message
             <S.MessageButtonIcon src={emojiIcon} />
           </S.MessageButton>
 
-          <S.MessageButton>
+          <S.MessageButton onClick={sendMessageHandler}>
             <S.MessageButtonIcon src={sendMessageIcon} />
           </S.MessageButton>
         </S.MessageButtonsWrapper>
