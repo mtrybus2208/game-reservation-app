@@ -1,22 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AuthTop from './../AuthTop';
-import SocialBox from './../SocialBox';
-import AuthBody from './../AuthBody';
-import OptionDivider from './../OptionDivider';
+import Top from './Top';
+import Body from './Body';
 import * as S from './styles';
 
 const propTypes = {
   children: PropTypes.node,
+  name: PropTypes.node,
 };
 
 const defaultProps = { 
 }; 
 
-const AuthWrapper = ({ children }) => {
+const AuthWrapper = ({ children, name }) => {
   return (
     <S.AuthWrapper>
-      { children }
+      <Top name={name} />
+      <Body>{children}</Body>
     </S.AuthWrapper>
   );
 };

@@ -32,7 +32,7 @@ export const NavigationWrapper = styled.div`
 
 export const IconButton = styled.button`
   margin: 0;
-  padding: 0;
+  padding: 0 25px;
   background: none;
   border: none;
 

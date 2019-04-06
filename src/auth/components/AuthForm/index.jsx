@@ -1,13 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
-import BaseButton from '../../../shared/components/BaseButton';
-import useForm from '../../helpers/useForm';
-import AuthInput from '../../components/AuthInput';
+import BaseButton from '@/shared/components/BaseButton';
+import useForm from '@/auth/helpers/useForm';
+import Input from '@/auth/components/AuthForm/Input';
 import * as S from './styles';
-/**
- * Need to use Auth Input instead S.Input
- */
 
 const propTypes = {
   submitHandler: PropTypes.func.isRequired,
@@ -26,7 +23,7 @@ const AuthForm = ({ formType, fields, changeHandler, submitHandler }) => {
         <S.FormItem key={field.id}>
           <S.Label>{field.name}</S.Label>
           <S.Control>
-            <S.Input
+            <Input
               type={field.type}
               name={field.name}
               placeholder={field.placeholder}

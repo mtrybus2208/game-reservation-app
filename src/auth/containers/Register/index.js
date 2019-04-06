@@ -3,16 +3,13 @@ import PropTypes from 'prop-types';
 import shortid from 'shortid';
 import { connect } from 'react-redux';
 import * as fromActions from '@/auth/state/actions';
+import SocialBox from '@/auth/containers/SocialBox';
 import AuthWrapper from '../../components/AuthWrapper';
-import AuthTop from '../../components/AuthTop';
-import SocialBox from '../../components/SocialBox';
-import AuthBody from '../../components/AuthBody';
 import OptionDivider from '../../components/OptionDivider';
 import AuthForm from '../../components/AuthForm';
 import * as S from './styles';
 
 const propTypes = {
-  socialAuthGoogle: PropTypes.func,
 };
 
 const defaultProps = {
@@ -50,8 +47,6 @@ class Register extends Component {
 
   changeHandler = this.changeHandler.bind(this);
   submitHandler = this.submitHandler.bind(this);
-  doSignInWithGoogle = this.doSignInWithGoogle.bind(this);
-  doSignInWithGithub = this.doSignInWithGithub.bind(this);
 
   changeHandler(data) {
     console.log('Register  changeHandler');
@@ -64,32 +59,17 @@ class Register extends Component {
     event.preventDefault();
   }
 
-  doSignInWithGoogle() {
-    this.props.socialAuthGoogle();
-  }
-  
-  doSignInWithGithub() {
-    this.props.socialAuthGithub();
-  }
-
   render() {
     return (
-      <AuthWrapper>
-        <AuthTop name="Register" />
-        <AuthBody>
-          <SocialBox
-            doSignInWithGoogle={this.doSignInWithGoogle}
-            doSignInWithTwitter={this.doSignInWithTwitter}
-            doSignInWithGithub={this.doSignInWithGithub}
-          />
-          <OptionDivider />
-          <AuthForm
-            formType="register"
-            fields={this.getFields()}
-            submitHandler={this.submitHandler}
-            changeHandler={this.changeHandler}
-          />
-        </AuthBody>
+      <AuthWrapper name="register">
+        <SocialBox />
+        <OptionDivider />
+        <AuthForm
+          formType="register"
+          fields={this.getFields()}
+          submitHandler={this.submitHandler}
+          changeHandler={this.changeHandler}
+        />
       </AuthWrapper>
     );
   }
@@ -102,16 +82,7 @@ const mapStateToProps = ({ messageState, sessionState }) => (
   }
 );
 
-const mapDispatchToProps = dispatch => {
-  return {
-    socialAuthGoogle: () => {
-      dispatch(fromActions.socialAuthGoogle());
-    },
-    socialAuthGithub: () => {
-      dispatch(fromActions.socialAuthGithub());
-    },
-  };
-};
+const mapDispatchToProps = dispatch => ({});
 
 Register.propTypes = propTypes;
 Register.defaultProps = defaultProps;

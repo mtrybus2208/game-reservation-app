@@ -3,14 +3,13 @@ import { NavLink } from 'react-router-dom';
 
 export const MainNav = styled.ul`
   display: flex;
-  flex-direction: row-reverse;
   align-items: center;
-  padding-right: 25px;
   margin: 0;
+  padding: 0;
   height: 100%;
 
   
-  @media ${({theme}) => theme.media.laptop} {
+  @media ${({ theme }) => theme.media.laptop} {
     flex-direction: row;
     align-items: stretch;
   }

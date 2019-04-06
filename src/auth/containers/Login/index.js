@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import shortid from 'shortid';
-import AuthWrapper from '../../components/AuthWrapper';
-import AuthTop from '../../components/AuthTop';
-import SocialBox from '../../components/SocialBox';
-import AuthBody from '../../components/AuthBody';
-import OptionDivider from '../../components/OptionDivider';
-import AuthForm from '../../components/AuthForm';
+import AuthWrapper from '@/auth/components/AuthWrapper';
+import SocialBox from '@/auth/containers/SocialBox';
+import OptionDivider from '@/auth/components/OptionDivider';
+import AuthForm from '@/auth/components/AuthForm';
 import * as S from './styles';
 
 const propTypes = {
@@ -54,18 +52,15 @@ class Login extends Component {
 
   render() {
     return (
-      <AuthWrapper>
-        <AuthTop name="Sign In" />
-        <AuthBody>
-          <SocialBox />
-          <OptionDivider />
-          <AuthForm
-            formType="login"
-            fields={this.getFields()}
-            submitHandler={this.submitHandler}
-            changeHandler={this.changeHandler}
-          />
-        </AuthBody>
+      <AuthWrapper name="login">
+        <SocialBox />
+        <OptionDivider />
+        <AuthForm
+          formType="login"
+          fields={this.getFields()}
+          submitHandler={this.submitHandler}
+          changeHandler={this.changeHandler}
+        />
       </AuthWrapper>
     );
   }

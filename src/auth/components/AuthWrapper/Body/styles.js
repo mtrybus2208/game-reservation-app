@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-export const AuthBody = styled.div`
+export const Body = styled.div`
   padding: 60px 25px;
 
   @media ${({ theme }) => theme.media.tablet} {

@@ -3,11 +3,18 @@ import { NavLink } from 'react-router-dom';
 import { rgba } from 'polished';
 
 export const NavItem = styled.li`
-  display: flex;  
+  display: ${({ onlyDesktop }) => onlyDesktop ? 'none' : 'flex'};  
   margin: 0;
-  padding: 0;
+  padding-right: 25px;
+
+  &:last-child {
+    padding-left: 0;
+  }
 
   @media ${({ theme }) => theme.media.laptop} {
+    padding: 0;
+    display: flex;
+
     a {
       padding: 0 60px;
       display: flex;

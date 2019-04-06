@@ -10,12 +10,14 @@ const propTypes = {
   onLinkClick: PropTypes.func,
   children: PropTypes.node,
   location: PropTypes.object,
+  onlyDesktop: PropTypes.bool,
 };
 
 const defaultProps = {
   mobileIcon: null,
   url: '',
   onLinkClick: null,
+  onlyDesktop: false,
 };
 
 
@@ -24,9 +26,11 @@ const NavItem = ({
   mobileIcon,
   url,
   children,
+  onlyDesktop,
   location }) => (
     <S.NavItem
       isActive={location.pathname === url}
+      onlyDesktop={onlyDesktop}
     >
       <NavLink
         to={url}

@@ -9,7 +9,8 @@ const useForm = (submitCb, changeCb = null) => {
   }, [values]);
 
   const handleSubmit = (event) => {
-    console.log('????')
+    console.log('co jest w droku?');
+    console.log(values);
     if (event) event.preventDefault();
     console.log(values)
     submitCb(values);

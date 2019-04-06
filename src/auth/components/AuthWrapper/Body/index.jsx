@@ -9,12 +9,12 @@ const propTypes = {
 const defaultProps = { 
 }; 
 
-const AuthBody = ({ children }) => {
+const Body = ({ children }) => {
   return (
-    <S.AuthBody>{children}</S.AuthBody>
+    <S.Body>{children}</S.Body>
   );
 };
 
-AuthBody.propTypes = propTypes;
-AuthBody.defaultProps = defaultProps;
-export default AuthBody;
+Body.propTypes = propTypes;
+Body.defaultProps = defaultProps;
+export default Body;

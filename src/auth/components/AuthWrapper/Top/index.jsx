@@ -9,14 +9,14 @@ const propTypes = {
 const defaultProps = { 
 }; 
 
-const AuthTop = ({ name }) => {
+const Top = ({ name }) => {
   return (
-    <S.AuthTop>
+    <S.Top>
       <span>{ name }</span>
-    </S.AuthTop>
+    </S.Top>
   );
 };
 
-AuthTop.propTypes = propTypes;
-AuthTop.defaultProps = defaultProps;
-export default AuthTop;
+Top.propTypes = propTypes;
+Top.defaultProps = defaultProps;
+export default Top;
