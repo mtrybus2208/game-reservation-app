@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getUiState } from '@/auth/state/selectors';
-import Logo from '@/shared/components/Logo';
-import MainNav from '@/shared/containers/MainNav';
-import BaseIcon from '@/shared/components/BaseIcon';
+import { getUiState } from '@/modules/auth/state/selectors';
+import Logo from '@/modules/shared/components/Logo';
+import MainNav from '@/modules/shared/containers/MainNav';
+import BaseIcon from '@/modules/shared/components/BaseIcon';
 import * as ROUTES from '@/constants/routes';
-import * as fromActions from '@/shared/state/actions';
+import * as fromActions from '@/modules/shared/state/actions';
 import * as S from './styles';
 
 const propTypes = {

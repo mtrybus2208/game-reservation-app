@@ -1,7 +1,7 @@
 /* eslint no-use-before-define: 0 */
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { doSignInWithGoogle, doSignInWithGithub, signOut } from '@/services/firebase';
-import { actionTypes as uiActionTypes } from '@/shared/state/actions/actionTypes';
+import { actionTypes as uiActionTypes } from '@/modules/shared/state/actions/actionTypes';
 import * as ROUTES from '@/constants/routes';
 import { actionTypes } from './../actions/actionTypes';
 import { mapUserData } from '../../helpers/mapUserData';

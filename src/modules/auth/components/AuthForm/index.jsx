@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
-import BaseButton from '@/shared/components/BaseButton';
-import useForm from '@/auth/helpers/useForm';
-import Input from '@/auth/components/AuthForm/Input';
+import BaseButton from '@/modules/shared/components/BaseButton';
+import useForm from '@/modules/auth/helpers/useForm';
+import Input from '@/modules/auth/components/AuthForm/Input';
 import * as S from './styles';
 
 const propTypes = {

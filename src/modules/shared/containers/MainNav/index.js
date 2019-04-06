@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getAuthUser } from '@/auth/state/selectors';
-import NavItem from '@/shared/components/NavItem';
-import * as fromActions from '@/shared/state/actions';
-import * as fromAuthActions from '@/auth/state/actions';
+import { getAuthUser } from '@/modules/auth/state/selectors';
+import NavItem from '@/modules/shared/components/NavItem';
+import * as fromActions from '@/modules/shared/state/actions';
+import * as fromAuthActions from '@/modules/auth/state/actions';
 import * as ROUTES from '@/constants/routes';
 import * as S from './styles';
 

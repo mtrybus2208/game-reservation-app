@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as fromActions from '@/auth/state/actions';
+import * as fromActions from '@/modules/auth/state/actions';
 import * as S from './styles';
 
 const propTypes = {

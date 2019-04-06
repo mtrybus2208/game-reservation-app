@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import shortid from 'shortid';
-import AuthWrapper from '@/auth/components/AuthWrapper';
-import SocialBox from '@/auth/containers/SocialBox';
-import OptionDivider from '@/auth/components/OptionDivider';
-import AuthForm from '@/auth/components/AuthForm';
+import AuthWrapper from '@/modules/auth/components/AuthWrapper';
+import SocialBox from '@/modules/auth/containers/SocialBox';
+import OptionDivider from '@/modules/auth/components/OptionDivider';
+import AuthForm from '@/modules/auth/components/AuthForm';
 import * as S from './styles';
 
 const propTypes = {

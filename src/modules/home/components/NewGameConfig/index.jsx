@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import InfoCard from '../InfoCard';
-import Avatar from '@/shared/components/Avatar';
-import UserInfo from '@/shared/components/UserInfo';
-import TimeCircle from '@/home/components/TimeCircle';
+import Avatar from '@/modules/shared/components/Avatar';
+import UserInfo from '@/modules/shared/components/UserInfo';
+import TimeCircle from '@/modules/home/components/TimeCircle';
 import * as S from './styles';
 
 const propTypes = {
