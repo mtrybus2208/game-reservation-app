@@ -33,18 +33,10 @@ class Login extends Component {
       {
         id: shortid.generate(),
         name: 'email',
-        type: 'email',
-        label: 'Email',
-        placeholder: 'Email',
-        mandatory: true,
       },
       {
         id: shortid.generate(),
         name: 'password',
-        type: 'password',
-        label: 'Password',
-        placeholder: 'Password',
-        mandatory: true,
       },
     ];
   }

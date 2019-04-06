@@ -7,17 +7,19 @@ const propTypes = {
   name: PropTypes.string,
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
+  mandatory: PropTypes.bool,
 };
 
-const defaultProps = { 
+const defaultProps = {
+  mandatory: true,
 }; 
-
-const AuthInput = ({ type, name, placeholder, onChange }) => {
+//label
+const AuthInput = ({ type, name, placeholder, onChange, mandatory }) => {
   return (
     <S.Input
-      type={type}
+      type={type ? type : name}
       name={name}
-      placeholder={placeholder}
+      placeholder={placeholder ? placeholder : name}
       onChange={onChange}
     />
   );

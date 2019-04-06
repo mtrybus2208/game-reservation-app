@@ -2,6 +2,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { doSignInWithGoogle, doSignInWithGithub, signOut } from '@/services/firebase';
 import { actionTypes as uiActionTypes } from '@/shared/state/actions/actionTypes';
+import * as ROUTES from '@/constants/routes';
 import { actionTypes } from './../actions/actionTypes';
 import { mapUserData } from '../../helpers/mapUserData';
 
@@ -15,6 +16,7 @@ function* workSocialAuth(type) {
     const data = yield call(socialTypes[type]);
     const mappedUser = mapUserData(data.user);
     yield put({ type: actionTypes.SET_AUTH_USER, payload: mappedUser });
+    yield put({ type: uiActionTypes.CLOSE_CHAT_WITH_REDIRECT, path: ROUTES.HOME });
   } catch (e) {
     yield put({ type: actionTypes.SOCIAL_AUTH_FAIL, message: e.message });
   }
@@ -23,7 +25,7 @@ function* workSignOut() {
   try {
     yield call(signOut);
     yield put({ type: actionTypes.SET_AUTH_USER, payload: null });
-    yield put({ type: uiActionTypes.CLOSE_CHAT_WITH_REDIRECT, path: '/' });
+    yield put({ type: uiActionTypes.CLOSE_CHAT_WITH_REDIRECT, path: ROUTES.LOGIN });
   } catch (e) {
     yield put({ type: actionTypes.SIGN_OUT_FAIL });
   }

@@ -27,5 +27,6 @@ export const Input = styled.input`
         font-stretch: normal;
         line-height: 2.25;
         color: #5a5f6b;
+        text-transform: capitalize;
     }
 `;

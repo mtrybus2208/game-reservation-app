@@ -22,26 +22,20 @@ class Register extends Component {
       {
         id: shortid.generate(),
         name: 'email',
-        type: 'email',
-        label: 'Email',
-        placeholder: 'Email',
-        mandatory: true,
+      },
+      {
+        id: shortid.generate(),
+        name: 'name',
+        type: 'text',
       },
       {
         id: shortid.generate(),
         name: 'password',
-        type: 'password',
-        label: 'Password',
-        placeholder: 'Password',
-        mandatory: true,
       },
       {
         id: shortid.generate(),
         name: 'confirm-password',
         type: 'password',
-        label: 'Confirm Password',
-        placeholder: 'Confirm password',
-        mandatory: true,
       },
     ]);
 
