@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import InfoCard from '../InfoCard';
-import Avatar from '../../../shared/components/Avatar';
+import Avatar from '@/shared/components/Avatar';
+import UserInfo from '@/shared/components/UserInfo';
 import * as S from './styles';
 
 const propTypes = {
@@ -17,13 +18,25 @@ const NewGameConfig = ({ isOpen, authUser }) => {
     : <Avatar />
   return (
     <S.NewGameConfig isOpen={isOpen}>
-      <InfoCard>time</InfoCard>
-      <InfoCard>type</InfoCard>
       <InfoCard>
         {avatar}
+        <UserInfo
+          name={authUser ? authUser.displayName : 'guest'}
+        />
       </InfoCard>
-      <InfoCard>play</InfoCard>
-      <InfoCard>cta</InfoCard>
+      <InfoCard
+        header='you can start at:'
+      >time</InfoCard>
+      <InfoCard
+        header='game type'
+      >
+        type
+      </InfoCard>
+      <InfoCard
+        header='game time'
+      >
+        type
+      </InfoCard>
     </S.NewGameConfig>
   );
 };

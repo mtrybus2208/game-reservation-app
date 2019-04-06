@@ -6,11 +6,10 @@ export const NewGameConfig = styled.div`
     margin: 0;
     display: none;
     grid-template-columns:
-      [game-start] 15% [game-type] 28% [game-avatar] 1fr [game-type] 28% [game-action] 15%;
+      [user-infp] .7fr [game-start] .7fr [game-type] 1fr [game-time] 1fr;
     grid-template-rows: [top] 1fr [top-end]; 
     flex-grow: 1;
     @media ${({ theme }) => theme.media.tablet} {
       display: grid;
     }
 `;
-

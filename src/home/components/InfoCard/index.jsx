@@ -4,14 +4,18 @@ import * as S from './styles';
 
 const propTypes = {
   children: PropTypes.node,
+  header: PropTypes.string,
 };
 
 const defaultProps = {}; 
 
-const InfoCard = ({ children }) => {
+const InfoCard = ({ children, header }) => {
   return (
     <S.InfoCard>
-      {children}
+      {header && <S.Header>{header}</S.Header>}
+      <S.Body>
+        {children}
+      </S.Body>
     </S.InfoCard>
   );
 };
