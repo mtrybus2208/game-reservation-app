@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import InfoCard from '../InfoCard';
 import Avatar from '@/shared/components/Avatar';
 import UserInfo from '@/shared/components/UserInfo';
+import TimeCircle from '@/home/components/TimeCircle';
 import * as S from './styles';
 
 const propTypes = {
@@ -24,17 +25,15 @@ const NewGameConfig = ({ isOpen, authUser }) => {
           name={authUser ? authUser.displayName : 'guest'}
         />
       </InfoCard>
-      <InfoCard
-        header='you can start at:'
-      >time</InfoCard>
-      <InfoCard
-        header='game type'
-      >
+      <InfoCard header='you can start at:'>
+        <TimeCircle
+          time="21:24"
+        />
+      </InfoCard>
+      <InfoCard header='game type'>
         type
       </InfoCard>
-      <InfoCard
-        header='game time'
-      >
+      <InfoCard header='game time'>
         type
       </InfoCard>
     </S.NewGameConfig>
