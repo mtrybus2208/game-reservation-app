@@ -4,12 +4,11 @@ import { Route, Switch } from 'react-router-dom';
 import { ConnectedRouter as Router } from 'react-router-redux';
 import { connect } from 'react-redux';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
-import AppGrid from './shared/components/AppGrid';
-import AppHeader from './shared/containers/AppHeader';
-import GlobalChatWrapper from './chat/components/GlobalChatWrapper';
-import DirectChatWrapper from './chat/components/DirectChatWrapper';
-import Home from './home';
-import Auth from './auth';
+import AppGrid from './modules/shared/components/AppGrid';
+import AppHeader from './modules/shared/containers/AppHeader';
+import ChatWrapper from './modules/chat/components/ChatWrapper';
+import Home from './modules/home';
+import Auth from './modules/auth';
 import theme from './theme';
 
 const propTypes = {
@@ -39,11 +38,7 @@ class App extends Component {
           <Router history={this.props.history}>
             <AppGrid>
               <AppGrid.SidebarArea leftGridOpen={this.props.ui.leftSidebarOpened}>
-                {this.props.ui.chatMode !== 'GLOBAL' ? (
-                  <DirectChatWrapper />
-                ) : (
-                  <GlobalChatWrapper />
-                )}
+                <ChatWrapper />
               </AppGrid.SidebarArea>
 
               <AppGrid.HeaderArea>
@@ -66,8 +61,8 @@ const mapStateToProps = ({ ui }) => (
   { ui }
 );
 
-const mapDispatchToProps = () => {
-  return { };
+const mapDispatchToProps = dispatch => {
+  return { }
 };
 
 App.propTypes = propTypes;
