@@ -4,14 +4,16 @@ import * as S from './styles';
 
 const propTypes = {
   children: PropTypes.node,
+  hoverable: PropTypes.bool,
 };
 
 const defaultProps = {
+  hoverable: false,
 }; 
 
-const CircleItem = ({ children }) => {
+const CircleItem = ({ children, hoverable }) => {
   return (
-    <S.CircleItem>
+    <S.CircleItem hoverable={hoverable}>
       <S.Body>
         {children}
       </S.Body>

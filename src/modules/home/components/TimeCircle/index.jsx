@@ -14,7 +14,7 @@ const defaultProps = {
 
 const TimeCircle = ({ time, unit }) => {
   return (
-    <CircleItem>
+    <CircleItem hoverable={!!unit}>
       <S.Box>
         <S.Time>
           {time}

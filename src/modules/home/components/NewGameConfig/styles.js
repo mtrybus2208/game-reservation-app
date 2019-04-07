@@ -41,6 +41,7 @@ export const TimeItem = styled.div`
     display: flex;
     font-size: 21px;
     margin-right: 40px;
+    cursor: pointer;
 
     &:last-child {
       margin-right: 0;
@@ -49,4 +50,10 @@ export const TimeItem = styled.div`
     @media ${({ theme }) => theme.media.tablet} {
       
     }
+`;
+
+export const AvatarBox = styled.div`
+  height: 100px;
+  width: 100px;
+  display: flex;
 `;

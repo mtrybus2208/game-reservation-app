@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const CircleItem = styled.div`
     position: relative;
@@ -10,6 +10,11 @@ export const CircleItem = styled.div`
     background-color: #23272d;
     flex: 1 1 100%;
     border-radius: 100%;
+    ${props => props.hoverable && css`
+      &:hover {
+        background: #bd790b;
+      }
+    `}
 `;
 
 export const Body = styled.div`

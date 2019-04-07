@@ -4,6 +4,7 @@ import InfoCard from '../InfoCard';
 import Avatar from '@/modules/shared/components/Avatar';
 import UserInfo from '@/modules/shared/components/UserInfo';
 import TimeCircle from '@/modules/home/components/TimeCircle';
+import CircleItem from '@/modules/shared/components/CircleItem';
 import * as S from './styles';
 
 const propTypes = {
@@ -20,7 +21,11 @@ const NewGameConfig = ({ isOpen, authUser }) => {
   return (
     <S.NewGameConfig isOpen={isOpen}>
       <InfoCard>
-        {avatar}
+        <S.AvatarBox>
+          <CircleItem>
+            {avatar}
+          </CircleItem>
+        </S.AvatarBox>
         <UserInfo
           name={authUser ? authUser.displayName : 'guest'}
         />
