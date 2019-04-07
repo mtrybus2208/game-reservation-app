@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import CircleItem from '@/modules/shared/components/CircleItem'
 import * as S from './styles';
 
 const propTypes = {
@@ -13,12 +14,14 @@ const defaultProps = {
 
 const TimeCircle = ({ time, unit }) => {
   return (
-    <S.TimeCircle>
-      <S.Time>
-        {time}
-      </S.Time>
-      {unit && <S.Unit>{unit}</S.Unit>}
-    </S.TimeCircle>
+    <CircleItem>
+      <S.Box>
+        <S.Time>
+          {time}
+        </S.Time>
+        {unit && <S.Unit>{unit}</S.Unit>}
+      </S.Box>
+    </CircleItem>
   );
 };
 

@@ -13,3 +13,40 @@ export const NewGameConfig = styled.div`
       display: grid;
     }
 `;
+
+export const GameStartBox = styled.div`
+    width: 100px;
+    height: 100px;
+    display: flex;
+    font-size: 22px;
+
+    @media ${({ theme }) => theme.media.tablet} {
+      
+    }
+`;
+
+export const GameTimeBox = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @media ${({ theme }) => theme.media.tablet} {
+      
+    }
+`;
+
+export const TimeItem = styled.div`
+    width: 70px;
+    height: 70px;
+    display: flex;
+    font-size: 21px;
+    margin-right: 40px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    @media ${({ theme }) => theme.media.tablet} {
+      
+    }
+`;

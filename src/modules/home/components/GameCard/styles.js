@@ -111,3 +111,9 @@ export const SubTitle = styled.div`
   color: #747a81;
   font-size: 10px;
 `;
+
+export const AvatarBox = styled.div`
+  height: 100px;
+  width: 100px;
+  display: flex;
+`;

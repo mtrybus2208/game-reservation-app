@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Avatar from '../../../shared/components/Avatar';
+import Avatar from '@/modules/shared/components/Avatar';
+import CircleItem from '@/modules/shared/components/CircleItem';
 import * as S from './styles';
 
 const propTypes = {
@@ -21,9 +22,11 @@ const GameCard = ({ user, display }) => {
         <span>{display.gameTime}</span>
       </S.InfoTime>
       <S.Body>
-        <Avatar
-          path={user.avatarImg}
-        />
+        <S.AvatarBox>
+          <CircleItem>
+            <Avatar path={user.avatarImg} />
+          </CircleItem>
+        </S.AvatarBox>
       </S.Body>
       <S.TitleBox>
         <S.Title>

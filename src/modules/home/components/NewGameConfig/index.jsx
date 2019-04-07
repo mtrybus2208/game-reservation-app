@@ -26,15 +26,19 @@ const NewGameConfig = ({ isOpen, authUser }) => {
         />
       </InfoCard>
       <InfoCard header='you can start at:'>
-        <TimeCircle
-          time="21:24"
-        />
+        <S.GameStartBox>
+          <TimeCircle time="21:24" />
+        </S.GameStartBox>
       </InfoCard>
       <InfoCard header='game type'>
         type
       </InfoCard>
       <InfoCard header='game time'>
-        type
+        <S.GameTimeBox>
+          <S.TimeItem><TimeCircle time='10' unit='min'/></S.TimeItem>
+          <S.TimeItem><TimeCircle time='15' unit='min'/></S.TimeItem>
+          <S.TimeItem><TimeCircle time='20' unit='min'/></S.TimeItem>
+        </S.GameTimeBox>
       </InfoCard>
     </S.NewGameConfig>
   );
