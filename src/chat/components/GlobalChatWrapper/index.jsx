@@ -27,12 +27,12 @@ const GlobalChatWrapper = ({
 
   const [messages, updateMessages] = useState([]);
   const [typedMessage, updateTypedMessage] = useState('');
+  let websocket = null;
 
   useEffect(() => {
-    const websocket = new WebSocket(socketConnectionApiUrl);
-
+    websocket = new WebSocket(socketConnectionApiUrl);
     setWebsocketMessageReceiveHandler(websocket);
-  });
+  }, []);
 
   const setWebsocketMessageReceiveHandler = (websocket) => {
     websocket.onmessage = (event) => {
@@ -54,8 +54,9 @@ const GlobalChatWrapper = ({
 
   const updateMessagesList = (author, message) => {
     message.playerName = author.data.displayName;
+    messages.push(message);
           
-    updateMessages([...messages, message]);
+    updateMessages(messages);
   }
 
   const sendMessageHandler = () => {
@@ -72,7 +73,7 @@ const GlobalChatWrapper = ({
         updateTypedMessage('')
       )   
       .catch(() => 
-        console.log('Validation error')
+        console.log('Message validation error')
       );
   }
 
