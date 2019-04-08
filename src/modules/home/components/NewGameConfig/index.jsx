@@ -6,20 +6,35 @@ import TimeCircle from '@/modules/home/components/TimeCircle';
 import CircleItem from '@/modules/shared/components/CircleItem';
 import InfoCard from '@/modules/home/components/InfoCard';
 import GameTypeItem from '@/modules/home/components/GameTypeItem';
-import { GAMES } from '@/constants/gameSettings';
+import { GAMES, GAMES_DURATION } from '@/constants/gameSettings';
 import * as S from './styles';
 
 const propTypes = {
   isOpen: PropTypes.bool,
   authUser: PropTypes.object,
+  onTypeSelect: PropTypes.func,
+  onTimeSelect: PropTypes.func,
+  time: PropTypes.object,
+  games: PropTypes.array,
+  selectedGame: PropTypes.object,
 };
 
 const defaultProps = {}; 
 
-const NewGameConfig = ({ isOpen, authUser }) => {
+const NewGameConfig = ({
+  isOpen,
+  authUser,
+  onTypeSelect,
+  onTimeSelect,
+  selectedGame,
+  time,
+  games,
+}) => {
   const avatar = authUser && authUser.photoURL
     ? <Avatar path={authUser.photoURL} />
-    : <Avatar />
+    : <Avatar />;
+  console.log(' ja jebie');
+  console.log(games);
   return (
     <S.NewGameConfig isOpen={isOpen}>
       <InfoCard>
@@ -39,16 +54,21 @@ const NewGameConfig = ({ isOpen, authUser }) => {
       </InfoCard>
       <InfoCard header="game type">
         <S.TypesBox>
-          { GAMES.map(game => (
-            <GameTypeItem key={game.id} game={game} />
+          { games.map(game => (
+            <GameTypeItem
+              active={selectedGame && selectedGame.id === game.id}
+              key={game.id}
+              game={game}
+              onClick={onTypeSelect}
+            />
           ))}
         </S.TypesBox>
       </InfoCard>
       <InfoCard header="game time">
         <S.GameTimeBox>
-          <S.TimeItem><TimeCircle time='10' unit='min'/></S.TimeItem>
-          <S.TimeItem><TimeCircle time='15' unit='min'/></S.TimeItem>
-          <S.TimeItem><TimeCircle time='20' unit='min'/></S.TimeItem>
+          { GAMES_DURATION.map(game => (
+            <S.TimeItem key={game.id}><TimeCircle time={game.duration} unit="min" /></S.TimeItem>
+          ))}
         </S.GameTimeBox>
       </InfoCard>
     </S.NewGameConfig>

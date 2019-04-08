@@ -13,4 +13,17 @@ export const GAMES = [
   },
 ];
 
-export const GAMES_DURATION = [10, 15, 20];
+export const GAMES_DURATION = [
+  {
+    id: shortid.generate(),
+    duration: 10,
+  },
+  {
+    id: shortid.generate(),
+    duration: 15,
+  },
+  {
+    id: shortid.generate(),
+    duration: 30,
+  },
+];

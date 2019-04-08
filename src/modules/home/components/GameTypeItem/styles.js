@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { rgba } from 'polished';
 
 export const GameTypeItem = styled.div`
     width: 100%;
@@ -8,14 +9,14 @@ export const GameTypeItem = styled.div`
     display: flex;
     margin-bottom: 20px;
     border: 3px solid #1b1e22;
-    border-color: ${({ active }) => active ? '#1b1e22' : '#1b1e22'};
+    border-color: ${({ active }) => active ? '#bd790b' : '#1b1e22'};
 
     &:last-child {
       margin-bottom: 0;
     }
 
     &:hover {
-      border-color: #bd790b;
+      border-color: ${({ active }) => active ? '#bd790b' : rgba('#bd790b', 0.35)}
     }
 `;
 

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import * as fromActions from '../../state/actions';
 import BaseButton from '../../../shared/components/BaseButton';
 import NewGameConfig from '../../components/NewGameConfig';
+import { GAMES, GAMES_DURATION } from '@/constants/gameSettings';
 import * as S from './styles';
 
 const propTypes = {
@@ -15,10 +16,20 @@ const propTypes = {
 };
 
 class GameReservation extends Component {
-  componentDidMount() {}
+  state = {
+    games: GAMES,
+    time: null,
+    selectedGame: null,
+  }
 
   setGameTime = this.setGameTime.bind(this);
   openGameConfig = this.openGameConfig.bind(this);
+
+  handleTypeSelect = (selectedGame) => (e) => {
+    this.setState({
+      selectedGame,
+    });
+  };
 
   setGameTime({ target }) {
     const payload = {
@@ -40,6 +51,10 @@ class GameReservation extends Component {
           setGameTime={this.setGameTime}
           lastGame={this.props.timeLine.endLastReservation}
           isOpen={this.props.timeLine.gameConfigOpen}
+          onTypeSelect={this.handleTypeSelect}
+          time={this.state.time}
+          games={this.state.games}
+          selectedGame={this.state.selectedGame}
         />
         <S.CtaWrapper>
           <BaseButton.Cta
