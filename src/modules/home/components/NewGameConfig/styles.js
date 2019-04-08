@@ -35,6 +35,11 @@ export const GameTimeBox = styled.div`
     }
 `;
 
+export const TypesBox = styled(GameTimeBox)`
+  flex-direction: column;
+  width: 60%;
+`;
+
 export const TimeItem = styled.div`
     width: 70px;
     height: 70px;

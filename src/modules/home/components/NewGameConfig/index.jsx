@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import InfoCard from '../InfoCard';
 import Avatar from '@/modules/shared/components/Avatar';
 import UserInfo from '@/modules/shared/components/UserInfo';
 import TimeCircle from '@/modules/home/components/TimeCircle';
 import CircleItem from '@/modules/shared/components/CircleItem';
+import InfoCard from '@/modules/home/components/InfoCard';
+import GameTypeItem from '@/modules/home/components/GameTypeItem';
+import { GAMES } from '@/constants/gameSettings';
 import * as S from './styles';
 
 const propTypes = {
@@ -30,15 +32,19 @@ const NewGameConfig = ({ isOpen, authUser }) => {
           name={authUser ? authUser.displayName : 'guest'}
         />
       </InfoCard>
-      <InfoCard header='you can start at:'>
+      <InfoCard header="you can start at:">
         <S.GameStartBox>
           <TimeCircle time="21:24" />
         </S.GameStartBox>
       </InfoCard>
-      <InfoCard header='game type'>
-        type
+      <InfoCard header="game type">
+        <S.TypesBox>
+          { GAMES.map(game => (
+            <GameTypeItem key={game.id} game={game} />
+          ))}
+        </S.TypesBox>
       </InfoCard>
-      <InfoCard header='game time'>
+      <InfoCard header="game time">
         <S.GameTimeBox>
           <S.TimeItem><TimeCircle time='10' unit='min'/></S.TimeItem>
           <S.TimeItem><TimeCircle time='15' unit='min'/></S.TimeItem>
