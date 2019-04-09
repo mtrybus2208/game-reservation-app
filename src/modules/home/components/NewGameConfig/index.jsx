@@ -6,17 +6,17 @@ import TimeCircle from '@/modules/home/components/TimeCircle';
 import CircleItem from '@/modules/shared/components/CircleItem';
 import InfoCard from '@/modules/home/components/InfoCard';
 import GameTypeItem from '@/modules/home/components/GameTypeItem';
-import { GAMES, GAMES_DURATION } from '@/constants/gameSettings';
 import * as S from './styles';
 
 const propTypes = {
   isOpen: PropTypes.bool,
   authUser: PropTypes.object,
-  onTypeSelect: PropTypes.func,
-  onTimeSelect: PropTypes.func,
-  time: PropTypes.object,
+  onSelect: PropTypes.func,
+  duration: PropTypes.array,
   games: PropTypes.array,
   selectedGame: PropTypes.object,
+  selectedTime: PropTypes.object,
+  endLastReservation: PropTypes.string,
 };
 
 const defaultProps = {}; 
@@ -24,17 +24,16 @@ const defaultProps = {};
 const NewGameConfig = ({
   isOpen,
   authUser,
-  onTypeSelect,
-  onTimeSelect,
+  onSelect,
   selectedGame,
-  time,
+  duration,
   games,
+  selectedTime,
+  endLastReservation,
 }) => {
   const avatar = authUser && authUser.photoURL
     ? <Avatar path={authUser.photoURL} />
     : <Avatar />;
-  console.log(' ja jebie');
-  console.log(games);
   return (
     <S.NewGameConfig isOpen={isOpen}>
       <InfoCard>
@@ -49,7 +48,7 @@ const NewGameConfig = ({
       </InfoCard>
       <InfoCard header="you can start at:">
         <S.GameStartBox>
-          <TimeCircle time="21:24" />
+          <TimeCircle time={endLastReservation} />
         </S.GameStartBox>
       </InfoCard>
       <InfoCard header="game type">
@@ -59,15 +58,25 @@ const NewGameConfig = ({
               active={selectedGame && selectedGame.id === game.id}
               key={game.id}
               game={game}
-              onClick={onTypeSelect}
+              onClick={onSelect}
             />
           ))}
         </S.TypesBox>
       </InfoCard>
       <InfoCard header="game time">
         <S.GameTimeBox>
-          { GAMES_DURATION.map(game => (
-            <S.TimeItem key={game.id}><TimeCircle time={game.duration} unit="min" /></S.TimeItem>
+          { duration.map(time => (
+            <S.TimeItem
+              key={time.id}
+              onClick={onSelect('selectedTime', time)}
+            >
+              <TimeCircle
+                hoverable={true}
+                time={time.duration}
+                unit="min"
+                active={selectedTime && selectedTime.id === time.id}
+              />
+            </S.TimeItem>
           ))}
         </S.GameTimeBox>
       </InfoCard>

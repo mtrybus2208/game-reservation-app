@@ -1,4 +1,4 @@
-
+// TODO: This components should be divided to subcomponents
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -6,60 +6,55 @@ import * as fromActions from '../../state/actions';
 import BaseButton from '../../../shared/components/BaseButton';
 import NewGameConfig from '../../components/NewGameConfig';
 import { GAMES, GAMES_DURATION } from '@/constants/gameSettings';
+import { getReservationInHours } from '@/modules/home/state/selectors';
 import * as S from './styles';
 
 const propTypes = {
   timeLine: PropTypes.object.isRequired,
   sessionState: PropTypes.object.isRequired,
-  setGameTime: PropTypes.func.isRequired,
-  changeGameConfigState: PropTypes.func.isRequired,
+  addNewGame: PropTypes.func.isRequired,
 };
 
 class GameReservation extends Component {
+
   state = {
     games: GAMES,
-    time: null,
+    duration: GAMES_DURATION,
+    selectedTime: null,
     selectedGame: null,
   }
 
-  setGameTime = this.setGameTime.bind(this);
-  openGameConfig = this.openGameConfig.bind(this);
+  addNewGame = () => () => {
+    const payload = {
+      time: this.state.selectedTime,
+      game: this.state.selectedGame,
+    };
+    this.props.addNewGame(payload);
+  }
 
-  handleTypeSelect = (selectedGame) => (e) => {
+  handleSelect = (props, data) => () => {
     this.setState({
-      selectedGame,
+      [props]: data,
     });
   };
-
-  setGameTime({ target }) {
-    const payload = {
-      time: target.value,
-    };
-    this.props.changeGameConfigState(false);
-    this.props.setGameTime(payload);
-  }
-
-  openGameConfig() {
-    this.props.changeGameConfigState(false);
-  }
 
   render() {
     return (
       <React.Fragment>
         <NewGameConfig
           authUser={this.props.sessionState.authUser}
-          setGameTime={this.setGameTime}
-          lastGame={this.props.timeLine.endLastReservation}
+          endLastReservation={this.props.endLastReservation}
           isOpen={this.props.timeLine.gameConfigOpen}
-          onTypeSelect={this.handleTypeSelect}
-          time={this.state.time}
+          duration={this.state.duration}
           games={this.state.games}
           selectedGame={this.state.selectedGame}
+          onSelect={this.handleSelect}
+          selectedTime={this.state.selectedTime}
         />
         <S.CtaWrapper>
           <BaseButton.Cta
             maxWidth="480px"
-            onClick={this.openGameConfig}
+            onClick={this.addNewGame()}
           >
             <span>Reserve Game</span>
           </BaseButton.Cta>
@@ -69,19 +64,17 @@ class GameReservation extends Component {
   }
 }
 
-const mapStateToProps = ({ timeLine, sessionState }) => (
+const mapStateToProps = (state) => (
   {
-    timeLine,
-    sessionState,
+    timeLine: state.timeLine,
+    endLastReservation: getReservationInHours(state),
+    sessionState: state.sessionState,
   }
 );
 
 const mapDispatchToProps = dispatch => ({
-  setGameTime: (payload) => {
-    dispatch(fromActions.setGameTime(payload));
-  },
-  changeGameConfigState: (payload) => {
-    dispatch(fromActions.changeGameConfigState(payload));
+  addNewGame: (payload) => {
+    dispatch(fromActions.addNewGame(payload));
   },
 });
 

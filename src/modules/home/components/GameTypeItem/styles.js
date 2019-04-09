@@ -8,7 +8,7 @@ export const GameTypeItem = styled.div`
     box-shadow: 0px 17px 24px 0 rgba(0,0,0,0.25);
     display: flex;
     margin-bottom: 20px;
-    border: 3px solid #1b1e22;
+    border: 5px solid #1b1e22;
     border-color: ${({ active }) => active ? '#bd790b' : '#1b1e22'};
 
     &:last-child {

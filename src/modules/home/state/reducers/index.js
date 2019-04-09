@@ -2,7 +2,7 @@ import moment from 'moment';
 import { actionTypes } from './../actions/actionTypes';
 
 export const initialState = {
-  endLastReservation: moment('09:00 am', 'HH:mm a'),
+  endLastReservation: moment('10:00 am', 'HH:mm a'),
   actualTime: moment(),
   workdayStart: moment('08:00 am', 'HH:mm a'),
   workdayEnd: moment('05:00 pm', 'HH:mm a'),
@@ -22,10 +22,10 @@ export const initialState = {
 
 export const timeLineReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.SET_GAME_TIME:
+    case actionTypes.ADD_NEW_GAME_SUCCESS:
       return {
         ...state,
-        endLastReservation: state.endLastReservation.add(action.payload.time, 'm'),
+        endLastReservation: state.endLastReservation.add(action.payload.time.duration, 'm'),
       };
     case actionTypes.CHANGE_GAME_CONFIG_STATE:
       return {

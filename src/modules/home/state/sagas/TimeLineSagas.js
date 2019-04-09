@@ -19,7 +19,20 @@ function* workFetchReservedGames() {
   }
 }
 
+function* workAddNewGame({ payload }) {
+  // TODO: CHECK ON SERVER IF SOMEONE DOESN'T RESERVE GAME IN THE MEANTIME
+  try {
+    yield put({ type: actionTypes.ADD_NEW_GAME_SUCCESS, payload });
+  } catch (e) {
+    yield put({ type: actionTypes.ADD_NEW_GAME_FAIL, message: e.message });
+  }
+}
+
 export function* watchFetchReservedGames() {
   yield takeEvery(actionTypes.FETCH_RESERVED_GAMES, workFetchReservedGames);
+}
+
+export function* watchAddNewGame() {
+  yield takeEvery(actionTypes.ADD_NEW_GAME, workAddNewGame);
 }
 

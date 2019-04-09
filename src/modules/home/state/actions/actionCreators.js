@@ -1,8 +1,8 @@
 import { actionTypes } from './actionTypes';
 
-export const setGameTime = (payload) =>
+export const addNewGame = (payload) =>
   ({
-    type: actionTypes.SET_GAME_TIME,
+    type: actionTypes.ADD_NEW_GAME,
     payload,
   });
 
