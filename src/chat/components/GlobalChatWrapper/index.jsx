@@ -19,7 +19,7 @@ const defaultProps = {
   socketConnectionApiUrl: 'ws://localhost:9000/socket/chat/global',
   getPlayerApiUrl: 'http://localhost:9000/players',
   sendMessageApiUrl: 'http://localhost:9000/chat/global',
-}; 
+};
 
 const GlobalChatWrapper = ({ 
     directChatIcon, emojiIcon, sendMessageIcon, socketConnectionApiUrl, getPlayerApiUrl, sendMessageApiUrl 
@@ -55,8 +55,8 @@ const GlobalChatWrapper = ({
   const updateMessagesList = (author, message) => {
     message.playerName = author.data.displayName;
     messages.push(message);
-          
-    updateMessages(messages);
+    const newArr = messages.slice();
+    updateMessages(newArr);
   }
 
   const sendMessageHandler = () => {
