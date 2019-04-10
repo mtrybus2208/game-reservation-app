@@ -60,21 +60,24 @@ const GlobalChatWrapper = ({
   }
 
   const sendMessageHandler = () => {
-    const playerMessage = JSON.parse(
-      `{ 
-        "playerId": "2",
-        "message": "${typedMessage.trim()}" 
-      }`
-    );
-
-    axios
-      .post(sendMessageApiUrl, playerMessage)
-      .then(() => 
-        updateTypedMessage('')
-      )   
-      .catch(() => 
-        console.log('Message validation error')
+    if(validateTypedMessage()) {
+      const playerMessage = JSON.parse(
+        `{ 
+          "playerId": "2",
+          "message": "${typedMessage.trim()}" 
+        }`
       );
+  
+      axios
+        .post(sendMessageApiUrl, playerMessage)
+        .then(() => 
+          updateTypedMessage('')
+        )
+    }
+  }
+
+  const validateTypedMessage = () => {
+    return typedMessage.length >= 3 && typedMessage.length <= 100
   }
 
   return (
@@ -122,7 +125,7 @@ const GlobalChatWrapper = ({
             <S.MessageButtonIcon src={emojiIcon} />
           </S.MessageButton>
 
-          <S.MessageButton onClick={sendMessageHandler}>
+          <S.MessageButton isButtonActive={validateTypedMessage()} onClick={sendMessageHandler} disabled={!validateTypedMessage()}>
             <S.MessageButtonIcon src={sendMessageIcon} />
           </S.MessageButton>
         </S.MessageButtonsWrapper>

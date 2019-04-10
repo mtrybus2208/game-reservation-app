@@ -159,8 +159,8 @@ export const MessageButton = styled.button`
   border: none;
 
   &:hover {
-    background: #111315;
-    cursor: pointer;
+    background: ${props => (props.isButtonActive ? '#111315' : '#181c1f')};
+    cursor:  ${props => (props.isButtonActive ? 'pointer' : 'default')};
   }
 
   &:first-child {
