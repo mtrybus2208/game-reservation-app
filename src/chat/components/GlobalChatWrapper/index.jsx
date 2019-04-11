@@ -1,136 +1,144 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import axios from 'axios';
 import * as S from './styles';
 
-const propTypes = {
-  directChatIcon: PropTypes.string,
-  emojiIcon: PropTypes.string,
-  directChatIcon: PropTypes.string,
-  socketConnectionApiUrl: PropTypes.string,
-  getPlayerApiUrl: PropTypes.string,
-  sendMessageApiUrl: PropTypes.string
-};
+const propTypes = { };
 
-const defaultProps = {
-  directChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg',
-  emojiIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595074/smiling-emoticon.svg',
-  sendMessageIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg',
-  socketConnectionApiUrl: 'ws://localhost:9000/socket/chat/global',
-  getPlayerApiUrl: 'http://localhost:9000/players',
-  sendMessageApiUrl: 'http://localhost:9000/chat/global',
-};
+const defaultProps = { };
 
-const GlobalChatWrapper = ({ 
-    directChatIcon, emojiIcon, sendMessageIcon, socketConnectionApiUrl, getPlayerApiUrl, sendMessageApiUrl 
-  }) => {
+class GlobalChatWrapper extends Component {
 
-  const [messages, updateMessages] = useState([]);
-  const [typedMessage, updateTypedMessage] = useState('');
-  let websocket = null;
+  state = {
+    messages: [],
+    typedMessage: '',
+  };
 
-  useEffect(() => {
-    websocket = new WebSocket(socketConnectionApiUrl);
-    setWebsocketMessageReceiveHandler(websocket);
-  }, []);
+  links = {
+    directChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg',
+    emojiIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595074/smiling-emoticon.svg',
+    sendMessageIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg',
+    socketConnectionApiUrl: 'ws://localhost:9000/socket/chat/global',
+    getPlayerApiUrl: 'http://localhost:9000/players',
+    sendMessageApiUrl: 'http://localhost:9000/chat/global',
+  }
 
-  const setWebsocketMessageReceiveHandler = (websocket) => {
+  componentDidMount() {
+    const websocket = new WebSocket(this.links.socketConnectionApiUrl);
+    this.setWebsocketMessageReceiveHandler(websocket);
+  }
+
+  setWebsocketMessageReceiveHandler = (websocket) => {
     websocket.onmessage = (event) => {
       let message = JSON.parse(event.data);
 
-      getMessageAuthorById(message.playerId)
-      .then(author => { 
-        updateMessagesList(author, message);
-      })
-      .catch(() =>
-        console.log('Couldn\'t update messages list')
-      )
+      this.getMessageAuthorById(message.playerId)
+        .then(author => {
+          this.updateMessagesList(author, message);
+        })
+        .catch(() =>
+          console.log('Couldn\'t update messages list')
+        )
     };
   }
 
-  const getMessageAuthorById = (playerId) => {
-    return axios.get(`${getPlayerApiUrl}/${playerId}`);
+  getMessageAuthorById = (playerId) => {
+    return axios.get(`${this.links.getPlayerApiUrl}/${playerId}`);
   }
 
-  const updateMessagesList = (author, message) => {
+  updateMessagesList = (author, message) => {
     message.playerName = author.data.displayName;
-    messages.push(message);
-    const newArr = messages.slice();
-    updateMessages(newArr);
+
+    this.setState(oldState => ({
+      messages: [...oldState.messages, message],
+    }))
   }
 
-  const sendMessageHandler = () => {
-    if(validateTypedMessage()) {
+  sendMessageHandler = () => {
+    if(this.validateTypedMessage()) {
       const playerMessage = JSON.parse(
         `{ 
           "playerId": "2",
-          "message": "${typedMessage.trim()}" 
+          "message": "${this.state.typedMessage.trim()}" 
         }`
       );
   
       axios
-        .post(sendMessageApiUrl, playerMessage)
+        .post(this.links.sendMessageApiUrl, playerMessage)
         .then(() => 
-          updateTypedMessage('')
+          this.setState({
+            typedMessage: '',
+          })
         )
     }
   }
 
-  const validateTypedMessage = () => {
-    return typedMessage.length >= 3 && typedMessage.length <= 100
+  validateTypedMessage = () => {
+    return this.state.typedMessage.length >= 3 && this.state.typedMessage.length <= 100;
   }
 
-  return (
-    <S.GlobalChatWrapper>
-        <S.MessagesWrapper>
-          {messages.map((value, index) => (
-            <S.Message key={index}>
-              <S.MessageHeader>
-                <S.PlayerName>
-                  <S.PlayerNameText>    
-                    {value.playerName}
-                  </S.PlayerNameText>
-                </S.PlayerName>
-
-                <S.PlayerDirectChat>
-                  <S.PlayerDirectChatIcon id={value.playerId} src={directChatIcon} />
-                </S.PlayerDirectChat>
-                
-                <S.PlayerPictureWrapper>
-                  <S.PlayerPicture>
+  render() {
+    return (
+      <S.GlobalChatWrapper>
+          <S.MessagesWrapper>
+            {this.state.messages.map((value, index) => (
+              <S.Message key={index}>
+                <S.MessageHeader>
+                  <S.PlayerName>
+                    <S.PlayerNameText>    
+                      {value.playerName}
+                    </S.PlayerNameText>
+                  </S.PlayerName>
+  
+                  <S.PlayerDirectChat>
+                    <S.PlayerDirectChatIcon id={value.playerId} src={this.links.directChatIcon} />
+                  </S.PlayerDirectChat>
                   
-                  </S.PlayerPicture>
-                </S.PlayerPictureWrapper>
-              </S.MessageHeader>
-              
-              <S.MessageBody>
-                {value.message}
-              </S.MessageBody>
-            </S.Message>
-          ))}
-        </S.MessagesWrapper>
-
-        <S.MessageInputWrapper>
-          <S.MessageInput 
-            value={typedMessage}
-            onChange={event => updateTypedMessage(event.target.value)}
-            placeholder="Type message"
-            minLength={2}
-            maxLength={200}
-          />
-        </S.MessageInputWrapper>
-
-        <S.MessageButtonsWrapper>
-          <S.MessageButton>
-            <S.MessageButtonIcon src={emojiIcon} />
-          </S.MessageButton>
-
-          <S.MessageButton isButtonActive={validateTypedMessage()} onClick={sendMessageHandler} disabled={!validateTypedMessage()}>
-            <S.MessageButtonIcon src={sendMessageIcon} />
-          </S.MessageButton>
-        </S.MessageButtonsWrapper>
-    </S.GlobalChatWrapper>
-  );
+                  <S.PlayerPictureWrapper>
+                    <S.PlayerPicture>
+                    
+                    </S.PlayerPicture>
+                  </S.PlayerPictureWrapper>
+                </S.MessageHeader>
+                
+                <S.MessageBody>
+                  {value.message}
+                </S.MessageBody>
+              </S.Message>
+            ))}
+          </S.MessagesWrapper>
+  
+          <S.MessageInputWrapper>
+            <S.MessageInput 
+              value={this.state.typedMessage}
+              onChange={event => {
+                this.setState({
+                  typedMessage: event.target.value,
+                })
+              }}
+              placeholder="Type message"
+              minLength={2}
+              maxLength={200}
+            />
+          </S.MessageInputWrapper>
+  
+          <S.MessageButtonsWrapper>
+            <S.MessageButton>
+              <S.MessageButtonIcon src={this.links.emojiIcon} />
+            </S.MessageButton>
+  
+            <S.MessageButton 
+              isButtonActive={this.validateTypedMessage()} 
+              onClick={this.sendMessageHandler} 
+              disabled={!this.validateTypedMessage()}
+            >
+              <S.MessageButtonIcon src={this.links.sendMessageIcon} />
+            </S.MessageButton>
+          </S.MessageButtonsWrapper>
+      </S.GlobalChatWrapper>
+    );
+  }
 };
 
 GlobalChatWrapper.propTypes = propTypes;
