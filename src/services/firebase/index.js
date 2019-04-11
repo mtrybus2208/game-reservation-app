@@ -1,21 +1,15 @@
 
-import { authRef, googleProvider } from './firebase';
+import { authRef, googleProvider, githubProvider } from './firebase';
 
 export const doSignInWithGoogle = () =>
   authRef.signInWithPopup(googleProvider);
 
+export const doSignInWithGithub = () =>
+  authRef.signInWithPopup(githubProvider);
 
+export const signOut = () => authRef.signOut();
 
-
-
-
-
-
-
-
-
-
-// class Firebase {
+ // class Firebase {
 //   constructor() {
 //     app.initializeApp(config);
 
