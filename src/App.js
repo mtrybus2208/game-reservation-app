@@ -14,6 +14,7 @@ import theme from './theme';
 
 const propTypes = {
   ui: PropTypes.object.isRequired,
+  sessionState: PropTypes.object.isRequired,
 };
 
 const defaultProps = {};
@@ -42,7 +43,7 @@ class App extends Component {
                 {this.props.ui.chatMode !== 'GLOBAL' ? (
                   <DirectChatWrapper />
                 ) : (
-                  <GlobalChatWrapper />
+                  <GlobalChatWrapper authUser={this.props.sessionState.authUser} />
                 )}
               </AppGrid.SidebarArea>
 
@@ -62,11 +63,14 @@ class App extends Component {
 }
 
 
-const mapStateToProps = ({ ui }) => (
-  { ui }
+const mapStateToProps = ({ ui, sessionState }) => (
+  { 
+    ui,
+    sessionState,
+  }
 );
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = () => {
   return { }
 };
 

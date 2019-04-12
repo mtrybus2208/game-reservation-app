@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import * as S from './styles';
 
-const propTypes = { };
+const propTypes = { 
+  authUser: PropTypes.object,
+};
 
 const defaultProps = { };
 
@@ -56,10 +58,11 @@ class GlobalChatWrapper extends Component {
   }
 
   sendMessageHandler = () => {
-    if(this.validateTypedMessage()) {
+    if(this.isNotAnonymousUser() && this.validateTypedMessage()) {
+
       const playerMessage = JSON.parse(
         `{ 
-          "playerId": "2",
+          "playerId": "${this.props.authUser.uid}",
           "message": "${this.state.typedMessage.trim()}" 
         }`
       );
@@ -72,6 +75,10 @@ class GlobalChatWrapper extends Component {
           })
         )
     }
+  }
+
+  isNotAnonymousUser = () => {
+    return this.props.authUser !== null;
   }
 
   validateTypedMessage = () => {
@@ -117,9 +124,10 @@ class GlobalChatWrapper extends Component {
                   typedMessage: event.target.value,
                 })
               }}
-              placeholder="Type message"
+              placeholder={this.isNotAnonymousUser() ? "Type message" : "Please login to use chat"}
               minLength={2}
               maxLength={200}
+              disabled={!this.isNotAnonymousUser()}
             />
           </S.MessageInputWrapper>
   
