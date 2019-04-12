@@ -8,16 +8,7 @@ export const initialState = {
   workdayEnd: moment('05:00 pm', 'HH:mm a'),
   gameConfigOpen: false,
   timeConverter: 12,
-  games: [
-    {
-      type: 'fifa',
-      player1: 'random',
-      player2: 'random',
-      isNotPermitted: false,
-      start: moment('08:00 am', 'HH:mm a'),
-      end: moment('08:30 am', 'HH:mm a'),
-    },
-  ],
+  entities: null,
 };
 
 export const timeLineReducer = (state = initialState, action) => {
@@ -35,12 +26,12 @@ export const timeLineReducer = (state = initialState, action) => {
     case actionTypes.FETCH_RESERVED_GAMES_SUCCESS:
       return {
         ...state,
-        games: action.payload,
+        entities: action.games,
       };
     case actionTypes.FETCH_RESERVED_GAMES_FAIL:
       return {
         ...state,
-        games: [],
+        entities: {},
       };
     default:
       return state;

@@ -37,3 +37,5 @@ export const getArrayOfWorkdayHours = state => {
     .map(h => moment(workdayStart).add(h, 'h').format('HH:mm'));
 };
 
+// Need to divide this to separate file
+

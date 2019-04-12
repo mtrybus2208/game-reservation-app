@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { getAllReservedGames } from '@/modules/home/state/selectors/entieties';
 import * as fromActions from '../../state/actions';
 import { getTimeLine, getWorkdayInPixels, getArrayOfWorkdayHours, getActualDateInPixels } from '../../state/selectors';
 import TimeRuler from '../../components/TimeRuler';
@@ -12,6 +13,7 @@ const propTypes = {
   workdayInPixels: PropTypes.number,
   actualDateInPixels: PropTypes.number,
   arrayOfWorkdayHours: PropTypes.array,
+  reservedGames: PropTypes.array,
   timeConverter: PropTypes.number,
   fetchReservedGames: PropTypes.func,
 };
@@ -25,6 +27,10 @@ class TimeLine extends Component {
 
   componentDidMount() {
     this.props.fetchReservedGames();
+  }
+
+  componentDidUpdate() {
+    console.log(this.props.reservedGames);
   }
 
   wrapRef = React.createRef();
@@ -94,6 +100,7 @@ const mapStateToProps = (state) => ({
   actualDateInPixels: getActualDateInPixels(state),
   timeConverter: state.timeLine.timeConverter,
   arrayOfWorkdayHours: getArrayOfWorkdayHours(state),
+  reservedGames: getAllReservedGames(state),
 });
 
 const mapDispatchToProps = dispatch => ({
