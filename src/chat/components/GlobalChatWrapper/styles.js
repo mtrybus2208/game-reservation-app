@@ -110,15 +110,14 @@ export const PlayerPictureWrapper = styled.div`
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: #484f5a;
-  box-shadow: -1px 1px 30px -3px rgba(0, 0, 0, .61);
+  background: #23272d;
+  box-shadow: 0 17px 24px 0 rgba(0, 0, 0, .33), inset 0 2px 3px 0 rgba(255, 255, 255, .1);
 `;
 
-export const PlayerPicture = styled.div`
+export const PlayerPicture = styled.img`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #fff;
 `;
 
 export const MessageInputWrapper = styled.div`

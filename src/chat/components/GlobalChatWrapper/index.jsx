@@ -51,6 +51,7 @@ class GlobalChatWrapper extends Component {
 
   updateMessagesList = (author, message) => {
     message.playerName = author.data.displayName;
+    message.photoUrl = author.data.photoUrl;
 
     this.setState(oldState => ({
       messages: [...oldState.messages, message],
@@ -93,7 +94,7 @@ class GlobalChatWrapper extends Component {
               <S.Message key={index}>
                 <S.MessageHeader>
                   <S.PlayerName>
-                    <S.PlayerNameText>    
+                    <S.PlayerNameText>   
                       {value.playerName}
                     </S.PlayerNameText>
                   </S.PlayerName>
@@ -103,9 +104,7 @@ class GlobalChatWrapper extends Component {
                   </S.PlayerDirectChat>
                   
                   <S.PlayerPictureWrapper>
-                    <S.PlayerPicture>
-                    
-                    </S.PlayerPicture>
+                    <S.PlayerPicture src={value.photoUrl} />
                   </S.PlayerPictureWrapper>
                 </S.MessageHeader>
                 
