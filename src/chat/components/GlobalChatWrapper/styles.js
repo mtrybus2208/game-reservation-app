@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ChatWrapper = styled.div`
+export const GlobalChatWrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -91,6 +91,7 @@ export const PlayerDirectChat = styled.button`
   background: #181c1f;
 
   &:hover {
+    background: #111315;
     cursor: pointer;
   }
 `;
@@ -109,15 +110,14 @@ export const PlayerPictureWrapper = styled.div`
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: #484f5a;
-  box-shadow: -1px 1px 30px -3px rgba(0, 0, 0, .61);
+  background: #23272d;
+  box-shadow: 0 17px 24px 0 rgba(0, 0, 0, .33), inset 0 2px 3px 0 rgba(255, 255, 255, .1);
 `;
 
-export const PlayerPicture = styled.div`
+export const PlayerPicture = styled.img`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: #fff;
 `;
 
 export const MessageInputWrapper = styled.div`
@@ -152,18 +152,18 @@ export const MessageButtonsWrapper = styled.div`
 `;
 
 export const MessageButton = styled.button`
-  width: 49%;
+  width: 50%;
   height: 60px;
-  background: #181c1f;;
+  background: #181c1f;
   border: none;
 
   &:hover {
-    cursor: pointer;
+    background: ${props => (props.isButtonActive ? '#111315' : '#181c1f')};
+    cursor:  ${props => (props.isButtonActive ? 'pointer' : 'default')};
   }
 
   &:first-child {
     border-right: 1.5px solid #111;
-    margin-right: 1%;
   }
 `;
 
