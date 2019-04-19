@@ -23,11 +23,12 @@ export const GameCard = styled.div`
   
   @media ${({ theme }) => theme.media.tablet} {
     left: ${props => props.left}px;
+    left: ${props => props.left}px;
     right: auto;
     width: ${props => props.size}px;
     top: 101px;
     height: initial;
-    max-width: 300px;
+    /* max-width: 300px; */
     grid-template-columns: 1fr;
     grid-template-rows: 50px 1.5fr 1fr 50px;
     grid-template-areas: 

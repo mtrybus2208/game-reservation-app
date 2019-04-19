@@ -30,7 +30,6 @@ class TimeLine extends Component {
   }
 
   componentDidUpdate() {
-    console.log(this.props.reservedGames);
   }
 
   wrapRef = React.createRef();
@@ -87,6 +86,9 @@ class TimeLine extends Component {
             workdayInPixels={this.props.workdayInPixels}
             arrayOfWorkdayHours={this.props.arrayOfWorkdayHours}
             timeConverter={this.props.timeConverter}
+            reservedGames={this.props.reservedGames}
+            workdayStart={this.props.workdayStart}
+
           />
         </S.TimeLine>
       </S.TimeLineWrapper>
@@ -97,6 +99,7 @@ class TimeLine extends Component {
 const mapStateToProps = (state) => ({
   timeLine: getTimeLine(state),
   workdayInPixels: getWorkdayInPixels(state),
+  workdayStart: state.timeLine.workdayStart,
   actualDateInPixels: getActualDateInPixels(state),
   timeConverter: state.timeLine.timeConverter,
   arrayOfWorkdayHours: getArrayOfWorkdayHours(state),

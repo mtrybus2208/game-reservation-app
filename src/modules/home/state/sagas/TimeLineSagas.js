@@ -9,98 +9,23 @@ import { actionTypes } from './../actions/actionTypes';
  * like below
  * 
  */
+ 
 const fetchGames = (page) => (
-  fetch(`https://jsonplaceholder.typicode.com/todos/${page}`)
+  fetch(`http://localhost:9000/matches`)
     .then(response => response.json())
     .then(res => {
-      return ({
-        users: {
-          byId: {
-            lkqjwhdkljh293832213123321: {
-              id: 'lkqjwhdkljh293832213123321',
-              displayName: 'John Smith',
-              email: 'some@email.com',
-              photoUrl: 'https://res.cloudinary.com/duo6ruqkc/image/upload/v1550848181/child_rtmjgd.png',
-            },
-            asdf: {
-              id: 'asdf',
-              displayName: 'Bill Murray',
-              email: 'bill@email.com',
-              photoUrl: 'https://res.cloudinary.com/duo6ruqkc/image/upload/v1550848181/child_rtmjgd.png',
-            },
-            gtyhujik: {
-              id: 'gtyhujik',
-              displayName: 'Jack None',
-              email: 'jack@email.com',
-              photoUrl: 'https://res.cloudinary.com/duo6ruqkc/image/upload/v1550848181/child_rtmjgd.png',
-            },
-          },
-          allIds: [
-            'lkqjwhdkljh293832213123321',
-            'asdf',
-            'gtyhujik',
-          ],
+      const ent = res.reduce((obj, item) => ({
+        ...obj,
+        byID: {
+          ...obj.byID,
+          [item.id]: item,
         },
-        reservedGames: {
-          byId: {
-            1: {
-              id: '1',
-              user: 'lkqjwhdkljh293832213123321',
-              startDate: '2018-01-01T14:10:27.00Z',
-              endDate: '2018-01-02T14:11:27.00Z',
-              matchStatus: 'RESERVED',
-              gametypeId: '1',
-            },
-            2: {
-              id: '2',
-              user: 'asdf',
-              startDate: '2018-01-01T14:10:27.00Z',
-              endDate: '2018-01-02T14:11:27.00Z',
-              matchStatus: 'RESERVED',
-              gametypeId: '2',
-            },
-            3: {
-              id: '3',
-              user: 'gtyhujik',
-              startDate: '2018-01-01T14:10:27.00Z',
-              endDate: '2018-01-02T14:11:27.00Z',
-              matchStatus: 'RESERVED',
-              gametypeId: '1',
-            },
-          },
-          allIds: [1, 2, 3],
-        },
-        gameTypes: {
-          byId: {
-            1: {
-              id: '1',
-              name: 'fifa 19',
-            },
-            2: {
-              id: '2',
-              name: 'mortal combat',
-            },
-          },
-          allIds: [
-            [1, 2],
-          ],
-        },
-        userGames: {
-          byId: {
-            1: {
-              id: 1,
-              userId: 'lkqjwhdkljh293832213123321',
-              gameId: '1',
-            },
-            2: {
-              id: 2,
-              userId: 'asdf',
-              gameId: '43',
-            },
-          },
-          allIds: [1, 2],
-        },
-      });
+        allIds: [
+          ...obj.allIds,
+          ...[item.id],
+        ],
+      }), { byID: {}, allIds: [] });
+      return ent;
     })
 );
 
@@ -108,7 +33,7 @@ const fetchGames = (page) => (
 
 function* workFetchReservedGames() {
   try {
-    const games = yield call(fetchGames, 1);
+    const games = yield call(fetchGames);
     yield put({ type: actionTypes.FETCH_RESERVED_GAMES_SUCCESS, games });
   } catch (e) {
     yield put({ type: actionTypes.FETCH_RESERVED_GAMES_FAIL, message: e.message });

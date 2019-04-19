@@ -1,16 +1,8 @@
 import moment from 'moment';
 
-
-export const getReservedGameEntieties = state => {
-  return state.timeLine.entities;
-};
+export const getReservedGameEntieties = state => state.timeLine.reservedGames;
 
 export const getAllReservedGames = (state) => {
-  const entities = getReservedGameEntieties(state);
-
-  const reservedGames = entities && entities.reservedGames.allIds.map(id => {
-    return entities.reservedGames.byId[id];
-  });
-
-  return reservedGames;
+  const reservedGames = getReservedGameEntieties(state);
+  return reservedGames && reservedGames.allIds.map(id => reservedGames.byID[id]); 
 }

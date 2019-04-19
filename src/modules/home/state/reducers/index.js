@@ -4,7 +4,7 @@ import { actionTypes } from './../actions/actionTypes';
 export const initialState = {
   endLastReservation: moment('10:00 am', 'HH:mm a'),
   actualTime: moment(),
-  workdayStart: moment('08:00 am', 'HH:mm a'),
+  workdayStart: moment('10:00 am', 'HH:mm a'),
   workdayEnd: moment('05:00 pm', 'HH:mm a'),
   gameConfigOpen: false,
   timeConverter: 12,
@@ -26,12 +26,12 @@ export const timeLineReducer = (state = initialState, action) => {
     case actionTypes.FETCH_RESERVED_GAMES_SUCCESS:
       return {
         ...state,
-        entities: action.games,
+        reservedGames: action.games,
       };
     case actionTypes.FETCH_RESERVED_GAMES_FAIL:
       return {
         ...state,
-        entities: {},
+        reservedGames: {},
       };
     default:
       return state;
