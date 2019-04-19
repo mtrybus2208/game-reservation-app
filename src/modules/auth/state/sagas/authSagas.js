@@ -3,6 +3,7 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { doSignInWithGoogle, doSignInWithGithub, signOut } from '@/services/firebase';
 import { actionTypes as uiActionTypes } from '@/modules/shared/state/actions/actionTypes';
 import * as ROUTES from '@/constants/routes';
+import { removeItem } from '@/helpers/localstorage';
 import { actionTypes } from './../actions/actionTypes';
 import { mapUserData } from '../../helpers/mapUserData';
 
@@ -17,6 +18,7 @@ function* workSocialAuth(type) {
     const mappedUser = mapUserData(data.user);
     yield put({ type: actionTypes.SET_AUTH_USER, payload: mappedUser });
     yield put({ type: uiActionTypes.CLOSE_CHAT_WITH_REDIRECT, path: ROUTES.HOME });
+    yield call(removeItem('state'));
   } catch (e) {
     yield put({ type: actionTypes.SOCIAL_AUTH_FAIL, message: e.message });
   }
