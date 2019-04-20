@@ -29,6 +29,7 @@ class GlobalChatWrapper extends Component {
   componentDidMount() {
     const websocket = new WebSocket(this.links.socketConnectionApiUrl);
     this.setWebsocketMessageReceiveHandler(websocket);
+    this.setWebsocketConnectionSustain(websocket);
   }
 
   setWebsocketMessageReceiveHandler = (websocket) => {
@@ -56,6 +57,12 @@ class GlobalChatWrapper extends Component {
     this.setState(oldState => ({
       messages: [...oldState.messages, message],
     }))
+  }
+
+  setWebsocketConnectionSustain = (websocket) => {
+    setInterval(() => {
+      websocket.send('');
+    }, 60000);
   }
 
   sendMessageHandler = () => {
