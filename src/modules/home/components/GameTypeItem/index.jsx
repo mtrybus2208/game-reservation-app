@@ -14,7 +14,7 @@ const defaultProps = {};
 
 const GameTypeItem = ({ active, game, onClick }) => {
   return (
-    <S.GameTypeItem active={active} onClick={onClick('selectedGame', game)}>
+    <S.GameTypeItem active={active} onClick={onClick(game)}>
       <S.IconBox>
         <S.Icon src={game.icon} />
       </S.IconBox>

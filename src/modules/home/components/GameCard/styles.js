@@ -23,7 +23,6 @@ export const GameCard = styled.div`
   
   @media ${({ theme }) => theme.media.tablet} {
     left: ${props => props.left}px;
-    left: ${props => props.left}px;
     right: auto;
     width: ${props => props.size}px;
     top: 101px;

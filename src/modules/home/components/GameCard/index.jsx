@@ -7,11 +7,13 @@ import * as S from './styles';
 const propTypes = {
   user: PropTypes.object,
   display: PropTypes.object,
+  children: PropTypes.node,
+  customTitle: PropTypes.func,
 };
 
 const defaultProps = {};
 
-const GameCard = ({ user, display }) => {
+const GameCard = ({ user, display, children, customTitle }) => {
   return (
     <S.GameCard
       size={display.size}
@@ -28,16 +30,17 @@ const GameCard = ({ user, display }) => {
         </S.AvatarBox>
       </S.Body>
       <S.TitleBox>
-        <S.Title>
-          {user.name}
-        </S.Title>
-        <S.SubTitle>
-          {user.profession}
-        </S.SubTitle>
+        {customTitle || (
+          <React.Fragment>
+            <S.Title>{user.name}</S.Title>
+            <S.SubTitle>{user.profession}</S.SubTitle>
+          </React.Fragment>
+        )}
       </S.TitleBox>
       <S.InfoType>
         <span>{display.gameType}</span>
       </S.InfoType>
+      {children}
     </S.GameCard>
   );
 };

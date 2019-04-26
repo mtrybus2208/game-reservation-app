@@ -16,6 +16,7 @@ const propTypes = {
   reservedGames: PropTypes.array,
   timeConverter: PropTypes.number,
   fetchReservedGames: PropTypes.func,
+  gameReservation: PropTypes.obj,
 };
 
 class TimeLine extends Component {
@@ -29,7 +30,7 @@ class TimeLine extends Component {
     this.props.fetchReservedGames();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate() { 
   }
 
   wrapRef = React.createRef();
@@ -88,7 +89,7 @@ class TimeLine extends Component {
             timeConverter={this.props.timeConverter}
             reservedGames={this.props.reservedGames}
             workdayStart={this.props.workdayStart}
-
+            gameReservation={this.props.gameReservation}
           />
         </S.TimeLine>
       </S.TimeLineWrapper>
@@ -104,6 +105,7 @@ const mapStateToProps = (state) => ({
   timeConverter: state.timeLine.timeConverter,
   arrayOfWorkdayHours: getArrayOfWorkdayHours(state),
   reservedGames: getAllReservedGames(state),
+  gameReservation: state.gameReservationState,
 });
 
 const mapDispatchToProps = dispatch => ({

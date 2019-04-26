@@ -13,3 +13,16 @@ export const changeGameConfigState = (payload) =>
   });
 
 export const fetchReservedGames = () => ({ type: actionTypes.FETCH_RESERVED_GAMES });
+
+export const setGameType = (payload) =>
+  ({
+    type: actionTypes.SET_GAME_TYPE,
+    payload,
+  });
+
+export const setGameTime = (payload) =>
+  ({
+    type: actionTypes.SET_GAME_TIME,
+    payload,
+  });
+

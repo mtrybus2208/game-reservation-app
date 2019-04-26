@@ -11,7 +11,8 @@ import * as S from './styles';
 const propTypes = {
   isOpen: PropTypes.bool,
   authUser: PropTypes.object,
-  onSelect: PropTypes.func,
+  onTypeSelect: PropTypes.func,
+  onTimeSelect: PropTypes.func,
   duration: PropTypes.array,
   games: PropTypes.array,
   selectedGame: PropTypes.object,
@@ -24,12 +25,13 @@ const defaultProps = {};
 const NewGameConfig = ({
   isOpen,
   authUser,
-  onSelect,
+  onTypeSelect,
   selectedGame,
   duration,
   games,
   selectedTime,
   endLastReservation,
+  onTimeSelect,
 }) => {
   const avatar = authUser && authUser.photoURL
     ? <Avatar path={authUser.photoURL} />
@@ -58,7 +60,7 @@ const NewGameConfig = ({
               active={selectedGame && selectedGame.id === game.id}
               key={game.id}
               game={game}
-              onClick={onSelect}
+              onClick={onTypeSelect}
             />
           ))}
         </S.TypesBox>
@@ -68,7 +70,8 @@ const NewGameConfig = ({
           { duration.map(time => (
             <S.TimeItem
               key={time.id}
-              onClick={onSelect('selectedTime', time)}
+              // onClick={onTypeSelect('selectedTime', time)}
+              onClick={onTimeSelect(time)}
             >
               <TimeCircle
                 hoverable={true}

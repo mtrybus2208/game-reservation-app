@@ -13,6 +13,8 @@ const propTypes = {
   timeLine: PropTypes.object.isRequired,
   sessionState: PropTypes.object.isRequired,
   addNewGame: PropTypes.func.isRequired,
+  setGameTime: PropTypes.func.isRequired,
+  setGameType: PropTypes.func.isRequired,
 };
 
 class GameReservation extends Component {
@@ -32,11 +34,13 @@ class GameReservation extends Component {
     this.props.addNewGame(payload);
   }
 
-  handleSelect = (props, data) => () => {
-    this.setState({
-      [props]: data,
-    });
+  handleTypeSelect = (game) => () => {
+    this.props.setGameType(game);
   };
+
+  handleTimeSelect = (time) => () => {
+    this.props.setGameTime(time);
+  }
 
   render() {
     return (
@@ -48,8 +52,9 @@ class GameReservation extends Component {
           duration={this.state.duration}
           games={this.state.games}
           selectedGame={this.state.selectedGame}
-          onSelect={this.handleSelect}
-          selectedTime={this.state.selectedTime}
+          selectedTime={this.props.gameReservation.time}
+          onTimeSelect={this.handleTimeSelect}
+          onTypeSelect={this.handleTypeSelect}
         />
         <S.CtaWrapper>
           <BaseButton.Cta
@@ -69,12 +74,19 @@ const mapStateToProps = (state) => (
     timeLine: state.timeLine,
     endLastReservation: getReservationInHours(state),
     sessionState: state.sessionState,
+    gameReservation: state.gameReservationState,
   }
 );
 
 const mapDispatchToProps = dispatch => ({
   addNewGame: (payload) => {
     dispatch(fromActions.addNewGame(payload));
+  },
+  setGameType: (payload) => {
+    dispatch(fromActions.setGameType(payload));
+  },
+  setGameTime: (payload) => {
+    dispatch(fromActions.setGameTime(payload));
   },
 });
 
