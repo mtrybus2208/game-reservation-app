@@ -34,16 +34,29 @@ class GlobalChatWrapper extends Component {
 
   setWebsocketMessageReceiveHandler = (websocket) => {
     websocket.onmessage = (event) => {
-      let message = JSON.parse(event.data);
+      const websocketMessage = event.data;
 
-      this.getMessageAuthorById(message.playerId)
-        .then(author => {
-          this.updateMessagesList(author, message);
-        })
-        .catch(() =>
-          console.log('Couldn\'t update messages list')
-        )
+      if(this.isGlobalChatMessage(websocketMessage)) {
+        const globalChatMessageJSON = this.extractGlobalChatMessage(websocketMessage);
+        const globalChatMessage = JSON.parse(globalChatMessageJSON);
+
+        this.getMessageAuthorById(globalChatMessage.playerId)
+          .then(author => {
+            this.updateMessagesList(author, globalChatMessage);
+          })
+          .catch(() =>
+            console.log('Couldn\'t update messages list')
+          )
+      } 
     };
+  }
+
+  isGlobalChatMessage = (websocketMessage) => {
+    return websocketMessage.startsWith("[GLOBAL_CHAT]");
+  }
+
+  extractGlobalChatMessage = (websocketMessage) => {
+    return websocketMessage.replace('[GLOBAL_CHAT]', '');
   }
 
   getMessageAuthorById = (playerId) => {
