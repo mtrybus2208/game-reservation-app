@@ -25,7 +25,7 @@ export const GameCard = styled.div`
     left: ${props => props.left}px;
     right: auto;
     width: ${props => props.size}px;
-    top: 101px;
+    top: ${props => props.top}px;;
     height: initial;
     /* max-width: 300px; */
     grid-template-columns: 1fr;

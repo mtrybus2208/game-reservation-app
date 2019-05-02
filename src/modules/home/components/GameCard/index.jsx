@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect }from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@/modules/shared/components/Avatar';
 import CircleItem from '@/modules/shared/components/CircleItem';
@@ -8,16 +8,27 @@ const propTypes = {
   user: PropTypes.object,
   display: PropTypes.object,
   children: PropTypes.node,
-  customTitle: PropTypes.func,
+  customTitle: PropTypes.node,
+  customPosition: PropTypes.number,
 };
 
 const defaultProps = {};
 
-const GameCard = ({ user, display, children, customTitle }) => {
+const GameCard = ({
+  user,
+  display,
+  children,
+  customTitle,
+  customPosition,
+}) => {
+  useEffect(() => {
+    console.log('GAMECARD RERENDER');
+  }, []);
   return (
     <S.GameCard
-      size={display.size}
-      left={display.left}
+      size={display.size || 100}
+      left={customPosition || display.left}
+      top={customPosition || 101}
     >
       <S.InfoTime>
         <span>{display.gameTime}</span>

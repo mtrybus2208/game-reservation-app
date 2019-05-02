@@ -15,8 +15,7 @@ const propTypes = {
   arrayOfWorkdayHours: PropTypes.array,
   reservedGames: PropTypes.array,
   timeConverter: PropTypes.number,
-  fetchReservedGames: PropTypes.func,
-  gameReservation: PropTypes.obj,
+  fetchReservedGames: PropTypes.func, 
 };
 
 class TimeLine extends Component {

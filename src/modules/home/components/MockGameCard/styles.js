@@ -25,6 +25,15 @@ export const MockGameCard = styled.div`
   bottom: 0;
   background: rgba(1, 66, 23, 0.3);
 `;
+export const Test = styled.div`
+  position: absolute;
+  left: ${props => props.left}px; 
+  top: 0;
+  bottom: 0;
+  width: ${props => props.size}px;
+  background: rgba(1, 66, 23, 0.3);
+  top: 101px;
+`;
 
 export const AnimatedIcon = styled.div`
   animation: ${rotate} 3s linear infinite;

@@ -16,7 +16,9 @@ const propTypes = {
 
 const defaultProps = {};
 
-const TimeRuler = ({
+ 
+
+const TimeRuler = React.memo(({
   workdayInPixels,
   timeConverter,
   arrayOfWorkdayHours,
@@ -101,7 +103,7 @@ const TimeRuler = ({
       </S.TimeRuler>
     </S.Wrapper>
   );
-};
+});
 
 TimeRuler.propTypes = propTypes;
 TimeRuler.defaultProps = defaultProps;

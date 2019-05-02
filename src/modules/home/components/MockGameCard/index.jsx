@@ -11,9 +11,9 @@ const propTypes = {
 
 const defaultProps = {};
 
-const MockGameCard = ({ user, display }) => {
-  const [count, setCount] = useState(0);
-  
+const MockGameCard = React.memo(({ user, display }) => {
+  const [leftPosition, setLeftPosition] = useState(null);
+
   const customTitle = (
     <S.AnimatedIcon>
       <BaseIcon
@@ -40,30 +40,41 @@ const MockGameCard = ({ user, display }) => {
     console.log(e);
   }
   const handlerMouseMove = (e) => {
-    console.log('dsadasd');
-    console.log(e);
+    console.log('mouse move');
+    const { size } = display;
+     
+    const postionMy = (e.pageX - 340 + 200) - size;
+    console.log(leftPosition);
+    setLeftPosition(postionMy);
+    // left:  e.pageX-width,
   }
 
   
   return (
-    <GameCard
-      user={user}
-      display={display}
-      customTitle={customTitle}
-       
+    <S.Test
+      left={leftPosition || display.left}
+      size={display.size}
+      onMouseMove={handlerMouseMove}
     >
-      <S.MockGameCard
-        // onClick={handlerMove}
-        onMouseDown={handlerMouseDown}
-        onMouseLeave={handlerMouseLeave}
-        onMouseUp={handlerMouseUp}
-        onMouseMove={handlerMouseMove}
+      <GameCard 
+        user={user}
+        display={display}
+        customTitle={customTitle} 
+        customPosition="0"
       >
-        {/* <S.EnableDragButton>Move me!</S.EnableDragButton> */}
-      </S.MockGameCard>
-    </GameCard>
+        <S.MockGameCard
+          // onClick={handlerMove}
+          // onMouseDown={handlerMouseDown}
+          // onMouseLeave={handlerMouseLeave}
+          // onMouseUp={handlerMouseUp}
+         
+        >
+          {/* <S.EnableDragButton>Move me!</S.EnableDragButton> */}
+        </S.MockGameCard>
+      </GameCard>
+    </S.Test>
   );
-};
+});
 
 MockGameCard.propTypes = propTypes;
 MockGameCard.defaultProps = defaultProps;
