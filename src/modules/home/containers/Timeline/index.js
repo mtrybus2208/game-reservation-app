@@ -21,6 +21,7 @@ const propTypes = {
 class TimeLine extends Component {
   state = {
     isDown: false,
+    isBlocked: false,
     startX: undefined,
     scrollLeft: undefined,
   };
@@ -29,7 +30,7 @@ class TimeLine extends Component {
     this.props.fetchReservedGames();
   }
 
-  componentDidUpdate() { 
+  componentDidUpdate() {
   }
 
   wrapRef = React.createRef();
@@ -42,7 +43,7 @@ class TimeLine extends Component {
 
   mouseMove = () => (e) => {
     const { current } = this.wrapRef;
-    if (!this.state.isDown) return;
+    if (!this.state.isDown || this.state.isBlocked) return;
     e.preventDefault();
     const x = e.pageX - current.offsetLeft;
     const walk = (x - this.state.startX);
@@ -64,9 +65,18 @@ class TimeLine extends Component {
     });
   };
 
-  render() {
+  handlerBlockTimeLine = (isBlocked) => {
+    this.setState({
+      isBlocked,
+    });
+  }
+
+
+  render() {   
     return (
-      <S.TimeLineWrapper>
+      <S.TimeLineWrapper
+        isBlocked={this.state.isBlocked}
+      >
         <S.TimeLine
           ref={this.wrapRef}
           onMouseDown={this.mouseDown()}
@@ -89,6 +99,7 @@ class TimeLine extends Component {
             reservedGames={this.props.reservedGames}
             workdayStart={this.props.workdayStart}
             gameReservation={this.props.gameReservation}
+            onBlockTimeLine={this.handlerBlockTimeLine}
           />
         </S.TimeLine>
       </S.TimeLineWrapper>

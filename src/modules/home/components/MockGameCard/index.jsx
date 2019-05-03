@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import GameCard from '@/modules/home/components/GameCard';
 import BaseIcon from '@/modules/shared/components/BaseIcon';
@@ -7,12 +7,26 @@ import * as S from './styles';
 const propTypes = {
   user: PropTypes.object,
   display: PropTypes.object,
+  onBlockTimeLine: PropTypes.func,
 };
 
 const defaultProps = {};
 
-const MockGameCard = React.memo(({ user, display }) => {
-  const [leftPosition, setLeftPosition] = useState(null);
+const MockGameCard = React.memo(({
+  user,
+  display,
+  onBlockTimeLine,
+}) => {
+  const [isAbleToMove, setIsAbleToMove] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [offsetLeft, setOffsetLeft] = useState(0);
+
+  useEffect(() => {
+    console.log('MockGameCard state');
+    console.log(startX);
+  });
+
+  const wrapRef = React.createRef();
 
   const customTitle = (
     <S.AnimatedIcon>
@@ -23,56 +37,48 @@ const MockGameCard = React.memo(({ user, display }) => {
     </S.AnimatedIcon>
   );
 
-  const handlerMove = (e) => {
-    console.log('dsadasd');
-    console.log(e);
+  const handlerMouseDown = e => {
+    onBlockTimeLine(true);
+    setIsAbleToMove(true);
+    setStartX(e.pageX);
   }
-  const handlerMouseDown = (e) => {
-    console.log('dsadasd');
-    console.log(e);
+  const handlerMouseLeave = () => {
+    onBlockTimeLine(false);
+    setIsAbleToMove(false);
   }
-  const handlerMouseLeave = (e) => {
-    console.log('dsadasd');
-    console.log(e);
-  }
-  const handlerMouseUp = (e) => {
-    console.log('dsadasd');
-    console.log(e);
+  const handlerMouseUp = () => {
+    onBlockTimeLine(false);
+    setIsAbleToMove(false);
+    const { current } = wrapRef;
+    setOffsetLeft(current.offsetLeft);
   }
   const handlerMouseMove = (e) => {
-    console.log('mouse move');
-    const { size } = display;
-     
-    const postionMy = (e.pageX - 340 + 200) - size;
-    console.log(leftPosition);
-    setLeftPosition(postionMy);
-    // left:  e.pageX-width,
+    const { current } = wrapRef;
+    if (!isAbleToMove) return;
+    e.preventDefault();
+    const walk = (e.pageX - startX);
+    current.style.left = `${offsetLeft + walk}px`;
   }
 
-  
   return (
-    <S.Test
-      left={leftPosition || display.left}
+    <S.CardWrap
       size={display.size}
       onMouseMove={handlerMouseMove}
+      onMouseDown={handlerMouseDown}
+      onMouseLeave={handlerMouseLeave}
+      onMouseUp={handlerMouseUp}
+      ref={wrapRef}
+      isAbleToMove={isAbleToMove}
     >
-      <GameCard 
+    <GameCard 
         user={user}
         display={display}
         customTitle={customTitle} 
-        customPosition="0"
+        customPosition
       >
-        <S.MockGameCard
-          // onClick={handlerMove}
-          // onMouseDown={handlerMouseDown}
-          // onMouseLeave={handlerMouseLeave}
-          // onMouseUp={handlerMouseUp}
-         
-        >
-          {/* <S.EnableDragButton>Move me!</S.EnableDragButton> */}
-        </S.MockGameCard>
+        <S.MockGameCard />  
       </GameCard>
-    </S.Test>
+    </S.CardWrap>
   );
 });
 

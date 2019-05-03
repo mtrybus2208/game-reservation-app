@@ -9,7 +9,7 @@ const propTypes = {
   display: PropTypes.object,
   children: PropTypes.node,
   customTitle: PropTypes.node,
-  customPosition: PropTypes.number,
+  customPosition: PropTypes.boolean,
 };
 
 const defaultProps = {};
@@ -23,12 +23,13 @@ const GameCard = ({
 }) => {
   useEffect(() => {
     console.log('GAMECARD RERENDER');
+    console.log(customPosition);
   }, []);
   return (
     <S.GameCard
       size={display.size || 100}
-      left={customPosition || display.left}
-      top={customPosition || 101}
+      left={customPosition ? 0 : display.left}
+      top={customPosition ? 0 : 101}
     >
       <S.InfoTime>
         <span>{display.gameTime}</span>

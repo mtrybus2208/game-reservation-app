@@ -12,6 +12,7 @@ const propTypes = {
   reservedGames: PropTypes.array,
   workdayStart: PropTypes.object,
   gameReservation: PropTypes.object,
+  onBlockTimeLine: PropTypes.func,
 };
 
 const defaultProps = {};
@@ -25,6 +26,7 @@ const TimeRuler = React.memo(({
   reservedGames,
   workdayStart,
   gameReservation,
+  onBlockTimeLine,
 }) => {
   const hoursToPixels = h => h * 60 * timeConverter;
 
@@ -84,6 +86,7 @@ const TimeRuler = React.memo(({
               left: 200,
             }
           }
+          onBlockTimeLine={onBlockTimeLine}
         />
       }
       <S.TimeRuler
@@ -99,7 +102,7 @@ const TimeRuler = React.memo(({
               time={h}
             />
           ))
-        };
+        }
       </S.TimeRuler>
     </S.Wrapper>
   );

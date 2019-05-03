@@ -2,7 +2,6 @@ import styled, { keyframes } from 'styled-components';
 import PropTypes from 'prop-types';
 import { rgba } from 'polished';
 
-
 const rotate = keyframes`
   0% {
     transform: translateX(-50%);
@@ -25,14 +24,19 @@ export const MockGameCard = styled.div`
   bottom: 0;
   background: rgba(1, 66, 23, 0.3);
 `;
-export const Test = styled.div`
+
+export const CardWrap = styled.div`
   position: absolute;
-  left: ${props => props.left}px; 
+  left: 200;
   top: 0;
   bottom: 0;
   width: ${props => props.size}px;
   background: rgba(1, 66, 23, 0.3);
   top: 101px;
+  z-index: 1;
+  border: ${({ isAbleToMove }) => isAbleToMove ? '3px solid #014217' : 'none'};
+  border-top: none;
+  border-bottom: none;
 `;
 
 export const AnimatedIcon = styled.div`

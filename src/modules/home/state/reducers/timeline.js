@@ -31,7 +31,7 @@ export const timeLineReducer = (state = initialState, action) => {
     case actionTypes.FETCH_RESERVED_GAMES_FAIL:
       return {
         ...state,
-        reservedGames: {},
+        reservedGames: null,
       };
     default:
       return state;
