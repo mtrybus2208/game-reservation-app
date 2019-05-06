@@ -30,8 +30,7 @@ export const GameTimeBox = styled.div`
     justify-content: center;
     align-items: center;
 
-    @media ${({ theme }) => theme.media.tablet} {
-      
+    @media ${({ theme }) => theme.media.tablet} {   
     }
 `;
 

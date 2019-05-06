@@ -33,6 +33,7 @@ const NewGameConfig = ({
   endLastReservation,
   onTimeSelect,
 }) => {
+
   const avatar = authUser && authUser.photoURL
     ? <Avatar path={authUser.photoURL} />
     : <Avatar />;
@@ -55,7 +56,7 @@ const NewGameConfig = ({
       </InfoCard>
       <InfoCard header="game type">
         <S.TypesBox>
-          { games.map(game => (
+          {games.map(game => (
             <GameTypeItem
               active={selectedGame && selectedGame.id === game.id}
               key={game.id}

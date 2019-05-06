@@ -12,6 +12,8 @@ import * as S from './styles';
 const propTypes = {
   timeLine: PropTypes.object.isRequired,
   sessionState: PropTypes.object.isRequired,
+  gameReservation: PropTypes.object,
+  endLastReservation: PropTypes.string,
   addNewGame: PropTypes.func.isRequired,
   setGameTime: PropTypes.func.isRequired,
   setGameType: PropTypes.func.isRequired,
@@ -34,11 +36,11 @@ class GameReservation extends Component {
     this.props.addNewGame(payload);
   }
 
-  handleTypeSelect = (game) => () => {
+  handleTypeSelect = game => () => {
     this.props.setGameType(game);
   };
 
-  handleTimeSelect = (time) => () => {
+  handleTimeSelect = time => () => {
     this.props.setGameTime(time);
   }
 
@@ -51,7 +53,7 @@ class GameReservation extends Component {
           isOpen={this.props.timeLine.gameConfigOpen}
           duration={this.state.duration}
           games={this.state.games}
-          selectedGame={this.state.selectedGame}
+          selectedGame={this.props.gameReservation.gameType}
           selectedTime={this.props.gameReservation.time}
           onTimeSelect={this.handleTimeSelect}
           onTypeSelect={this.handleTypeSelect}

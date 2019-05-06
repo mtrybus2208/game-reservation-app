@@ -24,16 +24,29 @@ class TimeLine extends Component {
     isBlocked: false,
     startX: undefined,
     scrollLeft: undefined,
+    wrapperPosition: null,
   };
 
   componentDidMount() {
     this.props.fetchReservedGames();
+
+    // const { current } = this.wrapperRef;
+    // this.setState({
+    //   wrapperPosition: current.getBoundingClientRect(),
+    // });
   }
 
   componentDidUpdate() {
+    // console.log('this.state.wrapperPosition');
+    // console.log(this.state.wrapperPosition);
   }
+  
+  setWrapperRef = element => element &&
+    this.setState({
+      wrapperPosition: element.getBoundingClientRect(),
+    });
 
-  wrapRef = React.createRef();
+  timeLineRef = React.createRef();
 
   mouseLeave = () => () => {
     this.setState({
@@ -41,8 +54,8 @@ class TimeLine extends Component {
     });
   };
 
-  mouseMove = () => (e) => {
-    const { current } = this.wrapRef;
+  mouseMove = () => e => {
+    const { current } = this.timeLineRef;
     if (!this.state.isDown || this.state.isBlocked) return;
     e.preventDefault();
     const x = e.pageX - current.offsetLeft;
@@ -56,8 +69,8 @@ class TimeLine extends Component {
     });
   };
 
-  mouseDown = () => (e) => {
-    const { current } = this.wrapRef;
+  mouseDown = () => e => {
+    const { current } = this.timeLineRef;
     this.setState({
       isDown: true,
       startX: e.pageX - current.offsetLeft,
@@ -65,7 +78,7 @@ class TimeLine extends Component {
     });
   };
 
-  handlerBlockTimeLine = (isBlocked) => {
+  handlerBlockTimeLine = isBlocked => {
     this.setState({
       isBlocked,
     });
@@ -76,9 +89,10 @@ class TimeLine extends Component {
     return (
       <S.TimeLineWrapper
         isBlocked={this.state.isBlocked}
+        ref={this.setWrapperRef}
       >
         <S.TimeLine
-          ref={this.wrapRef}
+          ref={this.timeLineRef}
           onMouseDown={this.mouseDown()}
           onMouseLeave={this.mouseLeave()}
           onMouseUp={this.mouseUp()}

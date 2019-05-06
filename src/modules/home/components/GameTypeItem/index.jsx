@@ -13,6 +13,7 @@ const propTypes = {
 const defaultProps = {};
 
 const GameTypeItem = ({ active, game, onClick }) => {
+
   return (
     <S.GameTypeItem active={active} onClick={onClick(game)}>
       <S.IconBox>

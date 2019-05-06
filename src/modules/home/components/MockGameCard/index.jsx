@@ -22,11 +22,15 @@ const MockGameCard = React.memo(({
   const [offsetLeft, setOffsetLeft] = useState(0);
 
   useEffect(() => {
-    console.log('MockGameCard state');
-    console.log(startX);
   });
 
-  const wrapRef = React.createRef();
+  let wrapRef = null;
+
+  const setWrapRef = element => {
+    if(element) {
+      wrapRef = element;
+    }
+  } 
 
   const customTitle = (
     <S.AnimatedIcon>
@@ -36,6 +40,13 @@ const MockGameCard = React.memo(({
       />
     </S.AnimatedIcon>
   );
+
+  const detectWrapperEdges = () => {
+    return true;
+  }
+  const moveWrapper = () => {
+    console.log('TODO: Detect edges of Wrapper component and run function resposible for scrolling')
+  }
 
   const handlerMouseDown = e => {
     onBlockTimeLine(true);
@@ -49,15 +60,16 @@ const MockGameCard = React.memo(({
   const handlerMouseUp = () => {
     onBlockTimeLine(false);
     setIsAbleToMove(false);
-    const { current } = wrapRef;
-    setOffsetLeft(current.offsetLeft);
+    setOffsetLeft(wrapRef.offsetLeft);
   }
-  const handlerMouseMove = (e) => {
-    const { current } = wrapRef;
+  const handlerMouseMove = e => {
     if (!isAbleToMove) return;
     e.preventDefault();
     const walk = (e.pageX - startX);
-    current.style.left = `${offsetLeft + walk}px`;
+    wrapRef.style.left = `${offsetLeft + walk}px`;
+
+    const position = wrapRef.getBoundingClientRect();
+    detectWrapperEdges(position) && moveWrapper();
   }
 
   return (
@@ -67,7 +79,7 @@ const MockGameCard = React.memo(({
       onMouseDown={handlerMouseDown}
       onMouseLeave={handlerMouseLeave}
       onMouseUp={handlerMouseUp}
-      ref={wrapRef}
+      ref={setWrapRef}
       isAbleToMove={isAbleToMove}
     >
     <GameCard 
