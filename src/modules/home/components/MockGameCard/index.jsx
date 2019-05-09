@@ -20,8 +20,14 @@ const MockGameCard = React.memo(({
   const [isAbleToMove, setIsAbleToMove] = useState(false);
   const [startX, setStartX] = useState(0);
   const [offsetLeft, setOffsetLeft] = useState(0);
+  const [walks, setwalks] = useState(0);
+  let [lastUpdateCall, setLastUpdateCall] = useState(null);
 
   useEffect(() => {
+    // update(walks);
+    return () => {
+      // update.cancel();
+    }
   });
 
   let wrapRef = null;
@@ -51,7 +57,7 @@ const MockGameCard = React.memo(({
   const handlerMouseDown = e => {
     onBlockTimeLine(true);
     setIsAbleToMove(true);
-    setStartX(e.pageX);
+    setStartX(e.pageX); 
   }
   const handlerMouseLeave = () => {
     onBlockTimeLine(false);
@@ -60,16 +66,59 @@ const MockGameCard = React.memo(({
   const handlerMouseUp = () => {
     onBlockTimeLine(false);
     setIsAbleToMove(false);
+    document.removeEventListener('mousemove', handlerMouseMove);
     setOffsetLeft(wrapRef.offsetLeft);
   }
+
+  const throttle = (f) => {
+    let token = null, lastArgs = null;
+    const invoke = () => {
+        f(...lastArgs);
+        token = null;
+    };
+    const result = (...args) => {
+        lastArgs = args;
+        if (!token) {
+            token = requestAnimationFrame(invoke);
+        }
+    };
+    result.cancel = () => token && cancelAnimationFrame(token);
+    return result;
+};
+
+const update = (data) => {
+  console.log('???????????data');
+  console.log(data);
+  // const walk = (e.pageX - startX);
+  // wrapRef.style.left = `${offsetLeft + walk}px`;
+  wrapRef.style.transform = `translateX(${walks}px)`;
+};
+
+
   const handlerMouseMove = e => {
     if (!isAbleToMove) return;
     e.preventDefault();
     const walk = (e.pageX - startX);
-    wrapRef.style.left = `${offsetLeft + walk}px`;
+    const res = offsetLeft + walk;
+    // wrapRef.style.left = `${offsetLeft + walk}px`;
+    // wrapRef.style.transform = `translateX(${offsetLeft + walk}px)`;
 
-    const position = wrapRef.getBoundingClientRect();
-    detectWrapperEdges(position) && moveWrapper();
+    // const position = wrapRef.getBoundingClientRect();
+    // detectWrapperEdges(position) && moveWrapper();
+
+    // setwalks(res)
+    // update(res)
+    if(lastUpdateCall) cancelAnimationFrame(lastUpdateCall); 
+    lastUpdateCall=requestAnimationFrame(() => { //save the requested frame so we can check next time if one was already requested
+      // distancePosition = (e.clientX - startPosition) + currentPosition;
+      setwalks(res);
+       // Do the distance calculation inside the animation frame request also, so the browser doesn't have to do it more often than necessary 
+      update(); //all the function that handles the request
+      setLastUpdateCall(null); // Since this frame didn't get cancelled, the lastUpdateCall should be reset so new frames can be called. 
+  });
+    // requestAnimationFrame(() => {
+    //   wrapRef.style.transform = `translateX(${res}px)`;
+    // });
   }
 
   return (

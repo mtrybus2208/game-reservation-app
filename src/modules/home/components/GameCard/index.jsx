@@ -37,15 +37,15 @@ const GameCard = ({
       <S.Body>
         <S.AvatarBox>
           <CircleItem>
-            <Avatar path={user.avatarImg} />
+            <Avatar path={ user && user.avatarImg} />
           </CircleItem>
         </S.AvatarBox>
       </S.Body>
       <S.TitleBox>
         {customTitle || (
           <React.Fragment>
-            <S.Title>{user.name}</S.Title>
-            <S.SubTitle>{user.profession}</S.SubTitle>
+            <S.Title>{user && user.name}</S.Title>
+            <S.SubTitle>{user && user.profession}</S.SubTitle>
           </React.Fragment>
         )}
       </S.TitleBox>

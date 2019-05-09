@@ -6,6 +6,7 @@ import { getAllReservedGames } from '@/modules/home/state/selectors/entieties';
 import * as fromActions from '../../state/actions';
 import { getTimeLine, getWorkdayInPixels, getArrayOfWorkdayHours, getActualDateInPixels } from '../../state/selectors';
 import TimeRuler from '../../components/TimeRuler';
+import Draggable from '../../components/Draggable/index.jsx';
 import * as S from './styles';
 
 const propTypes = {
@@ -25,6 +26,8 @@ class TimeLine extends Component {
     startX: undefined,
     scrollLeft: undefined,
     wrapperPosition: null,
+    x: 0,
+    y: 0,
   };
 
   componentDidMount() {
@@ -40,6 +43,11 @@ class TimeLine extends Component {
     // console.log('this.state.wrapperPosition');
     // console.log(this.state.wrapperPosition);
   }
+
+  _move = (x, y) => {
+    this.setState({x, y});
+  }
+  
   
   setWrapperRef = element => element &&
     this.setState({
@@ -86,11 +94,20 @@ class TimeLine extends Component {
 
 
   render() {   
+    const {x, y} = this.state;
+
     return (
       <S.TimeLineWrapper
         isBlocked={this.state.isBlocked}
         ref={this.setWrapperRef}
       >
+        <Draggable
+            x={x}
+            y={y}
+            onMove={this._move}
+        >
+            Drag me
+        </Draggable>
         <S.TimeLine
           ref={this.timeLineRef}
           onMouseDown={this.mouseDown()}
