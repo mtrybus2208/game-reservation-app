@@ -17,8 +17,6 @@ const propTypes = {
 
 const defaultProps = {};
 
- 
-
 const TimeRuler = React.memo(({
   workdayInPixels,
   timeConverter,

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react'; 
 import PropTypes from 'prop-types';
+import { throttleAnimation } from '@/helpers';
 import GameCard from '@/modules/home/components/GameCard';
 import BaseIcon from '@/modules/shared/components/BaseIcon';
 import * as S from './styles';
@@ -17,26 +18,19 @@ const MockGameCard = React.memo(({
   display,
   onBlockTimeLine,
 }) => {
+  const [startX, setStartX] = useState(null);
   const [isAbleToMove, setIsAbleToMove] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [offsetLeft, setOffsetLeft] = useState(0);
-  const [walks, setwalks] = useState(0);
-  let [lastUpdateCall, setLastUpdateCall] = useState(null);
+  let relX = 0;
+  let relY = 0;
+  const ref = useRef(null);
 
   useEffect(() => {
-    // update(walks);
+    ref.current.addEventListener('mousedown', onMouseDown);
     return () => {
-      // update.cancel();
-    }
+      ref.current.removeEventListener('mousedown', onMouseDown);
+      update.cancel();
+    };
   });
-
-  let wrapRef = null;
-
-  const setWrapRef = element => {
-    if(element) {
-      wrapRef = element;
-    }
-  } 
 
   const customTitle = (
     <S.AnimatedIcon>
@@ -47,97 +41,54 @@ const MockGameCard = React.memo(({
     </S.AnimatedIcon>
   );
 
-  const detectWrapperEdges = () => {
-    return true;
-  }
-  const moveWrapper = () => {
-    console.log('TODO: Detect edges of Wrapper component and run function resposible for scrolling')
-  }
-
-  const handlerMouseDown = e => {
-    onBlockTimeLine(true);
-    setIsAbleToMove(true);
-    setStartX(e.pageX); 
-  }
-  const handlerMouseLeave = () => {
-    onBlockTimeLine(false);
-    setIsAbleToMove(false);
-  }
-  const handlerMouseUp = () => {
-    onBlockTimeLine(false);
-    setIsAbleToMove(false);
-    document.removeEventListener('mousemove', handlerMouseMove);
-    setOffsetLeft(wrapRef.offsetLeft);
-  }
-
-  const throttle = (f) => {
-    let token = null, lastArgs = null;
-    const invoke = () => {
-        f(...lastArgs);
-        token = null;
-    };
-    const result = (...args) => {
-        lastArgs = args;
-        if (!token) {
-            token = requestAnimationFrame(invoke);
-        }
-    };
-    result.cancel = () => token && cancelAnimationFrame(token);
-    return result;
-};
-
-const update = (data) => {
-  console.log('???????????data');
-  console.log(data);
-  // const walk = (e.pageX - startX);
-  // wrapRef.style.left = `${offsetLeft + walk}px`;
-  wrapRef.style.transform = `translateX(${walks}px)`;
-};
-
-
-  const handlerMouseMove = e => {
-    if (!isAbleToMove) return;
-    e.preventDefault();
-    const walk = (e.pageX - startX);
-    const res = offsetLeft + walk;
-    // wrapRef.style.left = `${offsetLeft + walk}px`;
-    // wrapRef.style.transform = `translateX(${offsetLeft + walk}px)`;
-
-    // const position = wrapRef.getBoundingClientRect();
-    // detectWrapperEdges(position) && moveWrapper();
-
-    // setwalks(res)
-    // update(res)
-    if(lastUpdateCall) cancelAnimationFrame(lastUpdateCall); 
-    lastUpdateCall=requestAnimationFrame(() => { //save the requested frame so we can check next time if one was already requested
-      // distancePosition = (e.clientX - startPosition) + currentPosition;
-      setwalks(res);
-       // Do the distance calculation inside the animation frame request also, so the browser doesn't have to do it more often than necessary 
-      update(); //all the function that handles the request
-      setLastUpdateCall(null); // Since this frame didn't get cancelled, the lastUpdateCall should be reset so new frames can be called. 
+  const update = throttleAnimation(data => {
+    ref.current.style.transform = `translateX(${data}px)`;
   });
-    // requestAnimationFrame(() => {
-    //   wrapRef.style.transform = `translateX(${res}px)`;
-    // });
-  }
+
+  const handlerMoveStatus = (status = true) => {
+    onBlockTimeLine(status);
+    setIsAbleToMove(status);
+  };
+
+  const onMouseMove = event => {
+    const walk = event.pageX - startX;
+    update(walk);
+    event.preventDefault();
+  };
+
+  const onMouseUp = event => {
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+    handlerMoveStatus(false);
+    event.preventDefault();
+  };
+
+  const onMouseDown = event => {
+    if (event.button !== 0) { return; }
+    handlerMoveStatus();
+    setStartX(event.pageX);
+
+    const { left } = ref.current.getBoundingClientRect();
+    relX = left;
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+    event.preventDefault();
+  };
 
   return (
     <S.CardWrap
       size={display.size}
-      onMouseMove={handlerMouseMove}
-      onMouseDown={handlerMouseDown}
-      onMouseLeave={handlerMouseLeave}
-      onMouseUp={handlerMouseUp}
-      ref={setWrapRef}
+      onMouseDown={onMouseDown}
+      ref={ref}
       isAbleToMove={isAbleToMove}
     >
-    <GameCard 
+      <GameCard
         user={user}
         display={display}
-        customTitle={customTitle} 
+        customTitle={customTitle}
         customPosition
       >
-        <S.MockGameCard />  
+        <S.MockGameCard />
       </GameCard>
     </S.CardWrap>
   );

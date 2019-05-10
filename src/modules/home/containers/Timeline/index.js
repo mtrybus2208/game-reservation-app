@@ -26,8 +26,6 @@ class TimeLine extends Component {
     startX: undefined,
     scrollLeft: undefined,
     wrapperPosition: null,
-    x: 0,
-    y: 0,
   };
 
   componentDidMount() {
@@ -44,11 +42,6 @@ class TimeLine extends Component {
     // console.log(this.state.wrapperPosition);
   }
 
-  _move = (x, y) => {
-    this.setState({x, y});
-  }
-  
-  
   setWrapperRef = element => element &&
     this.setState({
       wrapperPosition: element.getBoundingClientRect(),
@@ -92,22 +85,12 @@ class TimeLine extends Component {
     });
   }
 
-
-  render() {   
-    const {x, y} = this.state;
-
+  render() {
     return (
       <S.TimeLineWrapper
         isBlocked={this.state.isBlocked}
         ref={this.setWrapperRef}
       >
-        <Draggable
-            x={x}
-            y={y}
-            onMove={this._move}
-        >
-            Drag me
-        </Draggable>
         <S.TimeLine
           ref={this.timeLineRef}
           onMouseDown={this.mouseDown()}
