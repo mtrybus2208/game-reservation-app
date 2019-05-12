@@ -5,6 +5,9 @@ import { actionTypes as uiActionTypes } from '@/modules/shared/state/actions/act
 import * as ROUTES from '@/constants/routes';
 import { actionTypes } from './../actions/actionTypes';
 import { mapUserData } from '../../helpers/mapUserData';
+import axios from 'axios';
+
+const playerSaveLink = 'http://localhost/players';
 
 function* workSocialAuth(type) {
   const socialTypes = { 
@@ -17,10 +20,13 @@ function* workSocialAuth(type) {
     const mappedUser = mapUserData(data.user);
     yield put({ type: actionTypes.SET_AUTH_USER, payload: mappedUser });
     yield put({ type: uiActionTypes.CLOSE_CHAT_WITH_REDIRECT, path: ROUTES.HOME });
+
+    savePlayer(mappedUser);
   } catch (e) {
     yield put({ type: actionTypes.SOCIAL_AUTH_FAIL, message: e.message });
   }
 }
+
 function* workSignOut() {
   try {
     yield call(signOut);
@@ -41,4 +47,21 @@ export function* watchSocialAuthGithub() {
 
 export function* watchSignOut() {
   yield takeEvery(actionTypes.SIGN_OUT, workSignOut);
+}
+
+function savePlayer(mappedUser) {
+  const playerRequestBody = buildPlayerCreateRequestBody(mappedUser);
+
+  axios.post(playerSaveLink, playerRequestBody);
+}
+
+function buildPlayerCreateRequestBody(mappedUser) {
+  return JSON.parse(
+    `{
+      "id": "${mappedUser.uid}",
+      "email": "${mappedUser.email}",
+      "displayName": "${mappedUser.displayName}",
+      "photoUrl": "${mappedUser.photoURL}"
+    }`
+  );
 }
