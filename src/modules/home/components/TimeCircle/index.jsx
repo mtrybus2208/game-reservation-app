@@ -6,15 +6,19 @@ import * as S from './styles';
 const propTypes = {
   time: PropTypes.node,
   unit: PropTypes.string,
+  active: PropTypes.bool,
+  hoverable: PropTypes.bool,
 };
 
 const defaultProps = {
   unit: null,
+  active: false,
+  hoverable: false,
 }; 
 
-const TimeCircle = ({ time, unit }) => {
+const TimeCircle = ({ time, unit, active, hoverable }) => {
   return (
-    <CircleItem hoverable={!!unit}>
+    <CircleItem hoverable={hoverable} active={active}>
       <S.Box>
         <S.Time>
           {time}

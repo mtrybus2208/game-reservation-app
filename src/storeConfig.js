@@ -6,7 +6,7 @@ import 'regenerator-runtime/runtime';
 import { routerReducer, routerMiddleware } from 'react-router-redux';
 import { throttled } from './helpers';
 import { loadState, saveState } from './helpers/localstorage';
-import { timeLineReducer } from './modules/home/state/reducers';
+import { timeLineReducer, gameReservationReducer } from './modules/home/state/reducers';
 import { uiReducer } from './modules/shared/state/reducers';
 import { messageReducer, sessionReducer } from './modules/auth/state/reducers';
 import timeLineSaga from './modules/home/state/sagas/';
@@ -21,6 +21,7 @@ export default function configureStore(history) {
     ui: uiReducer,
     messageState: messageReducer,
     sessionState: sessionReducer,
+    gameReservationState: gameReservationReducer,
   });
 
   const sagaMiddleware = createSagaMiddleware();

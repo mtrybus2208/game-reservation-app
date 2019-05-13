@@ -2,9 +2,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { getAllReservedGames } from '@/modules/home/state/selectors/entieties';
+import TimeRuler from '@/modules/home/components/TimeRuler';
 import * as fromActions from '../../state/actions';
 import { getTimeLine, getWorkdayInPixels, getArrayOfWorkdayHours, getActualDateInPixels } from '../../state/selectors';
-import TimeRuler from '../../components/TimeRuler';
 import * as S from './styles';
 
 const propTypes = {
@@ -12,22 +13,32 @@ const propTypes = {
   workdayInPixels: PropTypes.number,
   actualDateInPixels: PropTypes.number,
   arrayOfWorkdayHours: PropTypes.array,
+  reservedGames: PropTypes.array,
   timeConverter: PropTypes.number,
-  fetchReservedGames: PropTypes.func,
+  fetchReservedGames: PropTypes.func, 
 };
 
 class TimeLine extends Component {
   state = {
     isDown: false,
+    isBlocked: false,
     startX: undefined,
     scrollLeft: undefined,
+    wrapperPosition: null,
   };
 
   componentDidMount() {
     this.props.fetchReservedGames();
   }
 
-  wrapRef = React.createRef();
+  componentDidUpdate() {}
+
+  setWrapperRef = element => element &&
+    this.setState({
+      wrapperPosition: element.getBoundingClientRect(),
+    });
+
+  timeLineRef = React.createRef();
 
   mouseLeave = () => () => {
     this.setState({
@@ -35,9 +46,9 @@ class TimeLine extends Component {
     });
   };
 
-  mouseMove = () => (e) => {
-    const { current } = this.wrapRef;
-    if (!this.state.isDown) return;
+  mouseMove = () => e => {
+    const { current } = this.timeLineRef;
+    if (!this.state.isDown || this.state.isBlocked) return;
     e.preventDefault();
     const x = e.pageX - current.offsetLeft;
     const walk = (x - this.state.startX);
@@ -50,8 +61,8 @@ class TimeLine extends Component {
     });
   };
 
-  mouseDown = () => (e) => {
-    const { current } = this.wrapRef;
+  mouseDown = () => e => {
+    const { current } = this.timeLineRef;
     this.setState({
       isDown: true,
       startX: e.pageX - current.offsetLeft,
@@ -59,11 +70,20 @@ class TimeLine extends Component {
     });
   };
 
+  handlerBlockTimeLine = isBlocked => {
+    this.setState({
+      isBlocked,
+    });
+  }
+
   render() {
     return (
-      <S.TimeLineWrapper>
+      <S.TimeLineWrapper
+        isBlocked={this.state.isBlocked}
+        ref={this.setWrapperRef}
+      >
         <S.TimeLine
-          ref={this.wrapRef}
+          ref={this.timeLineRef}
           onMouseDown={this.mouseDown()}
           onMouseLeave={this.mouseLeave()}
           onMouseUp={this.mouseUp()}
@@ -81,6 +101,10 @@ class TimeLine extends Component {
             workdayInPixels={this.props.workdayInPixels}
             arrayOfWorkdayHours={this.props.arrayOfWorkdayHours}
             timeConverter={this.props.timeConverter}
+            reservedGames={this.props.reservedGames}
+            workdayStart={this.props.workdayStart}
+            gameReservation={this.props.gameReservation}
+            onBlockTimeLine={this.handlerBlockTimeLine}
           />
         </S.TimeLine>
       </S.TimeLineWrapper>
@@ -91,9 +115,12 @@ class TimeLine extends Component {
 const mapStateToProps = (state) => ({
   timeLine: getTimeLine(state),
   workdayInPixels: getWorkdayInPixels(state),
+  workdayStart: state.timeLine.workdayStart,
   actualDateInPixels: getActualDateInPixels(state),
   timeConverter: state.timeLine.timeConverter,
   arrayOfWorkdayHours: getArrayOfWorkdayHours(state),
+  reservedGames: getAllReservedGames(state),
+  gameReservation: state.gameReservationState,
 });
 
 const mapDispatchToProps = dispatch => ({
