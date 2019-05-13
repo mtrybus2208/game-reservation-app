@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react'; 
 import PropTypes from 'prop-types';
 import GameCard from '../GameCard';
 import MockGameCard from '../MockGameCard';
@@ -26,8 +26,10 @@ const TimeRuler = React.memo(({
   gameReservation,
   onBlockTimeLine,
 }) => {
-  const hoursToPixels = h => h * 60 * timeConverter;
 
+  const [cardPosition, setCardPosition] = useState(0);
+
+  const hoursToPixels = h => h * 60 * timeConverter;
   const minutesToPixels = m => m * timeConverter;
 
   const renderGameCard = (game) => {
@@ -85,6 +87,8 @@ const TimeRuler = React.memo(({
             }
           }
           onBlockTimeLine={onBlockTimeLine}
+          setCardPosition={setCardPosition}
+          cardPosition={cardPosition}
         />
       }
       <S.TimeRuler

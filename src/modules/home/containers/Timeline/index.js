@@ -3,10 +3,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getAllReservedGames } from '@/modules/home/state/selectors/entieties';
+import TimeRuler from '@/modules/home/components/TimeRuler';
 import * as fromActions from '../../state/actions';
 import { getTimeLine, getWorkdayInPixels, getArrayOfWorkdayHours, getActualDateInPixels } from '../../state/selectors';
-import TimeRuler from '../../components/TimeRuler';
-import Draggable from '../../components/Draggable/index.jsx';
 import * as S from './styles';
 
 const propTypes = {
@@ -30,17 +29,9 @@ class TimeLine extends Component {
 
   componentDidMount() {
     this.props.fetchReservedGames();
-
-    // const { current } = this.wrapperRef;
-    // this.setState({
-    //   wrapperPosition: current.getBoundingClientRect(),
-    // });
   }
 
-  componentDidUpdate() {
-    // console.log('this.state.wrapperPosition');
-    // console.log(this.state.wrapperPosition);
-  }
+  componentDidUpdate() {}
 
   setWrapperRef = element => element &&
     this.setState({

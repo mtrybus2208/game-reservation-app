@@ -16,6 +16,31 @@ const rotate = keyframes`
   }
 `;
 
+export const CardWrap = styled.div`
+  position: absolute;
+  top: ${props => props.cardPosition}px;
+  top: 0;
+  bottom: 0;
+  width: auto;
+  background: rgba(1, 66, 23, 0.3);
+  top: 101px;
+  z-index: 1;
+  border: ${({ isAbleToMove }) => isAbleToMove ? '3px solid #014217' : 'none'};
+  border-top: none;
+  border-bottom: none;
+
+  @media ${({ theme }) => theme.media.tablet} {
+    left: ${props => props.cardPosition}px;
+    right: auto;
+    width: ${props => props.size}px;
+  }
+`;
+
+CardWrap.propTypes = {
+  size: PropTypes.number,
+  cardPosition: PropTypes.number,
+};
+
 export const MockGameCard = styled.div`
   position: absolute;
   left: 0;
@@ -23,20 +48,6 @@ export const MockGameCard = styled.div`
   top: 0;
   bottom: 0;
   background: rgba(1, 66, 23, 0.3);
-`;
-
-export const CardWrap = styled.div`
-  position: absolute;
-  left: 200;
-  top: 0;
-  bottom: 0;
-  width: ${props => props.size}px;
-  background: rgba(1, 66, 23, 0.3);
-  top: 101px;
-  z-index: 1;
-  border: ${({ isAbleToMove }) => isAbleToMove ? '3px solid #014217' : 'none'};
-  border-top: none;
-  border-bottom: none;
 `;
 
 export const AnimatedIcon = styled.div`

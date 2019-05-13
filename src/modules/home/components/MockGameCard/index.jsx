@@ -9,6 +9,8 @@ const propTypes = {
   user: PropTypes.object,
   display: PropTypes.object,
   onBlockTimeLine: PropTypes.func,
+  cardPosition: PropTypes.number,
+  setCardPosition: PropTypes.func,
 };
 
 const defaultProps = {};
@@ -17,12 +19,12 @@ const MockGameCard = React.memo(({
   user,
   display,
   onBlockTimeLine,
+  cardPosition,
+  setCardPosition,
 }) => {
-  const [startX, setStartX] = useState(null);
   const [isAbleToMove, setIsAbleToMove] = useState(false);
-  let relX = 0;
-  let relY = 0;
   const ref = useRef(null);
+  let relX = null;
 
   useEffect(() => {
     ref.current.addEventListener('mousedown', onMouseDown);
@@ -41,8 +43,8 @@ const MockGameCard = React.memo(({
     </S.AnimatedIcon>
   );
 
-  const update = throttleAnimation(data => {
-    ref.current.style.transform = `translateX(${data}px)`;
+  const update = throttleAnimation(walk => {
+    ref.current.style.left = `${cardPosition + walk}px`;
   });
 
   const handlerMoveStatus = (status = true) => {
@@ -51,7 +53,7 @@ const MockGameCard = React.memo(({
   };
 
   const onMouseMove = event => {
-    const walk = event.pageX - startX;
+    const walk = event.pageX - relX;
     update(walk);
     event.preventDefault();
   };
@@ -60,16 +62,14 @@ const MockGameCard = React.memo(({
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
     handlerMoveStatus(false);
+    setCardPosition(parseInt(ref.current.style.left));
     event.preventDefault();
   };
 
   const onMouseDown = event => {
     if (event.button !== 0) { return; }
     handlerMoveStatus();
-    setStartX(event.pageX);
-
-    const { left } = ref.current.getBoundingClientRect();
-    relX = left;
+    relX  = event.pageX;
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
     event.preventDefault();
@@ -81,6 +81,7 @@ const MockGameCard = React.memo(({
       onMouseDown={onMouseDown}
       ref={ref}
       isAbleToMove={isAbleToMove}
+      cardPosition={cardPosition}
     >
       <GameCard
         user={user}
