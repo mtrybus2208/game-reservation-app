@@ -21,9 +21,9 @@ class GlobalChatWrapper extends Component {
     directChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg',
     emojiIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595074/smiling-emoticon.svg',
     sendMessageIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg',
-    socketConnectionApiUrl: 'ws://localhost:9000/socket/chat/global',
-    getPlayerApiUrl: 'http://localhost:9000/players',
-    sendMessageApiUrl: 'http://localhost:9000/chat/global',
+    socketConnectionApiUrl: 'ws://localhost/socket/chat/global',
+    getPlayerApiUrl: 'http://localhost/players',
+    sendMessageApiUrl: 'http://localhost/chat/global',
   }
 
   componentDidMount() {
