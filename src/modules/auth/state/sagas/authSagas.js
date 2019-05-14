@@ -18,10 +18,10 @@ function* workSocialAuth(type) {
   try {
     const data = yield call(socialTypes[type]);
     const mappedUser = mapUserData(data.user);
+    
     yield put({ type: actionTypes.SET_AUTH_USER, payload: mappedUser });
     yield put({ type: uiActionTypes.CLOSE_CHAT_WITH_REDIRECT, path: ROUTES.HOME });
-
-    savePlayer(mappedUser);
+    yield call(savePlayer(mappedUser));
   } catch (e) {
     yield put({ type: actionTypes.SOCIAL_AUTH_FAIL, message: e.message });
   }
