@@ -10,6 +10,23 @@ export const throttled = (delay, fn) => {
   };
 };
 
+export const throttleAnimation = f => {
+  let token = null;
+  let lastArgs = null;
+  const invoke = () => {
+    f(...lastArgs);
+    token = null;
+  };
+  const result = (...args) => {
+    lastArgs = args;
+    if (!token) {
+      token = requestAnimationFrame(invoke);
+    }
+  };
+  result.cancel = () => token && cancelAnimationFrame(token);
+  return result;
+};
+
 export const debounced = (delay, fn) => {
   let timerId;
   return (...args) => {

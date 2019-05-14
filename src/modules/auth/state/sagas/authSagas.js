@@ -3,6 +3,7 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { doSignInWithGoogle, doSignInWithGithub, signOut } from '@/services/firebase';
 import { actionTypes as uiActionTypes } from '@/modules/shared/state/actions/actionTypes';
 import * as ROUTES from '@/constants/routes';
+import { removeItem } from '@/helpers/localstorage';
 import { actionTypes } from './../actions/actionTypes';
 import { mapUserData } from '../../helpers/mapUserData';
 import axios from 'axios';
@@ -10,7 +11,7 @@ import axios from 'axios';
 const playerSaveLink = 'http://localhost/players';
 
 function* workSocialAuth(type) {
-  const socialTypes = { 
+  const socialTypes = {
     google: doSignInWithGoogle,
     github: doSignInWithGithub,
   };
@@ -22,6 +23,7 @@ function* workSocialAuth(type) {
     yield put({ type: actionTypes.SET_AUTH_USER, payload: mappedUser });
     yield put({ type: uiActionTypes.CLOSE_CHAT_WITH_REDIRECT, path: ROUTES.HOME });
     yield call(savePlayer(mappedUser));
+    yield call(removeItem('state'));
   } catch (e) {
     yield put({ type: actionTypes.SOCIAL_AUTH_FAIL, message: e.message });
   }
@@ -62,6 +64,6 @@ function buildPlayerCreateRequestBody(mappedUser) {
       "email": "${mappedUser.email}",
       "displayName": "${mappedUser.displayName}",
       "photoUrl": "${mappedUser.photoURL}"
-    }`
+    }`,
   );
 }

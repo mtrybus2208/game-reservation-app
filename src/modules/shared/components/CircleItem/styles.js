@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { rgba } from 'polished';
 
 export const CircleItem = styled.div`
     position: relative;
@@ -7,12 +8,12 @@ export const CircleItem = styled.div`
         0px 17px 24px 0 rgba(0, 0, 0, 0.33),
         inset 0px 2px 3px 0 rgba(255, 255, 255, 0.1);
     border: none;
-    background-color: #23272d;
+    background-color: ${({ active }) => active ? '#bd790b' : '#23272d'};
     flex: 1 1 100%;
     border-radius: 100%;
     ${props => props.hoverable && css`
       &:hover {
-        background: #bd790b;
+        background: ${({ active }) => active ? '#bd790b' : rgba('#bd790b', 0.3)};
       }
     `}
 `;

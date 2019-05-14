@@ -1,23 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react'; 
 import PropTypes from 'prop-types';
-import GameCard from '../GameCard/';
+import GameCard from '../GameCard';
+import MockGameCard from '../MockGameCard';
 import * as S from './styles';
+import moment from 'moment';
 
 const propTypes = {
   workdayInPixels: PropTypes.number,
   timeConverter: PropTypes.number,
   arrayOfWorkdayHours: PropTypes.array,
+  reservedGames: PropTypes.array,
+  workdayStart: PropTypes.object,
+  gameReservation: PropTypes.object,
+  onBlockTimeLine: PropTypes.func,
 };
 
 const defaultProps = {};
 
-const TimeRuler = ({ workdayInPixels, timeConverter, arrayOfWorkdayHours }) => {
-  const hoursToPixels = (h) => {
-    return h * 60 * timeConverter;
-  };
+const TimeRuler = React.memo(({
+  workdayInPixels,
+  timeConverter,
+  arrayOfWorkdayHours,
+  reservedGames,
+  workdayStart,
+  gameReservation,
+  onBlockTimeLine,
+}) => {
 
-  return (
-    <S.Wrapper>
+  const [cardPosition, setCardPosition] = useState(0);
+
+  const hoursToPixels = h => h * 60 * timeConverter;
+  const minutesToPixels = m => m * timeConverter;
+
+  const renderGameCard = (game) => {
+    const starGame = moment(game.startDate);
+    const distanceInMinutes = moment.duration(starGame.diff(workdayStart)).asMinutes();
+    const startTime = distanceInMinutes * timeConverter;
+
+    const endGame = moment(game.endDate);
+    const distanceInMinutesEnd = moment.duration(endGame.diff(workdayStart)).asMinutes();
+    const endTime = distanceInMinutesEnd * timeConverter;
+    return (
       <GameCard
         user={
           {
@@ -30,63 +53,44 @@ const TimeRuler = ({ workdayInPixels, timeConverter, arrayOfWorkdayHours }) => {
           {
             gameTime: '30min',
             gameType: 'fifa',
-            size: 400,
-            left: 0,
+            size: (Math.abs(endTime) -  Math.abs(startTime)),
+            left: Math.abs(startTime),
           }
         }
       />
-      <GameCard
-        user={
-          {
-            name: 'Lee Taylor',
-            avatarImg: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1551047128/23517691_1590383757684299_295854948986904711_n.jpg',
-            profession: 'Administrator',
-          }
-        }
-        display={
-          {
-            gameTime: '15min',
-            gameType: 'fifa',
-            size: 200,
-            left: 500,
-          }
-        }
-      />
+    );
+  };
 
-      <GameCard
-        user={
-          {
-            name: 'John Doe',
-            profession: 'PM',
+  return (
+    <S.Wrapper>
+      {
+        reservedGames && reservedGames.map(game => renderGameCard(game))
+      }
+      {
+        gameReservation.editMode &&
+        gameReservation.time &&
+        gameReservation.gameType &&
+        <MockGameCard
+          user={
+            {
+              name: 'Michal Trybus',
+              avatarImg: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1551047093/43160946_1970943372961667_6703179334590398464_n.jpg',
+              profession: 'Frontend developer',
+            }
           }
-        }
-        display={
-          {
-            gameTime: '15min',
-            gameType: 'mortal kombat',
-            size: 200,
-            left: 701,
+          display={
+            {
+              gameTime: `${gameReservation.time.duration}min`,
+              gameType: gameReservation.gameType.name,
+              size: minutesToPixels(gameReservation.time.duration),
+              left: 200,
+            }
           }
-        }
-      />
-
-      <GameCard
-        user={
-          {
-            name: 'Arkadiusz Bazan',
-            avatarImg: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1551048374/49702416_2318285494866880_3232942151373422592_n.jpg',
-            profession: 'QA',
-          }
-        }
-        display={
-          {
-            gameTime: '30min',
-            gameType: 'mortal kombat',
-            size: 400,
-            left: 1600,
-          }
-        }
-      />
+          onBlockTimeLine={onBlockTimeLine}
+          setCardPosition={setCardPosition}
+          cardPosition={cardPosition}
+        />
+      }
       <S.TimeRuler
         height={workdayInPixels}
         timeConverter={timeConverter}
@@ -100,11 +104,11 @@ const TimeRuler = ({ workdayInPixels, timeConverter, arrayOfWorkdayHours }) => {
               time={h}
             />
           ))
-        };
+        }
       </S.TimeRuler>
     </S.Wrapper>
   );
-};
+});
 
 TimeRuler.propTypes = propTypes;
 TimeRuler.defaultProps = defaultProps;

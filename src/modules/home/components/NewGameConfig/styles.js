@@ -30,9 +30,13 @@ export const GameTimeBox = styled.div`
     justify-content: center;
     align-items: center;
 
-    @media ${({ theme }) => theme.media.tablet} {
-      
+    @media ${({ theme }) => theme.media.tablet} {   
     }
+`;
+
+export const TypesBox = styled(GameTimeBox)`
+  flex-direction: column;
+  width: 60%;
 `;
 
 export const TimeItem = styled.div`

@@ -20,12 +20,17 @@ const propTypes = {
 const defaultProps = {};
 
 const GlobalStyle = createGlobalStyle`
+  * {
+    box-sizing: border-box;
+  }
+  
   body {
     margin: 0;
     padding: 0; 
     font-family: 'Roboto', sans-serif;
     color: #747a81;
     background: #141619;
+    box-sizing: border-box;
   }
 `;
 

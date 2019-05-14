@@ -19,3 +19,8 @@ export const saveState = (state) => {
   }
 };
 
+export const setItem = (name, data) =>
+  localStorage.setItem(name, JSON.stringify(data));
+
+export const removeItem = (name) =>
+  localStorage.removeItem(name);
