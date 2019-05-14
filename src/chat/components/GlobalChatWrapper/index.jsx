@@ -82,6 +82,7 @@ class GlobalChatWrapper extends Component {
     const enterButtonKeyCode = 13;
 
     if(event.charCode === enterButtonKeyCode) {
+      event.preventDefault();
       this.sendMessageHandler();
     }
   }
