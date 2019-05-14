@@ -78,6 +78,14 @@ class GlobalChatWrapper extends Component {
     }, 60000);
   }
 
+  handleEnterClick = (event) => {
+    const enterButtonKeyCode = 13;
+
+    if(event.charCode === enterButtonKeyCode) {
+      this.sendMessageHandler();
+    }
+  }
+
   sendMessageHandler = () => {
     if(this.isNotAnonymousUser() && this.validateTypedMessage()) {
 
@@ -143,6 +151,7 @@ class GlobalChatWrapper extends Component {
                   typedMessage: event.target.value,
                 })
               }}
+              onKeyPress={this.handleEnterClick}
               placeholder={this.isNotAnonymousUser() ? "Type message" : "Please login to use chat"}
               minLength={2}
               maxLength={200}
