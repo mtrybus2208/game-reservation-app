@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getAllReservedGames } from '@/modules/home/state/selectors/entieties';
 import TimeRuler from '@/modules/home/components/TimeRuler';
+import { throttleAnimation } from '@/helpers';
 import * as fromActions from '../../state/actions';
 import { getTimeLine, getWorkdayInPixels, getArrayOfWorkdayHours, getActualDateInPixels } from '../../state/selectors';
 import * as S from './styles';
@@ -25,13 +26,18 @@ class TimeLine extends Component {
     startX: undefined,
     scrollLeft: undefined,
     wrapperPosition: null,
+    time: 0,
+    isOn: false,
+    start: 0
   };
+
+  timeLime = 0;
 
   componentDidMount() {
     this.props.fetchReservedGames();
   }
 
-  componentDidUpdate() {}
+  componentDidUpdate() { }
 
   setWrapperRef = element => element &&
     this.setState({
@@ -76,6 +82,14 @@ class TimeLine extends Component {
     });
   }
 
+  moveMe = () => throttleAnimation(() => {
+    const { current } = this.timeLineRef;
+    this.timer = setInterval(() => {
+      this.timeLime = this.timeLime + 2;
+      current.scrollLeft = this.state.scrollLeft + this.timeLime;
+    }, 1);
+  })
+
   render() {
     return (
       <S.TimeLineWrapper
@@ -84,6 +98,7 @@ class TimeLine extends Component {
       >
         <S.TimeLine
           ref={this.timeLineRef}
+          onClick={this.moveMe()}
           onMouseDown={this.mouseDown()}
           onMouseLeave={this.mouseLeave()}
           onMouseUp={this.mouseUp()}
