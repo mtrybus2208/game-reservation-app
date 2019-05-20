@@ -15,7 +15,8 @@ const propTypes = {
   arrayOfWorkdayHours: PropTypes.array,
   reservedGames: PropTypes.array,
   timeConverter: PropTypes.number,
-  fetchReservedGames: PropTypes.func, 
+  fetchReservedGames: PropTypes.func,
+  sessionState: PropTypes.object,
 };
 
 class TimeLine extends Component {
@@ -31,7 +32,7 @@ class TimeLine extends Component {
 
   componentDidMount() {
     this.props.fetchReservedGames();
-    this.moveMe();
+    // this.moveMe();
   }
 
   componentDidUpdate() {}
@@ -80,19 +81,18 @@ class TimeLine extends Component {
   };
 
   handlerBlockTimeLine = isBlocked => {
-    const converter = isBlocked ? 3.7 : 12;
     this.setState({
       isBlocked,
     });
-
-    // this.zoomTimeLine(converter);
   }
 
   moveMe() {
-    this.timer = setInterval(() => {
-      const { current } = this.timeLineRef;
-      current.scrollLeft += 1; 
-    }, 0);
+    if(this.state.isBlocked) {
+      this.timer = setInterval(() => {
+        const { current } = this.timeLineRef;
+        current.scrollLeft += 1;
+      }, 0);
+    }
   }
 
   render() {
@@ -124,6 +124,8 @@ class TimeLine extends Component {
             workdayStart={this.props.workdayStart}
             gameReservation={this.props.gameReservation}
             onBlockTimeLine={this.handlerBlockTimeLine}
+            onMoveMe={this.moveMe}
+            authUser={this.props.sessionState.authUser}
           />
         </S.TimeLine>
       </S.TimeLineWrapper>
@@ -131,7 +133,7 @@ class TimeLine extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   timeLine: getTimeLine(state),
   workdayInPixels: getWorkdayInPixels(state),
   workdayStart: state.timeLine.workdayStart,
@@ -140,6 +142,7 @@ const mapStateToProps = (state) => ({
   arrayOfWorkdayHours: getArrayOfWorkdayHours(state),
   reservedGames: getAllReservedGames(state),
   gameReservation: state.gameReservationState,
+  sessionState: state.sessionState,
 });
 
 const mapDispatchToProps = dispatch => ({

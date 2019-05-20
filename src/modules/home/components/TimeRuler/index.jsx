@@ -6,6 +6,7 @@ import * as S from './styles';
 import moment from 'moment';
 
 const propTypes = {
+  authUser: PropTypes.object,
   workdayInPixels: PropTypes.number,
   timeConverter: PropTypes.number,
   arrayOfWorkdayHours: PropTypes.array,
@@ -18,6 +19,7 @@ const propTypes = {
 const defaultProps = {};
 
 const TimeRuler = React.memo(({
+  authUser,
   workdayInPixels,
   timeConverter,
   arrayOfWorkdayHours,
@@ -69,13 +71,6 @@ const TimeRuler = React.memo(({
         gameReservation.time &&
         gameReservation.gameType &&
         <MockGameCard
-          user={
-            {
-              name: 'Michal Trybus',
-              avatarImg: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1551047093/43160946_1970943372961667_6703179334590398464_n.jpg',
-              profession: 'Frontend developer',
-            }
-          }
           display={
             {
               gameTime: `${gameReservation.time.duration}min`,
@@ -87,6 +82,7 @@ const TimeRuler = React.memo(({
           onBlockTimeLine={onBlockTimeLine}
           setCardPosition={setCardPosition}
           cardPosition={cardPosition}
+          authUser={authUser}
         />
       }
       <S.TimeRuler

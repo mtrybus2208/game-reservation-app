@@ -59,7 +59,7 @@ class GameReservation extends Component {
           onTypeSelect={this.handleTypeSelect}
         />
         <S.CtaWrapper>
-          <BaseButton.Cta
+          <BaseButton.Cta 
             maxWidth="480px"
             onClick={this.addNewGame()}
           >

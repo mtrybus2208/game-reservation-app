@@ -6,7 +6,7 @@ import BaseIcon from '@/modules/shared/components/BaseIcon';
 import * as S from './styles';
 
 const propTypes = {
-  user: PropTypes.object,
+  authUser: PropTypes.object,
   display: PropTypes.object,
   onBlockTimeLine: PropTypes.func,
   cardPosition: PropTypes.number,
@@ -16,25 +16,31 @@ const propTypes = {
 const defaultProps = {};
 
 const MockGameCard = React.memo(({
-  user,
+  authUser,
   display,
   onBlockTimeLine,
   cardPosition,
   setCardPosition,
+  onMoveMe,
 }) => {
   const [isAbleToMove, setIsAbleToMove] = useState(false);
   const ref = useRef(null);
   let relX = null;
-  let interval = null;
 
   useEffect(() => {
     ref.current.addEventListener('mousedown', onMouseDown);
+    const interval = setInterval(() => {
+       if(isAbleToMove && detectWrapperEdges() && ref.current.style.left) {
+          ref.current.style.left = `${parseInt(ref.current.style.left) + 1}px`;
+       }
+    }, 1);
     return () => {
+      console.log('BYE')
       ref.current.removeEventListener('mousedown', onMouseDown); 
+      clearInterval(interval);
       update.cancel();
-      if (interval) { clearInterval(interval); }
     };
-  });
+  }); 
 
   const customTitle = (
     <S.AnimatedIcon>
@@ -54,37 +60,34 @@ const MockGameCard = React.memo(({
     setIsAbleToMove(status);
   };
 
+  const detectWrapperEdges = () => {
+    const border = 40;
+    const { innerWidth } = window;
+    const { right } = ref.current.getBoundingClientRect();
+    return right >= innerWidth - border; 
+  }
+
   const onMouseMove = event => {
-    const walk = event.pageX - relX;
-    update(walk);
     event.preventDefault();
+    const walk = event.pageX - relX;
+    !detectWrapperEdges() && update(walk);
   };
 
   const onMouseUp = event => {
+    event.preventDefault();
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
     handlerMoveStatus(false);
     setCardPosition(parseInt(ref.current.style.left));
-    event.preventDefault();
   };
 
   const onMouseDown = event => {
+    event.preventDefault();
     if (event.button !== 0) { return; }
-    handlerMoveStatus();
-    relX = event.pageX;
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
-    event.preventDefault();
-  };
-
-  const moveMe = () => {
-    // const pos = ref.current.style.left;
-    interval = setInterval(() => {
-      if(ref.current.style.left) {
-        console.log(parseInt(ref.current.style.left));
-        ref.current.style.left = `${parseInt(ref.current.style.left) + 1}px`;
-      }
-    }, 0);
+    handlerMoveStatus();
+    relX = event.pageX;
   };
 
   return (
@@ -94,10 +97,10 @@ const MockGameCard = React.memo(({
       ref={ref}
       isAbleToMove={isAbleToMove}
       cardPosition={cardPosition}
-      onClick={moveMe}
+      // onClick={moveMe}
     >
       <GameCard
-        user={user}
+        user={authUser}
         display={display}
         customTitle={customTitle}
         customPosition
