@@ -33,6 +33,13 @@ export const timeLineReducer = (state = initialState, action) => {
         ...state,
         reservedGames: null,
       };
+
+    case actionTypes.ZOOM_TIMELINE: {
+      return {
+        ...state,
+        timeConverter: action.payload,
+      };
+    }
     default:
       return state;
   }

@@ -26,12 +26,21 @@ class TimeLine extends Component {
     scrollLeft: undefined,
     wrapperPosition: null,
   };
+  timer = null;
+  moveMe = this.moveMe.bind(this);
 
   componentDidMount() {
     this.props.fetchReservedGames();
+    this.moveMe();
   }
 
   componentDidUpdate() {}
+
+  componentWillUnmount() {
+    if (this.timer) {
+      clearInterval.timer(this.timer);
+    }
+  }
 
   setWrapperRef = element => element &&
     this.setState({
@@ -71,9 +80,19 @@ class TimeLine extends Component {
   };
 
   handlerBlockTimeLine = isBlocked => {
+    const converter = isBlocked ? 3.7 : 12;
     this.setState({
       isBlocked,
     });
+
+    // this.zoomTimeLine(converter);
+  }
+
+  moveMe() {
+    this.timer = setInterval(() => {
+      const { current } = this.timeLineRef;
+      current.scrollLeft += 1; 
+    }, 0);
   }
 
   render() {
@@ -126,6 +145,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = dispatch => ({
   fetchReservedGames: () => {
     dispatch(fromActions.fetchReservedGames());
+  },
+  zoomTimeLine: payload => {
+    dispatch(fromActions.zoomTimeLine(payload));
   },
 });
 

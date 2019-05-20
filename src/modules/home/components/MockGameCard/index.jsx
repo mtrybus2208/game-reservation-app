@@ -25,12 +25,14 @@ const MockGameCard = React.memo(({
   const [isAbleToMove, setIsAbleToMove] = useState(false);
   const ref = useRef(null);
   let relX = null;
+  let interval = null;
 
   useEffect(() => {
     ref.current.addEventListener('mousedown', onMouseDown);
     return () => {
-      ref.current.removeEventListener('mousedown', onMouseDown);
+      ref.current.removeEventListener('mousedown', onMouseDown); 
       update.cancel();
+      if (interval) { clearInterval(interval); }
     };
   });
 
@@ -69,10 +71,20 @@ const MockGameCard = React.memo(({
   const onMouseDown = event => {
     if (event.button !== 0) { return; }
     handlerMoveStatus();
-    relX  = event.pageX;
+    relX = event.pageX;
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
     event.preventDefault();
+  };
+
+  const moveMe = () => {
+    // const pos = ref.current.style.left;
+    interval = setInterval(() => {
+      if(ref.current.style.left) {
+        console.log(parseInt(ref.current.style.left));
+        ref.current.style.left = `${parseInt(ref.current.style.left) + 1}px`;
+      }
+    }, 0);
   };
 
   return (
@@ -82,6 +94,7 @@ const MockGameCard = React.memo(({
       ref={ref}
       isAbleToMove={isAbleToMove}
       cardPosition={cardPosition}
+      onClick={moveMe}
     >
       <GameCard
         user={user}
