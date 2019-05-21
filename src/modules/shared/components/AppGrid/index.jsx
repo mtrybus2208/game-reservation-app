@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { DESKTOP_SIDEBAR_WIDTH } from '@/constants/gameSettings';
 
 const AppGrid = styled.div`
   display: grid;
@@ -23,7 +24,7 @@ const AppGrid = styled.div`
   }
 
   @media ${({ theme }) => theme.media.laptop} {
-    grid-template-columns: 300px 1fr;
+    grid-template-columns: ${DESKTOP_SIDEBAR_WIDTH}px 1fr;
   }
 `;
 

@@ -1,4 +1,3 @@
-// TODO: Rewrite this with hooks
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -20,33 +19,32 @@ const propTypes = {
 };
 
 class TimeLine extends Component {
+
   state = {
     isDown: false,
     isBlocked: false,
     startX: undefined,
     scrollLeft: undefined,
-    wrapperPosition: null,
   };
-  timer = null;
-  moveMe = this.moveMe.bind(this);
+  interval = null;
+  handlerMoveTimeLine = this.handlerMoveTimeLine.bind(this);
 
   componentDidMount() {
     this.props.fetchReservedGames();
-    // this.moveMe();
   }
 
   componentDidUpdate() {}
 
   componentWillUnmount() {
-    if (this.timer) {
-      clearInterval.timer(this.timer);
+    if (this.interval) {
+      clearInterval(this.interval);
     }
   }
 
-  setWrapperRef = element => element &&
-    this.setState({
-      wrapperPosition: element.getBoundingClientRect(),
-    });
+  handlerMoveTimeLine(modifier) {
+    const { current } = this.timeLineRef;
+    current.scrollLeft = current.scrollLeft + modifier;
+  }
 
   timeLineRef = React.createRef();
 
@@ -86,15 +84,6 @@ class TimeLine extends Component {
     });
   }
 
-  moveMe() {
-    if(this.state.isBlocked) {
-      this.timer = setInterval(() => {
-        const { current } = this.timeLineRef;
-        current.scrollLeft += 1;
-      }, 0);
-    }
-  }
-
   render() {
     return (
       <S.TimeLineWrapper
@@ -124,7 +113,7 @@ class TimeLine extends Component {
             workdayStart={this.props.workdayStart}
             gameReservation={this.props.gameReservation}
             onBlockTimeLine={this.handlerBlockTimeLine}
-            onMoveMe={this.moveMe}
+            onMoveTimeLine={this.handlerMoveTimeLine}
             authUser={this.props.sessionState.authUser}
           />
         </S.TimeLine>

@@ -27,3 +27,7 @@ export const GAMES_DURATION = [
     duration: 30,
   },
 ];
+
+export const DESKTOP_SIDEBAR_WIDTH = 300;
+export const DESKTOP_TIMELINE_BORDER = 40;
+export const TIMELINE_MOVE_SPEED = 3;

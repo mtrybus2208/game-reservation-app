@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import { throttleAnimation } from '@/helpers';
 import GameCard from '@/modules/home/components/GameCard';
 import BaseIcon from '@/modules/shared/components/BaseIcon';
+import {
+  DESKTOP_SIDEBAR_WIDTH,
+  DESKTOP_TIMELINE_BORDER,
+  TIMELINE_MOVE_SPEED,
+} from '@/constants/gameSettings';
 import * as S from './styles';
 
 const propTypes = {
@@ -11,6 +16,7 @@ const propTypes = {
   onBlockTimeLine: PropTypes.func,
   cardPosition: PropTypes.number,
   setCardPosition: PropTypes.func,
+  onMoveTimeLine: PropTypes.func,
 };
 
 const defaultProps = {};
@@ -21,7 +27,7 @@ const MockGameCard = React.memo(({
   onBlockTimeLine,
   cardPosition,
   setCardPosition,
-  onMoveMe,
+  onMoveTimeLine,
 }) => {
   const [isAbleToMove, setIsAbleToMove] = useState(false);
   const ref = useRef(null);
@@ -30,17 +36,16 @@ const MockGameCard = React.memo(({
   useEffect(() => {
     ref.current.addEventListener('mousedown', onMouseDown);
     const interval = setInterval(() => {
-       if(isAbleToMove && detectWrapperEdges() && ref.current.style.left) {
-          ref.current.style.left = `${parseInt(ref.current.style.left) + 1}px`;
-       }
-    }, 1);
-    return () => {
-      console.log('BYE')
-      ref.current.removeEventListener('mousedown', onMouseDown); 
+      if (isAbleToMove && detectWrapperEdges() && ref.current.style.left) {
+        moveTimeLineHandler();
+      }
+    }, 0);
+    return () => { 
+      ref.current.removeEventListener('mousedown', onMouseDown);
       clearInterval(interval);
       update.cancel();
     };
-  }); 
+  });
 
   const customTitle = (
     <S.AnimatedIcon>
@@ -60,17 +65,28 @@ const MockGameCard = React.memo(({
     setIsAbleToMove(status);
   };
 
-  const detectWrapperEdges = () => {
-    const border = 40;
-    const { innerWidth } = window;
+  const detectStartEdge = () => {
+    const { left } = ref.current.getBoundingClientRect();
+    return left < DESKTOP_SIDEBAR_WIDTH + DESKTOP_TIMELINE_BORDER;
+  };
+
+  const detectEndEdge = () => {
     const { right } = ref.current.getBoundingClientRect();
-    return right >= innerWidth - border; 
-  }
+    return right >= window.innerWidth - DESKTOP_TIMELINE_BORDER;
+  };
+
+  const detectWrapperEdges = () => detectEndEdge() || detectStartEdge();
+
+  const moveTimeLineHandler = () => {
+    const modifier = detectEndEdge() ? +TIMELINE_MOVE_SPEED : -TIMELINE_MOVE_SPEED;
+    ref.current.style.left = `${parseInt(ref.current.style.left, 10) + modifier}px`;
+    onMoveTimeLine(modifier);
+  };
 
   const onMouseMove = event => {
     event.preventDefault();
     const walk = event.pageX - relX;
-    !detectWrapperEdges() && update(walk);
+    return !detectWrapperEdges() && update(walk);
   };
 
   const onMouseUp = event => {
@@ -78,7 +94,7 @@ const MockGameCard = React.memo(({
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
     handlerMoveStatus(false);
-    setCardPosition(parseInt(ref.current.style.left));
+    setCardPosition(parseInt(ref.current.style.left, 10));
   };
 
   const onMouseDown = event => {
@@ -97,7 +113,6 @@ const MockGameCard = React.memo(({
       ref={ref}
       isAbleToMove={isAbleToMove}
       cardPosition={cardPosition}
-      // onClick={moveMe}
     >
       <GameCard
         user={authUser}

@@ -14,6 +14,7 @@ const propTypes = {
   workdayStart: PropTypes.object,
   gameReservation: PropTypes.object,
   onBlockTimeLine: PropTypes.func,
+  onMoveTimeLine: PropTypes.func,
 };
 
 const defaultProps = {};
@@ -27,6 +28,7 @@ const TimeRuler = React.memo(({
   workdayStart,
   gameReservation,
   onBlockTimeLine,
+  onMoveTimeLine,
 }) => {
   const [cardPosition, setCardPosition] = useState(0);
   const hoursToPixels = h => h * 60 * timeConverter;
@@ -83,6 +85,7 @@ const TimeRuler = React.memo(({
           setCardPosition={setCardPosition}
           cardPosition={cardPosition}
           authUser={authUser}
+          onMoveTimeLine={onMoveTimeLine}
         />
       }
       <S.TimeRuler
