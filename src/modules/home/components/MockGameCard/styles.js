@@ -28,9 +28,10 @@ export const CardWrap = styled.div`
   border: ${({ isAbleToMove }) => isAbleToMove ? '3px solid #014217' : 'none'};
   border-top: none;
   border-bottom: none;
+  left: 0;
 
   @media ${({ theme }) => theme.media.tablet} {
-    left: ${props => props.cardPosition}px;
+    left: ${props => props.cardPosition ? props.cardPosition : 0}px;
     right: auto;
     width: ${props => props.size}px;
   }

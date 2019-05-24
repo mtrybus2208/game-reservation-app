@@ -25,9 +25,11 @@ class TimeLine extends Component {
     isBlocked: false,
     startX: undefined,
     scrollLeft: undefined,
+    startPosition: false,
   };
   interval = null;
   handlerMoveTimeLine = this.handlerMoveTimeLine.bind(this);
+  setStart = this.setStart.bind(this);
 
   componentDidMount() {
     this.props.fetchReservedGames();
@@ -41,9 +43,20 @@ class TimeLine extends Component {
     }
   }
 
-  handlerMoveTimeLine(modifier) {
-    const { current } = this.timeLineRef;
+  setStart(data) {
+    this.setState((prev) => {
+      if (prev.startPosition !== data) {
+        return { startPosition: data };
+      }
+    })
+  }
+
+  handlerMoveTimeLine(modifier) {    
+    const { current } = this.timeLineRef; 
     current.scrollLeft = current.scrollLeft + modifier;
+    if (current.scrollLeft <= 0) {
+      return this.setStart(true);
+    }
   }
 
   timeLineRef = React.createRef();
@@ -115,6 +128,8 @@ class TimeLine extends Component {
             onBlockTimeLine={this.handlerBlockTimeLine}
             onMoveTimeLine={this.handlerMoveTimeLine}
             authUser={this.props.sessionState.authUser}
+            startPosition={this.state.startPosition}
+            setStart={this.setStart}
           />
         </S.TimeLine>
       </S.TimeLineWrapper>

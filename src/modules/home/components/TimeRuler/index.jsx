@@ -29,6 +29,9 @@ const TimeRuler = React.memo(({
   gameReservation,
   onBlockTimeLine,
   onMoveTimeLine,
+  startPosition,
+  setStart,
+  timeLineRef,
 }) => {
   const [cardPosition, setCardPosition] = useState(0);
   const hoursToPixels = h => h * 60 * timeConverter;
@@ -86,6 +89,9 @@ const TimeRuler = React.memo(({
           cardPosition={cardPosition}
           authUser={authUser}
           onMoveTimeLine={onMoveTimeLine}
+          startPosition={startPosition}
+          setStart={setStart}
+          timeLineRef={timeLineRef}
         />
       }
       <S.TimeRuler

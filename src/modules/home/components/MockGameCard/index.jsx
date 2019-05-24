@@ -10,6 +10,8 @@ import {
 } from '@/constants/gameSettings';
 import * as S from './styles';
 
+import { useInterval } from './hook';
+
 const propTypes = {
   authUser: PropTypes.object,
   display: PropTypes.object,
@@ -21,28 +23,31 @@ const propTypes = {
 
 const defaultProps = {};
 
-const MockGameCard = React.memo(({
+const MockGameCard =  ({
   authUser,
   display,
   onBlockTimeLine,
   cardPosition,
   setCardPosition,
   onMoveTimeLine,
+  startPosition,
+  setStart
 }) => {
   const [isAbleToMove, setIsAbleToMove] = useState(false);
+  const [delay, setDelay] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
   const ref = useRef(null);
   let relX = null;
 
+  useInterval(() => {
+    timerCB();
+  }, isRunning ? delay : null);
+
   useEffect(() => {
     ref.current.addEventListener('mousedown', onMouseDown);
-    const interval = setInterval(() => {
-      if (isAbleToMove && detectWrapperEdges() && ref.current.style.left) {
-        moveTimeLineHandler();
-      }
-    }, 0);
+ 
     return () => { 
       ref.current.removeEventListener('mousedown', onMouseDown);
-      clearInterval(interval);
       update.cancel();
     };
   });
@@ -57,7 +62,22 @@ const MockGameCard = React.memo(({
   );
 
   const update = throttleAnimation(walk => {
-    ref.current.style.left = `${cardPosition + walk}px`;
+ 
+    if(walk < 0) {
+      if (detectStartEdge()) {
+        setIsRunning(true);
+      } else {
+        setIsRunning(false);       
+        ref.current.style.left = `${cardPosition + walk}px`;
+      } 
+ 
+    } else if (walk > 0) {
+      if (detectEndEdge()) {
+        setIsRunning(true);
+      } else {
+        ref.current.style.left = `${cardPosition + walk}px`;    
+      }
+    } 
   });
 
   const handlerMoveStatus = (status = true) => {
@@ -67,7 +87,7 @@ const MockGameCard = React.memo(({
 
   const detectStartEdge = () => {
     const { left } = ref.current.getBoundingClientRect();
-    return left < DESKTOP_SIDEBAR_WIDTH + DESKTOP_TIMELINE_BORDER;
+    return left <= DESKTOP_SIDEBAR_WIDTH + DESKTOP_TIMELINE_BORDER;
   };
 
   const detectEndEdge = () => {
@@ -77,16 +97,28 @@ const MockGameCard = React.memo(({
 
   const detectWrapperEdges = () => detectEndEdge() || detectStartEdge();
 
-  const moveTimeLineHandler = () => {
+  const moveTimeLineHandler = () => {  
     const modifier = detectEndEdge() ? +TIMELINE_MOVE_SPEED : -TIMELINE_MOVE_SPEED;
-    ref.current.style.left = `${parseInt(ref.current.style.left, 10) + modifier}px`;
     onMoveTimeLine(modifier);
+    ref.current.style.left = `${parseInt(ref.current.style.left, 10) + modifier}px`;
+
+    if (x <= 0) { 
+      ref.current.style.left = `${0}px`;
+      onMoveTimeLine(modifier);
+    }
   };
+
+  const timerCB = () => {
+    if(startPosition === false) {
+      moveTimeLineHandler();
+    }
+  
+  }
 
   const onMouseMove = event => {
     event.preventDefault();
     const walk = event.pageX - relX;
-    return !detectWrapperEdges() && update(walk);
+    update(walk);
   };
 
   const onMouseUp = event => {
@@ -95,6 +127,7 @@ const MockGameCard = React.memo(({
     document.removeEventListener('mouseup', onMouseUp);
     handlerMoveStatus(false);
     setCardPosition(parseInt(ref.current.style.left, 10));
+    setIsRunning(false);
   };
 
   const onMouseDown = event => {
@@ -104,6 +137,9 @@ const MockGameCard = React.memo(({
     document.addEventListener('mouseup', onMouseUp);
     handlerMoveStatus();
     relX = event.pageX;
+    if(parseInt(ref.current.style.left, 10) >= 0) {
+      setStart(false)
+    }
   };
 
   return (
@@ -124,7 +160,7 @@ const MockGameCard = React.memo(({
       </GameCard>
     </S.CardWrap>
   );
-});
+} ;
 
 MockGameCard.propTypes = propTypes;
 MockGameCard.defaultProps = defaultProps;
