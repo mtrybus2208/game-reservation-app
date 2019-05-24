@@ -63,12 +63,8 @@ const MockGameCard =  ({
 
   const update = throttleAnimation(walk => { 
     const x = parseInt(ref.current.style.left, 10);
-    console.log('@@@@@@@@' + x)
-    // console.log('NIEPOWINNO TEGO KURWA BYC!')
  
-    if(walk < 0) { 
-      // console.log('LEWO:'  + walk)
-      // console.log('detectStartEdge   '  + detectStartEdge())
+    if(walk < 0) {
       if (detectStartEdge()) {
  
         setIsRunning(true);
@@ -89,7 +85,6 @@ const MockGameCard =  ({
       } 
        
     }
-    // ref.current.style.left = `${cardPosition + walk}px`;
   });
 
   const handlerMoveStatus = (status = true) => {
@@ -124,7 +119,6 @@ const MockGameCard =  ({
 
   const timerCB = () => {
     const pars = ref.current.getBoundingClientRect();
-    console.log('timerSTart');
     if(startPosition === false) {
       moveTimeLineHandler();
     }
@@ -135,7 +129,7 @@ const MockGameCard =  ({
     event.preventDefault();
     const walk = event.pageX - relX; 
     const pars = ref.current.getBoundingClientRect();
-      update(walk);
+    update(walk);
   };
 
   const onMouseUp = event => {
