@@ -61,23 +61,35 @@ const MockGameCard =  ({
     </S.AnimatedIcon>
   );
 
-  const update = throttleAnimation(walk => {
+  const update = throttleAnimation(walk => { 
+    const x = parseInt(ref.current.style.left, 10);
+    console.log('@@@@@@@@' + x)
+    // console.log('NIEPOWINNO TEGO KURWA BYC!')
  
-    if(walk < 0) {
+    if(walk < 0) { 
+      // console.log('LEWO:'  + walk)
+      // console.log('detectStartEdge   '  + detectStartEdge())
       if (detectStartEdge()) {
+ 
         setIsRunning(true);
       } else {
-        setIsRunning(false);       
+        setIsRunning(false);
+ 
+         
         ref.current.style.left = `${cardPosition + walk}px`;
       } 
  
     } else if (walk > 0) {
       if (detectEndEdge()) {
+ 
         setIsRunning(true);
-      } else {
-        ref.current.style.left = `${cardPosition + walk}px`;    
-      }
-    } 
+      } else { 
+        ref.current.style.left = `${cardPosition + walk}px`;
+       
+      } 
+       
+    }
+    // ref.current.style.left = `${cardPosition + walk}px`;
   });
 
   const handlerMoveStatus = (status = true) => {
@@ -97,10 +109,12 @@ const MockGameCard =  ({
 
   const detectWrapperEdges = () => detectEndEdge() || detectStartEdge();
 
-  const moveTimeLineHandler = () => {  
+  const moveTimeLineHandler = () => { 
+    const x = parseInt(ref.current.style.left, 10);
+
     const modifier = detectEndEdge() ? +TIMELINE_MOVE_SPEED : -TIMELINE_MOVE_SPEED;
     onMoveTimeLine(modifier);
-    ref.current.style.left = `${parseInt(ref.current.style.left, 10) + modifier}px`;
+    ref.current.style.left = `${x + modifier}px`;
 
     if (x <= 0) { 
       ref.current.style.left = `${0}px`;
@@ -109,6 +123,8 @@ const MockGameCard =  ({
   };
 
   const timerCB = () => {
+    const pars = ref.current.getBoundingClientRect();
+    console.log('timerSTart');
     if(startPosition === false) {
       moveTimeLineHandler();
     }
@@ -117,8 +133,9 @@ const MockGameCard =  ({
 
   const onMouseMove = event => {
     event.preventDefault();
-    const walk = event.pageX - relX;
-    update(walk);
+    const walk = event.pageX - relX; 
+    const pars = ref.current.getBoundingClientRect();
+      update(walk);
   };
 
   const onMouseUp = event => {

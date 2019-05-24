@@ -52,10 +52,10 @@ class TimeLine extends Component {
   }
 
   handlerMoveTimeLine(modifier) {    
-    const { current } = this.timeLineRef; 
+    const { current } = this.timeLineRef;
     current.scrollLeft = current.scrollLeft + modifier;
-    if (current.scrollLeft <= 0) {
-      return this.setStart(true);
+    if(current.scrollLeft <= 0) {
+        return this.setStart(true);
     }
   }
 
