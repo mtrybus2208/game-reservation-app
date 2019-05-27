@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { throttleAnimation } from '@/helpers';
 import GameCard from '@/modules/home/components/GameCard';
 import BaseIcon from '@/modules/shared/components/BaseIcon';
+import Draggable, {DraggableCore} from 'react-draggable'; 
 import {
   DESKTOP_SIDEBAR_WIDTH,
   DESKTOP_TIMELINE_BORDER,
@@ -47,8 +48,7 @@ const MockGameCard =  ({
     ref.current.addEventListener('mousedown', onMouseDown);
  
     return () => { 
-      ref.current.removeEventListener('mousedown', onMouseDown);
-      update.cancel();
+      ref.current.removeEventListener('mousedown', onMouseDown); 
     };
   });
 
@@ -60,33 +60,7 @@ const MockGameCard =  ({
       />
     </S.AnimatedIcon>
   );
-
-  const update = throttleAnimation(walk => { 
-    const x = parseInt(ref.current.style.left, 10);
  
-    if(walk < 0) {
-      if (detectStartEdge()) {
- 
-        setIsRunning(true);
-      } else {
-        setIsRunning(false);
- 
-         
-        ref.current.style.left = `${cardPosition + walk}px`;
-      } 
- 
-    } else if (walk > 0) {
-      if (detectEndEdge()) {
- 
-        setIsRunning(true);
-      } else { 
-        ref.current.style.left = `${cardPosition + walk}px`;
-       
-      } 
-       
-    }
-  });
-
   const handlerMoveStatus = (status = true) => {
     onBlockTimeLine(status);
     setIsAbleToMove(status);
@@ -122,20 +96,16 @@ const MockGameCard =  ({
     if(startPosition === false) {
       moveTimeLineHandler();
     }
-  
   }
 
-  const onMouseMove = event => {
-    event.preventDefault();
-    const walk = event.pageX - relX; 
-    const pars = ref.current.getBoundingClientRect();
-    update(walk);
-  };
+  const onMouseLeave = e => {
+    handlerMoveStatus(false);
+  }
 
   const onMouseUp = event => {
     event.preventDefault();
-    document.removeEventListener('mousemove', onMouseMove);
-    document.removeEventListener('mouseup', onMouseUp);
+    // document.removeEventListener('mousemove', onMouseMove);
+    // document.removeEventListener('mouseup', onMouseUp);
     handlerMoveStatus(false);
     setCardPosition(parseInt(ref.current.style.left, 10));
     setIsRunning(false);
@@ -144,32 +114,60 @@ const MockGameCard =  ({
   const onMouseDown = event => {
     event.preventDefault();
     if (event.button !== 0) { return; }
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-    handlerMoveStatus();
-    relX = event.pageX;
-    if(parseInt(ref.current.style.left, 10) >= 0) {
-      setStart(false)
-    }
+    // document.addEventListener('mousemove', onMouseMove);
+    // document.addEventListener('mouseup', onMouseUp);
+    // handlerMoveStatus();
+    // relX = event.pageX;
+    // if(parseInt(ref.current.style.left, 10) >= 0) {
+    //   setStart(false)
+    // }
   };
 
+  const handleStart = event => {
+    console.log('handleStart');
+    handlerMoveStatus();
+  }
+
+  const handleDrag = event => {
+    console.log('handleDrag');
+  }
+
+  const handleStop = event => {
+    handlerMoveStatus(false);
+    console.log('handleStop')
+  }
+
   return (
-    <S.CardWrap
-      size={display.size}
-      onMouseDown={onMouseDown}
-      ref={ref}
-      isAbleToMove={isAbleToMove}
-      cardPosition={cardPosition}
-    >
-      <GameCard
-        user={authUser}
-        display={display}
-        customTitle={customTitle}
-        customPosition
+    <Draggable
+      axis="x"
+      handle=".handle"
+      defaultPosition={{x: 122, y: 0}}
+      position={null}
+      bounds= {{left: 0}}
+      grid={[25, 25]}
+      scale={1}
+      onStart={() => handleStart()}
+      onDrag={handleDrag}
+      onStop={handleStop}>
+      <S.CardWrap
+      className="handle"
+        size={display.size}
+        // onMouseDown={onMouseDown}
+        ref={ref}
+        isAbleToMove={isAbleToMove}
+        // cardPosition={cardPosition}
+        // onMouseLeave={onMouseLeave}
       >
-        <S.MockGameCard />
-      </GameCard>
-    </S.CardWrap>
+        <GameCard
+          user={authUser}
+          display={display}
+          customTitle={customTitle}
+          customPosition
+        >
+          <S.MockGameCard />
+        </GameCard>
+      </S.CardWrap>
+    </Draggable>
   );
 } ;
 

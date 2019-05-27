@@ -44,6 +44,7 @@
     "react": "^16.8.4",
     "react-dev-utils": "^5.0.0",
     "react-dom": "^16.8.4",
+    "react-draggable": "^3.3.0",
     "react-event-timeline": "^1.6.3",
     "react-flexbox-grid": "^2.0.0",
     "react-helmet": "^5.2.0",
