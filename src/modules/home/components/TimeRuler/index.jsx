@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect, useRef } from 'react'; 
 import PropTypes from 'prop-types';
 import GameCard from '../GameCard';
 import MockGameCard from '../MockGameCard';
@@ -36,7 +36,10 @@ const TimeRuler = React.memo(({
   const [cardPosition, setCardPosition] = useState(0);
   const hoursToPixels = h => h * 60 * timeConverter;
   const minutesToPixels = m => m * timeConverter;
+  const refWrapper = useRef(null);
 
+  useEffect(() => {});
+  
   const renderGameCard = (game) => {
     const starGame = moment(game.startDate);
     const distanceInMinutes = moment.duration(starGame.diff(workdayStart)).asMinutes();
@@ -67,7 +70,9 @@ const TimeRuler = React.memo(({
   };
 
   return (
-    <S.Wrapper>
+    <S.Wrapper
+      ref={refWrapper}
+    >
       {
         reservedGames && reservedGames.map(game => renderGameCard(game))
       }
@@ -91,7 +96,7 @@ const TimeRuler = React.memo(({
           onMoveTimeLine={onMoveTimeLine}
           startPosition={startPosition}
           setStart={setStart}
-          timeLineRef={timeLineRef}
+          wrapperWidth={refWrapper.current.offsetWidth}
         />
       }
       <S.TimeRuler

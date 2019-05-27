@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'; 
 import PropTypes from 'prop-types';
-import { throttleAnimation } from '@/helpers';
 import GameCard from '@/modules/home/components/GameCard';
 import BaseIcon from '@/modules/shared/components/BaseIcon';
-import Draggable, {DraggableCore} from 'react-draggable'; 
+import Draggable from 'react-draggable'; 
 import {
   DESKTOP_SIDEBAR_WIDTH,
   DESKTOP_TIMELINE_BORDER,
@@ -28,11 +27,10 @@ const MockGameCard =  ({
   authUser,
   display,
   onBlockTimeLine,
-  cardPosition,
   setCardPosition,
   onMoveTimeLine,
   startPosition,
-  setStart
+  wrapperWidth,
 }) => {
   const [isAbleToMove, setIsAbleToMove] = useState(false);
   const [delay, setDelay] = useState(0);
@@ -46,7 +44,6 @@ const MockGameCard =  ({
 
   useEffect(() => {
     ref.current.addEventListener('mousedown', onMouseDown);
- 
     return () => { 
       ref.current.removeEventListener('mousedown', onMouseDown); 
     };
@@ -104,8 +101,6 @@ const MockGameCard =  ({
 
   const onMouseUp = event => {
     event.preventDefault();
-    // document.removeEventListener('mousemove', onMouseMove);
-    // document.removeEventListener('mouseup', onMouseUp);
     handlerMoveStatus(false);
     setCardPosition(parseInt(ref.current.style.left, 10));
     setIsRunning(false);
@@ -114,13 +109,6 @@ const MockGameCard =  ({
   const onMouseDown = event => {
     event.preventDefault();
     if (event.button !== 0) { return; }
-    // document.addEventListener('mousemove', onMouseMove);
-    // document.addEventListener('mouseup', onMouseUp);
-    // handlerMoveStatus();
-    // relX = event.pageX;
-    // if(parseInt(ref.current.style.left, 10) >= 0) {
-    //   setStart(false)
-    // }
   };
 
   const handleStart = event => {
@@ -137,20 +125,25 @@ const MockGameCard =  ({
     console.log('handleStop')
   }
 
+  const calculateEndBound = () => wrapperWidth - display.size;
+
   return (
     <Draggable
       axis="x"
       handle=".handle"
-      defaultPosition={{x: 122, y: 0}}
+      defaultPosition={{x: 0, y: 0}}
       position={null}
-      bounds= {{left: 0}}
+      bounds= {{
+        left: 0,
+        right: calculateEndBound(),
+      }}
       grid={[25, 25]}
       scale={1}
       onStart={() => handleStart()}
       onDrag={handleDrag}
       onStop={handleStop}>
       <S.CardWrap
-      className="handle"
+        className='handle'
         size={display.size}
         // onMouseDown={onMouseDown}
         ref={ref}
