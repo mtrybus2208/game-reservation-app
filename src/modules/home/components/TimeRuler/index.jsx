@@ -37,6 +37,7 @@ const TimeRuler = React.memo(({
   const hoursToPixels = h => h * 60 * timeConverter;
   const minutesToPixels = m => m * timeConverter;
   const refWrapper = useRef(null);
+  const tempPosition = {x:0, y: 0}
 
   useEffect(() => {});
   
@@ -69,6 +70,10 @@ const TimeRuler = React.memo(({
     );
   };
 
+  const setTempPosition = (x) => {
+    tempPosition.x = x;
+  }
+
   return (
     <S.Wrapper
       ref={refWrapper}
@@ -97,6 +102,8 @@ const TimeRuler = React.memo(({
           startPosition={startPosition}
           setStart={setStart}
           wrapperWidth={refWrapper.current.offsetWidth}
+          tempPosition={tempPosition}
+          setTempPosition={setTempPosition}
         />
       }
       <S.TimeRuler
