@@ -10,8 +10,6 @@ import {
 } from '@/constants/gameSettings';
 import * as S from './styles';
 
-import { useInterval } from './hook';
-
 const propTypes = {
   authUser: PropTypes.object,
   display: PropTypes.object,
@@ -23,154 +21,147 @@ const propTypes = {
 
 const defaultProps = {};
 
-const MockGameCard =  ({
-  authUser,
-  display,
-  onBlockTimeLine,
-  cardPosition,
-  setCardPosition,
-  onMoveTimeLine,
-  startPosition,
-  setStart
-}) => {
-  const [isAbleToMove, setIsAbleToMove] = useState(false);
-  const [delay, setDelay] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
-  const ref = useRef(null);
-  let relX = null;
+class MockGameCard extends React.Component {
 
-  useInterval(() => {
-    timerCB();
-  }, isRunning ? delay : null);
+  state = {
+    isDragging: false,
+    isAbleToMove: false,
+    originalX: 0,
+    originalY: 0,
 
-  useEffect(() => {
-    ref.current.addEventListener('mousedown', onMouseDown);
- 
-    return () => { 
-      ref.current.removeEventListener('mousedown', onMouseDown);
-      update.cancel();
-    };
-  });
+    translateX: 0,
+    translateY: 0,
 
-  const customTitle = (
+    lastTranslateX: 0,
+    lastTranslateY: 0
+  };
+
+  myRef = React.createRef();
+
+  componentWillUpdate(prevProps, prevState) {
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('mousemove', this.handleMouseMove);
+    window.removeEventListener('mouseup', this.handleMouseUp);
+  }
+
+  customTitle = (
     <S.AnimatedIcon>
       <BaseIcon
         path="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1556279407/scroll.svg"
         size="25px"
       />
     </S.AnimatedIcon>
-  );
-
-  const update = throttleAnimation(walk => { 
-    const x = parseInt(ref.current.style.left, 10);
- 
-    if(walk < 0) {
-      if (detectStartEdge()) {
- 
-        setIsRunning(true);
-      } else {
-        setIsRunning(false);
- 
-         
-        ref.current.style.left = `${cardPosition + walk}px`;
-      } 
- 
-    } else if (walk > 0) {
-      if (detectEndEdge()) {
- 
-        setIsRunning(true);
-      } else { 
-        ref.current.style.left = `${cardPosition + walk}px`;
-       
-      } 
-       
-    }
-  });
-
-  const handlerMoveStatus = (status = true) => {
-    onBlockTimeLine(status);
-    setIsAbleToMove(status);
-  };
-
-  const detectStartEdge = () => {
-    const { left } = ref.current.getBoundingClientRect();
-    return left <= DESKTOP_SIDEBAR_WIDTH + DESKTOP_TIMELINE_BORDER;
-  };
-
-  const detectEndEdge = () => {
-    const { right } = ref.current.getBoundingClientRect();
-    return right >= window.innerWidth - DESKTOP_TIMELINE_BORDER;
-  };
-
-  const detectWrapperEdges = () => detectEndEdge() || detectStartEdge();
-
-  const moveTimeLineHandler = () => { 
-    const x = parseInt(ref.current.style.left, 10);
-
-    const modifier = detectEndEdge() ? +TIMELINE_MOVE_SPEED : -TIMELINE_MOVE_SPEED;
-    onMoveTimeLine(modifier);
-    ref.current.style.left = `${x + modifier}px`;
-
-    if (x <= 0) { 
-      ref.current.style.left = `${0}px`;
-      onMoveTimeLine(modifier);
-    }
-  };
-
-  const timerCB = () => {
-    const pars = ref.current.getBoundingClientRect();
-    if(startPosition === false) {
-      moveTimeLineHandler();
-    }
+  )
   
-  }
+  handleMouseDown = ({ clientX, clientY }) => {
+    window.addEventListener('mousemove', this.handleMouseMove);
+    window.addEventListener('mouseup', this.handleMouseUp);
 
-  const onMouseMove = event => {
-    event.preventDefault();
-    const walk = event.pageX - relX; 
-    const pars = ref.current.getBoundingClientRect();
-    update(walk);
-  };
-
-  const onMouseUp = event => {
-    event.preventDefault();
-    document.removeEventListener('mousemove', onMouseMove);
-    document.removeEventListener('mouseup', onMouseUp);
-    handlerMoveStatus(false);
-    setCardPosition(parseInt(ref.current.style.left, 10));
-    setIsRunning(false);
-  };
-
-  const onMouseDown = event => {
-    event.preventDefault();
-    if (event.button !== 0) { return; }
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-    handlerMoveStatus();
-    relX = event.pageX;
-    if(parseInt(ref.current.style.left, 10) >= 0) {
-      setStart(false)
+    if (this.props.onDragStart) {
+      this.props.onDragStart();
     }
+
+    this.props.onBlockTimeLine(true);
+
+    this.setState({
+      originalX: clientX,
+      originalY: clientY,
+      isDragging: true,
+      isAbleToMove: true,
+    });
   };
 
-  return (
-    <S.CardWrap
-      size={display.size}
-      onMouseDown={onMouseDown}
-      ref={ref}
-      isAbleToMove={isAbleToMove}
-      cardPosition={cardPosition}
-    >
-      <GameCard
-        user={authUser}
-        display={display}
-        customTitle={customTitle}
-        customPosition
+  handleMouseMove = ({ clientX, clientY }) => {
+    const { isDragging } = this.state;
+    const { onDrag } = this.props;
+
+    if (!isDragging) {
+      return;
+    }
+
+    this.setState(prevState => {
+      const { current } = this.myRef;
+      const { offsetParent } = current;
+      const { display } = this.props;
+
+      let res = clientX - prevState.originalX + prevState.lastTranslateX;
+      const isLeftDirection = clientX - prevState.originalX < 0;
+      const isRightEdge =
+        current.offsetLeft + display.size >= offsetParent.offsetWidth + offsetParent.scrollLeft;
+      const isLeftEdge = offsetParent.scrollLeft !== 0 && offsetParent.scrollLeft - res > 0;
+
+      if (isLeftEdge) {
+        res = offsetParent.scrollLeft;
+      }
+
+      if (isRightEdge && !isLeftDirection) {
+        res = (offsetParent.offsetWidth + offsetParent.scrollLeft) - display.size;
+      }
+
+      return ({
+        translateX: res < 0 ? 0 : res,
+        translateY: clientY - prevState.originalY + prevState.lastTranslateY,
+      });
+    }, () => {
+      if (onDrag) {
+        onDrag({
+          translateX: this.state.translateX,
+          translateY: this.state.translateY,
+        });
+      }
+    });
+  }; 
+  handleMouseUp = () => {
+    window.removeEventListener('mousemove', this.handleMouseMove);
+    window.removeEventListener('mouseup', this.handleMouseUp);
+
+    this.setState(
+      {
+        originalX: 0,
+        originalY: 0,
+        lastTranslateX: this.state.translateX,
+        lastTranslateY: this.state.translateY,
+
+        isDragging: false,
+        isAbleToMove: false,
+      },
+      () => {
+        if (this.props.onDragEnd) {
+          this.props.onDragEnd();
+        }
+
+        this.props.onBlockTimeLine(false);
+      },
+    );
+  };
+
+  render() {
+    const { translateX, translateY, isDragging } = this.state;
+    return (
+      <S.CardWrap
+        size={this.props.display.size}  
+        isAbleToMove={this.state.isAbleToMove}
+
+        onMouseDown={this.handleMouseDown}
+        x={translateX}
+        y={translateY}
+        isDragging={isDragging}
+        ref={this.myRef}
       >
-        <S.MockGameCard />
-      </GameCard>
-    </S.CardWrap>
-  );
+        <GameCard
+          user={this.props.authUser}
+          display={this.props.display}
+          customTitle={this.customTitle}
+          customPosition
+        >
+          <S.MockGameCard />
+        </GameCard>
+      </S.CardWrap>
+    );
+  }
+ 
 } ;
 
 MockGameCard.propTypes = propTypes;

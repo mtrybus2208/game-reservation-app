@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css} from 'styled-components';
 import PropTypes from 'prop-types';
 import { rgba } from 'polished';
 
@@ -16,7 +16,13 @@ const rotate = keyframes`
   }
 `;
 
-export const CardWrap = styled.div`
+export const CardWrap = styled.div.attrs({
+  style: ({ x, y }) => ({
+    // transform: `translate(${x}px, ${0}px)`
+    left: `${x}px`
+  }),
+})`
+  cursor: grab;
   position: absolute;
   top: ${props => props.cardPosition}px;
   top: 0;
@@ -29,6 +35,12 @@ export const CardWrap = styled.div`
   border-top: none;
   border-bottom: none;
   left: 0;
+  
+  ${({ isDragging }) =>
+    isDragging && css`
+    opacity: 0.8;
+    cursor: grabbing;
+  `};
 
   @media ${({ theme }) => theme.media.tablet} {
     left: ${props => props.cardPosition ? props.cardPosition : 0}px;
