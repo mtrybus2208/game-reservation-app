@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { debounced } from '@/helpers/index';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import * as S from './styles';
@@ -24,6 +25,28 @@ class GlobalChatWrapper extends Component {
     socketConnectionApiUrl: 'ws://localhost/socket/chat/global',
     getPlayerApiUrl: 'http://localhost/players',
     sendMessageApiUrl: 'http://localhost/chat/global',
+  }
+
+  debouncedOnClick = debounced(200, this.sendMessage.bind(this)); 
+
+  sendMessage() {
+    if(this.isNotAnonymousUser() && this.validateTypedMessage()) {
+
+      const playerMessage = JSON.parse(
+        `{ 
+          "playerId": "${this.props.authUser.uid}",
+          "message": "${this.state.typedMessage.trim()}" 
+        }`
+      );
+  
+      axios
+        .post(this.links.sendMessageApiUrl, playerMessage)
+        .then(() => 
+          this.setState({
+            typedMessage: '',
+          })
+        )
+    }
   }
 
   componentDidMount() {
@@ -88,23 +111,7 @@ class GlobalChatWrapper extends Component {
   }
 
   sendMessageHandler = () => {
-    if(this.isNotAnonymousUser() && this.validateTypedMessage()) {
-
-      const playerMessage = JSON.parse(
-        `{ 
-          "playerId": "${this.props.authUser.uid}",
-          "message": "${this.state.typedMessage.trim()}" 
-        }`
-      );
-  
-      axios
-        .post(this.links.sendMessageApiUrl, playerMessage)
-        .then(() => 
-          this.setState({
-            typedMessage: '',
-          })
-        )
-    }
+    this.debouncedOnClick();
   }
 
   isNotAnonymousUser = () => {
