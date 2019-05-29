@@ -1,13 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'; 
 import PropTypes from 'prop-types';
-import { throttleAnimation } from '@/helpers';
 import GameCard from '@/modules/home/components/GameCard';
 import BaseIcon from '@/modules/shared/components/BaseIcon';
-import {
-  DESKTOP_SIDEBAR_WIDTH,
-  DESKTOP_TIMELINE_BORDER,
-  TIMELINE_MOVE_SPEED,
-} from '@/constants/gameSettings';
 import * as S from './styles';
 
 const propTypes = {
@@ -21,25 +15,25 @@ const propTypes = {
 
 const defaultProps = {};
 
-class MockGameCard extends React.Component {
+class MockGameCard extends React.PureComponent {
 
   state = {
     isDragging: false,
     isAbleToMove: false,
     originalX: 0,
     originalY: 0,
-
     translateX: 0,
     translateY: 0,
-
     lastTranslateX: 0,
-    lastTranslateY: 0
+    lastTranslateY: 0,
+    paused: false,
   };
 
   myRef = React.createRef();
 
-  componentWillUpdate(prevProps, prevState) {
-  }
+  componentDidMount() {}
+
+  componentWillUpdate(prevProps, prevState) {}
 
   componentWillUnmount() {
     window.removeEventListener('mousemove', this.handleMouseMove);
@@ -80,53 +74,51 @@ class MockGameCard extends React.Component {
     if (!isDragging) {
       return;
     }
+    if(this.interval) {
+      return;
+    }
 
     this.setState(prevState => {
+      let res = clientX - prevState.originalX + prevState.lastTranslateX;
+
       const { current } = this.myRef;
       const { offsetParent } = current;
-      const { display } = this.props;
-
-      let res = clientX - prevState.originalX + prevState.lastTranslateX;
       const isLeftDirection = clientX - prevState.originalX < 0;
-      const isRightEdge =
-        current.offsetLeft + display.size >= offsetParent.offsetWidth + offsetParent.scrollLeft;
       const isLeftEdge = offsetParent.scrollLeft !== 0 && offsetParent.scrollLeft - res > 0;
 
       if (isLeftEdge) {
         res = offsetParent.scrollLeft;
       }
 
-      if (isRightEdge && !isLeftDirection) {
-        res = (offsetParent.offsetWidth + offsetParent.scrollLeft) - display.size;
+      if (this.isRightEdge() && !isLeftDirection) {
+        if(!this.interval) {
+          this.startTimer();
+        }  
       }
 
       return ({
         translateX: res < 0 ? 0 : res,
         translateY: clientY - prevState.originalY + prevState.lastTranslateY,
+        paused: true,
       });
-    }, () => {
-      if (onDrag) {
-        onDrag({
-          translateX: this.state.translateX,
-          translateY: this.state.translateY,
-        });
-      }
     });
   }; 
   handleMouseUp = () => {
     window.removeEventListener('mousemove', this.handleMouseMove);
     window.removeEventListener('mouseup', this.handleMouseUp);
-
-    this.setState(
-      {
+    
+    this.stopTimer();
+    this.setState( prev =>
+      ({
         originalX: 0,
         originalY: 0,
-        lastTranslateX: this.state.translateX,
+        lastTranslateX: prev.paused ? parseInt(this.myRef.current.style.left) : this.state.translateX,
         lastTranslateY: this.state.translateY,
 
         isDragging: false,
         isAbleToMove: false,
-      },
+        paused: false,
+      }),
       () => {
         if (this.props.onDragEnd) {
           this.props.onDragEnd();
@@ -136,6 +128,35 @@ class MockGameCard extends React.Component {
       },
     );
   };
+
+  startTimer = () =>{
+		this.interval = setInterval(this.tick, 1);
+	}
+  
+  stopTimer = () => {
+    clearInterval( this.interval );
+    this.interval = null;
+  }
+
+  isRightEdge = () => {
+    const { current } = this.myRef;
+    const { offsetParent } = current;
+    const { display } = this.props; 
+
+    return current.offsetLeft + display.size >= offsetParent.offsetWidth + offsetParent.scrollLeft;
+  }
+
+  tick = () => {
+    const { current } = this.myRef;
+    let computed = parseInt(this.myRef.current.style.left) + 3;
+
+    if(this.isRightEdge()) {
+        computed = (this.myRef.current.offsetParent.offsetWidth + this.myRef.current.offsetParent.scrollLeft) - this.props.display.size;
+    }
+
+    this.myRef.current.style.left= `${computed}px`;
+    this.props.onMoveTimeLine(+3);
+  }
 
   render() {
     const { translateX, translateY, isDragging } = this.state;
@@ -161,8 +182,7 @@ class MockGameCard extends React.Component {
       </S.CardWrap>
     );
   }
- 
-} ;
+};
 
 MockGameCard.propTypes = propTypes;
 MockGameCard.defaultProps = defaultProps;
