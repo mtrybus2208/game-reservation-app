@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { debounced } from '@/helpers/index';
 import { connect } from 'react-redux';
+import * as fromActions from '@/modules/shared/state/actions';
 import axios from 'axios';
 import * as S from './styles';
 
 const propTypes = { 
+  setChatMode: PropTypes.func,
   authUser: PropTypes.object,
 };
 
@@ -122,6 +124,11 @@ class GlobalChatWrapper extends Component {
     return this.state.typedMessage.length >= 3 && this.state.typedMessage.length <= 100;
   }
 
+  openDirectChat = (event) => {
+    const playerId = event.currentTarget.id;
+    this.props.setChatMode(playerId);
+  }
+
   render() {
     return (
       <S.GlobalChatWrapper>
@@ -135,8 +142,11 @@ class GlobalChatWrapper extends Component {
                     </S.PlayerNameText>
                   </S.PlayerName>
   
-                  <S.PlayerDirectChat>
-                    <S.PlayerDirectChatIcon id={value.playerId} src={this.links.directChatIcon} />
+                  <S.PlayerDirectChat
+                    id={value.playerId} 
+                    onClick={this.openDirectChat} 
+                  >
+                    <S.PlayerDirectChatIcon src={this.links.directChatIcon} />
                   </S.PlayerDirectChat>
                   
                   <S.PlayerPictureWrapper>
@@ -185,6 +195,18 @@ class GlobalChatWrapper extends Component {
   }
 };
 
+const mapStateToProps = (state) => ({
+  
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setChatMode: (playerId) => {
+      dispatch(fromActions.setChatMode(playerId));
+    },
+  };
+};
+
 GlobalChatWrapper.propTypes = propTypes;
 GlobalChatWrapper.defaultProps = defaultProps;
-export default GlobalChatWrapper;
+export default connect(mapStateToProps, mapDispatchToProps)(GlobalChatWrapper);

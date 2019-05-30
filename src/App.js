@@ -67,7 +67,6 @@ class App extends Component {
   }
 }
 
-
 const mapStateToProps = ({ ui, sessionState }) => (
   { 
     ui,
