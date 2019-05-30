@@ -54,6 +54,8 @@ class TimeLine extends Component {
   handlerMoveTimeLine(modifier) {    
     const { current } = this.timeLineRef;
     current.scrollLeft = current.scrollLeft + modifier;
+ 
+    return current.scrollLeft;
   }
 
   timeLineRef = React.createRef();

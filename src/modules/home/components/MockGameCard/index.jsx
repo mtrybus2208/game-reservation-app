@@ -13,7 +13,7 @@ const propTypes = {
   onMoveTimeLine: PropTypes.func,
 };
 
-const defaultProps = {};
+const defaultProps = {}; 
 
 class MockGameCard extends React.PureComponent {
 
@@ -27,17 +27,43 @@ class MockGameCard extends React.PureComponent {
     lastTranslateX: 0,
     lastTranslateY: 0,
     paused: false,
+    able: false,
+    test: 0,
   };
 
   myRef = React.createRef();
+  running = undefined; 
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.animLoop( ( deltaT ) => {
+      this.tick(); 
+  }, this.myRef.current );
+  }
 
   componentWillUpdate(prevProps, prevState) {}
 
   componentWillUnmount() {
     window.removeEventListener('mousemove', this.handleMouseMove);
     window.removeEventListener('mouseup', this.handleMouseUp);
+  }
+
+  animLoop = ( render, element ) => {
+    let lastFrame = +new Date; 
+    const loop = ( now ) => { 
+      time.elapsed = now - time.start;  
+      const position =  parseInt(this.myRef.current.style.left); 
+  
+      if ( this.running !== false) {
+          requestAnimationFrame( loop, element );
+            if(this.state.able !== false) {
+              this.running = render( now - lastFrame );
+              lastFrame = now;
+
+            } 
+      }
+    }
+
+    loop( lastFrame ); 
   }
 
   customTitle = (
@@ -64,6 +90,7 @@ class MockGameCard extends React.PureComponent {
       originalY: clientY,
       isDragging: true,
       isAbleToMove: true,
+      able: false
     });
   };
 
@@ -73,32 +100,32 @@ class MockGameCard extends React.PureComponent {
 
     if (!isDragging) {
       return;
-    }
-    if(this.interval) {
-      return;
-    }
-
+    } 
     this.setState(prevState => {
       let res = clientX - prevState.originalX + prevState.lastTranslateX;
-
+ 
       const { current } = this.myRef;
       const { offsetParent } = current;
       const isLeftDirection = clientX - prevState.originalX < 0;
-      const isLeftEdge = offsetParent.scrollLeft !== 0 && offsetParent.scrollLeft - res > 0;
-
-      if (isLeftEdge) {
-        res = offsetParent.scrollLeft;
-      }
-
+      const isLeftEdge = offsetParent.scrollLeft - res > 0;   
       if (this.isRightEdge() && !isLeftDirection) {
-        if(!this.interval) {
-          this.startTimer();
+        if(!this.state.able) {
+          this.moveDir = clientX;
+          this.setState(prev => {
+            return {
+              able: true, 
+            } 
+          })
         }  
+        return;
       }
 
+      if (isLeftEdge ) {  
+        res = offsetParent.scrollLeft;
+      }   
+ 
       return ({
-        translateX: res < 0 ? 0 : res,
-        translateY: clientY - prevState.originalY + prevState.lastTranslateY,
+        translateX: res < 0 ? 0 : res, 
         paused: true,
       });
     });
@@ -106,37 +133,24 @@ class MockGameCard extends React.PureComponent {
   handleMouseUp = () => {
     window.removeEventListener('mousemove', this.handleMouseMove);
     window.removeEventListener('mouseup', this.handleMouseUp);
-    
-    this.stopTimer();
+ 
     this.setState( prev =>
       ({
         originalX: 0,
         originalY: 0,
-        lastTranslateX: prev.paused ? parseInt(this.myRef.current.style.left) : this.state.translateX,
-        lastTranslateY: this.state.translateY,
+        lastTranslateX: prev.able ? parseInt(this.myRef.current.style.left) : this.state.translateX,
 
         isDragging: false,
         isAbleToMove: false,
         paused: false,
+        able: false,
       }),
-      () => {
-        if (this.props.onDragEnd) {
-          this.props.onDragEnd();
-        }
+      () => { 
 
         this.props.onBlockTimeLine(false);
       },
     );
-  };
-
-  startTimer = () =>{
-		this.interval = setInterval(this.tick, 1);
-	}
-  
-  stopTimer = () => {
-    clearInterval( this.interval );
-    this.interval = null;
-  }
+  };  
 
   isRightEdge = () => {
     const { current } = this.myRef;
@@ -148,24 +162,20 @@ class MockGameCard extends React.PureComponent {
 
   tick = () => {
     const { current } = this.myRef;
-    let computed = parseInt(this.myRef.current.style.left) + 3;
-
-    if(this.isRightEdge()) {
-        computed = (this.myRef.current.offsetParent.offsetWidth + this.myRef.current.offsetParent.scrollLeft) - this.props.display.size;
-    }
-
-    this.myRef.current.style.left= `${computed}px`;
-    this.props.onMoveTimeLine(+3);
+    this.props.onMoveTimeLine(+13);
+    const computed = (this.myRef.current.offsetParent.offsetWidth + this.myRef.current.offsetParent.scrollLeft) - this.props.display.size;
+    this.myRef.current.style.left = `${computed}px`;
+    return;
   }
 
+ 
   render() {
     const { translateX, translateY, isDragging } = this.state;
     return (
       <S.CardWrap
         size={this.props.display.size}  
         isAbleToMove={this.state.isAbleToMove}
-
-        onMouseDown={this.handleMouseDown}
+        onMouseDown={this.handleMouseDown} 
         x={translateX}
         y={translateY}
         isDragging={isDragging}
