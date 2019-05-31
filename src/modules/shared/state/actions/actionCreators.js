@@ -12,9 +12,15 @@ export const closeChatWithRedirect = (path) =>
     path,
   });
 
-export const setChatMode = (playerId) =>
+export const setDirectChatMode = (chatMode) =>
   ({
-    type: actionTypes.SET_CHAT_MODE,
-    playerId,
+    type: actionTypes.SET_DIRECT_CHAT_MODE,
+    chatMode,
   });
+
+export const setGlobalChatMode = () =>
+  ({
+    type: actionTypes.SET_GLOBAL_CHAT_MODE
+  });
+
 

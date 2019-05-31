@@ -20,10 +20,10 @@ export const uiReducer = (state = initialState, action) => {
         ...state,
         chatMode: 'GLOBAL',
       };
-    case actionTypes.SET_CHAT_MODE:
+    case actionTypes.SET_DIRECT_CHAT_MODE:
       return {
         ...state,
-        chatMode: 'DIRECT',
+        chatMode: action.chatMode,
       };
     default:
       return state;

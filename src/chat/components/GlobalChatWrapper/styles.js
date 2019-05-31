@@ -48,7 +48,7 @@ export const MessageBody = styled.div`
   line-height: 1.05;
   letter-spacing: .3px;
   text-align: left;
-  color: #747a81;
+  color: #858b92;
 `;
 
 export const PlayerName = styled.div`
@@ -142,7 +142,7 @@ export const MessageInput = styled.textarea`
   line-height: 1;
   letter-spacing: .3px;
   text-align: left;
-  color: #747a81;
+  color: #858b92;
   resize: none;
 `;
 

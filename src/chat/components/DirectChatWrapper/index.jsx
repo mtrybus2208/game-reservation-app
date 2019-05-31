@@ -1,120 +1,154 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import * as S from './styles';
+import * as fromActions from '@/modules/shared/state/actions';
+import { debounced } from '@/helpers/index';
+import axios from 'axios';
 
-const propTypes = {};
-
-const defaultProps = {
-  globalChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553015547/message.svg',
+const propTypes = { 
+  setGlobalChatMode: PropTypes.func,
 };
 
-const DirectChatWrapper = ({ globalChatIcon }) => (
-  <S.DirectChatWrapper> 
-    <S.GlobalChatReturn>
-      <S.GlobalChatIcon src={globalChatIcon} />
-      <S.GlobalChatInfo>Global chat</S.GlobalChatInfo>
-    </S.GlobalChatReturn>
+const defaultProps = { };
 
-    <S.DirectChatPlayerInfo>
-      <S.PlayerPictureWrapper>
-        <S.PlayerPicture />
-      </S.PlayerPictureWrapper>
-      <S.PlayerNameInfo>John Doe</S.PlayerNameInfo>
-    </S.DirectChatPlayerInfo>
+class DirectChatWrapper extends Component {
 
-    <S.MessagesWrapper>
-      <S.IncomingMessageWrapper>
-        <S.Message>
-          <S.MessageTime>
-            21:37
-          </S.MessageTime>
+  state = {
+    messages: [],
+    typedMessage: '',
+  };
 
-          <S.MessageText>
-            Gentrify viral seitan, flexitarian  neutra meh
-            jianbing food truck yolu ender  mixtape.
-            Lomo trust fund Gentrify viral seitan,
-            flexitarian neutra help
-            meh jianbing food  truck mixtape.
-          </S.MessageText>
-        </S.Message>
+  links = {
+    globalChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553015547/message.svg',
+  }
 
-        <S.MessageAuthorPictureWrapper>
-          <S.MessageAuthorPicture />
-        </S.MessageAuthorPictureWrapper>
-      </S.IncomingMessageWrapper>
+  openGlobalChat = () => {
+    this.props.setGlobalChatMode();
+  }
 
-      <S.OutgoingMessageWrapper> 
-        <S.Message>
-          <S.MessageTime>
-            21:37
-          </S.MessageTime>
+  render() {
+    return (
+    <S.DirectChatWrapper> 
+      <S.GlobalChatReturn onClick={this.openGlobalChat}>
+        <S.GlobalChatIcon src={this.links.globalChatIcon} />
+        <S.GlobalChatInfo>Global chat</S.GlobalChatInfo>
+      </S.GlobalChatReturn>
 
-          <S.MessageText>
-            Gentrify viral seitan, flexitarian  neutra meh
-            jianbing food truck yolu ender  mixtape.
-            Lomo trust fund Gentrify viral seitan,
-            flexitarian neutra help
-            meh jianbing food  truck mixtape.
-          </S.MessageText>
-        </S.Message>
-      </S.OutgoingMessageWrapper>
+      <S.DirectChatPlayerInfo>
+        <S.PlayerPictureWrapper>
+          <S.PlayerPicture />
+        </S.PlayerPictureWrapper>
+        <S.PlayerNameInfo>John Doe</S.PlayerNameInfo>
+      </S.DirectChatPlayerInfo>
 
-      <S.OutgoingMessageWrapper> 
-        <S.Message>
-          <S.MessageTime>
-            21:37
-          </S.MessageTime>
+      <S.MessagesWrapper>
+        <S.IncomingMessageWrapper>
+          <S.Message>
+            <S.MessageTime>
+              21:37
+            </S.MessageTime>
 
-          <S.MessageText>
-            Gentrify viral seitan, flexitarian  neutra meh
-            jianbing food truck yolu ender  mixtape.
-            Lomo trust fund Gentrify viral seitan,
-            flexitarian neutra help
-            meh jianbing food  truck mixtape.
-          </S.MessageText>
-        </S.Message>
-      </S.OutgoingMessageWrapper>
+            <S.MessageText>
+              Gentrify viral seitan, flexitarian  neutra meh
+              jianbing food truck yolu ender  mixtape.
+              Lomo trust fund Gentrify viral seitan,
+              flexitarian neutra help
+              meh jianbing food  truck mixtape.
+            </S.MessageText>
+          </S.Message>
 
-      <S.IncomingMessageWrapper>
-        <S.Message>
-          <S.MessageTime>
-            21:37
-          </S.MessageTime>
+          <S.MessageAuthorPictureWrapper>
+            <S.MessageAuthorPicture />
+          </S.MessageAuthorPictureWrapper>
+        </S.IncomingMessageWrapper>
 
-          <S.MessageText>
-            Gentrify viral seitan, flexitarian  neutra meh
-            jianbing food truck yolu ender  mixtape.
-            Lomo trust fund Gentrify viral seitan,
-            flexitarian neutra help
-            meh jianbing food  truck mixtape.
-          </S.MessageText>
-        </S.Message>
+        <S.OutgoingMessageWrapper> 
+          <S.Message>
+            <S.MessageTime>
+              21:37
+            </S.MessageTime>
 
-        <S.MessageAuthorPictureWrapper>
-          <S.MessageAuthorPicture />
-        </S.MessageAuthorPictureWrapper>
-      </S.IncomingMessageWrapper>
-    </S.MessagesWrapper>
+            <S.MessageText>
+              Gentrify viral seitan, flexitarian  neutra meh
+              jianbing food truck yolu ender  mixtape.
+              Lomo trust fund Gentrify viral seitan,
+              flexitarian neutra help
+              meh jianbing food  truck mixtape.
+            </S.MessageText>
+          </S.Message>
+        </S.OutgoingMessageWrapper>
 
-    <S.MessageInputSectionWrapper>
-      <S.MessageInputWrapper>
-        <S.MessageInput max={200} />
-      </S.MessageInputWrapper>
+        <S.OutgoingMessageWrapper> 
+          <S.Message>
+            <S.MessageTime>
+              21:37
+            </S.MessageTime>
 
-      <S.MessageButtonsWrapper>
-        <S.MessageButton>
-          <S.MessageButtonImage src="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595074/smiling-emoticon.svg" />
-        </S.MessageButton>
+            <S.MessageText>
+              Gentrify viral seitan, flexitarian  neutra meh
+              jianbing food truck yolu ender  mixtape.
+              Lomo trust fund Gentrify viral seitan,
+              flexitarian neutra help
+              meh jianbing food  truck mixtape.
+            </S.MessageText>
+          </S.Message>
+        </S.OutgoingMessageWrapper>
+
+        <S.IncomingMessageWrapper>
+          <S.Message>
+            <S.MessageTime>
+              21:37
+            </S.MessageTime>
+
+            <S.MessageText>
+              Gentrify viral seitan, flexitarian  neutra meh
+              jianbing food truck yolu ender  mixtape.
+              Lomo trust fund Gentrify viral seitan,
+              flexitarian neutra help
+              meh jianbing food  truck mixtape.
+            </S.MessageText>
+          </S.Message>
+
+          <S.MessageAuthorPictureWrapper>
+            <S.MessageAuthorPicture />
+          </S.MessageAuthorPictureWrapper>
+        </S.IncomingMessageWrapper>
+      </S.MessagesWrapper>
+
+      <S.MessageInputSectionWrapper>
+        <S.MessageInputWrapper>
+          <S.MessageInput max={200} />
+        </S.MessageInputWrapper>
+
+        <S.MessageButtonsWrapper>
+          <S.MessageButton>
+            <S.MessageButtonImage src="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595074/smiling-emoticon.svg" />
+          </S.MessageButton>
 
 
-        <S.MessageButton>
-          <S.MessageButtonImage src="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg" />  
-        </S.MessageButton>
-      </S.MessageButtonsWrapper>
-    </S.MessageInputSectionWrapper>
-  </S.DirectChatWrapper>
-);
+          <S.MessageButton>
+            <S.MessageButtonImage src="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg" />  
+          </S.MessageButton>
+        </S.MessageButtonsWrapper>
+      </S.MessageInputSectionWrapper>
+    </S.DirectChatWrapper>
+    );
+  };
+};
+
+const mapStateToProps = () => ({
+  
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setGlobalChatMode: () => {
+      dispatch(fromActions.setGlobalChatMode());
+    },
+  };
+};
 
 DirectChatWrapper.propTypes = propTypes;
 DirectChatWrapper.defaultProps = defaultProps;
-export default DirectChatWrapper;
+export default connect(mapStateToProps, mapDispatchToProps)(DirectChatWrapper);

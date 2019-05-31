@@ -7,7 +7,7 @@ import axios from 'axios';
 import * as S from './styles';
 
 const propTypes = { 
-  setChatMode: PropTypes.func,
+  setDirectChatMode: PropTypes.func,
   authUser: PropTypes.object,
 };
 
@@ -126,7 +126,7 @@ class GlobalChatWrapper extends Component {
 
   openDirectChat = (event) => {
     const playerId = event.currentTarget.id;
-    this.props.setChatMode(playerId);
+    this.props.setDirectChatMode(playerId);
   }
 
   render() {
@@ -195,14 +195,14 @@ class GlobalChatWrapper extends Component {
   }
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = () => ({
   
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setChatMode: (playerId) => {
-      dispatch(fromActions.setChatMode(playerId));
+    setDirectChatMode: (playerId) => {
+      dispatch(fromActions.setDirectChatMode(playerId));
     },
   };
 };

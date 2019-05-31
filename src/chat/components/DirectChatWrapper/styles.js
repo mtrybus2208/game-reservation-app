@@ -16,6 +16,7 @@ export const GlobalChatReturn = styled.button`
   height: 40px;
   border: none;
   background: #111315;
+  cursor: pointer;
 `;
 
 export const GlobalChatIcon = styled.img`
@@ -30,7 +31,7 @@ export const GlobalChatInfo = styled.span`
   letter-spacing: .3px;
   text-align: left;
   text-transform: uppercase;
-  color: #747a81;
+  color: #858b92;
 `;
 
 export const DirectChatPlayerInfo = styled.div`
@@ -39,7 +40,7 @@ export const DirectChatPlayerInfo = styled.div`
   align-items: center;
   width: 100%;
   height: 40px;
-  background: #171a1d;
+  background: #181c1f;
 `;
 
 export const PlayerPictureWrapper = styled.div`
@@ -69,7 +70,7 @@ export const PlayerNameInfo = styled.span`
   letter-spacing: .3px;
   text-align: left;
   text-transform: uppercase;
-  color: #5e4213;
+  color: #a5710f;
 `;
 
 export const MessagesWrapper = styled.div`
@@ -147,7 +148,7 @@ export const MessageTime = styled.div`
   border-bottom: 1px solid #252525;
   font-family: Roboto;
   font-size: 9px;
-  font-weight: 300;
+  font-weight: 500;
   line-height: 23px;
   letter-spacing: .2px;
   text-align: left;
@@ -157,13 +158,14 @@ export const MessageTime = styled.div`
 export const MessageText = styled.div`
   width: 85%;
   margin: 8px auto 15px;
+  overflow-wrap: word-break;
   font-family: Roboto;
   font-size: 11px;
   font-weight: 300;
   line-height: 1.16;
   letter-spacing: .2px;
   text-align: left;
-  color: #747a81;
+  color: #858b92;
 `;
 
 export const MessageAuthorPictureWrapper = styled.div`
@@ -211,7 +213,7 @@ export const MessageInput = styled.textarea`
   line-height: 1.16;
   letter-spacing: .2px;
   text-align: left;
-  color: #747a81;
+  color: #858b92;
   resize: none;
 `;
 
