@@ -8,6 +8,7 @@ export const Logo = styled.div`
 
 export const Image = styled.img`
     height: auto;
+    box-sizing: content-box;
     width: 26px;
     padding: 0 21px;
 
