@@ -20,38 +20,38 @@ class MockGameCard extends React.PureComponent {
   state = {
     isDragging: false,
     isAbleToMove: false,
-    originalX: 0,
-    originalY: 0,
+    originalX: 0, 
     translateX: 0,
-    translateY: 0,
-    lastTranslateX: 0,
-    lastTranslateY: 0,
-    paused: false,
+    lastTranslateX: 0, 
     able: false,
     test: 0,
+    intervalMove: false,
+    isRightEdge: false,
   };
-
+  handleNormalMove = this.handleNormalMove.bind(this);
+  handleLeftEdgeMove = this.handleLeftEdgeMove.bind(this);
+  animLoop = this.animLoop.bind(this);
   myRef = React.createRef();
-  running = undefined; 
+  running = true;
 
   componentDidMount() {
     this.animLoop( ( deltaT ) => {
-      this.tick(); 
+      if(this.state.able) {
+        this.tick(); 
+      }
   }, this.myRef.current );
+}
+
+  componentDidUpdate(prevProps, prevState) { 
   }
-
-  componentWillUpdate(prevProps, prevState) {}
-
   componentWillUnmount() {
     window.removeEventListener('mousemove', this.handleMouseMove);
     window.removeEventListener('mouseup', this.handleMouseUp);
   }
 
-  animLoop = ( render, element ) => {
+  animLoop( render, element ) {
     let lastFrame = +new Date; 
     const loop = ( now ) => { 
-      time.elapsed = now - time.start;  
-      const position =  parseInt(this.myRef.current.style.left); 
   
       if ( this.running !== false) {
           requestAnimationFrame( loop, element );
@@ -76,64 +76,107 @@ class MockGameCard extends React.PureComponent {
   )
   
   handleMouseDown = ({ clientX, clientY }) => {
+    // zastopuj stoper
     window.addEventListener('mousemove', this.handleMouseMove);
     window.addEventListener('mouseup', this.handleMouseUp);
 
-    if (this.props.onDragStart) {
-      this.props.onDragStart();
-    }
+    this.setState( prev =>
+      ({ 
+        lastTranslateX: !prev.able ? parseInt(this.myRef.current.style.left) : this.state.translateX,
+        originalX: clientX, 
+        isDragging: true,
+        isAbleToMove: true,
+        able: false,
+      }),
+      () => { 
 
-    this.props.onBlockTimeLine(true);
-
-    this.setState({
-      originalX: clientX,
-      originalY: clientY,
-      isDragging: true,
-      isAbleToMove: true,
-      able: false
-    });
+        this.props.onBlockTimeLine(true);
+      },
+    );
+ 
   };
 
-  handleMouseMove = ({ clientX, clientY }) => {
+  afterMouseMove() {
+    const { current } = this.myRef;
+    const { offsetParent } = current;
+    const { display } = this.props;  
+  }
+
+  handleNormalMove(clientX) {
     const { isDragging } = this.state;
-    const { onDrag } = this.props;
+    const { current } = this.myRef;
+    const { offsetParent } = current;
+
+    if (!isDragging) {
+      return;
+    }
+    
+    const isRightEdge = this.state.translateX + this.props.display.size >= offsetParent.offsetWidth + offsetParent.scrollLeft; 
+    this.setState(prevState => ({  
+      isRightEdge,
+      translateX: isRightEdge ? offsetParent.offsetWidth + offsetParent.scrollLeft - this.props.display.size : clientX - prevState.originalX + prevState.lastTranslateX,
+      
+    }), () => {
+      if(this.state.isRightEdge) {
+        this.setState(prevState => ({
+          able: true,
+        }), () => {
+          console.log('handleIntervalMov')
+        });
+      }
+ 
+    }); 
+  }
+
+  handleIntervalMove() {
+    this.setState(prevState => ({
+      able: true,
+    }), () => { 
+    });
+  }
+
+  handleLeftEdgeMove(clientX) {  
+    const { isDragging } = this.state;
+    const { current } = this.myRef;
+    const { offsetParent } = current;
+
+     
+    this.setState(prevState => ({ 
+      isRightEdge: false,
+      translateX:  clientX - prevState.originalX + prevState.lastTranslateX,
+    }), this.afterMouseMove);
+    
+  }
+
+
+  handleMouseMove = ({ clientX }) => {
+    const { isDragging} = this.state;
+    const mouseLeftMove = clientX - this.state.originalX < 0;
+    const mouseRightMove = clientX - this.state.originalX > 0;
 
     if (!isDragging) {
       return;
     } 
-    this.setState(prevState => {
-      let res = clientX - prevState.originalX + prevState.lastTranslateX;
- 
-      const { current } = this.myRef;
-      const { offsetParent } = current;
-      const isLeftDirection = clientX - prevState.originalX < 0;
-      const isLeftEdge = offsetParent.scrollLeft - res > 0;   
-      if (this.isRightEdge() && !isLeftDirection) {
-        if(!this.state.able) {
-          this.moveDir = clientX;
-          this.setState(prev => {
-            return {
-              able: true, 
-            } 
-          })
-        }  
-        return;
+    if(mouseLeftMove && !this.state.isRightEdge) { 
+      this.handleNormalMove(clientX);
+      return false;
+    }
+
+    if(mouseLeftMove && this.state.isRightEdge) { 
+        this.handleLeftEdgeMove(clientX);
+        return false;
+  
       }
 
-      if (isLeftEdge ) {  
-        res = offsetParent.scrollLeft;
-      }   
- 
-      return ({
-        translateX: res < 0 ? 0 : res, 
-        paused: true,
-      });
-    });
-  }; 
+    if(mouseRightMove) { 
+      this.handleNormalMove(clientX)
+      return false;
+    } 
+  };
   handleMouseUp = () => {
     window.removeEventListener('mousemove', this.handleMouseMove);
     window.removeEventListener('mouseup', this.handleMouseUp);
- 
+    
     this.setState( prev =>
       ({
         originalX: 0,
@@ -141,8 +184,7 @@ class MockGameCard extends React.PureComponent {
         lastTranslateX: prev.able ? parseInt(this.myRef.current.style.left) : this.state.translateX,
 
         isDragging: false,
-        isAbleToMove: false,
-        paused: false,
+        isAbleToMove: false, 
         able: false,
       }),
       () => { 
@@ -165,11 +207,12 @@ class MockGameCard extends React.PureComponent {
     this.props.onMoveTimeLine(+13);
     const computed = (this.myRef.current.offsetParent.offsetWidth + this.myRef.current.offsetParent.scrollLeft) - this.props.display.size;
     this.myRef.current.style.left = `${computed}px`;
-    return;
+ 
   }
 
  
   render() {
+    console.log('RENDER')
     const { translateX, translateY, isDragging } = this.state;
     return (
       <S.CardWrap
