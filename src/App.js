@@ -46,7 +46,10 @@ class App extends Component {
             <AppGrid>
               <AppGrid.SidebarArea leftGridOpen={this.props.ui.leftSidebarOpened}>
                 {this.props.ui.chatMode !== 'GLOBAL' ? (
-                  <DirectChatWrapper />
+                  <DirectChatWrapper 
+                    authUser={this.props.sessionState.authUser} 
+                    receiverId={this.props.ui.chatMode}
+                  />
                 ) : (
                   <GlobalChatWrapper authUser={this.props.sessionState.authUser} />
                 )}

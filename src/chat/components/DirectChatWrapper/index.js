@@ -8,6 +8,8 @@ import axios from 'axios';
 
 const propTypes = { 
   setGlobalChatMode: PropTypes.func,
+  authUser: PropTypes.object,
+  receiverId: PropTypes.string,
 };
 
 const defaultProps = { };
@@ -21,6 +23,10 @@ class DirectChatWrapper extends Component {
 
   links = {
     globalChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553015547/message.svg',
+  }
+
+  componentDidMount() {
+    
   }
 
   openGlobalChat = () => {
