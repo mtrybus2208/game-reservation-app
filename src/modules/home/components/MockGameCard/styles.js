@@ -30,7 +30,7 @@ export const CardWrap = styled.div.attrs({
   width: auto;
   background: rgba(1, 66, 23, 0.3);
   top: 101px;
-  z-index: 1;
+  z-index: 6;
   border: ${({ isAbleToMove }) => isAbleToMove ? '3px solid #014217' : 'none'};
   border-top: none;
   border-bottom: none;

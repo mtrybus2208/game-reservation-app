@@ -4,6 +4,16 @@ import GameCard from '@/modules/home/components/GameCard';
 import BaseIcon from '@/modules/shared/components/BaseIcon';
 import * as S from './styles';
 
+/**
+ * Create handlers foe every directions
+ * 1. left
+ * 2. right
+ * 3. right interval 
+ * 4. left interval 
+ * 5. right interval + change direction to left
+ * 6. left interval + change direction to right
+ */
+
 const propTypes = {
   authUser: PropTypes.object,
   display: PropTypes.object,
@@ -29,10 +39,14 @@ class MockGameCard extends React.PureComponent {
     isRightEdge: false,
   };
   handleNormalMove = this.handleNormalMove.bind(this);
-  handleLeftEdgeMove = this.handleLeftEdgeMove.bind(this);
+  leftMoveSimple = this.leftMoveSimple.bind(this);
   animLoop = this.animLoop.bind(this);
   myRef = React.createRef();
   running = true;
+
+  localMouseDirection = {
+    x: 0,
+  }
 
   componentDidMount() {
     this.animLoop( ( deltaT ) => {
@@ -76,7 +90,6 @@ class MockGameCard extends React.PureComponent {
   )
   
   handleMouseDown = ({ clientX, clientY }) => {
-    // zastopuj stoper
     window.addEventListener('mousemove', this.handleMouseMove);
     window.addEventListener('mouseup', this.handleMouseUp);
 
@@ -96,12 +109,6 @@ class MockGameCard extends React.PureComponent {
  
   };
 
-  afterMouseMove() {
-    const { current } = this.myRef;
-    const { offsetParent } = current;
-    const { display } = this.props;  
-  }
-
   handleNormalMove(clientX) {
     const { isDragging } = this.state;
     const { current } = this.myRef;
@@ -120,59 +127,68 @@ class MockGameCard extends React.PureComponent {
       if(this.state.isRightEdge) {
         this.setState(prevState => ({
           able: true,
-        }), () => {
-          console.log('handleIntervalMov')
+        }), () => { 
         });
       }
- 
     }); 
   }
 
-  handleIntervalMove() {
-    this.setState(prevState => ({
-      able: true,
-    }), () => { 
-    });
+  leftMoveSimple(clientX) { 
+    this.setState( prev =>
+      ({
+        originalX: clientX, 
+        lastTranslateX: parseInt(this.myRef.current.style.left),
+        isDragging: true,
+        isAbleToMove: true,
+        able: false,
+        isRightEdge: false
+      }),
+    );
   }
 
-  handleLeftEdgeMove(clientX) {  
+  handleMouseMove = (e) => {
+    const {clientX } = e;
     const { isDragging } = this.state;
-    const { current } = this.myRef;
-    const { offsetParent } = current;
 
-     
-    this.setState(prevState => ({ 
-      isRightEdge: false,
-      translateX:  clientX - prevState.originalX + prevState.lastTranslateX,
-    }), this.afterMouseMove);
-    
-  }
+    const directionX = e.movementX || e.mozMovementX || e.webkitMovementX || 0;
+    const isRightEdge = this.state.translateX + this.props.display.size >= this.myRef.current.offsetParent.offsetWidth +this.myRef.current. offsetParent.scrollLeft;  
 
-
-  handleMouseMove = ({ clientX }) => {
-    const { isDragging} = this.state;
     const mouseLeftMove = clientX - this.state.originalX < 0;
     const mouseRightMove = clientX - this.state.originalX > 0;
 
     if (!isDragging) {
       return;
-    } 
-    if(mouseLeftMove && !this.state.isRightEdge) { 
-      this.handleNormalMove(clientX);
+    }
+
+    if(directionX <0 && isRightEdge) {
+      console.log('end of wrapper');
+
+      this.setState(prevState => ({  
+        isRightEdge: false,
+        translateX: clientX - prevState.originalX + prevState.lastTranslateX,
+        able: false,
+        isAbleToMove: true,
+      }));
       return false;
     }
 
-    if(mouseLeftMove && this.state.isRightEdge) { 
-        this.handleLeftEdgeMove(clientX);
-        return false;
-  
-      }
 
-    if(mouseRightMove) { 
-      this.handleNormalMove(clientX)
-      return false;
+    if(mouseRightMove && directionX <0 && !this.state.able && !this.state.isRightEdge) {
+      this.leftMoveSimple(clientX)
+      return;
+    }
+
+    if(mouseRightMove && this.state.able && directionX < 0) { 
+      this.setState({
+        able: false,
+        isRightEdge: false,
+      })
+      return;
     } 
+
+     this.handleNormalMove(clientX);
   };
+
   handleMouseUp = () => {
     window.removeEventListener('mousemove', this.handleMouseMove);
     window.removeEventListener('mouseup', this.handleMouseUp);
@@ -207,12 +223,10 @@ class MockGameCard extends React.PureComponent {
     this.props.onMoveTimeLine(+13);
     const computed = (this.myRef.current.offsetParent.offsetWidth + this.myRef.current.offsetParent.scrollLeft) - this.props.display.size;
     this.myRef.current.style.left = `${computed}px`;
- 
   }
 
  
   render() {
-    console.log('RENDER')
     const { translateX, translateY, isDragging } = this.state;
     return (
       <S.CardWrap
