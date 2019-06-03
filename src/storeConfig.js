@@ -9,6 +9,7 @@ import { loadState, saveState } from './helpers/localstorage';
 import { timeLineReducer, gameReservationReducer } from './modules/home/state/reducers';
 import { uiReducer } from './modules/shared/state/reducers';
 import { messageReducer, sessionReducer } from './modules/auth/state/reducers';
+import { chatReducer } from './chat/state/reducers';
 import timeLineSaga from './modules/home/state/sagas/';
 import authSaga from './modules/auth/state/sagas/';
 import uiSaga from './modules/shared/state/sagas/';
@@ -22,6 +23,7 @@ export default function configureStore(history) {
     messageState: messageReducer,
     sessionState: sessionReducer,
     gameReservationState: gameReservationReducer,
+    chat: chatReducer,
   });
 
   const sagaMiddleware = createSagaMiddleware();

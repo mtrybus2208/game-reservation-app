@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { debounced } from '@/helpers/index';
 import { connect } from 'react-redux';
-import * as fromActions from '@/modules/shared/state/actions';
+import * as fromActions from '../../state/actions';
 import axios from 'axios';
 import * as S from './styles';
 

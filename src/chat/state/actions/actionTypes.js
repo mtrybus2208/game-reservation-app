@@ -1,0 +1,5 @@
+export const actionTypes = {
+    SET_DIRECT_CHAT_MODE: '[UI] SET_DIRECT_CHAT_MODE',
+    SET_GLOBAL_CHAT_MODE: '[UI] SET_GLOBAL_CHAT_MODE',
+};
+  
