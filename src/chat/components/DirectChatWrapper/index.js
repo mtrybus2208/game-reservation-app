@@ -54,7 +54,6 @@ class DirectChatWrapper extends Component {
   }
 
   openGlobalChat = () => {
-    console.log(this.state.receiver)
     this.props.setGlobalChatMode();
   }
 
