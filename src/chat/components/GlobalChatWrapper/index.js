@@ -31,6 +31,12 @@ class GlobalChatWrapper extends Component {
 
   debouncedOnClick = debounced(200, this.sendMessage.bind(this)); 
 
+  componentDidMount() {
+    const websocket = new WebSocket(this.links.socketConnectionApiUrl);
+    this.setWebsocketMessageReceiveHandler(websocket);
+    this.setWebsocketConnectionSustain(websocket);
+  }
+
   sendMessage() {
     if(this.isNotAnonymousUser() && this.validateTypedMessage()) {
 
@@ -49,12 +55,6 @@ class GlobalChatWrapper extends Component {
           })
         )
     }
-  }
-
-  componentDidMount() {
-    const websocket = new WebSocket(this.links.socketConnectionApiUrl);
-    this.setWebsocketMessageReceiveHandler(websocket);
-    this.setWebsocketConnectionSustain(websocket);
   }
 
   setWebsocketMessageReceiveHandler = (websocket) => {
