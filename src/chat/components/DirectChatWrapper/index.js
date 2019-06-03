@@ -19,17 +19,42 @@ class DirectChatWrapper extends Component {
   state = {
     messages: [],
     typedMessage: '',
+    receiver: {
+      id: '',
+      displayName: '',
+      email: '',
+      photoUrl: '',
+    },
   };
 
   links = {
     globalChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553015547/message.svg',
+    getPlayerApiUrl: 'http://localhost/players',
   }
 
   componentDidMount() {
-    
+    this.setupReceiverData(this.props.receiverId);
+  }
+
+  setupReceiverData = (receiverId) => {
+    this.getReceiver(receiverId)
+      .then((playerResponse) => {
+
+        this.setState({
+          receiver: playerResponse.data,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  getReceiver = (receiverId) => {
+    return axios.get(`${this.links.getPlayerApiUrl}/${receiverId}`)
   }
 
   openGlobalChat = () => {
+    console.log(this.state.receiver)
     this.props.setGlobalChatMode();
   }
 
@@ -43,9 +68,9 @@ class DirectChatWrapper extends Component {
 
       <S.DirectChatPlayerInfo>
         <S.PlayerPictureWrapper>
-          <S.PlayerPicture />
+          <S.PlayerPicture src={this.state.receiver.photoUrl} />
         </S.PlayerPictureWrapper>
-        <S.PlayerNameInfo>John Doe</S.PlayerNameInfo>
+        <S.PlayerNameInfo>{this.state.receiver.displayName}</S.PlayerNameInfo>
       </S.DirectChatPlayerInfo>
 
       <S.MessagesWrapper>
