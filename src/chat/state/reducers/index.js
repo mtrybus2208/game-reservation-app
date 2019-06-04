@@ -2,6 +2,7 @@ import { actionTypes } from '../actions/actionTypes';
 
 export const initialState = {
   chatMode: 'GLOBAL',
+  globalChatMessages: [],
 };
 
 export const chatReducer = (state = initialState, action) => {
@@ -16,7 +17,12 @@ export const chatReducer = (state = initialState, action) => {
         ...state,
         chatMode: action.chatMode,
       };
+    case actionTypes.ADD_GLOBAL_CHAT_MESSAGE:
+      return {
+        ...state,
+        globalChatMessages: [...state.globalChatMessages, action.message],
+      };
     default:
-      return state;
+      return state; 
   }
 };

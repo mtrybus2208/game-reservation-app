@@ -10,3 +10,9 @@ export const setGlobalChatMode = () =>
   ({
     type: actionTypes.SET_GLOBAL_CHAT_MODE
   });
+
+export const addGlobalChatMessage = (message) =>
+  ({
+    type: actionTypes.ADD_GLOBAL_CHAT_MESSAGE,
+    message,
+  });

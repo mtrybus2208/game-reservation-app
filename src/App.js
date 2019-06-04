@@ -52,7 +52,10 @@ class App extends Component {
                     receiverId={this.props.chat.chatMode}
                   />
                 ) : (
-                  <GlobalChatWrapper authUser={this.props.sessionState.authUser} />
+                  <GlobalChatWrapper 
+                    authUser={this.props.sessionState.authUser} 
+                    globalChatMessages={this.props.chat.globalChatMessages}
+                  />
                 )}
               </AppGrid.SidebarArea>
 

@@ -7,8 +7,10 @@ import axios from 'axios';
 import * as S from './styles';
 
 const propTypes = { 
-  setDirectChatMode: PropTypes.func,
   authUser: PropTypes.object,
+  globalChatMessages: PropTypes.array,
+  setDirectChatMode: PropTypes.func,
+  addGlobalChatMessage: PropTypes.func,
 };
 
 const defaultProps = { };
@@ -16,8 +18,8 @@ const defaultProps = { };
 class GlobalChatWrapper extends Component {
 
   state = {
-    messages: [],
     typedMessage: '',
+    websocket: null,
   };
 
   links = {
@@ -32,9 +34,21 @@ class GlobalChatWrapper extends Component {
   debouncedOnClick = debounced(200, this.sendMessage.bind(this)); 
 
   componentDidMount() {
-    const websocket = new WebSocket(this.links.socketConnectionApiUrl);
-    this.setWebsocketMessageReceiveHandler(websocket);
-    this.setWebsocketConnectionSustain(websocket);
+    const websocketConnection = new WebSocket(this.links.socketConnectionApiUrl);
+
+    this.setState({
+      websocket: websocketConnection,
+    },
+    () => {
+      this.setWebsocketMessageReceiveHandler(this.state.websocket);
+      this.setWebsocketConnectionSustain(this.state.websocket);
+    });
+  }
+
+  getDerivedStateFromProps 
+
+  componentWillUnmount() {
+    this.state.websocket.close();
   }
 
   sendMessage() {
@@ -92,15 +106,20 @@ class GlobalChatWrapper extends Component {
     message.playerName = author.data.displayName;
     message.photoUrl = author.data.photoUrl;
 
-    this.setState(oldState => ({
-      messages: [...oldState.messages, message],
-    }))
+    this.props.addGlobalChatMessage(message);
   }
 
   setWebsocketConnectionSustain = (websocket) => {
-    setInterval(() => {
-      websocket.send('');
-    }, 60000);
+    const websocketRefreshInterval = setInterval(() => {
+
+      const openState = 1;
+
+      if(websocket.readyState === openState) {
+        websocket.send('');
+      } else {
+        clearInterval(websocketRefreshInterval);
+      }
+    }, 10000);
   }
 
   handleEnterClick = (event) => {
@@ -133,7 +152,7 @@ class GlobalChatWrapper extends Component {
     return (
       <S.GlobalChatWrapper>
           <S.MessagesWrapper>
-            {this.state.messages.map((value, index) => (
+            {this.props.globalChatMessages.map((value, index) => (
               <S.Message key={index}>
                 <S.MessageHeader>
                   <S.PlayerName>
@@ -203,6 +222,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setDirectChatMode: (playerId) => {
       dispatch(fromActions.setDirectChatMode(playerId));
+    },
+    addGlobalChatMessage: (message) => {
+      dispatch(fromActions.addGlobalChatMessage(message));
     },
   };
 };
