@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
 import BaseButton from '@/modules/shared/components/BaseButton';
 import useForm from '@/modules/auth/helpers/useForm';
 import Input from '@/modules/auth/components/AuthForm/Input';
