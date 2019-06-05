@@ -9,4 +9,5 @@ export const actionTypes = {
   ZOOM_TIMELINE: '[TimeLine] ZOOM_TIMELINE',
   SET_GAME_TYPE: '[GameReservation] SET_GAME_TYPE',
   SET_GAME_TIME: '[GameReservation] SET_GAME_TIME',
+  SET_CURRENT_RESERVATION_TIME: '[TimeLine] SET_CURRENT_RESERVATION_TIME',
 };

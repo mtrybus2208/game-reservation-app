@@ -32,3 +32,9 @@ export const zoomTimeLine = payload =>
     payload,
   });
 
+export const setCurrentReservationTime = payload =>
+  ({
+    type: actionTypes.SET_CURRENT_RESERVATION_TIME,
+    payload,
+  });
+

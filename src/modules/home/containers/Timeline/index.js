@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { throttled } from '@/helpers';
 import { getAllReservedGames } from '@/modules/home/state/selectors/entieties';
 import TimeRuler from '@/modules/home/components/TimeRuler';
 import * as fromActions from '../../state/actions';
@@ -15,6 +16,7 @@ const propTypes = {
   reservedGames: PropTypes.array,
   timeConverter: PropTypes.number,
   fetchReservedGames: PropTypes.func,
+  setCurrentReservationTime: PropTypes.func,
   sessionState: PropTypes.object,
 };
 
@@ -33,6 +35,7 @@ class TimeLine extends Component {
 
   componentDidMount() {
     this.props.fetchReservedGames();
+    
   }
 
   componentDidUpdate() {}
@@ -73,6 +76,8 @@ class TimeLine extends Component {
     const x = e.pageX - current.offsetLeft;
     const walk = (x - this.state.startX);
     current.scrollLeft = this.state.scrollLeft - walk;
+
+    throttled(200, this.props.setCurrentReservationTime(current.scrollLeft));
   };
 
   mouseUp = () => () => {
@@ -129,6 +134,7 @@ class TimeLine extends Component {
             authUser={this.props.sessionState.authUser}
             startPosition={this.state.startPosition}
             setStart={this.setStart}
+            setCurrentReservationTime={this.props.setCurrentReservationTime}
           />
         </S.TimeLine>
       </S.TimeLineWrapper>
@@ -154,6 +160,9 @@ const mapDispatchToProps = dispatch => ({
   },
   zoomTimeLine: payload => {
     dispatch(fromActions.zoomTimeLine(payload));
+  },
+  setCurrentReservationTime: payload => {
+    dispatch(fromActions.setCurrentReservationTime(payload));
   },
 });
 

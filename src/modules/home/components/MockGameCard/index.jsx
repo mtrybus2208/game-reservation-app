@@ -1,5 +1,6 @@
 import React from 'react'; 
 import PropTypes from 'prop-types';
+import { throttled } from '@/helpers';
 import GameCard from '@/modules/home/components/GameCard';
 import BaseIcon from '@/modules/shared/components/BaseIcon';
 import * as S from './styles';
@@ -11,6 +12,7 @@ const propTypes = {
   cardPosition: PropTypes.number,
   setCardPosition: PropTypes.func,
   onMoveTimeLine: PropTypes.func,
+  setCurrentReservationTime: PropTypes.func,
 };
 
 const defaultProps = {}; 
@@ -28,7 +30,7 @@ class MockGameCard extends React.PureComponent {
   };
    
   resetInterval = this.resetInterval.bind(this);
-  animLoop = this.animLoop.bind(this);
+  animLoop = this.animLoop.bind(this); 
   myRef = React.createRef();
   running = true; 
 
@@ -105,6 +107,10 @@ class MockGameCard extends React.PureComponent {
     return (this.myRef.current.offsetParent.scrollLeft > this.state.translateX);
   }
 
+  handlerSetCurrentReservation = (pos) => () => {
+    throttled(250, this.props.setCurrentReservationTime(pos));
+  }
+
   handleMouseMove = e => {
     const { clientX } = e;
     const { isDragging } = this.state;
@@ -132,11 +138,14 @@ class MockGameCard extends React.PureComponent {
     }
 
     if (!this.state.able) {
-      this.setState(prevState => ({
-        translateX: clientX - prevState.originalX + prevState.lastTranslateX,
-        intervalDirection: null,
-        able: false,
-      }));
+      this.setState(prevState => {
+        const translateX = clientX - prevState.originalX + prevState.lastTranslateX;
+        return {
+          translateX,
+          intervalDirection: null,
+          able: false,
+        };
+      }, this.handlerSetCurrentReservation(this.state.translateX));
     }
 
     if (isRightEdge && directionX > 0 && !this.state.able) {

@@ -9,6 +9,7 @@ const initialState = {
   gameConfigOpen: false,
   timeConverter: 12,
   entities: null,
+  currentReservationTime: null,
 };
 
 export const timeLineReducer = (state = initialState, action) => {
@@ -38,6 +39,12 @@ export const timeLineReducer = (state = initialState, action) => {
       return {
         ...state,
         timeConverter: action.payload,
+      };
+    }
+    case actionTypes.SET_CURRENT_RESERVATION_TIME: {
+      return {
+        ...state,
+        currentReservationTime: action.payload,
       };
     }
     default:
