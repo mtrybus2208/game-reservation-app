@@ -37,5 +37,11 @@ export const getArrayOfWorkdayHours = state => {
     .map(h => moment(workdayStart).add(h, 'h').format('HH:mm'));
 };
 
+export const getHoursFromPixels = state => {
+  const { workdayStart, currentReservationTime, timeConverter } = getTimeLine(state);
+  const minutes = currentReservationTime / timeConverter;
+  return moment(workdayStart).add(minutes, 'minutes').format('HH:mm');
+}
+
 // Need to divide this to separate file
 

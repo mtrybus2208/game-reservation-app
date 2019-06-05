@@ -2,11 +2,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { GAMES, GAMES_DURATION } from '@/constants/gameSettings';
+import {
+  getReservationInHours,
+  getHoursFromPixels,
+} from '@/modules/home/state/selectors';
 import * as fromActions from '../../state/actions';
 import BaseButton from '../../../shared/components/BaseButton';
 import NewGameConfig from '../../components/NewGameConfig';
-import { GAMES, GAMES_DURATION } from '@/constants/gameSettings';
-import { getReservationInHours } from '@/modules/home/state/selectors';
 import * as S from './styles';
 
 const propTypes = {
@@ -57,6 +60,7 @@ class GameReservation extends Component {
           selectedTime={this.props.gameReservation.time}
           onTimeSelect={this.handleTimeSelect}
           onTypeSelect={this.handleTypeSelect}
+          currentReservationTime={this.props.currentReservationTime}
         />
         <S.CtaWrapper>
           <BaseButton.Cta 
@@ -71,9 +75,10 @@ class GameReservation extends Component {
   }
 }
 
-const mapStateToProps = (state) => (
+const mapStateToProps = state => (
   {
     timeLine: state.timeLine,
+    currentReservationTime: getHoursFromPixels(state),
     endLastReservation: getReservationInHours(state),
     sessionState: state.sessionState,
     gameReservation: state.gameReservationState,

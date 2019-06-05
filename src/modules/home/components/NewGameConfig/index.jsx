@@ -18,6 +18,7 @@ const propTypes = {
   selectedGame: PropTypes.object,
   selectedTime: PropTypes.object,
   endLastReservation: PropTypes.string,
+  currentReservationTime: PropTypes.any,
 };
 
 const defaultProps = {}; 
@@ -32,6 +33,7 @@ const NewGameConfig = ({
   selectedTime,
   endLastReservation,
   onTimeSelect,
+  currentReservationTime
 }) => {
 
   const avatar = authUser && authUser.photoURL
@@ -51,7 +53,7 @@ const NewGameConfig = ({
       </InfoCard>
       <InfoCard header="you can start at:">
         <S.GameStartBox>
-          <TimeCircle time={endLastReservation} />
+          <TimeCircle time={currentReservationTime} />
         </S.GameStartBox>
       </InfoCard>
       <InfoCard header="game type">

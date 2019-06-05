@@ -181,6 +181,7 @@ class MockGameCard extends React.PureComponent {
       this.props.onMoveTimeLine(-13);
       const computed = current.offsetParent.scrollLeft;
       current.style.left = `${computed}px`;
+      this.handlerSetCurrentReservation(computed)();
       return;
     }
 
@@ -188,6 +189,7 @@ class MockGameCard extends React.PureComponent {
       this.props.onMoveTimeLine(13);
       const computed = (current.offsetParent.offsetWidth + current.offsetParent.scrollLeft) - this.props.display.size;
       current.style.left = `${computed}px`;
+      this.handlerSetCurrentReservation(computed)();
     }
   }
 

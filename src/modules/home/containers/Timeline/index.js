@@ -57,7 +57,6 @@ class TimeLine extends Component {
   handlerMoveTimeLine(modifier) {    
     const { current } = this.timeLineRef;
     current.scrollLeft = current.scrollLeft + modifier;
- 
     return current.scrollLeft;
   }
 
@@ -76,8 +75,6 @@ class TimeLine extends Component {
     const x = e.pageX - current.offsetLeft;
     const walk = (x - this.state.startX);
     current.scrollLeft = this.state.scrollLeft - walk;
-
-    throttled(200, this.props.setCurrentReservationTime(current.scrollLeft));
   };
 
   mouseUp = () => () => {
