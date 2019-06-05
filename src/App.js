@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 import { ConnectedRouter as Router } from 'react-router-redux';
@@ -6,8 +6,7 @@ import { connect } from 'react-redux';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import AppGrid from './modules/shared/components/AppGrid';
 import AppHeader from './modules/shared/containers/AppHeader';
-import GlobalChatWrapper from './chat/components/GlobalChatWrapper/index';
-import DirectChatWrapper from './chat/components/DirectChatWrapper/index';
+import ChatSidebar from './chat/components/ChatSidebar/index';
 import Home from './modules/home';
 import Auth from './modules/auth';
 import theme from './theme';
@@ -46,17 +45,10 @@ class App extends Component {
           <Router history={this.props.history}>
             <AppGrid>
               <AppGrid.SidebarArea leftGridOpen={this.props.ui.leftSidebarOpened}>
-                {this.props.chat.chatMode !== 'GLOBAL' ? (
-                  <DirectChatWrapper 
-                    authUser={this.props.sessionState.authUser} 
-                    receiverId={this.props.chat.chatMode}
-                  />
-                ) : (
-                  <GlobalChatWrapper 
-                    authUser={this.props.sessionState.authUser} 
-                    globalChatMessages={this.props.chat.globalChatMessages}
-                  />
-                )}
+                <ChatSidebar 
+                  authUser={this.props.sessionState.authUser} 
+                  chat={this.props.chat}
+                />
               </AppGrid.SidebarArea>
 
               <AppGrid.HeaderArea>

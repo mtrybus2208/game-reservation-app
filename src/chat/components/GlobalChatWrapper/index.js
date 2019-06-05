@@ -9,8 +9,10 @@ import * as S from './styles';
 const propTypes = { 
   authUser: PropTypes.object,
   globalChatMessages: PropTypes.array,
+  globalChatWebsocket: PropTypes.object,
   setDirectChatMode: PropTypes.func,
   addGlobalChatMessage: PropTypes.func,
+  setGlobalChatWebsocketConnection: PropTypes.func,
 };
 
 const defaultProps = { };
@@ -19,7 +21,6 @@ class GlobalChatWrapper extends Component {
 
   state = {
     typedMessage: '',
-    websocket: null,
   };
 
   links = {
@@ -34,21 +35,25 @@ class GlobalChatWrapper extends Component {
   debouncedOnClick = debounced(200, this.sendMessage.bind(this)); 
 
   componentDidMount() {
-    const websocketConnection = new WebSocket(this.links.socketConnectionApiUrl);
-
-    this.setState({
-      websocket: websocketConnection,
-    },
-    () => {
-      this.setWebsocketMessageReceiveHandler(this.state.websocket);
-      this.setWebsocketConnectionSustain(this.state.websocket);
-    });
+    if(this.isWebsocketNotConnected(this.props.globalChatWebsocket)) {
+      const websocketConnection = new WebSocket(this.links.socketConnectionApiUrl);
+      this.props.setGlobalChatWebsocketConnection(websocketConnection);
+    }
   }
 
-  getDerivedStateFromProps 
+  componentDidUpdate() {
+    if(this.isWebsocketFirstConnection(this.props.globalChatWebsocket)) {
+      this.setWebsocketMessageReceiveHandler(this.props.globalChatWebsocket);
+      this.setWebsocketConnectionSustain(this.props.globalChatWebsocket);
+    }
+  }
 
-  componentWillUnmount() {
-    this.state.websocket.close();
+  isWebsocketNotConnected(websocket) {
+    return websocket === null;
+  }
+
+  isWebsocketFirstConnection(websocket) {
+    return websocket.onmessage === null;
   }
 
   sendMessage() {

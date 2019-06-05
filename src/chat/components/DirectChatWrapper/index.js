@@ -8,8 +8,8 @@ import axios from 'axios';
 
 const propTypes = { 
   setGlobalChatMode: PropTypes.func,
-  authUser: PropTypes.object,
-  receiverId: PropTypes.string,
+  authUser: PropTypes.object.isRequired,
+  receiverId: PropTypes.string.isRequired,
 };
 
 const defaultProps = { };
