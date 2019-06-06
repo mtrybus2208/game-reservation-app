@@ -2,46 +2,55 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { actionTypes } from './../actions/actionTypes';
 
-/** This should be moved to separate API folder */
-/**
- * from backend we will have array of games
- * we need to apply converter funtion to entieties
- * like below
- * 
- */
- 
-const fetchGames = (page) => (
-  fetch(`http://localhost:9000/matches`)
+const makeEntieties = arr => {
+  const ent = arr.reduce((obj, item) => ({
+    ...obj,
+    byID: {
+      ...obj.byID,
+      [item.id]: item,
+    },
+    allIds: [
+      ...obj.allIds,
+      ...[item.id],
+    ],
+  }), { byID: {}, allIds: [] });
+  return ent;
+};
+
+const fetchGames = () => (
+  fetch(`http://3.95.208.60/matches`)
     .then(response => response.json())
-    .then(res => {
-      const ent = res.reduce((obj, item) => ({
-        ...obj,
-        byID: {
-          ...obj.byID,
-          [item.id]: item,
-        },
-        allIds: [
-          ...obj.allIds,
-          ...[item.id],
-        ],
-      }), { byID: {}, allIds: [] });
-      return ent;
-    })
+    .then(makeEntieties)
 );
 
-/** This should be moved to separate API folder */
+const fetchPlayers = () => (
+  fetch(`http://3.95.208.60/players`)
+    .then(response => response.json())
+    .then(makeEntieties)
+);
 
 function* workFetchReservedGames() {
   try {
     const games = yield call(fetchGames);
+    const players = yield call(fetchPlayers);
+    yield put({ type: actionTypes.FETCH_PLAYERS, players });
     yield put({ type: actionTypes.FETCH_RESERVED_GAMES_SUCCESS, games });
+
   } catch (e) {
     yield put({ type: actionTypes.FETCH_RESERVED_GAMES_FAIL, message: e.message });
   }
 }
 
+function* workFetchPlayers() {
+  try {
+    const players = yield call(fetchPlayers);
+    yield put({ type: actionTypes.FETCH_PLAYERS_SUCCESS, players });
+  } catch (e) {
+    yield put({ type: actionTypes.FETCH_PLAYERS_FAIL, message: e.message });
+  }
+}
+
 function* workAddNewGame({ payload }) {
-  // TODO: CHECK ON SERVER IF SOMEONE DOESN'T RESERVE GAME IN THE MEANTIME
   try {
     yield put({ type: actionTypes.ADD_NEW_GAME_SUCCESS, payload });
   } catch (e) {
@@ -51,6 +60,10 @@ function* workAddNewGame({ payload }) {
 
 export function* watchFetchReservedGames() {
   yield takeEvery(actionTypes.FETCH_RESERVED_GAMES, workFetchReservedGames);
+}
+
+export function* watchFetchPlayers() {
+  yield takeEvery(actionTypes.FETCH_PLAYERS, workFetchPlayers);
 }
 
 export function* watchAddNewGame() {

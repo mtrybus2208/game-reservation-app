@@ -42,6 +42,3 @@ export const getHoursFromPixels = state => {
   const minutes = currentReservationTime / timeConverter;
   return moment(workdayStart).add(minutes, 'minutes').format('HH:mm');
 }
-
-// Need to divide this to separate file
-

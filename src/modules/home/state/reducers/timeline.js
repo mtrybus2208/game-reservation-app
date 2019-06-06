@@ -10,6 +10,7 @@ const initialState = {
   timeConverter: 12,
   entities: null,
   currentReservationTime: null,
+  players: null,
 };
 
 export const timeLineReducer = (state = initialState, action) => {
@@ -33,6 +34,16 @@ export const timeLineReducer = (state = initialState, action) => {
       return {
         ...state,
         reservedGames: null,
+      };
+    case actionTypes.FETCH_PLAYERS_SUCCESS:
+      return {
+        ...state,
+        players: action.players,
+      };
+    case actionTypes.FETCH_PLAYERS_FAIL:
+      return {
+        ...state,
+        players: null,
       };
 
     case actionTypes.ZOOM_TIMELINE: {

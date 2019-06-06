@@ -13,6 +13,7 @@ const propTypes = {
   setCardPosition: PropTypes.func,
   onMoveTimeLine: PropTypes.func,
   setCurrentReservationTime: PropTypes.func,
+  reservedIntervals: PropTypes.array,
 };
 
 const defaultProps = {}; 
@@ -21,6 +22,7 @@ class MockGameCard extends React.PureComponent {
 
   state = {
     isDragging: false,
+    isAbleToReserve: false,
     isAbleToMove: false,
     originalX: 0, 
     translateX: 0,
@@ -39,7 +41,11 @@ class MockGameCard extends React.PureComponent {
       if (this.state.able) {
         this.tick();
       }
-    }, this.myRef.current );
+    }, this.myRef.current);
+  }
+
+  componentDidUpdate() {
+    // console.log(this.props.reservedIntervals);
   }
 
   componentWillUnmount() {
@@ -90,7 +96,7 @@ class MockGameCard extends React.PureComponent {
 
   resetInterval(clientX) {
     this.setState({
-      originalX: clientX, 
+      originalX: clientX,
       lastTranslateX: parseInt(this.myRef.current.style.left),
       isDragging: true,
       isAbleToMove: true,
@@ -99,15 +105,29 @@ class MockGameCard extends React.PureComponent {
     });
   }
 
-  detectIntervalReset = (directionX) => {
-    return (directionX > 0 && this.state.intervalDirection === 'left') || (directionX < 0 && this.state.intervalDirection === 'right');
+  detectIntervalReset = directionX =>
+    (directionX > 0 && this.state.intervalDirection === 'left') || (directionX < 0 && this.state.intervalDirection === 'right');
+
+  isLeftEdge = () => (this.myRef.current.offsetParent.scrollLeft > this.state.translateX);
+
+  isReservedCardHovered = pos => {
+    const fullPos = pos + this.props.display.size;
+    return this.props
+      .reservedIntervals
+      .some(posArr => {
+        const [start, end] = posArr;
+        return fullPos >= start && pos <= end;
+      });
   }
 
-  isLeftEdge = () => {
-    return (this.myRef.current.offsetParent.scrollLeft > this.state.translateX);
-  }
+  setAbilityToReserve = pos => (
+    this.setState({
+      isAbleToReserve: this.isReservedCardHovered(pos),
+    })
+  );
 
   handlerSetCurrentReservation = (pos) => () => {
+    this.setAbilityToReserve(pos);
     throttled(250, this.props.setCurrentReservationTime(pos));
   }
 
@@ -194,11 +214,12 @@ class MockGameCard extends React.PureComponent {
   }
 
   render() {
-    const { translateX, translateY, isDragging } = this.state;
+    const { translateX, translateY, isDragging, isAbleToReserve } = this.state;
     return (
       <S.CardWrap
         size={this.props.display.size}  
         isAbleToMove={this.state.isAbleToMove}
+        isAbleToReserve={isAbleToReserve}
         onMouseDown={this.handleMouseDown} 
         x={translateX}
         y={translateY}
@@ -211,7 +232,9 @@ class MockGameCard extends React.PureComponent {
           customTitle={this.customTitle}
           customPosition
         >
-          <S.MockGameCard />
+          <S.MockGameCard
+            isAbleToReserve={isAbleToReserve}
+          />
         </GameCard>
       </S.CardWrap>
     );

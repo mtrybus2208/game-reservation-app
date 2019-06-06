@@ -38,7 +38,8 @@ class TimeLine extends Component {
     
   }
 
-  componentDidUpdate() {}
+  componentDidUpdate() {
+  }
 
   componentWillUnmount() {
     if (this.interval) {
@@ -47,7 +48,7 @@ class TimeLine extends Component {
   }
 
   setStart(data) {
-    this.setState((prev) => {
+    this.setState(prev => {
       if (prev.startPosition !== data) {
         return { startPosition: data };
       }
@@ -154,6 +155,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchReservedGames: () => {
     dispatch(fromActions.fetchReservedGames());
+  },
+  fetchPlayers: () => {
+    dispatch(fromActions.fetchPlayers());
   },
   zoomTimeLine: payload => {
     dispatch(fromActions.zoomTimeLine(payload));

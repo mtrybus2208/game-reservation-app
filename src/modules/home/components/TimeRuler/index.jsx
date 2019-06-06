@@ -39,6 +39,20 @@ const TimeRuler = React.memo(({
   const hoursToPixels = h => h * 60 * timeConverter;
   const minutesToPixels = m => m * timeConverter;
 
+  // TODO: Need to merge these funtions
+  const createReservedIntervals = (games) => {
+    return games && games.map(game => {
+      const starGame = moment(game.startDate);
+      const distanceInMinutes = moment.duration(starGame.diff(workdayStart)).asMinutes();
+      const startTime = distanceInMinutes * timeConverter;
+  
+      const endGame = moment(game.endDate);
+      const distanceInMinutesEnd = moment.duration(endGame.diff(workdayStart)).asMinutes();
+      const endTime = distanceInMinutesEnd * timeConverter;
+      return [Math.abs(startTime), Math.abs(startTime) + (Math.abs(endTime) - Math.abs(startTime))];
+    });
+  };
+
   const renderGameCard = (game) => {
     const starGame = moment(game.startDate);
     const distanceInMinutes = moment.duration(starGame.diff(workdayStart)).asMinutes();
@@ -47,19 +61,19 @@ const TimeRuler = React.memo(({
     const endGame = moment(game.endDate);
     const distanceInMinutesEnd = moment.duration(endGame.diff(workdayStart)).asMinutes();
     const endTime = distanceInMinutesEnd * timeConverter;
+
+    const player = game.player && {
+      name: game.player.displayName,
+      avatarImg: game.player.photoUrl,
+      profession: 'Software developer',
+    };
     return (
       <GameCard
-        user={
-          {
-            name: 'Michal Trybus',
-            avatarImg: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1551047093/43160946_1970943372961667_6703179334590398464_n.jpg',
-            profession: 'Frontend developer',
-          }
-        }
+        user={player}
         display={
           {
             gameTime: '30min',
-            gameType: 'fifa',
+            gameType: game.gameName,
             size: (Math.abs(endTime) -  Math.abs(startTime)),
             left: Math.abs(startTime),
           }
@@ -95,6 +109,7 @@ const TimeRuler = React.memo(({
           setStart={setStart}
           timeLineRef={timeLineRef}
           setCurrentReservationTime={setCurrentReservationTime}
+          reservedIntervals={createReservedIntervals(reservedGames)}
         />
       }
       <S.TimeRuler

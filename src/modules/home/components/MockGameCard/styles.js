@@ -17,9 +17,8 @@ const rotate = keyframes`
 `;
 
 export const CardWrap = styled.div.attrs({
-  style: ({ x, y }) => ({
-    // transform: `translate(${x}px, ${0}px)`
-    left: `${x}px`
+  style: ({ x, y }) => ({ 
+    left: `${x}px`, 
   }),
 })`
   cursor: grab;
@@ -31,7 +30,17 @@ export const CardWrap = styled.div.attrs({
   background: rgba(1, 66, 23, 0.3);
   top: 101px;
   z-index: 6;
-  border: ${({ isAbleToMove }) => isAbleToMove ? '3px solid #014217' : 'none'};
+  border: ${({ isAbleToMove, isAbleToReserve }) => {
+    if (isAbleToReserve) {
+      return '3px solid rgba(103, 16, 16, 0.9)';
+    }
+
+    if (isAbleToMove && !isAbleToReserve) {
+      return '3px solid #014217';
+    }
+
+    return 'none';
+  }};
   border-top: none;
   border-bottom: none;
   left: 0;
@@ -60,7 +69,7 @@ export const MockGameCard = styled.div`
   right: 0;
   top: 0;
   bottom: 0;
-  background: rgba(1, 66, 23, 0.3);
+  background: ${({ isAbleToReserve }) => isAbleToReserve ? 'rgba(103, 16, 16, 0.41)' : 'rgba(1, 66, 23, 0.3)'};
 `;
 
 export const AnimatedIcon = styled.div`
