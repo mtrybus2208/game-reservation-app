@@ -8,6 +8,7 @@ import axios from 'axios';
 
 const propTypes = { 
   setGlobalChatMode: PropTypes.func,
+  addDirectChatWebsocketConnection: PropTypes.func,
   authUser: PropTypes.object.isRequired,
   receiverId: PropTypes.string.isRequired,
 };
@@ -30,6 +31,9 @@ class DirectChatWrapper extends Component {
   links = {
     globalChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553015547/message.svg',
     getPlayerApiUrl: 'http://localhost/players',
+    socketConnectionApiUrl: 'ws://localhost/socket/chat/direct',
+    sendMessageApiUrl: 'http://localhost/chat/direct/messages',
+    getMessagesForChatRoom: 'http://localhost/chat/direct/messages/chat-room/',
   }
 
   componentDidMount() {
@@ -75,9 +79,10 @@ class DirectChatWrapper extends Component {
       <S.MessagesWrapper>
         <S.IncomingMessageWrapper>
           <S.Message>
-            <S.MessageTime>
-              21:37
-            </S.MessageTime>
+            <S.MessageHeader>
+              <S.MessageAuthorName>{this.state.receiver.displayName}</S.MessageAuthorName>
+              <S.MessageTime>21:37</S.MessageTime>
+            </S.MessageHeader>
 
             <S.MessageText>
               Gentrify viral seitan, flexitarian  neutra meh
@@ -87,17 +92,14 @@ class DirectChatWrapper extends Component {
               meh jianbing food  truck mixtape.
             </S.MessageText>
           </S.Message>
-
-          <S.MessageAuthorPictureWrapper>
-            <S.MessageAuthorPicture />
-          </S.MessageAuthorPictureWrapper>
         </S.IncomingMessageWrapper>
 
         <S.OutgoingMessageWrapper> 
           <S.Message>
-            <S.MessageTime>
-              21:37
-            </S.MessageTime>
+            <S.MessageHeader>
+              <S.MessageAuthorName>Jakub Testowy</S.MessageAuthorName>
+              <S.MessageTime>21:37</S.MessageTime>
+            </S.MessageHeader>
 
             <S.MessageText>
               Gentrify viral seitan, flexitarian  neutra meh
@@ -108,42 +110,6 @@ class DirectChatWrapper extends Component {
             </S.MessageText>
           </S.Message>
         </S.OutgoingMessageWrapper>
-
-        <S.OutgoingMessageWrapper> 
-          <S.Message>
-            <S.MessageTime>
-              21:37
-            </S.MessageTime>
-
-            <S.MessageText>
-              Gentrify viral seitan, flexitarian  neutra meh
-              jianbing food truck yolu ender  mixtape.
-              Lomo trust fund Gentrify viral seitan,
-              flexitarian neutra help
-              meh jianbing food  truck mixtape.
-            </S.MessageText>
-          </S.Message>
-        </S.OutgoingMessageWrapper>
-
-        <S.IncomingMessageWrapper>
-          <S.Message>
-            <S.MessageTime>
-              21:37
-            </S.MessageTime>
-
-            <S.MessageText>
-              Gentrify viral seitan, flexitarian  neutra meh
-              jianbing food truck yolu ender  mixtape.
-              Lomo trust fund Gentrify viral seitan,
-              flexitarian neutra help
-              meh jianbing food  truck mixtape.
-            </S.MessageText>
-          </S.Message>
-
-          <S.MessageAuthorPictureWrapper>
-            <S.MessageAuthorPicture />
-          </S.MessageAuthorPictureWrapper>
-        </S.IncomingMessageWrapper>
       </S.MessagesWrapper>
 
       <S.MessageInputSectionWrapper>

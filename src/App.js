@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import AppGrid from './modules/shared/components/AppGrid';
 import AppHeader from './modules/shared/containers/AppHeader';
-import ChatSidebar from './chat/components/ChatSidebar/index';
+import ChatSidebar from './modules/chat/components/ChatSidebar/index';
 import Home from './modules/home';
 import Auth from './modules/auth';
 import theme from './theme';

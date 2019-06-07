@@ -18,17 +18,29 @@ class ChatSidebar extends Component {
     constructor(props) {
         super(props)
 
-        this.setGlobalChatWebsocketConnection = this.setGlobalChatWebsocketConnection.bind(this)
+        this.setGlobalChatWebsocketConnection = this.setGlobalChatWebsocketConnection.bind(this);
+        this.addDirectChatWebsocketConnection = this.addDirectChatWebsocketConnection.bind(this);
     }
 
     state = {
         globalChatWebsocket: null,
+        directChatWebsockets: [],
     };
 
     setGlobalChatWebsocketConnection(websocket) {
         this.setState({
             globalChatWebsocket: websocket,
         });
+    }
+
+    addDirectChatWebsocketConnection(receiverId, websocket) {
+
+        const websocketWithReceiverId = new Map();
+        map.set(receiverId, websocket);
+
+        this.setState(prevState => ({
+            directChatWebsockets: [...prevState.directChatWebsockets, websocketWithReceiverId],
+        }));
     }
 
     render() {
@@ -38,6 +50,7 @@ class ChatSidebar extends Component {
                     <DirectChatWrapper 
                         authUser={this.props.authUser} 
                         receiverId={this.props.chat.chatMode}
+                        addDirectChatWebsocketConnection={this.addDirectChatWebsocketConnection}
                     />
                     ) : (
                     <GlobalChatWrapper 

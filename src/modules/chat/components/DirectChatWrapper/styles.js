@@ -143,8 +143,10 @@ export const Message = styled.div`
   }
 `;
 
-export const MessageTime = styled.div`
+export const MessageHeader = styled.div`
   width: 85%;
+  display: flex;
+  justify-content: space-between;
   border-bottom: 1px solid #252525;
   font-family: Roboto;
   font-size: 9px;
@@ -153,6 +155,14 @@ export const MessageTime = styled.div`
   letter-spacing: .2px;
   text-align: left;
   color: #a5710f;
+`;
+
+export const MessageTime = styled.div`
+
+`;
+
+export const MessageAuthorName = styled.div`
+  
 `;
 
 export const MessageText = styled.div`
