@@ -24,8 +24,8 @@ const GameCard = ({
   useEffect(() => {
   }, []);
 
-  const avatar = user && user.photoURL
-    ? <Avatar path={user.photoURL} />
+  const avatar = user && user.photoUrl
+    ? <Avatar path={user.photoUrl} />
     : <Avatar />;
 
   return (

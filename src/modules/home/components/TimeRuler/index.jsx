@@ -64,7 +64,7 @@ const TimeRuler = React.memo(({
 
     const player = game.player && {
       name: game.player.displayName,
-      avatarImg: game.player.photoUrl,
+      photoUrl: game.player.photoUrl,
       profession: 'Software developer',
     };
     return (
