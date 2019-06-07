@@ -31,11 +31,13 @@ class TimeLine extends Component {
   };
   interval = null;
   handlerMoveTimeLine = this.handlerMoveTimeLine.bind(this);
+  getWrapperScrollPosition = this.getWrapperScrollPosition.bind(this);
   setStart = this.setStart.bind(this);
+  timeLineRef = React.createRef();
+  
 
   componentDidMount() {
     this.props.fetchReservedGames();
-    
   }
 
   componentDidUpdate() {
@@ -60,8 +62,6 @@ class TimeLine extends Component {
     current.scrollLeft = current.scrollLeft + modifier;
     return current.scrollLeft;
   }
-
-  timeLineRef = React.createRef();
 
   mouseLeave = () => () => {
     this.setState({
@@ -99,6 +99,11 @@ class TimeLine extends Component {
     });
   }
 
+  getWrapperScrollPosition() {
+    const { current } = this.timeLineRef;
+    return current ? current.scrollLeft : 0;
+  }
+
   render() {
     return (
       <S.TimeLineWrapper
@@ -133,6 +138,7 @@ class TimeLine extends Component {
             startPosition={this.state.startPosition}
             setStart={this.setStart}
             setCurrentReservationTime={this.props.setCurrentReservationTime}
+            wrapperScrollPosition={this.getWrapperScrollPosition()}
           />
         </S.TimeLine>
       </S.TimeLineWrapper>

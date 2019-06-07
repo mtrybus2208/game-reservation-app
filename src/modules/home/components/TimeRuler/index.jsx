@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect, useRef } from 'react'; 
 import PropTypes from 'prop-types';
 import GameCard from '../GameCard';
 import MockGameCard from '../MockGameCard';
@@ -8,6 +8,7 @@ import moment from 'moment';
 const propTypes = {
   authUser: PropTypes.object,
   workdayInPixels: PropTypes.number,
+  wrapperScrollPosition: PropTypes.number,
   timeConverter: PropTypes.number,
   arrayOfWorkdayHours: PropTypes.array,
   reservedGames: PropTypes.array,
@@ -32,12 +33,16 @@ const TimeRuler = React.memo(({
   onMoveTimeLine,
   startPosition,
   setStart,
-  timeLineRef,
+  wrapperScrollPosition,
   setCurrentReservationTime,
 }) => {
   const [cardPosition, setCardPosition] = useState(0);
+  const wrapperEl = useRef(null);
   const hoursToPixels = h => h * 60 * timeConverter;
   const minutesToPixels = m => m * timeConverter;
+
+  useEffect(() => {
+  })
 
   // TODO: Need to merge these funtions
   const createReservedIntervals = (games) => {
@@ -83,7 +88,9 @@ const TimeRuler = React.memo(({
   };
 
   return (
-    <S.Wrapper>
+    <S.Wrapper
+      ref={wrapperEl}
+    >
       {
         reservedGames && reservedGames.map(game => renderGameCard(game))
       }
@@ -107,7 +114,7 @@ const TimeRuler = React.memo(({
           onMoveTimeLine={onMoveTimeLine}
           startPosition={startPosition}
           setStart={setStart}
-          timeLineRef={timeLineRef}
+          initialCardPosition={wrapperScrollPosition}
           setCurrentReservationTime={setCurrentReservationTime}
           reservedIntervals={createReservedIntervals(reservedGames)}
         />

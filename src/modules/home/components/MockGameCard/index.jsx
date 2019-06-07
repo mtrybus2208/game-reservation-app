@@ -16,16 +16,15 @@ const propTypes = {
   reservedIntervals: PropTypes.array,
 };
 
-const defaultProps = {}; 
+const defaultProps = {};
 
 class MockGameCard extends React.PureComponent {
-
   state = {
     isDragging: false,
     isAbleToReserve: false,
     isAbleToMove: false,
     originalX: 0, 
-    translateX: 0,
+    translateX: this.props.initialCardPosition,
     lastTranslateX: 0, 
     able: false,
     intervalDirection: null,
@@ -37,6 +36,8 @@ class MockGameCard extends React.PureComponent {
   running = true; 
 
   componentDidMount() {
+    const { current } = this.myRef; 
+    this.setAbilityToReserve(parseInt(current.style.left, 10));
     this.animLoop(() => {
       if (this.state.able) {
         this.tick();
@@ -45,7 +46,6 @@ class MockGameCard extends React.PureComponent {
   }
 
   componentDidUpdate() {
-    // console.log(this.props.reservedIntervals);
   }
 
   componentWillUnmount() {
