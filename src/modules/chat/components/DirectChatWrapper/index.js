@@ -118,11 +118,9 @@ class DirectChatWrapper extends Component {
     websocket.onmessage = (event) => {
       const websocketMessage = JSON.parse(event.data);
 
-      console.log(1)
       if(this.isDirectChatMessage(websocketMessage)) {
         const directChatMessage = websocketMessage.responseBody;
 
-        console.log(2)
         this.setState(state => ({
           messages: [...state.messages, directChatMessage]
         }))
