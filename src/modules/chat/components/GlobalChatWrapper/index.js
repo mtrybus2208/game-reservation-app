@@ -124,7 +124,7 @@ class GlobalChatWrapper extends Component {
       } else {
         clearInterval(websocketRefreshInterval);
       }
-    }, 10000);
+    }, 60000);
   }
 
   handleEnterClick = (event) => {
