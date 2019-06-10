@@ -22,10 +22,10 @@ const GameCard = ({
   customPosition,
 }) => {
   useEffect(() => {
-  }, []);
+  });
 
-  const avatar = user && user.photoUrl
-    ? <Avatar path={user.photoUrl} />
+  const avatar = user && (user.photoUrl || user.photoURL)
+    ? <Avatar path={(user.photoUrl || user.photoURL)} />
     : <Avatar />;
 
   return (

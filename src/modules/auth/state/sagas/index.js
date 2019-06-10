@@ -5,7 +5,7 @@ import {
   watchSocialAuthGoogle,
   watchSocialAuthGithub,
   watchSignOut,
-} from './authSagas';
+} from './socialAuthSagas';
 
 export default function* authSaga() {
   yield all([

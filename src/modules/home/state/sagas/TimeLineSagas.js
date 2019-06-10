@@ -2,8 +2,10 @@
 import { call, put, takeEvery, select } from 'redux-saga/effects';
 import { actionTypes } from './../actions/actionTypes';
 import moment from 'moment';
+import axios from 'axios';
 
 const makeEntieties = arr => {
+  console.log(arr)
   const ent = arr.reduce((obj, item) => ({
     ...obj,
     byID: {
@@ -18,7 +20,7 @@ const makeEntieties = arr => {
   return ent;
 };
 
-const fetchGames = (workdayStart) => (
+const fetchGames = workdayStart => (
   fetch(`http://3.95.208.60/matches`)
     .then(res => res.json())
     .then((res) => res.filter(game =>
@@ -31,6 +33,20 @@ const fetchPlayers = () => (
     .then(res => res.json())
     .then(makeEntieties)
 );
+
+const reserveGame = data => {
+  const { authUser, gameType, time, timeLine } = data;
+  axios.post('http://3.95.208.60/matches', {
+    startDate: '2019-06-10T19:15',
+    endDate: '2019-06-10T19:30',
+    playerID: authUser.uid,
+    gameName: gameType.name,
+  }, {
+    headers: {
+      'Auth-Id': authUser.uid,
+    },
+  });
+};
 
 function* workFetchReservedGames() {
   try {
@@ -56,6 +72,15 @@ function* workFetchPlayers() {
 
 function* workAddNewGame({ payload }) {
   try {
+    const { authUser } = yield select(state => state.sessionState);
+    const { gameType, time } = yield select(state => state.gameReservationState);
+    const result = yield call(reserveGame, {
+      authUser,
+      gameType,
+      time,
+    });
+    
+    
     yield put({ type: actionTypes.ADD_NEW_GAME_SUCCESS, payload });
   } catch (e) {
     yield put({ type: actionTypes.ADD_NEW_GAME_FAIL, message: e.message });

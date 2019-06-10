@@ -32,11 +32,7 @@ class GameReservation extends Component {
   }
 
   addNewGame = () => () => {
-    const payload = {
-      time: this.state.selectedTime,
-      game: this.state.selectedGame,
-    };
-    this.props.addNewGame(payload);
+    this.props.addNewGame();
   }
 
   handleTypeSelect = game => () => {
