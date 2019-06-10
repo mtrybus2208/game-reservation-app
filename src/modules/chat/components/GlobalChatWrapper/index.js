@@ -160,18 +160,24 @@ class GlobalChatWrapper extends Component {
             {this.props.globalChatMessages.map((value, index) => (
               <S.Message key={index}>
                 <S.MessageHeader>
-                  <S.PlayerName>
+                  <S.PlayerName
+                    isNotCurrentUser={value.playerId !== this.props.authUser.uid} 
+                  >
                     <S.PlayerNameText>   
                       {value.playerName}
                     </S.PlayerNameText>
                   </S.PlayerName>
-  
-                  <S.PlayerDirectChat
-                    id={value.playerId} 
-                    onClick={this.openDirectChat} 
-                  >
-                    <S.PlayerDirectChatIcon src={this.links.directChatIcon} />
-                  </S.PlayerDirectChat>
+
+                  {
+                    value.playerId !== this.props.authUser.uid && (
+                      <S.PlayerDirectChat
+                        id={value.playerId} 
+                        onClick={this.openDirectChat} 
+                      >
+                        <S.PlayerDirectChatIcon src={this.links.directChatIcon} />
+                      </S.PlayerDirectChat>
+                    )
+                  }
                   
                   <S.PlayerPictureWrapper>
                     <S.PlayerPicture src={value.photoUrl} />

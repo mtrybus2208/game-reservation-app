@@ -56,9 +56,10 @@ export const PlayerName = styled.div`
   justify-content: flex-start;
   align-items: center;
   height: 46px;
-  width: calc(100% - 58px);
+  width: ${props => (props.isNotCurrentUser ? 'calc(100% - 58px)' : '100%')};
   background: #181c1f;
-  border-right: 1.5px solid #111;
+  padding-right: ${props => (props.isNotCurrentUser ? '0' : '58px')};
+  border-right: ${props => (props.isNotCurrentUser && '1.5px solid #111')};
   text-align: left;
 `;
 
