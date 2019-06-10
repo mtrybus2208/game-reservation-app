@@ -149,14 +149,6 @@ class MockGameCard extends React.PureComponent {
       return;
     }
 
-    if (this.isLeftEdge() && directionX < 0) {
-      this.setState({
-        able: true,
-        intervalDirection: 'left',
-      });
-      return;
-    }
-
     if (!this.state.able) {
       this.setState(prevState => {
         const translateX = clientX - prevState.originalX + prevState.lastTranslateX;
@@ -166,6 +158,14 @@ class MockGameCard extends React.PureComponent {
           able: false,
         };
       }, this.handlerSetCurrentReservation(this.state.translateX));
+    }
+
+    if (this.isLeftEdge() && directionX < 0) {
+      this.setState({
+        able: true,
+        intervalDirection: 'left',
+      });
+      return;
     }
 
     if (isRightEdge && directionX > 0 && !this.state.able) {
