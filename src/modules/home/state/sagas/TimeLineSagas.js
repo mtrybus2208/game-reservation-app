@@ -1,8 +1,14 @@
 /* eslint no-use-before-define: 0 */
 import { call, put, takeEvery, select } from 'redux-saga/effects';
 import { actionTypes } from './../actions/actionTypes';
+import {
+  getReservationInHours,
+  getHoursFromPixels,
+} from '@/modules/home/state/selectors';
 import moment from 'moment';
 import axios from 'axios';
+
+const createFullDateFromHours = h => `${moment().format('YYYY-MM-DD')}T${h}`;
 
 const makeEntieties = arr => {
   console.log(arr)
@@ -35,15 +41,9 @@ const fetchPlayers = () => (
 );
 
 const reserveGame = data => {
-  const { authUser, gameType, time, timeLine } = data;
-  axios.post('http://3.95.208.60/matches', {
-    startDate: '2019-06-10T19:15',
-    endDate: '2019-06-10T19:30',
-    playerID: authUser.uid,
-    gameName: gameType.name,
-  }, {
+  axios.post('http://3.95.208.60/matches', data, {
     headers: {
-      'Auth-Id': authUser.uid,
+      'Auth-Id': data.playerID,
     },
   });
 };
@@ -71,13 +71,17 @@ function* workFetchPlayers() {
 }
 
 function* workAddNewGame({ payload }) {
+  //  TODO: this should be unified, we must store in reducer only date format
   try {
-    const { authUser } = yield select(state => state.sessionState);
-    const { gameType, time } = yield select(state => state.gameReservationState);
-    const result = yield call(reserveGame, {
-      authUser,
-      gameType,
-      time,
+    const state = yield select();
+    const { sessionState, gameReservationState } = state;
+    const startDate = createFullDateFromHours(getHoursFromPixels(state));
+    const endDate = createFullDateFromHours(moment(startDate).add(gameReservationState.time.duration, 'm').format('HH:mm'));
+    yield call(reserveGame, {
+      startDate,
+      endDate,
+      playerID: sessionState.authUser.uid,
+      gameName: gameReservationState.gameType.name,
     });
     
     
