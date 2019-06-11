@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Avatar from '@/modules/shared/components/Avatar';
 import CircleItem from '@/modules/shared/components/CircleItem';
+import BaseIcon from '@/modules/shared/components/BaseIcon';
 import * as S from './styles';
 
 const propTypes = {
@@ -24,6 +25,10 @@ const GameCard = ({
   useEffect(() => {
   });
 
+  const handlerDeleteGame = () => {
+    alert(':(')
+  }
+
   const avatar = user && (user.photoUrl || user.photoURL)
     ? <Avatar path={(user.photoUrl || user.photoURL)} />
     : <Avatar />;
@@ -35,7 +40,17 @@ const GameCard = ({
       top={customPosition ? 0 : 101}
     >
       <S.InfoTime>
-        <span>{display.gameTime}</span>
+        <S.InfoRow>
+          <span>{display.gameTime}</span>
+          <S.CloseIcon
+            onClick={handlerDeleteGame}
+          >
+            <BaseIcon
+              path="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1560257452/close-button.svg"
+              size="15px"
+            />
+          </S.CloseIcon>
+        </S.InfoRow>
       </S.InfoTime>
       <S.Body>
         <S.AvatarBox>
