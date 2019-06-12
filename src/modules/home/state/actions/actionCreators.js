@@ -6,6 +6,12 @@ export const addNewGame = payload =>
     payload,
   });
 
+export const deleteGame = payload =>
+  ({
+    type: actionTypes.DELETE_GAME,
+    payload,
+  });
+
 export const changeGameConfigState = payload =>
   ({
     type: actionTypes.CHANGE_GAME_CONFIG_STATE,

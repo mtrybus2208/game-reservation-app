@@ -19,7 +19,6 @@ function* workSocialAuth(type) {
   try {
     const data = yield call(socialTypes[type]);
     const mappedUser = mapUserData(data.user);
-    
     yield put({ type: actionTypes.SET_AUTH_USER, payload: mappedUser });
     yield put({ type: uiActionTypes.CLOSE_CHAT_WITH_REDIRECT, path: ROUTES.HOME });
     yield call(savePlayer(mappedUser));
@@ -32,10 +31,20 @@ function* workSocialAuth(type) {
 function* workSignOut() {
   try {
     yield call(signOut);
+    yield put({ type: actionTypes.REMOVE_USER_DATA_AFTER_SIGN_OUT });
+  } catch (e) {
+    yield put({ type: actionTypes.SIGN_OUT_FAIL, message: e.message });
+  }
+}
+
+function* workRemoveUserData() {
+  try {
+    localStorage.removeItem('sessionState');
     yield put({ type: actionTypes.SET_AUTH_USER, payload: null });
     yield put({ type: uiActionTypes.CLOSE_CHAT_WITH_REDIRECT, path: ROUTES.LOGIN });
+    yield put({ type: actionTypes.SIGN_OUT_SUCCESS });
   } catch (e) {
-    yield put({ type: actionTypes.SIGN_OUT_FAIL });
+    yield put({ type: actionTypes.SIGN_OUT_FAIL, message: e.message });
   }
 }
 
@@ -49,6 +58,10 @@ export function* watchSocialAuthGithub() {
 
 export function* watchSignOut() {
   yield takeEvery(actionTypes.SIGN_OUT, workSignOut);
+}
+
+export function* watchRemoveUserData() {
+  yield takeEvery(actionTypes.REMOVE_USER_DATA_AFTER_SIGN_OUT, workRemoveUserData);
 }
 
 function savePlayer(mappedUser) {

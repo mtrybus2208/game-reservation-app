@@ -18,7 +18,6 @@ export const timeLineReducer = (state = initialState, action) => {
     case actionTypes.ADD_NEW_GAME_SUCCESS:
       return {
         ...state,
-        endLastReservation: state.endLastReservation.add(action.payload.time.duration, 'm'),
       };
     case actionTypes.CHANGE_GAME_CONFIG_STATE:
       return {

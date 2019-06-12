@@ -5,6 +5,7 @@ import {
   watchSocialAuthGoogle,
   watchSocialAuthGithub,
   watchSignOut,
+  watchRemoveUserData,
 } from './socialAuthSagas';
 
 export default function* authSaga() {
@@ -12,5 +13,6 @@ export default function* authSaga() {
     watchSocialAuthGoogle(),
     watchSocialAuthGithub(),
     watchSignOut(),
+    watchRemoveUserData(),
   ]);
 }

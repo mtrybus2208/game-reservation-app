@@ -82,13 +82,13 @@ const mapStateToProps = state => (
 );
 
 const mapDispatchToProps = dispatch => ({
-  addNewGame: (payload) => {
+  addNewGame: payload => {
     dispatch(fromActions.addNewGame(payload));
   },
-  setGameType: (payload) => {
+  setGameType: payload => {
     dispatch(fromActions.setGameType(payload));
   },
-  setGameTime: (payload) => {
+  setGameTime: payload => {
     dispatch(fromActions.setGameTime(payload));
   },
 });

@@ -11,6 +11,8 @@ const propTypes = {
   children: PropTypes.node,
   customTitle: PropTypes.node,
   customPosition: PropTypes.bool,
+  deleteGame: PropTypes.func,
+  gameId: PropTypes.number,
 };
 
 const defaultProps = {};
@@ -21,12 +23,14 @@ const GameCard = ({
   children,
   customTitle,
   customPosition,
+  deleteGame,
+  gameId,
 }) => {
   useEffect(() => {
-  });
+  })
 
   const handlerDeleteGame = () => {
-    alert(':(')
+    deleteGame(gameId);
   }
 
   const avatar = user && (user.photoUrl || user.photoURL)

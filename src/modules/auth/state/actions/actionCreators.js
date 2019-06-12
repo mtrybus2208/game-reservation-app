@@ -35,3 +35,8 @@ export const signOut = () =>
     type: actionTypes.SIGN_OUT,
   });
 
+export const removeUserData = () =>
+  ({
+    type: actionTypes.REMOVE_USER_DATA_AFTER_SIGN_OUT,
+  });
+
