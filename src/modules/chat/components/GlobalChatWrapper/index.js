@@ -145,7 +145,7 @@ class GlobalChatWrapper extends Component {
   }
 
   validateTypedMessage = () => {
-    return this.state.typedMessage.length >= 3 && this.state.typedMessage.length <= 100;
+    return this.state.typedMessage.length >= 2 && this.state.typedMessage.length <= 250;
   }
 
   openDirectChat = (event) => {
@@ -202,7 +202,7 @@ class GlobalChatWrapper extends Component {
               onKeyPress={this.handleEnterClick}
               placeholder={this.isNotAnonymousUser() ? "Type message" : "Please login to use chat"}
               minLength={2}
-              maxLength={200}
+              maxLength={250}
               disabled={!this.isNotAnonymousUser()}
             />
           </S.MessageInputWrapper>
