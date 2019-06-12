@@ -157,14 +157,6 @@ export const MessageHeader = styled.div`
   color: #a5710f;
 `;
 
-export const MessageTime = styled.div`
-
-`;
-
-export const MessageAuthorName = styled.div`
-  
-`;
-
 export const MessageText = styled.div`
   width: 85%;
   margin: 8px auto 15px;
@@ -256,4 +248,17 @@ export const MessageButton = styled.button`
 export const MessageButtonImage = styled.img`
   height: 23px;
   width: 23px;
+`;
+
+
+export const MessagesEnd = styled.div` 
+
+`;
+
+export const MessageTime = styled.div`
+
+`;
+
+export const MessageAuthorName = styled.div`
+  
 `;

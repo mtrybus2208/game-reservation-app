@@ -28,6 +28,7 @@ class DirectChatWrapper extends Component {
       email: '',
       photoUrl: '',
     },
+    isFirstMessagesScrollNotDone: true,
   };
 
   links = {
@@ -37,6 +38,8 @@ class DirectChatWrapper extends Component {
     sendMessageApiUrl: 'http://localhost/chat/direct/messages',
     getMessagesForChatRoom: 'http://localhost/chat/direct/messages/chat-room/',
   }
+
+  debouncedOnClick = debounced(200, this.sendMessage.bind(this)); 
 
   componentDidMount() {
     this.setupReceiverData(this.props.receiverId);
@@ -50,6 +53,14 @@ class DirectChatWrapper extends Component {
   }
 
   componentDidUpdate() {
+    if(this.isEndOfMessagesDivReady() && this.state.isFirstMessagesScrollNotDone) {
+      this.scrollToBottom();
+
+      this.setState({
+        isFirstMessagesScrollNotDone: false,
+      })
+    }
+
     if(this.isWebsocketFirstConnection(this.props.directChatWebsocket)) {
       this.setWebsocketMessageReceiveHandler(this.props.directChatWebsocket);
       this.setWebsocketConnectionSustain(this.props.directChatWebsocket);
@@ -68,7 +79,15 @@ class DirectChatWrapper extends Component {
     }
   }
 
-  isFirstChatRoomConnection() {
+  isEndOfMessagesDivReady = () => {
+    return this.messagesEnd !== undefined;
+  }
+
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "auto" });
+  }
+  
+  isFirstChatRoomConnection = () => {
     return this.state.messages === undefined || this.state.messages.length == 0;
   }
 
@@ -120,7 +139,6 @@ class DirectChatWrapper extends Component {
 
       if(this.isDirectChatMessage(websocketMessage)) {
         const directChatMessage = websocketMessage.responseBody;
-
         this.setState(state => ({
           messages: [...state.messages, directChatMessage]
         }))
@@ -147,6 +165,48 @@ class DirectChatWrapper extends Component {
         clearInterval(websocketRefreshInterval);
       }
     }, 60000);
+  }
+
+  handleEnterClick = (event) => {
+    const enterButtonKeyCode = 13;
+
+    if(event.charCode === enterButtonKeyCode) {
+      event.preventDefault();
+      this.sendMessageHandler();
+    }
+  }
+
+  sendMessageHandler = () => {
+    this.debouncedOnClick();
+  }
+
+  sendMessage() {
+    if(this.isNotAnonymousUser() && this.validateTypedMessage()) {
+
+      const playerMessage = JSON.parse(
+        `{
+          "senderId": "${this.props.authUser.uid}",
+          "receiverId": "${this.state.receiver.id}",
+          "message": "${this.state.typedMessage.trim()}"
+        }`
+      );
+  
+      axios
+        .post(this.links.sendMessageApiUrl, playerMessage)
+        .then(() => 
+          this.setState({
+            typedMessage: '',
+          })
+        )
+    }
+  }
+
+  validateTypedMessage = () => {
+    return this.state.typedMessage.length >= 2 && this.state.typedMessage.length <= 250;
+  }
+
+  isNotAnonymousUser = () => {
+    return this.props.authUser !== null;
   }
 
   render() {
@@ -202,13 +262,25 @@ class DirectChatWrapper extends Component {
                 </S.Message>
               </S.OutgoingMessageWrapper>
             )}
+            <S.MessagesEnd ref={(el) => { this.messagesEnd = el; }} />
           </React.Fragment>
         ))}
       </S.MessagesWrapper>
 
       <S.MessageInputSectionWrapper>
         <S.MessageInputWrapper>
-          <S.MessageInput max={200} />
+          <S.MessageInput 
+            value={this.state.typedMessage}
+            onChange={event => {
+              this.setState({
+                typedMessage: event.target.value,
+              })
+            }}
+            onKeyPress={this.handleEnterClick}
+            placeholder={'Type message (2-250 letters)'}
+            minLength={2}
+            maxLength={250}
+          />
         </S.MessageInputWrapper>
 
         <S.MessageButtonsWrapper>
@@ -216,8 +288,11 @@ class DirectChatWrapper extends Component {
             <S.MessageButtonImage src="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595074/smiling-emoticon.svg" />
           </S.MessageButton>
 
-
-          <S.MessageButton>
+          <S.MessageButton
+            isButtonActive={this.validateTypedMessage()} 
+            onClick={this.sendMessageHandler} 
+            disabled={!this.validateTypedMessage()}
+          >
             <S.MessageButtonImage src="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg" />  
           </S.MessageButton>
         </S.MessageButtonsWrapper>
