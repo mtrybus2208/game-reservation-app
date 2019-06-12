@@ -235,7 +235,7 @@ class DirectChatWrapper extends Component {
                       {this.state.receiver.displayName}
                     </S.MessageAuthorName>
                     <S.MessageTime>
-                      {moment(value.messageSendDate).format("HH:mm")}
+                      {moment(value.messageSendDate).format('HH:mm')}
                     </S.MessageTime>
                   </S.MessageHeader>
 
@@ -252,7 +252,7 @@ class DirectChatWrapper extends Component {
                       {this.props.authUser.displayName}
                     </S.MessageAuthorName>
                     <S.MessageTime>
-                      {moment(value.messageSendDate).format("HH:mm")}
+                      {moment(value.messageSendDate).format('HH:mm')}
                     </S.MessageTime>
                   </S.MessageHeader>
 
