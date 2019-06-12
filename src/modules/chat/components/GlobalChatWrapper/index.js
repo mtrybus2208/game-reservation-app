@@ -200,7 +200,7 @@ class GlobalChatWrapper extends Component {
                 })
               }}
               onKeyPress={this.handleEnterClick}
-              placeholder={this.isNotAnonymousUser() ? "Type message" : "Please login to use chat"}
+              placeholder={this.isNotAnonymousUser() ? "Type message (2-250 lettters)" : "Please login to use chat"}
               minLength={2}
               maxLength={250}
               disabled={!this.isNotAnonymousUser()}
