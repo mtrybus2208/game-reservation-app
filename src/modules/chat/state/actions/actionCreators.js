@@ -16,3 +16,9 @@ export const addGlobalChatMessage = (message) =>
     type: actionTypes.ADD_GLOBAL_CHAT_MESSAGE,
     message,
   });
+
+export const fetchDirectChatMessages = (directChatRoomId) => 
+  ({ 
+    type: actionTypes.FETCH_DIRECT_CHAT_MESSAGES,
+    directChatRoomId,
+  });

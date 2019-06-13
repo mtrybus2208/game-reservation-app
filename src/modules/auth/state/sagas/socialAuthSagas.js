@@ -8,7 +8,7 @@ import { actionTypes } from './../actions/actionTypes';
 import { mapUserData } from '../../helpers/mapUserData';
 import axios from 'axios';
 
-const playerSaveLink = 'http://localhost/players';
+const playerSaveLink = 'http://3.95.208.60/players';
 
 function* workSocialAuth(type) {
   const socialTypes = {

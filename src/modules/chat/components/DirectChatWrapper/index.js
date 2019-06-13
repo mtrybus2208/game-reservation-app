@@ -10,9 +10,11 @@ import moment from 'moment';
 const propTypes = { 
   setGlobalChatMode: PropTypes.func,
   setDirectChatWebsocketConnection: PropTypes.func,
+  fetchDirectChatMessages: PropTypes.func.isRequired,
   directChatWebsocket: PropTypes.object,
   authUser: PropTypes.object.isRequired,
   receiverId: PropTypes.string.isRequired,
+  directChatMessages: PropTypes.object,
 };
 
 const defaultProps = { };
@@ -41,6 +43,10 @@ class DirectChatWrapper extends Component {
 
   debouncedOnClick = debounced(200, this.sendMessage.bind(this)); 
 
+  fetchDirectChatMessages = (directChatRoomId) => {
+    this.props.fetchDirectChatMessages(directChatRoomId);
+  }
+
   componentDidMount() {
     this.setupReceiverData(this.props.receiverId);
 
@@ -67,6 +73,9 @@ class DirectChatWrapper extends Component {
     }
 
     if(this.isFirstChatRoomConnection()) {
+
+      this.fetchDirectChatMessages(this.getDirectChatRoomId());
+
       this.fetchCurrentDirectChatMessages()
         .then(response => 
           this.setState({
@@ -117,7 +126,7 @@ class DirectChatWrapper extends Component {
   }
 
   fetchCurrentDirectChatMessages() {
-    const chatRoomId = this.getDirectChatRoomId()
+    const chatRoomId = this.getDirectChatRoomId();
 
     return axios.get(`${this.links.sendMessageApiUrl}/chat-room/${chatRoomId}`);
   }
@@ -308,6 +317,9 @@ const mapStateToProps = () => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    fetchDirectChatMessages: (directChatRoomId) => {
+      dispatch(fromActions.fetchDirectChatMessages(directChatRoomId));
+    },
     setGlobalChatMode: () => {
       dispatch(fromActions.setGlobalChatMode());
     },

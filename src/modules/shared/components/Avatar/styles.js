@@ -11,6 +11,7 @@ export const Avatar = styled.div`
     background: #484f5a;
     position: relative;
     box-shadow: -1px 1px 30px -3px rgba(0,0,0,.61);
+    pointer-events: none;
 `;
 
 Avatar.propTypes = {

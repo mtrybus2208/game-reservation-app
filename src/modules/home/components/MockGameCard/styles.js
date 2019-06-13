@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css} from 'styled-components';
 import PropTypes from 'prop-types';
 import { rgba } from 'polished';
 
@@ -16,7 +16,12 @@ const rotate = keyframes`
   }
 `;
 
-export const CardWrap = styled.div`
+export const CardWrap = styled.div.attrs({
+  style: ({ x, y }) => ({ 
+    left: `${x}px`, 
+  }),
+})`
+  cursor: grab;
   position: absolute;
   top: ${props => props.cardPosition}px;
   top: 0;
@@ -24,13 +29,30 @@ export const CardWrap = styled.div`
   width: auto;
   background: rgba(1, 66, 23, 0.3);
   top: 101px;
-  z-index: 1;
-  border: ${({ isAbleToMove }) => isAbleToMove ? '3px solid #014217' : 'none'};
+  z-index: 6;
+  border: ${({ isAbleToMove, isAbleToReserve }) => {
+    if (isAbleToReserve) {
+      return '3px solid rgba(103, 16, 16, 0.9)';
+    }
+
+    if (isAbleToMove && !isAbleToReserve) {
+      return '3px solid #014217';
+    }
+
+    return 'none';
+  }};
   border-top: none;
   border-bottom: none;
+  left: 0;
+  
+  ${({ isDragging }) =>
+    isDragging && css`
+    opacity: 0.8;
+    cursor: grabbing;
+  `};
 
   @media ${({ theme }) => theme.media.tablet} {
-    left: ${props => props.cardPosition}px;
+    left: ${props => props.cardPosition ? props.cardPosition : 0}px;
     right: auto;
     width: ${props => props.size}px;
   }
@@ -47,7 +69,7 @@ export const MockGameCard = styled.div`
   right: 0;
   top: 0;
   bottom: 0;
-  background: rgba(1, 66, 23, 0.3);
+  background: ${({ isAbleToReserve }) => isAbleToReserve ? 'rgba(103, 16, 16, 0.41)' : 'rgba(1, 66, 23, 0.3)'};
 `;
 
 export const AnimatedIcon = styled.div`

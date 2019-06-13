@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; 
+import React, { useState, useEffect, useRef } from 'react'; 
 import PropTypes from 'prop-types';
 import GameCard from '../GameCard';
 import MockGameCard from '../MockGameCard';
@@ -6,18 +6,23 @@ import * as S from './styles';
 import moment from 'moment';
 
 const propTypes = {
+  authUser: PropTypes.object,
   workdayInPixels: PropTypes.number,
+  wrapperScrollPosition: PropTypes.number,
   timeConverter: PropTypes.number,
   arrayOfWorkdayHours: PropTypes.array,
   reservedGames: PropTypes.array,
   workdayStart: PropTypes.object,
   gameReservation: PropTypes.object,
   onBlockTimeLine: PropTypes.func,
+  onMoveTimeLine: PropTypes.func,
+  setCurrentReservationTime: PropTypes.func,
 };
 
 const defaultProps = {};
 
 const TimeRuler = React.memo(({
+  authUser,
   workdayInPixels,
   timeConverter,
   arrayOfWorkdayHours,
@@ -25,12 +30,33 @@ const TimeRuler = React.memo(({
   workdayStart,
   gameReservation,
   onBlockTimeLine,
+  onMoveTimeLine,
+  startPosition,
+  setStart,
+  wrapperScrollPosition,
+  setCurrentReservationTime,
 }) => {
-
   const [cardPosition, setCardPosition] = useState(0);
-
+  const wrapperEl = useRef(null);
   const hoursToPixels = h => h * 60 * timeConverter;
   const minutesToPixels = m => m * timeConverter;
+
+  useEffect(() => {
+  })
+
+  // TODO: Need to merge these funtions
+  const createReservedIntervals = (games) => {
+    return games && games.map(game => {
+      const starGame = moment(game.startDate);
+      const distanceInMinutes = moment.duration(starGame.diff(workdayStart)).asMinutes();
+      const startTime = distanceInMinutes * timeConverter;
+  
+      const endGame = moment(game.endDate);
+      const distanceInMinutesEnd = moment.duration(endGame.diff(workdayStart)).asMinutes();
+      const endTime = distanceInMinutesEnd * timeConverter;
+      return [Math.abs(startTime), Math.abs(startTime) + (Math.abs(endTime) - Math.abs(startTime))];
+    });
+  };
 
   const renderGameCard = (game) => {
     const starGame = moment(game.startDate);
@@ -40,19 +66,19 @@ const TimeRuler = React.memo(({
     const endGame = moment(game.endDate);
     const distanceInMinutesEnd = moment.duration(endGame.diff(workdayStart)).asMinutes();
     const endTime = distanceInMinutesEnd * timeConverter;
+
+    const player = game.player && {
+      name: game.player.displayName,
+      photoUrl: game.player.photoUrl,
+      profession: 'Software developer',
+    };
     return (
       <GameCard
-        user={
-          {
-            name: 'Michal Trybus',
-            avatarImg: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1551047093/43160946_1970943372961667_6703179334590398464_n.jpg',
-            profession: 'Frontend developer',
-          }
-        }
+        user={player}
         display={
           {
             gameTime: '30min',
-            gameType: 'fifa',
+            gameType: game.gameName,
             size: (Math.abs(endTime) -  Math.abs(startTime)),
             left: Math.abs(startTime),
           }
@@ -62,7 +88,9 @@ const TimeRuler = React.memo(({
   };
 
   return (
-    <S.Wrapper>
+    <S.Wrapper
+      ref={wrapperEl}
+    >
       {
         reservedGames && reservedGames.map(game => renderGameCard(game))
       }
@@ -71,13 +99,6 @@ const TimeRuler = React.memo(({
         gameReservation.time &&
         gameReservation.gameType &&
         <MockGameCard
-          user={
-            {
-              name: 'Michal Trybus',
-              avatarImg: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1551047093/43160946_1970943372961667_6703179334590398464_n.jpg',
-              profession: 'Frontend developer',
-            }
-          }
           display={
             {
               gameTime: `${gameReservation.time.duration}min`,
@@ -89,6 +110,13 @@ const TimeRuler = React.memo(({
           onBlockTimeLine={onBlockTimeLine}
           setCardPosition={setCardPosition}
           cardPosition={cardPosition}
+          authUser={authUser}
+          onMoveTimeLine={onMoveTimeLine}
+          startPosition={startPosition}
+          setStart={setStart}
+          initialCardPosition={wrapperScrollPosition}
+          setCurrentReservationTime={setCurrentReservationTime}
+          reservedIntervals={createReservedIntervals(reservedGames)}
         />
       }
       <S.TimeRuler

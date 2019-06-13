@@ -3,6 +3,7 @@ import { actionTypes } from '../actions/actionTypes';
 export const initialState = {
   chatMode: 'GLOBAL',
   globalChatMessages: [],
+  directChatMessages: null,
 };
 
 export const chatReducer = (state = initialState, action) => {
@@ -21,6 +22,16 @@ export const chatReducer = (state = initialState, action) => {
       return {
         ...state,
         globalChatMessages: [...state.globalChatMessages, action.message],
+      };
+    case actionTypes.FETCH_DIRECT_CHAT_MESSAGES_SUCCESS:
+      return {
+        ...state,
+        directChatMessages: action.messages,
+      };
+    case actionTypes.FETCH_DIRECT_CHAT_MESSAGES_FAIL:
+      return {
+        ...state,
+        directChatMessages: null,
       };
     default:
       return state; 

@@ -91,6 +91,7 @@ export const TitleBox = styled.div`
     justify-content: flex-end;
     align-items: flex-start;
     padding: 20px;
+    pointer-events: none;
 
   @media ${({ theme }) => theme.media.tablet} {
     border-bottom: 1px solid #494e54;

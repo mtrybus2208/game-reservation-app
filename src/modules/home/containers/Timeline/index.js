@@ -1,7 +1,7 @@
-// TODO: Rewrite this with hooks
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { throttled } from '@/helpers';
 import { getAllReservedGames } from '@/modules/home/state/selectors/entieties';
 import TimeRuler from '@/modules/home/components/TimeRuler';
 import * as fromActions from '../../state/actions';
@@ -15,30 +15,53 @@ const propTypes = {
   arrayOfWorkdayHours: PropTypes.array,
   reservedGames: PropTypes.array,
   timeConverter: PropTypes.number,
-  fetchReservedGames: PropTypes.func, 
+  fetchReservedGames: PropTypes.func,
+  setCurrentReservationTime: PropTypes.func,
+  sessionState: PropTypes.object,
 };
 
 class TimeLine extends Component {
+
   state = {
     isDown: false,
     isBlocked: false,
     startX: undefined,
     scrollLeft: undefined,
-    wrapperPosition: null,
+    startPosition: false,
   };
+  interval = null;
+  handlerMoveTimeLine = this.handlerMoveTimeLine.bind(this);
+  getWrapperScrollPosition = this.getWrapperScrollPosition.bind(this);
+  setStart = this.setStart.bind(this);
+  timeLineRef = React.createRef();
+  
 
   componentDidMount() {
     this.props.fetchReservedGames();
   }
 
-  componentDidUpdate() {}
+  componentDidUpdate() {
+  }
 
-  setWrapperRef = element => element &&
-    this.setState({
-      wrapperPosition: element.getBoundingClientRect(),
-    });
+  componentWillUnmount() {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+  }
 
-  timeLineRef = React.createRef();
+  setStart(data) {
+    this.setState(prev => {
+      if (prev.startPosition !== data) {
+        return { startPosition: data };
+      }
+    })
+  }
+
+  handlerMoveTimeLine(modifier) {    
+    const { current } = this.timeLineRef;
+    current.scrollLeft = current.scrollLeft + modifier;
+    return current.scrollLeft;
+  }
 
   mouseLeave = () => () => {
     this.setState({
@@ -76,6 +99,11 @@ class TimeLine extends Component {
     });
   }
 
+  getWrapperScrollPosition() {
+    const { current } = this.timeLineRef;
+    return current ? current.scrollLeft : 0;
+  }
+
   render() {
     return (
       <S.TimeLineWrapper
@@ -105,6 +133,12 @@ class TimeLine extends Component {
             workdayStart={this.props.workdayStart}
             gameReservation={this.props.gameReservation}
             onBlockTimeLine={this.handlerBlockTimeLine}
+            onMoveTimeLine={this.handlerMoveTimeLine}
+            authUser={this.props.sessionState.authUser}
+            startPosition={this.state.startPosition}
+            setStart={this.setStart}
+            setCurrentReservationTime={this.props.setCurrentReservationTime}
+            wrapperScrollPosition={this.getWrapperScrollPosition()}
           />
         </S.TimeLine>
       </S.TimeLineWrapper>
@@ -112,7 +146,7 @@ class TimeLine extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   timeLine: getTimeLine(state),
   workdayInPixels: getWorkdayInPixels(state),
   workdayStart: state.timeLine.workdayStart,
@@ -121,11 +155,21 @@ const mapStateToProps = (state) => ({
   arrayOfWorkdayHours: getArrayOfWorkdayHours(state),
   reservedGames: getAllReservedGames(state),
   gameReservation: state.gameReservationState,
+  sessionState: state.sessionState,
 });
 
 const mapDispatchToProps = dispatch => ({
   fetchReservedGames: () => {
     dispatch(fromActions.fetchReservedGames());
+  },
+  fetchPlayers: () => {
+    dispatch(fromActions.fetchPlayers());
+  },
+  zoomTimeLine: payload => {
+    dispatch(fromActions.zoomTimeLine(payload));
+  },
+  setCurrentReservationTime: payload => {
+    dispatch(fromActions.setCurrentReservationTime(payload));
   },
 });
 

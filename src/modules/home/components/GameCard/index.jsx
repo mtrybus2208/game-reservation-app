@@ -22,7 +22,12 @@ const GameCard = ({
   customPosition,
 }) => {
   useEffect(() => {
-  }, []);
+  });
+
+  const avatar = user && (user.photoUrl || user.photoURL)
+    ? <Avatar path={(user.photoUrl || user.photoURL)} />
+    : <Avatar />;
+
   return (
     <S.GameCard
       size={display.size || 100}
@@ -35,7 +40,7 @@ const GameCard = ({
       <S.Body>
         <S.AvatarBox>
           <CircleItem>
-            <Avatar path={ user && user.avatarImg} />
+            {avatar}
           </CircleItem>
         </S.AvatarBox>
       </S.Body>

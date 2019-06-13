@@ -5,10 +5,12 @@ const initialState = {
   endLastReservation: moment('10:00 am', 'HH:mm a'),
   actualTime: moment(),
   workdayStart: moment('10:00 am', 'HH:mm a'),
-  workdayEnd: moment('05:00 pm', 'HH:mm a'),
+  workdayEnd: moment('10:00 pm', 'HH:mm a'),
   gameConfigOpen: false,
   timeConverter: 12,
   entities: null,
+  currentReservationTime: null,
+  players: null,
 };
 
 export const timeLineReducer = (state = initialState, action) => {
@@ -33,6 +35,29 @@ export const timeLineReducer = (state = initialState, action) => {
         ...state,
         reservedGames: null,
       };
+    case actionTypes.FETCH_PLAYERS_SUCCESS:
+      return {
+        ...state,
+        players: action.players,
+      };
+    case actionTypes.FETCH_PLAYERS_FAIL:
+      return {
+        ...state,
+        players: null,
+      };
+
+    case actionTypes.ZOOM_TIMELINE: {
+      return {
+        ...state,
+        timeConverter: action.payload,
+      };
+    }
+    case actionTypes.SET_CURRENT_RESERVATION_TIME: {
+      return {
+        ...state,
+        currentReservationTime: action.payload,
+      };
+    }
     default:
       return state;
   }
