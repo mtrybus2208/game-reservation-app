@@ -16,7 +16,10 @@ import authSaga from './modules/auth/state/sagas/';
 import uiSaga from './modules/shared/state/sagas/';
  
 export default function configureStore(history) {
-  const persistedState = loadState();
+  const persistedState = {
+    sessionState: loadState('sessionState'),
+  };
+
   const rootReducer = combineReducers({
     timeLine: timeLineReducer,
     router: connectRouter(history),
@@ -26,7 +29,7 @@ export default function configureStore(history) {
     gameReservationState: gameReservationReducer,
     chat: chatReducer,
   });
-
+ 
   const sagaMiddleware = createSagaMiddleware();
   const middleware = [sagaMiddleware, routerMiddleware(history)];
 
@@ -47,9 +50,7 @@ export default function configureStore(history) {
     .map(saga => sagaMiddleware.run(saga));
 
   store.subscribe(throttled(500, () => {
-    saveState({
-      sessionState: store.getState().sessionState,
-    });
+    saveState('sessionState', store.getState().sessionState);
   }));
 
   return store;

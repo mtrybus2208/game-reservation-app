@@ -5,6 +5,7 @@ import {
   watchFetchReservedGames,
   watchAddNewGame,
   watchFetchPlayers,
+  watchDeleteGame,
 } from './TimeLineSagas';
 
 export default function* timeLineSaga() {
@@ -12,5 +13,6 @@ export default function* timeLineSaga() {
     watchFetchPlayers(),
     watchFetchReservedGames(),
     watchAddNewGame(),
+    watchDeleteGame(),
   ]);
 }

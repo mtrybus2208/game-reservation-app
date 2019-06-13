@@ -6,6 +6,12 @@ export const addNewGame = payload =>
     payload,
   });
 
+export const deleteGame = payload =>
+  ({
+    type: actionTypes.DELETE_GAME,
+    payload,
+  });
+
 export const changeGameConfigState = payload =>
   ({
     type: actionTypes.CHANGE_GAME_CONFIG_STATE,
@@ -38,5 +44,10 @@ export const setCurrentReservationTime = payload =>
   ({
     type: actionTypes.SET_CURRENT_RESERVATION_TIME,
     payload,
+  });
+
+export const hideUserReservationCard = () =>
+  ({
+    type: actionTypes.HIDE_USER_RESERVATION_CARD,
   });
 

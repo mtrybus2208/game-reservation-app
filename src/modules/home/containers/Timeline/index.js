@@ -18,6 +18,7 @@ const propTypes = {
   fetchReservedGames: PropTypes.func,
   setCurrentReservationTime: PropTypes.func,
   sessionState: PropTypes.object,
+  deleteGame: PropTypes.func.isRequired,
 };
 
 class TimeLine extends Component {
@@ -32,6 +33,7 @@ class TimeLine extends Component {
   interval = null;
   handlerMoveTimeLine = this.handlerMoveTimeLine.bind(this);
   getWrapperScrollPosition = this.getWrapperScrollPosition.bind(this);
+  handleDeleteGame = this.handleDeleteGame.bind(this);
   setStart = this.setStart.bind(this);
   timeLineRef = React.createRef();
   
@@ -47,6 +49,10 @@ class TimeLine extends Component {
     if (this.interval) {
       clearInterval(this.interval);
     }
+  }
+
+  handleDeleteGame(id) {
+    return this.props.deleteGame(id);
   }
 
   setStart(data) {
@@ -139,6 +145,8 @@ class TimeLine extends Component {
             setStart={this.setStart}
             setCurrentReservationTime={this.props.setCurrentReservationTime}
             wrapperScrollPosition={this.getWrapperScrollPosition()}
+            deleteGame={this.handleDeleteGame}
+            isAddGameFetching={this.props.timeLine.isAddGameFetching}
           />
         </S.TimeLine>
       </S.TimeLineWrapper>
@@ -170,6 +178,9 @@ const mapDispatchToProps = dispatch => ({
   },
   setCurrentReservationTime: payload => {
     dispatch(fromActions.setCurrentReservationTime(payload));
+  },
+  deleteGame: payload => {
+    dispatch(fromActions.deleteGame(payload));
   },
 });
 

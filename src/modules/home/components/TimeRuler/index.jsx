@@ -17,6 +17,8 @@ const propTypes = {
   onBlockTimeLine: PropTypes.func,
   onMoveTimeLine: PropTypes.func,
   setCurrentReservationTime: PropTypes.func,
+  deleteGame: PropTypes.func,
+  isAddGameFetching: PropTypes.bool,
 };
 
 const defaultProps = {};
@@ -35,6 +37,8 @@ const TimeRuler = React.memo(({
   setStart,
   wrapperScrollPosition,
   setCurrentReservationTime,
+  deleteGame,
+  isAddGameFetching,
 }) => {
   const [cardPosition, setCardPosition] = useState(0);
   const wrapperEl = useRef(null);
@@ -42,7 +46,7 @@ const TimeRuler = React.memo(({
   const minutesToPixels = m => m * timeConverter;
 
   useEffect(() => {
-  })
+  }) 
 
   // TODO: Need to merge these funtions
   const createReservedIntervals = (games) => {
@@ -72,21 +76,26 @@ const TimeRuler = React.memo(({
       photoUrl: game.player.photoUrl,
       profession: 'Software developer',
     };
+
     return (
       <GameCard
+        isReservedByUser={game.playerId === (authUser || {}).uid}
+        key={game.id}
+        gameId={game.id}
+        deleteGame={deleteGame}
         user={player}
         display={
           {
             gameTime: '30min',
             gameType: game.gameName,
-            size: (Math.abs(endTime) -  Math.abs(startTime)),
+            size: (Math.abs(endTime) - Math.abs(startTime)),
             left: Math.abs(startTime),
           }
         }
       />
     );
   };
-
+ 
   return (
     <S.Wrapper
       ref={wrapperEl}
@@ -117,6 +126,7 @@ const TimeRuler = React.memo(({
           initialCardPosition={wrapperScrollPosition}
           setCurrentReservationTime={setCurrentReservationTime}
           reservedIntervals={createReservedIntervals(reservedGames)}
+          showSpinner={isAddGameFetching}
         />
       }
       <S.TimeRuler

@@ -27,7 +27,6 @@ export const GameCard = styled.div`
     width: ${props => props.size}px;
     top: ${props => props.top}px;
     height: initial;
-    /* max-width: 300px; */
     grid-template-columns: 1fr;
     grid-template-rows: 50px 1.5fr 1fr 50px;
     grid-template-areas: 
@@ -90,7 +89,7 @@ export const TitleBox = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: flex-start;
-    padding: 20px;
+    padding: 10px;
     pointer-events: none;
 
   @media ${({ theme }) => theme.media.tablet} {
@@ -103,18 +102,45 @@ export const TitleBox = styled.div`
 
 export const Title = styled.div`
   color: #fff;
-  font-size: 12px;
+  font-size: 11px;
   text-transform: uppercase;
   margin: 20px 0 10px;
+  text-align:center;
 `;
 
 export const SubTitle = styled.div`
   color: #747a81;
-  font-size: 10px;
+  font-size: 9px;
 `;
 
 export const AvatarBox = styled.div`
   height: 100px;
   width: 100px;
   display: flex;
+`;
+
+export const InfoRow = styled.div`
+  display: flex;
+  flex: 1 1 100%;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+`;
+
+export const CloseIcon = styled.div`
+  height: 20px;
+  width: 20px;
+  display: flex;
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  justify-content: center;
+  align-items: center; 
+  z-index: 2; 
+  cursor: pointer;
+
+  &:hover {
+    opacity: .7;
+  }
 `;

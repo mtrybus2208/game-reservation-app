@@ -1,17 +1,13 @@
 /* eslint no-use-before-define: 0 */
 import { call, put, takeEvery, select } from 'redux-saga/effects';
-import { actionTypes } from './../actions/actionTypes';
-import {
-  getReservationInHours,
-  getHoursFromPixels,
-} from '@/modules/home/state/selectors';
 import moment from 'moment';
 import axios from 'axios';
+import { getHoursFromPixels } from '@/modules/home/state/selectors';
+import { actionTypes } from './../actions/actionTypes';
 
 const createFullDateFromHours = h => `${moment().format('YYYY-MM-DD')}T${h}`;
 
 const makeEntieties = arr => {
-  console.log(arr)
   const ent = arr.reduce((obj, item) => ({
     ...obj,
     byID: {
@@ -41,12 +37,20 @@ const fetchPlayers = () => (
 );
 
 const reserveGame = data => {
-  axios.post('http://3.95.208.60/matches', data, {
+  return axios.post('http://3.95.208.60/matches', data, {
     headers: {
       'Auth-Id': data.playerID,
     },
   });
 };
+
+const deleteGame = data => (
+  axios.delete(`http://3.95.208.60/matches/${data.gameId}`, {
+    headers: {
+      'Auth-Id': data.userId,
+    },
+  })
+);
 
 function* workFetchReservedGames() {
   try {
@@ -75,6 +79,7 @@ function* workAddNewGame({ payload }) {
   try {
     const state = yield select();
     const { sessionState, gameReservationState } = state;
+
     const startDate = createFullDateFromHours(getHoursFromPixels(state));
     const endDate = createFullDateFromHours(moment(startDate).add(gameReservationState.time.duration, 'm').format('HH:mm'));
     yield call(reserveGame, {
@@ -83,11 +88,25 @@ function* workAddNewGame({ payload }) {
       playerID: sessionState.authUser.uid,
       gameName: gameReservationState.gameType.name,
     });
-    
-    
     yield put({ type: actionTypes.ADD_NEW_GAME_SUCCESS, payload });
+    yield put({ type: actionTypes.HIDE_USER_RESERVATION_CARD });
   } catch (e) {
     yield put({ type: actionTypes.ADD_NEW_GAME_FAIL, message: e.message });
+  }
+}
+
+function* workDeleteGame({ payload }) {
+  try {
+    const { authUser } = yield select(state => state.sessionState);
+    const data = {
+      gameId: payload,
+      userId: authUser.uid,
+    };
+ 
+    yield call(deleteGame, data);
+    yield put({ type: actionTypes.DELETE_GAME_SUCCESS });
+  } catch (e) {
+    yield put({ type: actionTypes.DELETE_GAME_FAIL, message: e.message });
   }
 }
 
@@ -103,3 +122,7 @@ export function* watchAddNewGame() {
   yield takeEvery(actionTypes.ADD_NEW_GAME, workAddNewGame);
 }
 
+export function* watchDeleteGame() {
+  yield takeEvery(actionTypes.DELETE_GAME, workDeleteGame);
+}
+ 
