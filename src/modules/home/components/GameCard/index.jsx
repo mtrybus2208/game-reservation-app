@@ -13,9 +13,12 @@ const propTypes = {
   customPosition: PropTypes.bool,
   deleteGame: PropTypes.func,
   gameId: PropTypes.number,
+  isReservedByUser: PropTypes.bool,
 };
 
-const defaultProps = {};
+const defaultProps = {
+  isReservedByUser: false,
+};
 
 const GameCard = ({
   user,
@@ -25,6 +28,7 @@ const GameCard = ({
   customPosition,
   deleteGame,
   gameId,
+  isReservedByUser,
 }) => {
   useEffect(() => {
   })
@@ -46,19 +50,25 @@ const GameCard = ({
       <S.InfoTime>
         <S.InfoRow>
           <span>{display.gameTime}</span>
-          <S.CloseIcon
-            onClick={handlerDeleteGame}
-          >
-            <BaseIcon
-              path="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1560257452/close-button.svg"
-              size="15px"
-            />
-          </S.CloseIcon>
+          {
+            isReservedByUser && (
+              <S.CloseIcon
+                onClick={handlerDeleteGame}
+              >
+                <BaseIcon
+                  path="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1560257452/close-button.svg"
+                  size="15px"
+                />
+              </S.CloseIcon>
+            )
+          }
         </S.InfoRow>
       </S.InfoTime>
       <S.Body>
         <S.AvatarBox>
-          <CircleItem>
+          <CircleItem
+            active={isReservedByUser}
+          >
             {avatar}
           </CircleItem>
         </S.AvatarBox>

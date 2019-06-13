@@ -44,7 +44,7 @@ const TimeRuler = React.memo(({
   const minutesToPixels = m => m * timeConverter;
 
   useEffect(() => {
-  })
+  }) 
 
   // TODO: Need to merge these funtions
   const createReservedIntervals = (games) => {
@@ -74,8 +74,10 @@ const TimeRuler = React.memo(({
       photoUrl: game.player.photoUrl,
       profession: 'Software developer',
     };
+
     return (
       <GameCard
+        isReservedByUser={game.playerId === (authUser || {}).uid}
         key={game.id}
         gameId={game.id}
         deleteGame={deleteGame}

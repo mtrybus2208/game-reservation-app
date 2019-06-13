@@ -42,7 +42,6 @@ export default function configureStore(history) {
     persistedState,
     enhancers,
   );
-  
 
   [authSaga, timeLineSaga, uiSaga]
     .map(saga => sagaMiddleware.run(saga));
