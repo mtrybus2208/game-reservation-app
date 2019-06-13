@@ -22,7 +22,7 @@ function* workSocialAuth(type) {
     yield put({ type: actionTypes.SET_AUTH_USER, payload: mappedUser });
     yield put({ type: uiActionTypes.CLOSE_CHAT_WITH_REDIRECT, path: ROUTES.HOME });
     yield call(savePlayer(mappedUser));
-    yield call(removeItem('state'));
+    // yield call(removeItem('state'));
   } catch (e) {
     yield put({ type: actionTypes.SOCIAL_AUTH_FAIL, message: e.message });
   }
