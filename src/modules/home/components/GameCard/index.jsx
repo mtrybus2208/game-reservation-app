@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { ClapSpinner } from 'react-spinners-kit';
 import Avatar from '@/modules/shared/components/Avatar';
 import CircleItem from '@/modules/shared/components/CircleItem';
 import BaseIcon from '@/modules/shared/components/BaseIcon';
@@ -14,10 +15,12 @@ const propTypes = {
   deleteGame: PropTypes.func,
   gameId: PropTypes.number,
   isReservedByUser: PropTypes.bool,
+  showSpinner: PropTypes.bool,
 };
 
 const defaultProps = {
   isReservedByUser: false,
+  showSpinner: false,
 };
 
 const GameCard = ({
@@ -29,6 +32,7 @@ const GameCard = ({
   deleteGame,
   gameId,
   isReservedByUser,
+  showSpinner,
 }) => {
   useEffect(() => {
   })
@@ -69,17 +73,24 @@ const GameCard = ({
           <CircleItem
             active={isReservedByUser}
           >
-            {avatar}
+            <ClapSpinner
+              size={30}
+              frontColor="#bd790b"
+              loading={showSpinner}
+            />
+            {!showSpinner && avatar}
           </CircleItem>
         </S.AvatarBox>
       </S.Body>
       <S.TitleBox>
-        {customTitle || (
-          <React.Fragment>
-            <S.Title>{user && user.name}</S.Title>
-            <S.SubTitle>{user && user.profession}</S.SubTitle>
-          </React.Fragment>
-        )}
+        {!showSpinner && (
+          customTitle || (
+            <React.Fragment>
+              <S.Title>{user && user.name}</S.Title>
+              <S.SubTitle>{user && user.profession}</S.SubTitle>
+            </React.Fragment>
+          )
+        )} 
       </S.TitleBox>
       <S.InfoType>
         <span>{display.gameType}</span>

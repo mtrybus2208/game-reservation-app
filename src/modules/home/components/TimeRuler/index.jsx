@@ -18,6 +18,7 @@ const propTypes = {
   onMoveTimeLine: PropTypes.func,
   setCurrentReservationTime: PropTypes.func,
   deleteGame: PropTypes.func,
+  isAddGameFetching: PropTypes.bool,
 };
 
 const defaultProps = {};
@@ -37,6 +38,7 @@ const TimeRuler = React.memo(({
   wrapperScrollPosition,
   setCurrentReservationTime,
   deleteGame,
+  isAddGameFetching,
 }) => {
   const [cardPosition, setCardPosition] = useState(0);
   const wrapperEl = useRef(null);
@@ -93,7 +95,7 @@ const TimeRuler = React.memo(({
       />
     );
   };
-
+ 
   return (
     <S.Wrapper
       ref={wrapperEl}
@@ -124,6 +126,7 @@ const TimeRuler = React.memo(({
           initialCardPosition={wrapperScrollPosition}
           setCurrentReservationTime={setCurrentReservationTime}
           reservedIntervals={createReservedIntervals(reservedGames)}
+          showSpinner={isAddGameFetching}
         />
       }
       <S.TimeRuler

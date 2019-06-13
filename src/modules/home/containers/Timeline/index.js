@@ -146,6 +146,7 @@ class TimeLine extends Component {
             setCurrentReservationTime={this.props.setCurrentReservationTime}
             wrapperScrollPosition={this.getWrapperScrollPosition()}
             deleteGame={this.handleDeleteGame}
+            isAddGameFetching={this.props.timeLine.isAddGameFetching}
           />
         </S.TimeLine>
       </S.TimeLineWrapper>

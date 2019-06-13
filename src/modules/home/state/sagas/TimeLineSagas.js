@@ -89,6 +89,7 @@ function* workAddNewGame({ payload }) {
       gameName: gameReservationState.gameType.name,
     });
     yield put({ type: actionTypes.ADD_NEW_GAME_SUCCESS, payload });
+    yield put({ type: actionTypes.HIDE_USER_RESERVATION_CARD });
   } catch (e) {
     yield put({ type: actionTypes.ADD_NEW_GAME_FAIL, message: e.message });
   }

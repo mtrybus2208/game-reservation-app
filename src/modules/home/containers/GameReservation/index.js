@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { PushSpinner } from 'react-spinners-kit';
 import { GAMES, GAMES_DURATION } from '@/constants/gameSettings';
 import {
   getReservationInHours,
@@ -44,6 +45,7 @@ class GameReservation extends Component {
   }
 
   render() {
+    const { isAddGameFetching } = this.props.timeLine;
     return (
       <React.Fragment>
         <NewGameConfig
@@ -63,7 +65,12 @@ class GameReservation extends Component {
             maxWidth="480px"
             onClick={this.addNewGame()}
           >
-            <span>Reserve Game</span>
+            <PushSpinner
+              size={30}
+              color="#141619"
+              loading={isAddGameFetching}
+            />
+            {!isAddGameFetching && <span>Reserve Game</span>}
           </BaseButton.Cta>
         </S.CtaWrapper>
       </React.Fragment>

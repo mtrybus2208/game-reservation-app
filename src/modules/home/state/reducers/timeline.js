@@ -11,13 +11,25 @@ const initialState = {
   entities: null,
   currentReservationTime: null,
   players: null,
+  isAddGameFetching: false,
 };
 
 export const timeLineReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.ADD_NEW_GAME:
+      return {
+        ...state,
+        isAddGameFetching: true,
+      };
     case actionTypes.ADD_NEW_GAME_SUCCESS:
       return {
         ...state,
+        isAddGameFetching: false,
+      };
+    case actionTypes.ADD_NEW_GAME_FAIL:
+      return {
+        ...state,
+        isAddGameFetching: false,
       };
     case actionTypes.CHANGE_GAME_CONFIG_STATE:
       return {

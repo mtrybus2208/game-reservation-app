@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   gameType: null,
   time: null,
 };
- 
+
 
 export const gameReservationReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -25,6 +25,12 @@ export const gameReservationReducer = (state = INITIAL_STATE, action) => {
           ...action.payload,
         },
         editMode: true,
+      };
+    }
+    case actionTypes.HIDE_USER_RESERVATION_CARD: {
+      return {
+        ...state,
+        editMode: false,
       };
     }
     default:

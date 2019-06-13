@@ -52,6 +52,7 @@
     "react-redux": "^7.0.3",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.9",
+    "react-spinners-kit": "^1.9.0",
     "react-timespan": "^1.0.0",
     "redux": "^3.7.2",
     "redux-promise": "^0.6.0",

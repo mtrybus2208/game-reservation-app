@@ -46,3 +46,8 @@ export const setCurrentReservationTime = payload =>
     payload,
   });
 
+export const hideUserReservationCard = () =>
+  ({
+    type: actionTypes.HIDE_USER_RESERVATION_CARD,
+  });
+

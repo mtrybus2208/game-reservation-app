@@ -14,9 +14,12 @@ const propTypes = {
   onMoveTimeLine: PropTypes.func,
   setCurrentReservationTime: PropTypes.func,
   reservedIntervals: PropTypes.array,
+  showSpinner: PropTypes.bool,
 };
 
-const defaultProps = {};
+const defaultProps = {
+  showSpinner: false,
+};
 
 class MockGameCard extends React.PureComponent {
   state = {
@@ -231,6 +234,7 @@ class MockGameCard extends React.PureComponent {
           display={this.props.display}
           customTitle={this.customTitle}
           customPosition
+          showSpinner={this.props.showSpinner}
         >
           <S.MockGameCard
             isAbleToReserve={isAbleToReserve}
