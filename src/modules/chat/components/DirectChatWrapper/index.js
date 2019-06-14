@@ -22,7 +22,6 @@ const defaultProps = { };
 class DirectChatWrapper extends Component {
 
   state = {
-    messages: [],
     typedMessage: '',
     receiver: {
       id: '',
@@ -73,18 +72,7 @@ class DirectChatWrapper extends Component {
     }
 
     if(this.isFirstChatRoomConnection()) {
-
       this.fetchDirectChatMessages(this.getDirectChatRoomId());
-
-      this.fetchCurrentDirectChatMessages()
-        .then(response => 
-          this.setState({
-            messages: response.data
-          })
-        )
-        .catch(() => {
-          console.log('Could not fetch messages for current room');
-        });
     }
   }
 
@@ -97,7 +85,7 @@ class DirectChatWrapper extends Component {
   }
   
   isFirstChatRoomConnection = () => {
-    return this.state.messages === undefined || this.state.messages.length == 0;
+    return this.props.directChatMessages === null || this.props.directChatMessages.length === 0;
   }
 
   setupReceiverData = (receiverId) => {
@@ -133,7 +121,7 @@ class DirectChatWrapper extends Component {
   
   getDirectChatRoomId() {
     const authUserId = this.props.authUser.uid;
-    const receiverId = this.state.receiver.id;
+    const receiverId = this.props.receiverId;
 
     if(authUserId > receiverId) {
       return `${authUserId}_${receiverId}`;
@@ -148,9 +136,9 @@ class DirectChatWrapper extends Component {
 
       if(this.isDirectChatMessage(websocketMessage)) {
         const directChatMessage = websocketMessage.responseBody;
-        this.setState(state => ({
-          messages: [...state.messages, directChatMessage]
-        }))
+        //this.setState(state => ({
+          //messages: [...state.messages, directChatMessage]
+        //}))
       }
     };
   }
@@ -218,6 +206,10 @@ class DirectChatWrapper extends Component {
     return this.props.authUser !== null;
   }
 
+  isMessagesListFetched = () => {
+    return this.props.directChatMessages && this.props.directChatMessages[this.getDirectChatRoomId()].length > 0;
+  }
+
   render() {
     return (
     <S.DirectChatWrapper> 
@@ -234,7 +226,7 @@ class DirectChatWrapper extends Component {
       </S.DirectChatPlayerInfo>
 
       <S.MessagesWrapper>
-        {this.state.messages.map((value, index) => (
+        {this.isMessagesListFetched() && this.props.directChatMessages[this.getDirectChatRoomId()].map((value, index) => (
           <React.Fragment key={index}>
             {value.receiverId == this.props.authUser.uid ? (
               <S.IncomingMessageWrapper key={index}>
