@@ -3,7 +3,6 @@ import { call, put, takeEvery, select } from 'redux-saga/effects';
 import { actionTypes } from './../actions/actionTypes';
 
 const makeEntities = chatRoomMessages => {
-
   const chatRoomEntity = chatRoomMessages.reduce((messages, message) => ({
       ...messages,
       [message.chatRoomId]: [
@@ -11,6 +10,7 @@ const makeEntities = chatRoomMessages => {
         message
       ],
   }), {});
+  
   return chatRoomEntity;
 };
 
