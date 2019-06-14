@@ -23,7 +23,7 @@ const makeEntieties = arr => {
 };
 
 const fetchGames = workdayStart => (
-  fetch(`http://3.95.208.60/matches`)
+  fetch(`http://localhost/matches`)
     .then(res => res.json())
     .then((res) => res.filter(game =>
       moment(game.startDate).isAfter(moment(workdayStart))))
@@ -31,13 +31,13 @@ const fetchGames = workdayStart => (
 );
 
 const fetchPlayers = () => (
-  fetch(`http://3.95.208.60/players`)
+  fetch(`http://localhost/players`)
     .then(res => res.json())
     .then(makeEntieties)
 );
 
 const reserveGame = data => {
-  return axios.post('http://3.95.208.60/matches', data, {
+  return axios.post('http://localhost/matches', data, {
     headers: {
       'Auth-Id': data.playerID,
     },
@@ -45,7 +45,7 @@ const reserveGame = data => {
 };
 
 const deleteGame = data => (
-  axios.delete(`http://3.95.208.60/matches/${data.gameId}`, {
+  axios.delete(`http://localhost/matches/${data.gameId}`, {
     headers: {
       'Auth-Id': data.userId,
     },
