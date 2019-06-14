@@ -1,28 +1,23 @@
 /* eslint no-use-before-define: 0 */
 import { call, put, takeEvery, select } from 'redux-saga/effects';
 import { actionTypes } from './../actions/actionTypes';
-import moment from 'moment';
-import axios from 'axios';
 
-const makeEntieties = arr => {
-  const ent = arr.reduce((obj, item) => ({
-    ...obj,
-    byID: {
-      ...obj.byID,
-      [item.id]: item,
-    },
-    allIds: [
-      ...obj.allIds,
-      ...[item.id],
-    ],
-  }), { byID: {}, allIds: [] });
-  return ent;
+const makeEntities = chatRoomMessages => {
+
+  const chatRoomEntity = chatRoomMessages.reduce((messages, message) => ({
+      ...messages,
+      [message.chatRoomId]: [
+        ...(messages[message.chatRoomId] || []), 
+        message
+      ],
+  }), {});
+  return chatRoomEntity;
 };
 
 const fetchDirectChatMessages = (directChatRoomId) => (
   fetch(`http://localhost/chat/direct/messages/chat-room/${directChatRoomId}`)
-    .then(res => res.json())
-    .then(makeEntieties)
+    .then(response => response.json())
+    .then(makeEntities)
 );
 
 function* workFetchDirectChatMessages({ directChatRoomId }) {
