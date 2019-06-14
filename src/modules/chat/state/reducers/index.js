@@ -28,11 +28,6 @@ export const chatReducer = (state = initialState, action) => {
         ...state,
         directChatMessages: action.messages,
       };
-    case actionTypes.FETCH_DIRECT_CHAT_MESSAGES_FAIL:
-      return {
-        ...state,
-        directChatMessages: null,
-      };
     default:
       return state; 
   }
