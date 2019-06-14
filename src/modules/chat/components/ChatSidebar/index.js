@@ -48,7 +48,7 @@ class ChatSidebar extends Component {
                         receiverId={this.props.chat.chatMode}
                         directChatWebsocket={this.state.directChatWebsocket}
                         setDirectChatWebsocketConnection={this.setDirectChatWebsocketConnection}
-                        directChatMessages={this.chat}
+                        directChatMessages={this.props.chat.directChatMessages}
                     />
                     ) : (
                     <GlobalChatWrapper 
