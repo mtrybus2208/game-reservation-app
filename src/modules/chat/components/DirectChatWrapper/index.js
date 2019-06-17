@@ -42,10 +42,6 @@ class DirectChatWrapper extends Component {
 
   debouncedOnClick = debounced(200, this.sendMessage.bind(this)); 
 
-  fetchDirectChatMessages = (directChatRoomId) => {
-    this.props.fetchDirectChatMessages(directChatRoomId);
-  }
-
   componentDidMount() {
     this.setupReceiverData(this.props.receiverId);
 
@@ -85,7 +81,11 @@ class DirectChatWrapper extends Component {
   }
   
   isFirstChatRoomConnection = () => {
-    return this.props.directChatMessages === null || this.props.directChatMessages.length === 0;
+    return this.props.directChatMessages === null || this.props.directChatMessages[this.getDirectChatRoomId()] === undefined;
+  }
+
+  fetchDirectChatMessages = (directChatRoomId) => {
+    this.props.fetchDirectChatMessages(directChatRoomId);
   }
 
   setupReceiverData = (receiverId) => {
@@ -136,6 +136,7 @@ class DirectChatWrapper extends Component {
 
       if(this.isDirectChatMessage(websocketMessage)) {
         const directChatMessage = websocketMessage.responseBody;
+        
         //this.setState(state => ({
           //messages: [...state.messages, directChatMessage]
         //}))
@@ -207,7 +208,7 @@ class DirectChatWrapper extends Component {
   }
 
   isMessagesListFetched = () => {
-    return this.props.directChatMessages && this.props.directChatMessages[this.getDirectChatRoomId()].length > 0;
+    return this.props.directChatMessages && this.props.directChatMessages[this.getDirectChatRoomId()] !== undefined;
   }
 
   render() {
