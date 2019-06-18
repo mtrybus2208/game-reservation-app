@@ -14,7 +14,7 @@ const propTypes = {
   directChatWebsocket: PropTypes.object,
   authUser: PropTypes.object.isRequired,
   receiverId: PropTypes.string.isRequired,
-  directChatMessages: PropTypes.object,
+  directChatMessages: PropTypes.array,
 };
 
 const defaultProps = { };
@@ -138,7 +138,7 @@ class DirectChatWrapper extends Component {
         const directChatMessage = websocketMessage.responseBody;
         
         //this.setState(state => ({
-          //messages: [...state.messages, directChatMessage]
+        //  messages: [...state.messages, directChatMessage]
         //}))
       }
     };
