@@ -12,6 +12,7 @@ const initialState = {
   currentReservationTime: null,
   players: null,
   isAddGameFetching: false,
+  reservedGames: null,
 };
 
 export const timeLineReducer = (state = initialState, action) => {
@@ -25,6 +26,18 @@ export const timeLineReducer = (state = initialState, action) => {
       return {
         ...state,
         isAddGameFetching: false,
+        reservedGames: {
+          ...state.reservedGames,
+          byID: {
+            ...state.reservedGames.byID,
+            ...action.payload.byID,
+          },
+          allIds: [
+            ...state.reservedGames.allIds,
+            ...action.payload.allIds,
+          ],
+        },
+        
       };
     case actionTypes.ADD_NEW_GAME_FAIL:
       return {

@@ -82,13 +82,15 @@ function* workAddNewGame({ payload }) {
 
     const startDate = createFullDateFromHours(getHoursFromPixels(state));
     const endDate = createFullDateFromHours(moment(startDate).add(gameReservationState.time.duration, 'm').format('HH:mm'));
-    yield call(reserveGame, {
+    const { data } = yield call(reserveGame, {
       startDate,
       endDate,
       playerID: sessionState.authUser.uid,
       gameName: gameReservationState.gameType.name,
     });
-    yield put({ type: actionTypes.ADD_NEW_GAME_SUCCESS, payload });
+
+    const reservedGames = yield call(makeEntieties, [data]);
+    yield put({ type: actionTypes.ADD_NEW_GAME_SUCCESS, payload: reservedGames });
     yield put({ type: actionTypes.HIDE_USER_RESERVATION_CARD });
   } catch (e) {
     yield put({ type: actionTypes.ADD_NEW_GAME_FAIL, message: e.message });
