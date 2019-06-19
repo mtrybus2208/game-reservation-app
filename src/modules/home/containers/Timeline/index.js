@@ -40,7 +40,7 @@ class TimeLine extends Component {
 
   componentDidMount() {
     this.props.fetchReservedGames();
-    this.handlerMoveTimeLine(Math.round(this.props.actualDateInPixels));
+    this.handlerMoveTimeLine(this.props.actualDateInPixels);
   }
 
   componentDidUpdate() {
@@ -148,6 +148,7 @@ class TimeLine extends Component {
             wrapperScrollPosition={this.getWrapperScrollPosition()}
             deleteGame={this.handleDeleteGame}
             isAddGameFetching={this.props.timeLine.isAddGameFetching}
+            actualDateInPixels={this.props.actualDateInPixels}
           />
         </S.TimeLine>
       </S.TimeLineWrapper>

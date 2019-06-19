@@ -15,6 +15,7 @@ const propTypes = {
   setCurrentReservationTime: PropTypes.func,
   reservedIntervals: PropTypes.array,
   showSpinner: PropTypes.bool,
+  actualDateInPixels: PropTypes.number,
 };
 
 const defaultProps = {
@@ -114,12 +115,17 @@ class MockGameCard extends React.PureComponent {
   isLeftEdge = () => (this.myRef.current.offsetParent.scrollLeft > this.state.translateX);
 
   isReservedCardHovered = pos => {
+    // Need to add some time buffor rbecause on
+    // page load we already behind the actual time
+    if (pos < this.props.actualDateInPixels) {
+      return true;
+    }
     const fullPos = pos + this.props.display.size;
     return this.props
       .reservedIntervals
       .some(posArr => {
         const [start, end] = posArr;
-        return fullPos >= start && pos <= end;
+        return (fullPos >= start && pos <= end);
       });
   }
 

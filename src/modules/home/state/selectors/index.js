@@ -28,7 +28,7 @@ export const getWorkdayInPixels = state => {
 export const getActualDateInPixels = state => {
   const { timeConverter } = getTimeLine(state);
   const actualDateInMin = getActualDateMinutes(state);
-  return actualDateInMin * timeConverter;
+  return Math.round(actualDateInMin * timeConverter);
 };
 
 export const getArrayOfWorkdayHours = state => {
