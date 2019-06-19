@@ -15,7 +15,7 @@ const makeEntities = chatRoomMessages => {
 };
 
 const fetchDirectChatMessages = (directChatRoomId) => (
-  fetch(`http://localhost/chat/direct/messages/chat-room/${directChatRoomId}`)
+  fetch(`http://3.95.208.60/chat/direct/messages/chat-room/${directChatRoomId}`)
     .then(response => response.json())
     .then(makeEntities)
 );

@@ -14,7 +14,7 @@ const propTypes = {
   directChatWebsocket: PropTypes.object,
   authUser: PropTypes.object.isRequired,
   receiverId: PropTypes.string.isRequired,
-  directChatMessages: PropTypes.array,
+  directChatMessages: PropTypes.any,
 };
 
 const defaultProps = { };
@@ -34,16 +34,17 @@ class DirectChatWrapper extends Component {
 
   links = {
     globalChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553015547/message.svg',
-    getPlayerApiUrl: 'http://localhost/players',
-    socketConnectionApiUrl: 'ws://localhost/socket/chat/direct',
-    sendMessageApiUrl: 'http://localhost/chat/direct/messages',
-    getMessagesForChatRoom: 'http://localhost/chat/direct/messages/chat-room/',
+    getPlayerApiUrl: 'http://3.95.208.60/players',
+    socketConnectionApiUrl: 'ws://3.95.208.60/socket/chat/direct',
+    sendMessageApiUrl: 'http://3.95.208.60/chat/direct/messages',
+    getMessagesForChatRoom: 'http://3.95.208.60/chat/direct/messages/chat-room/',
   }
 
   debouncedOnClick = debounced(200, this.sendMessage.bind(this)); 
 
   componentDidMount() {
     this.setupReceiverData(this.props.receiverId);
+    this.fetchDirectChatMessages(this.getDirectChatRoomId());
 
     if(this.isWebsocketNotConnected(this.props.directChatWebsocket)) {
       const directChatWebsocketConnectionUrl = `${this.links.socketConnectionApiUrl}?receiverId=${this.props.authUser.uid}`;
@@ -65,10 +66,6 @@ class DirectChatWrapper extends Component {
     if(this.isWebsocketFirstConnection(this.props.directChatWebsocket)) {
       this.setWebsocketMessageReceiveHandler(this.props.directChatWebsocket);
       this.setWebsocketConnectionSustain(this.props.directChatWebsocket);
-    }
-
-    if(this.isFirstChatRoomConnection()) {
-      this.fetchDirectChatMessages(this.getDirectChatRoomId());
     }
   }
 
@@ -136,10 +133,6 @@ class DirectChatWrapper extends Component {
 
       if(this.isDirectChatMessage(websocketMessage)) {
         const directChatMessage = websocketMessage.responseBody;
-        
-        //this.setState(state => ({
-        //  messages: [...state.messages, directChatMessage]
-        //}))
       }
     };
   }

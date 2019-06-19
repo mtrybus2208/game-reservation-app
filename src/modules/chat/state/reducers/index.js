@@ -23,22 +23,21 @@ export const chatReducer = (state = initialState, action) => {
         ...state,
         globalChatMessages: [...state.globalChatMessages, action.message],
       };
-    case actionTypes.FETCH_DIRECT_CHAT_MESSAGES_SUCCESS:
+    case actionTypes.FETCH_DIRECT_CHAT_MESSAGES_SUCCESS: {
       const directChatRoomId = Object.keys(action.messages)[0];
-
       return {
         ...state,
-        directChatMessages: [
+        directChatMessages: {
           ...state.directChatMessages,
-         {
           [directChatRoomId]: [
-            ...state.directChatMessages[directChatRoomId],
-            action.messages[directChatRoomId],
+            ...(state.directChatMessages && state.directChatMessages[directChatRoomId] || []),
+            ...action.messages[directChatRoomId],
           ],
-         }
-        ],
+        },
       };
+    }
+
     default:
-      return state; 
+      return state;
   }
 };

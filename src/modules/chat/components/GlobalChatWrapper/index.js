@@ -27,9 +27,9 @@ class GlobalChatWrapper extends Component {
     directChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg',
     emojiIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595074/smiling-emoticon.svg',
     sendMessageIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg',
-    socketConnectionApiUrl: 'ws://localhost/socket/chat/global',
-    getPlayerApiUrl: 'http://localhost/players',
-    sendMessageApiUrl: 'http://localhost/chat/global',
+    socketConnectionApiUrl: 'ws://3.95.208.60/socket/chat/global',
+    getPlayerApiUrl: 'http://3.95.208.60/players',
+    sendMessageApiUrl: 'http://3.95.208.60/chat/global',
   }
 
   debouncedOnClick = debounced(200, this.sendMessage.bind(this)); 
