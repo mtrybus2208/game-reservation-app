@@ -8,9 +8,9 @@ export const Logo = styled.div`
 
 export const Image = styled.img`
     height: auto;
+    box-sizing: content-box;
     width: 26px;
     padding: 0 21px;
-
     @media ${({ theme }) => theme.media.laptop} {
         width: 30px;
         padding: 0 16px 0 30px;
@@ -20,7 +20,6 @@ export const Image = styled.img`
 
 export const Title = styled.div`
     margin-top: 3px;
-
     @media ${({ theme }) => theme.media.laptop} {
         margin-top: 0;
         margin-left: 18px;
@@ -36,7 +35,6 @@ export const Header = styled.div`
     text-align: left;
     text-transform: uppercase;
     color: #6d6e6f;
-
     @media ${({ theme }) => theme.media.laptop} {
         font-size: 17px;
         line-height: 16px;
@@ -56,7 +54,6 @@ export const Description = styled.div`
     letter-spacing: .2px;
     text-align: left;
     color: #8f6618;
-
     @media ${({ theme }) => theme.media.laptop} {
         margin-top: 5px;
         font-size: 11px;

@@ -30,6 +30,20 @@ export const NavigationWrapper = styled.div`
   height: 100%;
 `;
 
+export const AppHeaderCol = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const ClockWrapper = styled.div`
+  margin-left: 20px;
+  border-left: 2px solid #2c3033;
+  padding: 0 15px; 
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+`;
+
 export const IconButton = styled.button`
   margin: 0;
   padding: 0 25px;

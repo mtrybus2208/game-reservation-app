@@ -40,6 +40,7 @@ class TimeLine extends Component {
 
   componentDidMount() {
     this.props.fetchReservedGames();
+    this.handlerMoveTimeLine(Math.round(this.props.actualDateInPixels));
   }
 
   componentDidUpdate() {
