@@ -4,13 +4,21 @@ export const Logo = styled.div`
     display: flex;
     flex-direction: row;
     height: 35px;
+    margin-left: 20px;
+    @media ${({ theme }) => theme.media.mobileL} {
+        margin-left: 0;
+    }
 `;
 
 export const Image = styled.img`
+    display: none;
     height: auto;
     box-sizing: content-box;
     width: 26px;
     padding: 0 21px;
+    @media ${({ theme }) => theme.media.mobileL} {
+        display: block;
+    }
     @media ${({ theme }) => theme.media.laptop} {
         width: 30px;
         padding: 0 16px 0 30px;
