@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import AppGrid from './modules/shared/components/AppGrid';
 import AppHeader from './modules/shared/containers/AppHeader';
+import Modal from './modules/shared/components/Modal';
 import GlobalChatWrapper from './chat/components/GlobalChatWrapper';
 import DirectChatWrapper from './chat/components/DirectChatWrapper';
 import theme from './theme';
@@ -50,25 +51,28 @@ class App extends Component {
         <GlobalStyle />
         <ThemeProvider theme={theme}>
           <Router history={this.props.history}>
-            <AppGrid>
-              <AppGrid.SidebarArea leftGridOpen={this.props.ui.leftSidebarOpened}>
-                {this.props.ui.chatMode !== 'GLOBAL' ? (
-                  <DirectChatWrapper />
-                ) : (
-                  <GlobalChatWrapper authUser={this.props.sessionState.authUser} />
-                )}
-              </AppGrid.SidebarArea>
+            <React.Fragment>
+              <Modal />
+              <AppGrid>
+                <AppGrid.SidebarArea leftGridOpen={this.props.ui.leftSidebarOpened}>
+                  {this.props.ui.chatMode !== 'GLOBAL' ? (
+                    <DirectChatWrapper />
+                  ) : (
+                    <GlobalChatWrapper authUser={this.props.sessionState.authUser} />
+                  )}
+                </AppGrid.SidebarArea>
 
-              <AppGrid.HeaderArea>
-                <AppHeader />
-              </AppGrid.HeaderArea>
-              <Suspense fallback={<div></div>}>
-                <Switch>
-                  <Route path="/auth" component={Auth} />
-                  <Route exact path="/" component={Home} />
-                </Switch>
-              </Suspense>
-            </AppGrid>
+                <AppGrid.HeaderArea>
+                  <AppHeader />
+                </AppGrid.HeaderArea>
+                <Suspense fallback={<div></div>}>
+                  <Switch>
+                    <Route path="/auth" component={Auth} />
+                    <Route exact path="/" component={Home} />
+                  </Switch>
+                </Suspense>
+              </AppGrid>
+            </React.Fragment>
           </Router>
         </ThemeProvider>
       </React.Fragment>
