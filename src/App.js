@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import AppGrid from './modules/shared/components/AppGrid';
 import AppHeader from './modules/shared/containers/AppHeader';
-import Modal from './modules/shared/components/Modal';
+import ModalRoot from './modules/shared/containers/ModalRoot';
 import GlobalChatWrapper from './chat/components/GlobalChatWrapper';
 import DirectChatWrapper from './chat/components/DirectChatWrapper';
 import theme from './theme';
@@ -52,7 +52,7 @@ class App extends Component {
         <ThemeProvider theme={theme}>
           <Router history={this.props.history}>
             <React.Fragment>
-              <Modal />
+              <ModalRoot />
               <AppGrid>
                 <AppGrid.SidebarArea leftGridOpen={this.props.ui.leftSidebarOpened}>
                   {this.props.ui.chatMode !== 'GLOBAL' ? (
