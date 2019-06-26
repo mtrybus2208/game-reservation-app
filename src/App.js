@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import AppGrid from './modules/shared/components/AppGrid';
 import AppHeader from './modules/shared/containers/AppHeader';
-import ModalRoot from './modules/shared/containers/ModalRoot';
+import ModalRoot from './modules/shared/containers/Modals/ModalRoot';
 import GlobalChatWrapper from './chat/components/GlobalChatWrapper';
 import DirectChatWrapper from './chat/components/DirectChatWrapper';
 import theme from './theme';

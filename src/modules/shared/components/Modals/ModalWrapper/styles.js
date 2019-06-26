@@ -1,5 +1,4 @@
-import styled, { css } from 'styled-components';
-import { rgba } from 'polished';
+import styled from 'styled-components';
 
 export const ModalWrapper = styled.div`
   position: fixed;
@@ -10,6 +9,6 @@ export const ModalWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
+  z-index: 11;
   background: rgba(0, 0, 0, .6);
 `;

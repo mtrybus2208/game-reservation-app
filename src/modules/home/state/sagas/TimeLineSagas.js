@@ -3,6 +3,7 @@ import { call, put, takeEvery, select } from 'redux-saga/effects';
 import moment from 'moment';
 import axios from 'axios';
 import { getHoursFromPixels } from '@/modules/home/state/selectors';
+import { actionTypes as actionSharedTypes } from '@/modules/shared/state/actions/actionTypes';
 import { actionTypes } from './../actions/actionTypes';
 
 const createFullDateFromHours = h => `${moment().format('YYYY-MM-DD')}T${h}`;
@@ -107,8 +108,10 @@ function* workDeleteGame({ payload }) {
  
     yield call(deleteGame, data);
     yield put({ type: actionTypes.DELETE_GAME_SUCCESS });
+    yield put({ type: actionSharedTypes.HIDE_MODAL });
   } catch (e) {
     yield put({ type: actionTypes.DELETE_GAME_FAIL, message: e.message });
+    yield put({ type: actionSharedTypes.HIDE_MODAL });
   }
 }
 
