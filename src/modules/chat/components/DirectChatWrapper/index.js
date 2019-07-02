@@ -120,11 +120,9 @@ class DirectChatWrapper extends Component {
     const authUserId = this.props.authUser.uid;
     const receiverId = this.props.receiverId;
 
-    if(authUserId > receiverId) {
-      return `${authUserId}_${receiverId}`;
-    } else {
-      return `${receiverId}_${authUserId}`;
-    }
+    return authUserId > receiverId
+      ? `${authUserId}_${receiverId}`
+      : `${receiverId}_${authUserId}`;
   }
 
   setWebsocketMessageReceiveHandler = (websocket) => {
