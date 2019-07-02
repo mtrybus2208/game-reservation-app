@@ -10,6 +10,8 @@ import moment from 'moment';
 const propTypes = { 
   setGlobalChatMode: PropTypes.func,
   setDirectChatWebsocketConnection: PropTypes.func,
+  saveOpenedDirectChatRoomId: PropTypes.func,
+  isDirectChatRoomNotSaved: PropTypes.func,
   fetchDirectChatMessages: PropTypes.func.isRequired,
   directChatWebsocket: PropTypes.object,
   authUser: PropTypes.object.isRequired,
@@ -44,13 +46,14 @@ class DirectChatWrapper extends Component {
 
   componentDidMount() {
     this.setupReceiverData(this.props.receiverId);
-    this.fetchDirectChatMessages(this.getDirectChatRoomId());
+
+    if(this.props.isDirectChatRoomNotSaved(this.getDirectChatRoomId())) { 
+      this.props.saveOpenedDirectChatRoomId(this.getDirectChatRoomId()); 
+      this.fetchDirectChatMessages(this.getDirectChatRoomId());
+    }
 
     if(this.isWebsocketNotConnected(this.props.directChatWebsocket)) {
-      const directChatWebsocketConnectionUrl = `${this.links.socketConnectionApiUrl}?receiverId=${this.props.authUser.uid}`;
-      const websocketConnection = new WebSocket(directChatWebsocketConnectionUrl);
-
-      this.props.setDirectChatWebsocketConnection(websocketConnection);
+      this.handleFirstWebsocketConnection();
     }
   }
 
@@ -67,6 +70,13 @@ class DirectChatWrapper extends Component {
       this.setWebsocketMessageReceiveHandler(this.props.directChatWebsocket);
       this.setWebsocketConnectionSustain(this.props.directChatWebsocket);
     }
+  }
+
+  handleFirstWebsocketConnection() {
+    const directChatWebsocketConnectionUrl = `${this.links.socketConnectionApiUrl}?receiverId=${this.props.authUser.uid}`;
+    const websocketConnection = new WebSocket(directChatWebsocketConnectionUrl);
+
+    this.props.setDirectChatWebsocketConnection(websocketConnection);
   }
 
   isEndOfMessagesDivReady = () => {
@@ -88,7 +98,6 @@ class DirectChatWrapper extends Component {
   setupReceiverData = (receiverId) => {
     this.getReceiver(receiverId)
       .then((playerResponse) => {
-
         this.setState({
           receiver: playerResponse.data,
         });

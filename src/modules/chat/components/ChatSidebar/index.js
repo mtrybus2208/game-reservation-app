@@ -20,11 +20,14 @@ class ChatSidebar extends Component {
 
         this.setGlobalChatWebsocketConnection = this.setGlobalChatWebsocketConnection.bind(this);
         this.setDirectChatWebsocketConnection = this.setDirectChatWebsocketConnection.bind(this);
+        this.saveOpenedDirectChatRoomId = this.saveOpenedDirectChatRoomId.bind(this);
+        this.isDirectChatRoomNotSaved = this.isDirectChatRoomNotSaved.bind(this);
     }
 
     state = {
         globalChatWebsocket: null,
         directChatWebsocket: null,
+        openedDirectChatRooms: [],
     };
 
     setGlobalChatWebsocketConnection(websocket) {
@@ -39,6 +42,16 @@ class ChatSidebar extends Component {
         });
     }
 
+    saveOpenedDirectChatRoomId(chatRoomId) {
+        this.setState(prevState => ({
+            openedDirectChatRooms: [...prevState.openedDirectChatRooms, chatRoomId]
+        }));
+    }
+
+    isDirectChatRoomNotSaved(chatRoomId) {
+        return !this.state.openedDirectChatRooms.includes(chatRoomId);
+    }
+
     render() {
         return ( 
             <React.Fragment>
@@ -48,6 +61,8 @@ class ChatSidebar extends Component {
                         receiverId={this.props.chat.chatMode}
                         directChatWebsocket={this.state.directChatWebsocket}
                         setDirectChatWebsocketConnection={this.setDirectChatWebsocketConnection}
+                        saveOpenedDirectChatRoomId={this.saveOpenedDirectChatRoomId}
+                        isDirectChatRoomNotSaved={this.isDirectChatRoomNotSaved}
                         directChatMessages={this.props.chat.directChatMessages}
                     />
                     ) : (
