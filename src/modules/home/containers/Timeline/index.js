@@ -133,6 +133,10 @@ class TimeLine extends Component {
             {this.props.timeLine.actualTime.format('HH:mm')}
           </TimeLineBox.ActualTime> */}
           <TimeRuler
+            onBlockTimeLine={this.handlerBlockTimeLine}
+            onMoveTimeLine={this.handlerMoveTimeLine}
+          />
+          <TimeRuler
             workdayInPixels={this.props.workdayInPixels}
             arrayOfWorkdayHours={this.props.arrayOfWorkdayHours}
             timeConverter={this.props.timeConverter}

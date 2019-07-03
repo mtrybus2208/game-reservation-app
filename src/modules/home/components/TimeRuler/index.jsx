@@ -6,6 +6,7 @@ import * as S from './styles';
 import moment from 'moment';
 
 const propTypes = {
+  //
   authUser: PropTypes.object,
   workdayInPixels: PropTypes.number,
   wrapperScrollPosition: PropTypes.number,

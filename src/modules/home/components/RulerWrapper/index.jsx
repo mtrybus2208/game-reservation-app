@@ -11,17 +11,17 @@ const defaultProps = {
  
 }; 
 
-const ModalWrapper = ({
+const RulerWrapper = ({
   children
 }) => { 
 
   return ( 
-    <S.ModalWrapper>
+    <S.RulerWrapper>
       {children}
-    </S.ModalWrapper>
+    </S.RulerWrapper>
   );
 };
 
-ModalWrapper.propTypes = propTypes;
-ModalWrapper.defaultProps = defaultProps;
-export default ModalWrapper;
+RulerWrapper.propTypes = propTypes;
+RulerWrapper.defaultProps = defaultProps;
+export default RulerWrapper;

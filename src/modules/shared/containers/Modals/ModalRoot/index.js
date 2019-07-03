@@ -28,7 +28,7 @@ class ModalRoot extends PureComponent {
 
     const SpecificModal = MODAL_COMPONENTS[modalType];
 
-    return (  
+    return (
       <ModalWrapper>
         <SpecificModal />;
       </ModalWrapper>
