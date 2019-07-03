@@ -17,6 +17,12 @@ export const addGlobalChatMessage = (message) =>
     message,
   });
 
+export const addDirectChatMessage = (message) =>
+  ({
+    type: actionTypes.ADD_DIRECT_CHAT_MESSAGE,
+    message,
+  });
+
 export const fetchDirectChatMessages = (directChatRoomId) => 
   ({ 
     type: actionTypes.FETCH_DIRECT_CHAT_MESSAGES,
