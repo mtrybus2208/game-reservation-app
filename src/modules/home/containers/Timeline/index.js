@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { throttled } from '@/helpers';
 import { getAllReservedGames } from '@/modules/home/state/selectors/entieties';
-import TimeRuler from '@/modules/home/components/TimeRuler';
+// import TimeRuler from '@/modules/home/components/TimeRuler';
+import TimeRuler from '@/modules/home/containers/TimeRuler';
 import * as fromActions from '../../state/actions';
 import { getTimeLine, getWorkdayInPixels, getArrayOfWorkdayHours, getActualDateInPixels } from '../../state/selectors';
 import * as S from './styles';
@@ -108,6 +109,7 @@ class TimeLine extends Component {
 
   getWrapperScrollPosition() {
     const { current } = this.timeLineRef;
+    console.log(current)
     return current ? current.scrollLeft : 0;
   }
 
@@ -135,8 +137,10 @@ class TimeLine extends Component {
           <TimeRuler
             onBlockTimeLine={this.handlerBlockTimeLine}
             onMoveTimeLine={this.handlerMoveTimeLine}
+            setStart={this.setStart}
+            wrapperScrollPosition={this.getWrapperScrollPosition()}
           />
-          <TimeRuler
+          {/* <TimeRuler
             workdayInPixels={this.props.workdayInPixels}
             arrayOfWorkdayHours={this.props.arrayOfWorkdayHours}
             timeConverter={this.props.timeConverter}
@@ -153,7 +157,7 @@ class TimeLine extends Component {
             deleteGame={this.handleDeleteGame}
             isAddGameFetching={this.props.timeLine.isAddGameFetching}
             actualDateInPixels={this.props.actualDateInPixels}
-          />
+          /> */}
         </S.TimeLine>
       </S.TimeLineWrapper>
     );
@@ -163,7 +167,6 @@ class TimeLine extends Component {
 const mapStateToProps = state => ({
   timeLine: getTimeLine(state),
   workdayInPixels: getWorkdayInPixels(state),
-  workdayStart: state.timeLine.workdayStart,
   actualDateInPixels: getActualDateInPixels(state),
   timeConverter: state.timeLine.timeConverter,
   arrayOfWorkdayHours: getArrayOfWorkdayHours(state),
@@ -181,9 +184,6 @@ const mapDispatchToProps = dispatch => ({
   },
   zoomTimeLine: payload => {
     dispatch(fromActions.zoomTimeLine(payload));
-  },
-  setCurrentReservationTime: payload => {
-    dispatch(fromActions.setCurrentReservationTime(payload));
   },
   deleteGame: payload => {
     dispatch(fromActions.deleteGame(payload));

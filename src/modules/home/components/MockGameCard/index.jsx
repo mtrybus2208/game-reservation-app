@@ -41,6 +41,7 @@ class MockGameCard extends React.PureComponent {
 
   componentDidMount() {
     const { current } = this.myRef; 
+    console.log(this.props)
     this.setAbilityToReserve(parseInt(current.style.left, 10));
     this.animLoop(() => {
       if (this.state.able) {

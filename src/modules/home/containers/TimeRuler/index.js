@@ -2,12 +2,13 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import RulerWrapper from '../../components/RulerWrapper';
-import TimeRuler2 from '../../components/TimeRuler2';
-import { getArrayOfWorkdayHours } from '../../state/selectors';
+import TimeRuler2 from '../../components/TimeRuler2'; 
 import HoursDivider from '../../components/HoursDivider';
-import MockGameCardContainer from './MockGameCardContainer';
+import MockGameCardContainer from '../MockGameCardContainer';
+import { getTimeLine, getWorkdayInPixels, getArrayOfWorkdayHours, getActualDateInPixels } from '../../state/selectors';
 import GameCard from '../../components/GameCard';
 import moment from 'moment';
+import * as fromActions from '../../state/actions';
 
 const propTypes = {
   arrayOfWorkdayHours: PropTypes.array,
@@ -17,36 +18,35 @@ const propTypes = {
   workdayStart: PropTypes.object,
   gameReservation: PropTypes.object,
   authUser: PropTypes.object,
+  wrapperScrollPosition: PropTypes.number,
 };
 
 const defaultProps = {
  
 };
-
-const hoursToPixels = h => h * 60 * this.props.timeConverter;
-
+ 
 class TimeRuler extends PureComponent {
   state = {
-    isDown: false,
-    isBlocked: false,
-    startX: undefined,
-    scrollLeft: undefined,
-    startPosition: false,
+    cardPosition: 0,
   };
 
-  setStart(data) {
-    this.setState(prev => {
-      if (prev.startPosition !== data) {
-        return { startPosition: data };
-      }
-    })
+  hoursToPixels = this.hoursToPixels.bind(this);
+  setCardPosition = this.setCardPosition.bind(this); 
+  minutesToPixels = this.minutesToPixels.bind(this); 
+ 
+  setCardPosition(pos) {
+    this.setState(prev => ({
+      cardPosition: pos,
+    }));
   }
 
-  handlerBlockTimeLine = isBlocked => {
-    this.setState({
-      isBlocked,
-    });
+  hoursToPixels(h) {
+    return h * 60 * this.props.timeConverter;
   }
+
+  minutesToPixels(m) {
+    return m * this.props.timeConverter;
+  }   
 
   renderGameCard = game => {
     const { timeConverter, workdayStart } = this.props;
@@ -66,10 +66,10 @@ class TimeRuler extends PureComponent {
 
     return (
       <GameCard
-        isReservedByUser={game.playerId === (authUser || {}).uid}
+        isReservedByUser={game.playerId === (this.props.authUser || {}).uid}
         key={game.id}
         gameId={game.id}
-        deleteGame={deleteGame}
+        deleteGame={this.props.deleteGame}
         user={player}
         display={
           {
@@ -83,12 +83,23 @@ class TimeRuler extends PureComponent {
     );
   };
 
+  createReservedIntervals(games) {
+    return games && games.map(game => {
+      const starGame = moment(game.startDate);
+      const distanceInMinutes = moment.duration(starGame.diff(this.props.workdayStart)).asMinutes();
+      const startTime = distanceInMinutes * this.props.timeConverter;
+  
+      const endGame = moment(game.endDate);
+      const distanceInMinutesEnd = moment.duration(endGame.diff(this.props.workdayStart)).asMinutes();
+      const endTime = distanceInMinutesEnd * this.props.timeConverter;
+      return [Math.abs(startTime), Math.abs(startTime) + (Math.abs(endTime) - Math.abs(startTime))];
+    });
+  };
+
   render() {
     const { gameReservation, arrayOfWorkdayHours, timeConverter, reservedGames, workdayInPixels } = this.props;
     return (
-      <RulerWrapper
-        ref={wrapperEl}
-      >
+      <RulerWrapper >
         {
           reservedGames && reservedGames.map(game => this.renderGameCard(game))
         }
@@ -97,10 +108,22 @@ class TimeRuler extends PureComponent {
           gameReservation.time &&
           gameReservation.gameType &&
           <MockGameCardContainer
-            onMoveTimeLine={this.onMoveTimeLine}
-            onBlockTimeLine={this.handlerBlockTimeLine}
+            onMoveTimeLine={this.props.onMoveTimeLine}
+            onBlockTimeLine={this.props.onBlockTimeLine}
             startPosition={this.state.startPosition}
-            setStart={this.setStart}
+            setCurrentReservationTime={this.props.setCurrentReservationTime}
+            setStart={this.props.setStart}
+            initialCardPosition={this.props.wrapperScrollPosition}
+            reservedIntervals={this.createReservedIntervals(reservedGames)}
+            authUser={this.props.authUser}
+            display={
+              {
+                gameTime: `${gameReservation.time.duration}min`,
+                gameType: gameReservation.gameType.name,
+                size: this.minutesToPixels(gameReservation.time.duration),
+                left: 200,
+              }
+            }
           />
         }
         <TimeRuler2
@@ -113,7 +136,7 @@ class TimeRuler extends PureComponent {
               <HoursDivider
                 key={`t-${i}`}
                 width={60 * timeConverter}
-                position={hoursToPixels(i)}
+                position={this.hoursToPixels(i)}
                 time={h}
               />
             ))
@@ -126,10 +149,23 @@ class TimeRuler extends PureComponent {
 
 const mapStateToProps = state => ({
   arrayOfWorkdayHours: getArrayOfWorkdayHours(state),
+  gameReservation: state.gameReservationState,
+  timeConverter: state.timeLine.timeConverter,
+  authUser: state.sessionState.authUser,
+  workdayStart: state.timeLine.workdayStart,
+  actualDateInPixels: getActualDateInPixels(state),
+
 });
 
 const mapDispatchToProps = dispatch => {
-  return { };
+  return {
+    deleteGame: payload => {
+      dispatch(fromActions.deleteGame(payload));
+    },
+    setCurrentReservationTime: payload => {
+      dispatch(fromActions.setCurrentReservationTime(payload));
+    },
+  };
 };
 
 TimeRuler.propTypes = propTypes;
