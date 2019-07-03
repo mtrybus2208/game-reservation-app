@@ -13,6 +13,7 @@ const propTypes = {
   saveOpenedDirectChatRoomId: PropTypes.func,
   isDirectChatRoomNotSaved: PropTypes.func,
   fetchDirectChatMessages: PropTypes.func.isRequired,
+  addDirectChatMessage: PropTypes.func.isRequired,
   directChatWebsocket: PropTypes.object,
   authUser: PropTypes.object.isRequired,
   receiverId: PropTypes.string.isRequired,
@@ -78,14 +79,6 @@ class DirectChatWrapper extends Component {
 
     this.props.setDirectChatWebsocketConnection(websocketConnection);
   }
-
-  isEndOfMessagesDivReady = () => {
-    return this.messagesEnd !== undefined;
-  }
-
-  scrollToBottom = () => {
-    this.messagesEnd.scrollIntoView({ behavior: "auto" });
-  }
   
   isFirstChatRoomConnection = () => {
     return this.props.directChatMessages === null || this.props.directChatMessages[this.getDirectChatRoomId()] === undefined;
@@ -140,12 +133,30 @@ class DirectChatWrapper extends Component {
 
       if(this.isDirectChatMessage(websocketMessage)) {
         const directChatMessage = websocketMessage.responseBody;
+
+        this.props.addDirectChatMessage(directChatMessage);
+
+        if(this.hasUserDirectChatOpened()) {
+          this.scrollToBottom();
+        }
       }
     };
   }
 
   isDirectChatMessage(message) {
     return message.responseType === 'DIRECT_CHAT';
+  }
+
+  isEndOfMessagesDivReady = () => {
+    return this.messagesEnd !== undefined;
+  }
+
+  hasUserDirectChatOpened = () => {
+    return this.messagesEnd !== null;
+  }
+
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "auto" });
   }
 
   openGlobalChat = () => {
@@ -315,6 +326,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     setGlobalChatMode: () => {
       dispatch(fromActions.setGlobalChatMode());
+    },
+    addDirectChatMessage: (message) => {
+      dispatch(fromActions.addDirectChatMessage(message));
     },
   };
 };
