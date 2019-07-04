@@ -7,7 +7,7 @@ import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { throttled } from './helpers'; 
 import { loadState, saveState } from './helpers/localstorage';
 import { timeLineReducer, gameReservationReducer } from './modules/home/state/reducers';
-import { uiReducer } from './modules/shared/state/reducers';
+import { uiReducer, modalReducer } from './modules/shared/state/reducers';
 import { messageReducer, sessionReducer } from './modules/auth/state/reducers';
 import { chatReducer } from './modules/chat/state/reducers';
 import timeLineSaga from './modules/home/state/sagas/';
@@ -24,6 +24,7 @@ export default function configureStore(history) {
     timeLine: timeLineReducer,
     router: connectRouter(history),
     ui: uiReducer,
+    modal: modalReducer,
     messageState: messageReducer,
     sessionState: sessionReducer,
     gameReservationState: gameReservationReducer,

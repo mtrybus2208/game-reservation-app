@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Clock from 'react-live-clock';
 import { getUiState } from '@/modules/auth/state/selectors';
 import Logo from '@/modules/shared/components/Logo';
 import MainNav from '@/modules/shared/containers/MainNav';
@@ -23,7 +24,7 @@ class AppHeader extends Component {
     this.props.toggleLeftSidebar(!this.props.ui.leftSidebarOpened);
   }
 
-  handleRedirect = (path) => e => {
+  handleRedirect = path => e => {
     e.preventDefault();
     this.props.closeChatWithRedirect(path);
   }
@@ -31,9 +32,18 @@ class AppHeader extends Component {
   render() {
     return (
       <S.AppHeader>
-        <S.LogoWrapper to={ROUTES.HOME} onClick={this.handleRedirect(ROUTES.HOME)}>
-          <Logo />
-        </S.LogoWrapper>
+        <S.AppHeaderCol>
+          <S.LogoWrapper to={ROUTES.HOME} onClick={this.handleRedirect(ROUTES.HOME)}>
+            <Logo />
+          </S.LogoWrapper>
+          <S.ClockWrapper>
+            <Clock
+              format="HH:mm:ss"
+              ticking
+              timezone="CET"
+            />
+          </S.ClockWrapper>
+        </S.AppHeaderCol>
         <S.NavigationWrapper>
           <S.IconButton onClick={this.handleToggleSidebar()}>
             <BaseIcon />

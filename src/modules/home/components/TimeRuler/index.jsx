@@ -19,6 +19,7 @@ const propTypes = {
   setCurrentReservationTime: PropTypes.func,
   deleteGame: PropTypes.func,
   isAddGameFetching: PropTypes.bool,
+  actualDateInPixels: PropTypes.number,
 };
 
 const defaultProps = {};
@@ -39,6 +40,7 @@ const TimeRuler = React.memo(({
   setCurrentReservationTime,
   deleteGame,
   isAddGameFetching,
+  actualDateInPixels,
 }) => {
   const [cardPosition, setCardPosition] = useState(0);
   const wrapperEl = useRef(null);
@@ -49,7 +51,7 @@ const TimeRuler = React.memo(({
   }) 
 
   // TODO: Need to merge these funtions
-  const createReservedIntervals = (games) => {
+  const createReservedIntervals = games => {
     return games && games.map(game => {
       const starGame = moment(game.startDate);
       const distanceInMinutes = moment.duration(starGame.diff(workdayStart)).asMinutes();
@@ -127,6 +129,7 @@ const TimeRuler = React.memo(({
           setCurrentReservationTime={setCurrentReservationTime}
           reservedIntervals={createReservedIntervals(reservedGames)}
           showSpinner={isAddGameFetching}
+          actualDateInPixels={actualDateInPixels}
         />
       }
       <S.TimeRuler

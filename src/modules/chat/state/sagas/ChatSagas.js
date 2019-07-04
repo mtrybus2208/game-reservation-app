@@ -1,6 +1,7 @@
 /* eslint no-use-before-define: 0 */
 import { call, put, takeEvery, select } from 'redux-saga/effects';
 import { actionTypes } from './../actions/actionTypes';
+import { API_URL } from '@/constants/api';
 
 const makeEntities = chatRoomMessages => {
   const chatRoomEntity = chatRoomMessages.reduce((messages, message) => ({
@@ -15,7 +16,7 @@ const makeEntities = chatRoomMessages => {
 };
 
 const fetchDirectChatMessages = (directChatRoomId) => (
-  fetch(`http://3.95.208.60/chat/direct/messages/chat-room/${directChatRoomId}`)
+  fetch(`${API_URL}/chat/direct/messages/chat-room/${directChatRoomId}`)
     .then(response => response.json())
     .then(makeEntities)
 );

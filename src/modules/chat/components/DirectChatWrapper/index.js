@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import * as S from './styles';
 import * as fromActions from '../../state/actions';
 import { debounced } from '@/helpers/index';
+import { WS_API_URL, API_URL } from '@/constants/api';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -37,10 +38,10 @@ class DirectChatWrapper extends Component {
 
   links = {
     globalChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553015547/message.svg',
-    getPlayerApiUrl: 'http://3.95.208.60/players',
-    socketConnectionApiUrl: 'ws://3.95.208.60/socket/chat/direct',
-    sendMessageApiUrl: 'http://3.95.208.60/chat/direct/messages',
-    getMessagesForChatRoom: 'http://3.95.208.60/chat/direct/messages/chat-room/',
+    getPlayerApiUrl: `${API_URL}/players`,
+    socketConnectionApiUrl: `${WS_API_URL}/socket/chat/direct`,
+    sendMessageApiUrl: `${API_URL}/chat/direct/messages`,
+    getMessagesForChatRoom: `${API_URL}/chat/direct/messages/chat-room/`,
   }
 
   debouncedOnClick = debounced(200, this.sendMessage.bind(this)); 

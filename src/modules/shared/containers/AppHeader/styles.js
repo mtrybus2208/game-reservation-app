@@ -30,6 +30,26 @@ export const NavigationWrapper = styled.div`
   height: 100%;
 `;
 
+export const AppHeaderCol = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const ClockWrapper = styled.div`
+  margin-left: 10px;
+  border-left: 1px solid #2c3033;
+  padding: 0 10px; 
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  @media ${({ theme }) => theme.media.mobileL} {
+    font-size: 15px;
+    padding: 0 15px;
+    margin-left: 20px;
+    border-left: 2px solid #2c3033;
+  }
+`;
+
 export const IconButton = styled.button`
   margin: 0;
   padding: 0 25px;

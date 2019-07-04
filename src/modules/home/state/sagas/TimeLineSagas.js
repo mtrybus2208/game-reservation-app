@@ -3,6 +3,8 @@ import { call, put, takeEvery, select } from 'redux-saga/effects';
 import moment from 'moment';
 import axios from 'axios';
 import { getHoursFromPixels } from '@/modules/home/state/selectors';
+import { actionTypes as actionSharedTypes } from '@/modules/shared/state/actions/actionTypes';
+import { API_URL } from '@/constants/api';
 import { actionTypes } from './../actions/actionTypes';
 
 const createFullDateFromHours = h => `${moment().format('YYYY-MM-DD')}T${h}`;
@@ -23,7 +25,7 @@ const makeEntieties = arr => {
 };
 
 const fetchGames = workdayStart => (
-  fetch(`http://localhost/matches`)
+  fetch(`${API_URL}/matches`)
     .then(res => res.json())
     .then((res) => res.filter(game =>
       moment(game.startDate).isAfter(moment(workdayStart))))
@@ -31,13 +33,13 @@ const fetchGames = workdayStart => (
 );
 
 const fetchPlayers = () => (
-  fetch(`http://localhost/players`)
+  fetch(`${API_URL}/players`)
     .then(res => res.json())
     .then(makeEntieties)
 );
 
 const reserveGame = data => {
-  return axios.post('http://localhost/matches', data, {
+  return axios.post(`${API_URL}/matches`, data, {
     headers: {
       'Auth-Id': data.playerID,
     },
@@ -45,7 +47,7 @@ const reserveGame = data => {
 };
 
 const deleteGame = data => (
-  axios.delete(`http://localhost/matches/${data.gameId}`, {
+  axios.delete(`${API_URL}/matches/${data.gameId}`, {
     headers: {
       'Auth-Id': data.userId,
     },
@@ -82,13 +84,15 @@ function* workAddNewGame({ payload }) {
 
     const startDate = createFullDateFromHours(getHoursFromPixels(state));
     const endDate = createFullDateFromHours(moment(startDate).add(gameReservationState.time.duration, 'm').format('HH:mm'));
-    yield call(reserveGame, {
+    const { data } = yield call(reserveGame, {
       startDate,
       endDate,
       playerID: sessionState.authUser.uid,
       gameName: gameReservationState.gameType.name,
     });
-    yield put({ type: actionTypes.ADD_NEW_GAME_SUCCESS, payload });
+
+    const reservedGames = yield call(makeEntieties, [data]);
+    yield put({ type: actionTypes.ADD_NEW_GAME_SUCCESS, payload: reservedGames });
     yield put({ type: actionTypes.HIDE_USER_RESERVATION_CARD });
   } catch (e) {
     yield put({ type: actionTypes.ADD_NEW_GAME_FAIL, message: e.message });
@@ -105,8 +109,10 @@ function* workDeleteGame({ payload }) {
  
     yield call(deleteGame, data);
     yield put({ type: actionTypes.DELETE_GAME_SUCCESS });
+    yield put({ type: actionSharedTypes.HIDE_MODAL });
   } catch (e) {
     yield put({ type: actionTypes.DELETE_GAME_FAIL, message: e.message });
+    yield put({ type: actionSharedTypes.HIDE_MODAL });
   }
 }
 

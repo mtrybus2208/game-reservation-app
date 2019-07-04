@@ -5,13 +5,14 @@ const initialState = {
   endLastReservation: moment('10:00 am', 'HH:mm a'),
   actualTime: moment(),
   workdayStart: moment('10:00 am', 'HH:mm a'),
-  workdayEnd: moment('10:00 pm', 'HH:mm a'),
+  workdayEnd: moment('11:00 pm', 'HH:mm a'),
   gameConfigOpen: false,
   timeConverter: 12,
   entities: null,
   currentReservationTime: null,
   players: null,
   isAddGameFetching: false,
+  reservedGames: [],
 };
 
 export const timeLineReducer = (state = initialState, action) => {
@@ -25,6 +26,18 @@ export const timeLineReducer = (state = initialState, action) => {
       return {
         ...state,
         isAddGameFetching: false,
+        reservedGames: {
+          ...state.reservedGames,
+          byID: {
+            ...state.reservedGames.byID,
+            ...action.payload.byID,
+          },
+          allIds: [
+            ...state.reservedGames.allIds,
+            ...action.payload.allIds,
+          ],
+        },
+        
       };
     case actionTypes.ADD_NEW_GAME_FAIL:
       return {
@@ -44,7 +57,7 @@ export const timeLineReducer = (state = initialState, action) => {
     case actionTypes.FETCH_RESERVED_GAMES_FAIL:
       return {
         ...state,
-        reservedGames: null,
+        reservedGames: [],
       };
     case actionTypes.FETCH_PLAYERS_SUCCESS:
       return {

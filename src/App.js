@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import AppGrid from './modules/shared/components/AppGrid';
 import AppHeader from './modules/shared/containers/AppHeader';
+import ModalRoot from './modules/shared/containers/Modals/ModalRoot';
 import ChatSidebar from './modules/chat/components/ChatSidebar/index';
 import theme from './theme';
 
@@ -50,24 +51,27 @@ class App extends Component {
         <GlobalStyle />
         <ThemeProvider theme={theme}>
           <Router history={this.props.history}>
-            <AppGrid>
-              <AppGrid.SidebarArea leftGridOpen={this.props.ui.leftSidebarOpened}>
-                <ChatSidebar 
-                  authUser={this.props.sessionState.authUser} 
-                  chat={this.props.chat}
-                />
-              </AppGrid.SidebarArea>
+            <React.Fragment>
+              <ModalRoot />
+              <AppGrid>
+                <AppGrid.SidebarArea leftGridOpen={this.props.ui.leftSidebarOpened}>
+                  <ChatSidebar 
+                    authUser={this.props.sessionState.authUser} 
+                    chat={this.props.chat}
+                  />
+                </AppGrid.SidebarArea>
 
-              <AppGrid.HeaderArea>
-                <AppHeader />
-              </AppGrid.HeaderArea>
-              <Suspense fallback={<div></div>}>
-                <Switch>
-                  <Route path="/auth" component={Auth} />
-                  <Route exact path="/" component={Home} />
-                </Switch>
-              </Suspense>
-            </AppGrid>
+                <AppGrid.HeaderArea>
+                  <AppHeader />
+                </AppGrid.HeaderArea>
+                <Suspense fallback={<div></div>}>
+                  <Switch>
+                    <Route path="/auth" component={Auth} />
+                    <Route exact path="/" component={Home} />
+                  </Switch>
+                </Suspense>
+              </AppGrid>
+            </React.Fragment>
           </Router>
         </ThemeProvider>
       </React.Fragment>
