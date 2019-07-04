@@ -9,7 +9,9 @@ import { loadState, saveState } from './helpers/localstorage';
 import { timeLineReducer, gameReservationReducer } from './modules/home/state/reducers';
 import { uiReducer, modalReducer } from './modules/shared/state/reducers';
 import { messageReducer, sessionReducer } from './modules/auth/state/reducers';
+import { chatReducer } from './modules/chat/state/reducers';
 import timeLineSaga from './modules/home/state/sagas/';
+import chatSaga from './modules/chat/state/sagas/';
 import authSaga from './modules/auth/state/sagas/';
 import uiSaga from './modules/shared/state/sagas/';
  
@@ -26,6 +28,7 @@ export default function configureStore(history) {
     messageState: messageReducer,
     sessionState: sessionReducer,
     gameReservationState: gameReservationReducer,
+    chat: chatReducer,
   });
  
   const sagaMiddleware = createSagaMiddleware();
@@ -44,7 +47,7 @@ export default function configureStore(history) {
     enhancers,
   );
 
-  [authSaga, timeLineSaga, uiSaga]
+  [authSaga, timeLineSaga, uiSaga, chatSaga]
     .map(saga => sagaMiddleware.run(saga));
 
   store.subscribe(throttled(500, () => {

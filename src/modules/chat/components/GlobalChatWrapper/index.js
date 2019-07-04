@@ -2,12 +2,18 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { debounced } from '@/helpers/index';
 import { connect } from 'react-redux';
+import * as fromActions from '../../state/actions';
 import axios from 'axios';
 import { WS_API_URL, API_URL } from '@/constants/api';
 import * as S from './styles';
 
 const propTypes = { 
   authUser: PropTypes.object,
+  globalChatMessages: PropTypes.array,
+  globalChatWebsocket: PropTypes.object,
+  setDirectChatMode: PropTypes.func,
+  addGlobalChatMessage: PropTypes.func,
+  setGlobalChatWebsocketConnection: PropTypes.func,
 };
 
 const defaultProps = { };
@@ -15,7 +21,6 @@ const defaultProps = { };
 class GlobalChatWrapper extends Component {
 
   state = {
-    messages: [],
     typedMessage: '',
   };
 
@@ -29,6 +34,28 @@ class GlobalChatWrapper extends Component {
   }
 
   debouncedOnClick = debounced(200, this.sendMessage.bind(this)); 
+
+  componentDidMount() {
+    if(this.isWebsocketNotConnected(this.props.globalChatWebsocket)) {
+      const websocketConnection = new WebSocket(this.links.socketConnectionApiUrl);
+      this.props.setGlobalChatWebsocketConnection(websocketConnection);
+    }
+  }
+
+  componentDidUpdate() {
+    if(this.isWebsocketFirstConnection(this.props.globalChatWebsocket)) {
+      this.setWebsocketMessageReceiveHandler(this.props.globalChatWebsocket);
+      this.setWebsocketConnectionSustain(this.props.globalChatWebsocket);
+    }
+  }
+
+  isWebsocketNotConnected(websocket) {
+    return websocket === null;
+  }
+
+  isWebsocketFirstConnection(websocket) {
+    return websocket.onmessage === null;
+  }
 
   sendMessage() {
     if(this.isNotAnonymousUser() && this.validateTypedMessage()) {
@@ -48,12 +75,6 @@ class GlobalChatWrapper extends Component {
           })
         )
     }
-  }
-
-  componentDidMount() {
-    const websocket = new WebSocket(this.links.socketConnectionApiUrl);
-    this.setWebsocketMessageReceiveHandler(websocket);
-    this.setWebsocketConnectionSustain(websocket);
   }
 
   setWebsocketMessageReceiveHandler = (websocket) => {
@@ -91,14 +112,19 @@ class GlobalChatWrapper extends Component {
     message.playerName = author.data.displayName;
     message.photoUrl = author.data.photoUrl;
 
-    this.setState(oldState => ({
-      messages: [...oldState.messages, message],
-    }))
+    this.props.addGlobalChatMessage(message);
   }
 
   setWebsocketConnectionSustain = (websocket) => {
-    setInterval(() => {
-      websocket.send('');
+    const websocketRefreshInterval = setInterval(() => {
+
+      const openState = 1;
+
+      if(websocket.readyState === openState) {
+        websocket.send('');
+      } else {
+        clearInterval(websocketRefreshInterval);
+      }
     }, 60000);
   }
 
@@ -120,25 +146,39 @@ class GlobalChatWrapper extends Component {
   }
 
   validateTypedMessage = () => {
-    return this.state.typedMessage.length >= 3 && this.state.typedMessage.length <= 100;
+    return this.state.typedMessage.length >= 2 && this.state.typedMessage.length <= 250;
+  }
+
+  openDirectChat = (event) => {
+    const playerId = event.currentTarget.id;
+    this.props.setDirectChatMode(playerId);
   }
 
   render() {
     return (
       <S.GlobalChatWrapper>
           <S.MessagesWrapper>
-            {this.state.messages.map((value, index) => (
+            {this.props.globalChatMessages.map((value, index) => (
               <S.Message key={index}>
                 <S.MessageHeader>
-                  <S.PlayerName>
+                  <S.PlayerName
+                    isNotCurrentUser={this.props.authUser && value.playerId !== this.props.authUser.uid} 
+                  >
                     <S.PlayerNameText>   
                       {value.playerName}
                     </S.PlayerNameText>
                   </S.PlayerName>
-  
-                  <S.PlayerDirectChat>
-                    <S.PlayerDirectChatIcon id={value.playerId} src={this.links.directChatIcon} />
-                  </S.PlayerDirectChat>
+
+                  {
+                    this.props.authUser && value.playerId !== this.props.authUser.uid && (
+                      <S.PlayerDirectChat
+                        id={value.playerId} 
+                        onClick={this.openDirectChat} 
+                      >
+                        <S.PlayerDirectChatIcon src={this.links.directChatIcon} />
+                      </S.PlayerDirectChat>
+                    )
+                  }
                   
                   <S.PlayerPictureWrapper>
                     <S.PlayerPicture src={value.photoUrl} />
@@ -161,9 +201,9 @@ class GlobalChatWrapper extends Component {
                 })
               }}
               onKeyPress={this.handleEnterClick}
-              placeholder={this.isNotAnonymousUser() ? "Type message" : "Please login to use chat"}
+              placeholder={this.isNotAnonymousUser() ? "Type message (2-250 lettters)" : "Please login to use chat"}
               minLength={2}
-              maxLength={200}
+              maxLength={250}
               disabled={!this.isNotAnonymousUser()}
             />
           </S.MessageInputWrapper>
@@ -186,6 +226,21 @@ class GlobalChatWrapper extends Component {
   }
 };
 
+const mapStateToProps = () => ({
+  
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setDirectChatMode: (playerId) => {
+      dispatch(fromActions.setDirectChatMode(playerId));
+    },
+    addGlobalChatMessage: (message) => {
+      dispatch(fromActions.addGlobalChatMessage(message));
+    },
+  };
+};
+
 GlobalChatWrapper.propTypes = propTypes;
 GlobalChatWrapper.defaultProps = defaultProps;
-export default GlobalChatWrapper;
+export default connect(mapStateToProps, mapDispatchToProps)(GlobalChatWrapper);
