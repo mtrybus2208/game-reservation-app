@@ -5,8 +5,8 @@ import * as S from './styles';
 
 const propTypes = {
   title: PropTypes.string,
-  onConfirm: PropTypes.string,
-  onDecline: PropTypes.string,
+  onConfirm: PropTypes.func,
+  onDecline: PropTypes.func,
 };
 
 const defaultProps = {

@@ -51,7 +51,7 @@ const TimeRuler = React.memo(({
   }) 
 
   // TODO: Need to merge these funtions
-  const createReservedIntervals = (games) => {
+  const createReservedIntervals = games => {
     return games && games.map(game => {
       const starGame = moment(game.startDate);
       const distanceInMinutes = moment.duration(starGame.diff(workdayStart)).asMinutes();

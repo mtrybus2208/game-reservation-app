@@ -12,7 +12,7 @@ const initialState = {
   currentReservationTime: null,
   players: null,
   isAddGameFetching: false,
-  reservedGames: null,
+  reservedGames: [],
 };
 
 export const timeLineReducer = (state = initialState, action) => {
@@ -57,7 +57,7 @@ export const timeLineReducer = (state = initialState, action) => {
     case actionTypes.FETCH_RESERVED_GAMES_FAIL:
       return {
         ...state,
-        reservedGames: null,
+        reservedGames: [],
       };
     case actionTypes.FETCH_PLAYERS_SUCCESS:
       return {

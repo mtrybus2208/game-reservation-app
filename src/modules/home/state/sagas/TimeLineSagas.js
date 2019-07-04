@@ -4,6 +4,7 @@ import moment from 'moment';
 import axios from 'axios';
 import { getHoursFromPixels } from '@/modules/home/state/selectors';
 import { actionTypes as actionSharedTypes } from '@/modules/shared/state/actions/actionTypes';
+import { API_URL } from '@/constants/api';
 import { actionTypes } from './../actions/actionTypes';
 
 const createFullDateFromHours = h => `${moment().format('YYYY-MM-DD')}T${h}`;
@@ -24,7 +25,7 @@ const makeEntieties = arr => {
 };
 
 const fetchGames = workdayStart => (
-  fetch(`http://3.95.208.60/matches`)
+  fetch(`${API_URL}/matches`)
     .then(res => res.json())
     .then((res) => res.filter(game =>
       moment(game.startDate).isAfter(moment(workdayStart))))
@@ -32,13 +33,13 @@ const fetchGames = workdayStart => (
 );
 
 const fetchPlayers = () => (
-  fetch(`http://3.95.208.60/players`)
+  fetch(`${API_URL}/players`)
     .then(res => res.json())
     .then(makeEntieties)
 );
 
 const reserveGame = data => {
-  return axios.post('http://3.95.208.60/matches', data, {
+  return axios.post(`${API_URL}/matches`, data, {
     headers: {
       'Auth-Id': data.playerID,
     },
@@ -46,7 +47,7 @@ const reserveGame = data => {
 };
 
 const deleteGame = data => (
-  axios.delete(`http://3.95.208.60/matches/${data.gameId}`, {
+  axios.delete(`${API_URL}/matches/${data.gameId}`, {
     headers: {
       'Auth-Id': data.userId,
     },

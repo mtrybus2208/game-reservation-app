@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { WS_API_URL, API_URL } from '@/constants/api';
 import * as S from './styles';
 
 const propTypes = { 
@@ -21,9 +22,9 @@ class GlobalChatWrapper extends Component {
     directChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg',
     emojiIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595074/smiling-emoticon.svg',
     sendMessageIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg',
-    socketConnectionApiUrl: 'ws://3.95.208.60/socket/chat/global',
-    getPlayerApiUrl: 'http://3.95.208.60/players',
-    sendMessageApiUrl: 'http://3.95.208.60/chat/global',
+    socketConnectionApiUrl: `${WS_API_URL}/socket/chat/global`,
+    getPlayerApiUrl: `${API_URL}/players`,
+    sendMessageApiUrl: `${API_URL}/chat/global`,
   }
 
   componentDidMount() {

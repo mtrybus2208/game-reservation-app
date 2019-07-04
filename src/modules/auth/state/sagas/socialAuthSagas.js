@@ -3,11 +3,12 @@ import { call, put, takeEvery, take, fork } from 'redux-saga/effects';
 import { doSignInWithGoogle, doSignInWithGithub, signOut } from '@/services/firebase';
 import { actionTypes as uiActionTypes } from '@/modules/shared/state/actions/actionTypes';
 import * as ROUTES from '@/constants/routes';
+import { API_URL } from '@/constants/api';
 import { actionTypes } from './../actions/actionTypes';
 import { mapUserData } from '../../helpers/mapUserData';
 import axios from 'axios';
 
-const playerSaveLink = 'http://3.95.208.60/players';
+const playerSaveLink = `${API_URL}/players`;
 
 function* workSocialAuth(type) {
   const socialTypes = {
