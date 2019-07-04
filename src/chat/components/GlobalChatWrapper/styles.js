@@ -40,6 +40,7 @@ export const MessageHeader = styled.div`
 
 export const MessageBody = styled.div`  
   padding: 40px 19px 13px;
+  overflow-wrap: break-word;
   background: #111315;
   font-family: Roboto;
   font-size: 12px;
