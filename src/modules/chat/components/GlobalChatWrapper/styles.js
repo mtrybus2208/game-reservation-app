@@ -10,8 +10,9 @@ export const GlobalChatWrapper = styled.div`
 
 export const MessagesWrapper = styled.div`
   width: 100%;
-  height: calc(100% - 200px);
+  height: 100%;
   overflow-y: auto;
+  position: relative;
 
   &::-webkit-scrollbar {
     width: 10px;
@@ -24,6 +25,12 @@ export const MessagesWrapper = styled.div`
   &::-webkit-scrollbar-thumb {
     background: #1b1e22;
   }
+`;
+
+export const MessagesScrollWrapper = styled.div`
+  height: calc(100% - 200px);
+  width: 100%;
+  position: relative;
 `;
 
 export const Message = styled.div`
@@ -122,6 +129,26 @@ export const PlayerPicture = styled.img`
   border-radius: 50%;
 `;
 
+export const ScrollToBottomArrow = styled.button`
+  display: ${props => (props.isScrolledDown ? 'none' : 'block')};
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  bottom: 15px;
+  right: 15px;
+  border: none;
+  background: #111315;
+  border-radius: 40px;
+  cursor: pointer;
+`;
+
+export const ScrollArrowIcon = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+`;
+
 export const MessageInputWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -171,4 +198,8 @@ export const MessageButton = styled.button`
 
 export const MessageButtonIcon = styled.img`
   width: 25px;
+`;
+
+export const MessagesEnd = styled.div`
+
 `;

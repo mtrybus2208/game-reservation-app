@@ -20,14 +20,21 @@ const defaultProps = { };
 
 class GlobalChatWrapper extends Component {
 
+  constructor(props) {
+    super(props);
+    this.messagesWrapper = React.createRef();
+  }
+
   state = {
     typedMessage: '',
+    isMessageWrapperScrolledDown: true,
   };
 
   links = {
     directChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg',
     emojiIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595074/smiling-emoticon.svg',
     sendMessageIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg',
+    arrowIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1562304350/down-arrow.svg',
     socketConnectionApiUrl: `${WS_API_URL}/socket/chat/global`,
     getPlayerApiUrl: `${API_URL}/players`,
     sendMessageApiUrl: `${API_URL}/chat/global`,
@@ -87,6 +94,7 @@ class GlobalChatWrapper extends Component {
         this.getMessageAuthorById(globalChatMessage.playerId)
           .then(author => {
             this.updateMessagesList(author, globalChatMessage);
+            this.handleWrapperScroll();
           })
           .catch(() =>
             console.log('Couldn\'t update messages list')
@@ -149,43 +157,73 @@ class GlobalChatWrapper extends Component {
     this.props.setDirectChatMode(playerId);
   }
 
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "auto" });
+  }
+
+  handleWrapperScroll = () => {
+    this.setState({
+      isMessageWrapperScrolledDown: this.isMessageWrapperScrolledDown(),
+    })
+  }
+
+  isMessageWrapperScrolledDown = () => {
+    const messagesWrapper = this.messagesWrapper.current;
+
+    return messagesWrapper.scrollTop >= (messagesWrapper.scrollHeight - messagesWrapper.clientHeight - 200);
+  }
+
   render() {
     return (
       <S.GlobalChatWrapper>
-        <S.MessagesWrapper>
-          {this.props.globalChatMessages.map((value, index) => (
-            <S.Message key={index}>
-              <S.MessageHeader>
-                <S.PlayerName
-                  isNotCurrentUser={this.props.authUser && value.playerId !== this.props.authUser.uid}
-                >
-                  <S.PlayerNameText>
-                    {value.playerName}
-                  </S.PlayerNameText>
-                </S.PlayerName>
+        <S.MessagesScrollWrapper>
+          <S.MessagesWrapper 
+            ref={this.messagesWrapper}
+            onScroll={this.handleWrapperScroll}
+          >
+            {this.props.globalChatMessages.map((value, index) => (
+              <S.Message key={index}>
+                <S.MessageHeader>
+                  <S.PlayerName
+                    isNotCurrentUser={this.props.authUser && value.playerId !== this.props.authUser.uid}
+                  >
+                    <S.PlayerNameText>
+                      {value.playerName}
+                    </S.PlayerNameText>
+                  </S.PlayerName>
 
-                {
-                  this.props.authUser && value.playerId !== this.props.authUser.uid && (
-                    <S.PlayerDirectChat
-                      id={value.playerId}
-                      onClick={this.openDirectChat}
-                    >
-                      <S.PlayerDirectChatIcon src={this.links.directChatIcon} />
-                    </S.PlayerDirectChat>
-                  )
-                }
+                  {
+                    this.props.authUser && value.playerId !== this.props.authUser.uid && (
+                      <S.PlayerDirectChat
+                        id={value.playerId}
+                        onClick={this.openDirectChat}
+                      >
+                        <S.PlayerDirectChatIcon src={this.links.directChatIcon} />
+                      </S.PlayerDirectChat>
+                    )
+                  }
+                  
+                  <S.PlayerPictureWrapper>
+                    <S.PlayerPicture src={value.photoUrl} />
+                  </S.PlayerPictureWrapper>
+                </S.MessageHeader>
                 
-                <S.PlayerPictureWrapper>
-                  <S.PlayerPicture src={value.photoUrl} />
-                </S.PlayerPictureWrapper>
-              </S.MessageHeader>
-              
-              <S.MessageBody>
-                {value.message}
-              </S.MessageBody>
-            </S.Message>
-          ))}
-        </S.MessagesWrapper>
+                <S.MessageBody>
+                  {value.message}
+                </S.MessageBody>
+              </S.Message>
+            ))} 
+
+            <S.MessagesEnd ref={(el) => { this.messagesEnd = el; }} />
+          </S.MessagesWrapper>
+
+          <S.ScrollToBottomArrow 
+            onClick={this.scrollToBottom}
+            isScrolledDown={this.state.isMessageWrapperScrolledDown}
+          > 
+            <S.ScrollArrowIcon src={this.links.arrowIcon} />
+          </S.ScrollToBottomArrow>
+        </S.MessagesScrollWrapper>
 
         <S.MessageInputWrapper>
           <S.MessageInput 
