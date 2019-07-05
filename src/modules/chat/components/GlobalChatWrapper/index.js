@@ -7,7 +7,7 @@ import axios from 'axios';
 import { WS_API_URL, API_URL } from '@/constants/api';
 import * as S from './styles';
 
-const propTypes = { 
+const propTypes = {
   authUser: PropTypes.object,
   globalChatMessages: PropTypes.array,
   globalChatWebsocket: PropTypes.object,
@@ -33,17 +33,17 @@ class GlobalChatWrapper extends Component {
     sendMessageApiUrl: `${API_URL}/chat/global`,
   }
 
-  debouncedOnClick = debounced(200, this.sendMessage.bind(this)); 
+  debouncedOnClick = debounced(200, this.sendMessage.bind(this));
 
   componentDidMount() {
-    if(this.isWebsocketNotConnected(this.props.globalChatWebsocket)) {
+    if (this.isWebsocketNotConnected(this.props.globalChatWebsocket))  {
       const websocketConnection = new WebSocket(this.links.socketConnectionApiUrl);
       this.props.setGlobalChatWebsocketConnection(websocketConnection);
     }
   }
 
   componentDidUpdate() {
-    if(this.isWebsocketFirstConnection(this.props.globalChatWebsocket)) {
+    if (this.isWebsocketFirstConnection(this.props.globalChatWebsocket)) {
       this.setWebsocketMessageReceiveHandler(this.props.globalChatWebsocket);
       this.setWebsocketConnectionSustain(this.props.globalChatWebsocket);
     }
@@ -58,18 +58,18 @@ class GlobalChatWrapper extends Component {
   }
 
   sendMessage() {
-    if(this.isNotAnonymousUser() && this.validateTypedMessage()) {
+    if (this.isNotAnonymousUser() && this.validateTypedMessage()) {
 
       const playerMessage = JSON.parse(
-        `{ 
+        `{
           "playerId": "${this.props.authUser.uid}",
-          "message": "${this.state.typedMessage.trim()}" 
+          "message": "${this.state.typedMessage.trim()}"
         }`
       );
-  
+
       axios
         .post(this.links.sendMessageApiUrl, playerMessage)
-        .then(() => 
+        .then(() =>
           this.setState({
             typedMessage: '',
           })
@@ -79,29 +79,24 @@ class GlobalChatWrapper extends Component {
 
   setWebsocketMessageReceiveHandler = (websocket) => {
     websocket.onmessage = (event) => {
-      const websocketMessage = event.data;
+      const websocketMessage = JSON.parse(event.data);
 
       if(this.isGlobalChatMessage(websocketMessage)) {
-        const globalChatMessageJSON = this.extractGlobalChatMessage(websocketMessage);
-        const globalChatMessage = JSON.parse(globalChatMessageJSON);
-
+        const globalChatMessage = websocketMessage.responseBody;
+        
         this.getMessageAuthorById(globalChatMessage.playerId)
           .then(author => {
             this.updateMessagesList(author, globalChatMessage);
           })
           .catch(() =>
             console.log('Couldn\'t update messages list')
-          )
-      } 
+          );
+      }
     };
   }
 
   isGlobalChatMessage = (websocketMessage) => {
-    return websocketMessage.startsWith("[GLOBAL_CHAT]");
-  }
-
-  extractGlobalChatMessage = (websocketMessage) => {
-    return websocketMessage.replace('[GLOBAL_CHAT]', '');
+    return websocketMessage.responseType === 'GLOBAL_CHAT';
   }
 
   getMessageAuthorById = (playerId) => {
@@ -120,7 +115,7 @@ class GlobalChatWrapper extends Component {
 
       const openState = 1;
 
-      if(websocket.readyState === openState) {
+      if (websocket.readyState === openState) {
         websocket.send('');
       } else {
         clearInterval(websocketRefreshInterval);
@@ -131,7 +126,7 @@ class GlobalChatWrapper extends Component {
   handleEnterClick = (event) => {
     const enterButtonKeyCode = 13;
 
-    if(event.charCode === enterButtonKeyCode) {
+    if (event.charCode === enterButtonKeyCode) {
       event.preventDefault();
       this.sendMessageHandler();
     }
@@ -157,80 +152,80 @@ class GlobalChatWrapper extends Component {
   render() {
     return (
       <S.GlobalChatWrapper>
-          <S.MessagesWrapper>
-            {this.props.globalChatMessages.map((value, index) => (
-              <S.Message key={index}>
-                <S.MessageHeader>
-                  <S.PlayerName
-                    isNotCurrentUser={this.props.authUser && value.playerId !== this.props.authUser.uid} 
-                  >
-                    <S.PlayerNameText>   
-                      {value.playerName}
-                    </S.PlayerNameText>
-                  </S.PlayerName>
+        <S.MessagesWrapper>
+          {this.props.globalChatMessages.map((value, index) => (
+            <S.Message key={index}>
+              <S.MessageHeader>
+                <S.PlayerName
+                  isNotCurrentUser={this.props.authUser && value.playerId !== this.props.authUser.uid}
+                >
+                  <S.PlayerNameText>
+                    {value.playerName}
+                  </S.PlayerNameText>
+                </S.PlayerName>
 
-                  {
-                    this.props.authUser && value.playerId !== this.props.authUser.uid && (
-                      <S.PlayerDirectChat
-                        id={value.playerId} 
-                        onClick={this.openDirectChat} 
-                      >
-                        <S.PlayerDirectChatIcon src={this.links.directChatIcon} />
-                      </S.PlayerDirectChat>
-                    )
-                  }
-                  
-                  <S.PlayerPictureWrapper>
-                    <S.PlayerPicture src={value.photoUrl} />
-                  </S.PlayerPictureWrapper>
-                </S.MessageHeader>
+                {
+                  this.props.authUser && value.playerId !== this.props.authUser.uid && (
+                    <S.PlayerDirectChat
+                      id={value.playerId}
+                      onClick={this.openDirectChat}
+                    >
+                      <S.PlayerDirectChatIcon src={this.links.directChatIcon} />
+                    </S.PlayerDirectChat>
+                  )
+                }
                 
-                <S.MessageBody>
-                  {value.message}
-                </S.MessageBody>
-              </S.Message>
-            ))}
-          </S.MessagesWrapper>
-  
-          <S.MessageInputWrapper>
-            <S.MessageInput 
-              value={this.state.typedMessage}
-              onChange={event => {
-                this.setState({
-                  typedMessage: event.target.value,
-                })
-              }}
-              onKeyPress={this.handleEnterClick}
-              placeholder={this.isNotAnonymousUser() ? "Type message (2-250 lettters)" : "Please login to use chat"}
-              minLength={2}
-              maxLength={250}
-              disabled={!this.isNotAnonymousUser()}
-            />
-          </S.MessageInputWrapper>
-  
-          <S.MessageButtonsWrapper>
-            <S.MessageButton>
-              <S.MessageButtonIcon src={this.links.emojiIcon} />
-            </S.MessageButton>
-  
-            <S.MessageButton 
-              isButtonActive={this.validateTypedMessage()} 
-              onClick={this.sendMessageHandler} 
-              disabled={!this.validateTypedMessage()}
-            >
-              <S.MessageButtonIcon src={this.links.sendMessageIcon} />
-            </S.MessageButton>
-          </S.MessageButtonsWrapper>
+                <S.PlayerPictureWrapper>
+                  <S.PlayerPicture src={value.photoUrl} />
+                </S.PlayerPictureWrapper>
+              </S.MessageHeader>
+              
+              <S.MessageBody>
+                {value.message}
+              </S.MessageBody>
+            </S.Message>
+          ))}
+        </S.MessagesWrapper>
+
+        <S.MessageInputWrapper>
+          <S.MessageInput 
+            value={this.state.typedMessage}
+            onChange={event => {
+              this.setState({
+                typedMessage: event.target.value,
+              });
+            }}
+            onKeyPress={this.handleEnterClick}
+            placeholder={this.isNotAnonymousUser() ? 'Type message (2-250 lettters)' : 'Please login to use chat'}
+            minLength={2}
+            maxLength={250}
+            disabled={!this.isNotAnonymousUser()}
+          />
+        </S.MessageInputWrapper>
+
+        <S.MessageButtonsWrapper>
+          <S.MessageButton>
+            <S.MessageButtonIcon src={this.links.emojiIcon} />
+          </S.MessageButton>
+
+          <S.MessageButton 
+            isButtonActive={this.validateTypedMessage()} 
+            onClick={this.sendMessageHandler} 
+            disabled={!this.validateTypedMessage()}
+          >
+            <S.MessageButtonIcon src={this.links.sendMessageIcon} />
+          </S.MessageButton>
+        </S.MessageButtonsWrapper>
       </S.GlobalChatWrapper>
     );
   }
-};
+}
 
 const mapStateToProps = () => ({
-  
+
 });
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     setDirectChatMode: (playerId) => {
       dispatch(fromActions.setDirectChatMode(playerId));
