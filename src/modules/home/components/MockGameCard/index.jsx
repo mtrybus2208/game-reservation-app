@@ -1,21 +1,23 @@
 import React from 'react'; 
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { throttled } from '@/helpers';
 import GameCard from '@/modules/home/components/GameCard';
 import BaseIcon from '@/modules/shared/components/BaseIcon';
+import * as fromActions from '@/modules/home/state/actions';
 import * as S from './styles';
 
 const propTypes = {
-  authUser: PropTypes.object,
+  initialCardPosition: PropTypes.number,
+  sessionState: PropTypes.object,
   display: PropTypes.object,
   onBlockTimeLine: PropTypes.func,
-  cardPosition: PropTypes.number,
-  setCardPosition: PropTypes.func,
   onMoveTimeLine: PropTypes.func,
   setCurrentReservationTime: PropTypes.func,
   reservedIntervals: PropTypes.array,
   showSpinner: PropTypes.bool,
   actualDateInPixels: PropTypes.number,
+  isAddGameFetching: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -47,9 +49,6 @@ class MockGameCard extends React.PureComponent {
         this.tick();
       }
     }, this.myRef.current);
-  }
-
-  componentDidUpdate() {
   }
 
   componentWillUnmount() {
@@ -115,8 +114,6 @@ class MockGameCard extends React.PureComponent {
   isLeftEdge = () => (this.myRef.current.offsetParent.scrollLeft > this.state.translateX);
 
   isReservedCardHovered = pos => {
-    // Need to add some time buffor rbecause on
-    // page load we already behind the actual time
     if (pos < this.props.actualDateInPixels) {
       return true;
     }
@@ -236,7 +233,7 @@ class MockGameCard extends React.PureComponent {
         ref={this.myRef}
       >
         <GameCard
-          user={this.props.authUser}
+          user={this.props.sessionState.authUser}
           display={this.props.display}
           customTitle={this.customTitle}
           customPosition
@@ -251,6 +248,17 @@ class MockGameCard extends React.PureComponent {
   }
 };
 
+const mapStateToProps = state => ({
+  sessionState: state.sessionState,
+  isAddGameFetching: state.timeLine.isAddGameFetching,
+});
+
+const mapDispatchToProps = dispatch => ({
+  setCurrentReservationTime: payload => {
+    dispatch(fromActions.setCurrentReservationTime(payload));
+  },
+});
+
 MockGameCard.propTypes = propTypes;
 MockGameCard.defaultProps = defaultProps;
-export default MockGameCard;
+export default connect(mapStateToProps, mapDispatchToProps)(MockGameCard);
