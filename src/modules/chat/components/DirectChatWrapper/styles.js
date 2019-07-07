@@ -79,7 +79,7 @@ export const MessagesWrapper = styled.div`
   align-items: center;
   padding-bottom: 35px;
   width: 100%;
-  height: calc(100% - 190px);
+  height: 100%;
   background: #16181b;
   overflow: auto;
   
@@ -94,6 +94,12 @@ export const MessagesWrapper = styled.div`
   &::-webkit-scrollbar-thumb {
     background: #1b1e22;
   }
+`;
+
+export const MessagesScrollWrapper = styled.div`
+  height: calc(100% - 190px);
+  width: 100%;
+  position: relative;
 `;
 
 export const IncomingMessageWrapper = styled.div`
@@ -245,11 +251,30 @@ export const MessageButton = styled.button`
   }
 `;
 
+export const ScrollToBottomArrow = styled.button`
+  display: ${props => (props.isScrolledDown ? 'none' : 'block')};
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  bottom: 15px;
+  right: 15px;
+  border: none;
+  background: #111315;
+  border-radius: 40px;
+  cursor: pointer;
+`;
+
+export const ScrollArrowIcon = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+`;
+
 export const MessageButtonImage = styled.img`
   height: 23px;
   width: 23px;
 `;
-
 
 export const MessagesEnd = styled.div` 
 

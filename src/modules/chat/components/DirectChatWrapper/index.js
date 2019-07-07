@@ -25,6 +25,11 @@ const defaultProps = { };
 
 class DirectChatWrapper extends Component {
 
+  constructor(props) {
+    super(props);
+    this.messagesWrapper = React.createRef();
+  }
+
   state = {
     typedMessage: '',
     receiver: {
@@ -34,10 +39,12 @@ class DirectChatWrapper extends Component {
       photoUrl: '',
     },
     isFirstMessagesScrollNotDone: true,
+    isMessageWrapperScrolledDown: true,
   };
 
   links = {
     globalChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553015547/message.svg',
+    arrowIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1562304350/down-arrow.svg',
     getPlayerApiUrl: `${API_URL}/players`,
     socketConnectionApiUrl: `${WS_API_URL}/socket/chat/direct`,
     sendMessageApiUrl: `${API_URL}/chat/direct/messages`,
@@ -223,6 +230,22 @@ class DirectChatWrapper extends Component {
     return this.props.directChatMessages && this.props.directChatMessages[this.getDirectChatRoomId()] !== undefined;
   }
 
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "auto" });
+  }
+
+  handleWrapperScroll = () => {
+    this.setState({
+      isMessageWrapperScrolledDown: this.isMessageWrapperScrolledDown(),
+    })
+  }
+
+  isMessageWrapperScrolledDown = () => {
+    const messagesWrapper = this.messagesWrapper.current;
+
+    return messagesWrapper.scrollTop >= (messagesWrapper.scrollHeight - messagesWrapper.clientHeight - 200);
+  }
+
   render() {
     return (
     <S.DirectChatWrapper> 
@@ -238,48 +261,61 @@ class DirectChatWrapper extends Component {
         <S.PlayerNameInfo>{this.state.receiver.displayName}</S.PlayerNameInfo>
       </S.DirectChatPlayerInfo>
 
-      <S.MessagesWrapper>
-        {this.isMessagesListFetched() && this.props.directChatMessages[this.getDirectChatRoomId()].map((value, index) => (
-          <React.Fragment key={index}>
-            {value.receiverId == this.props.authUser.uid ? (
-              <S.IncomingMessageWrapper key={index}>
-                <S.Message>
-                  <S.MessageHeader>
-                    <S.MessageAuthorName>
-                      {this.state.receiver.displayName}
-                    </S.MessageAuthorName>
-                    <S.MessageTime>
-                      {moment(value.messageSendDate).format('HH:mm')}
-                    </S.MessageTime>
-                  </S.MessageHeader>
+      <S.MessagesScrollWrapper>
+        <S.MessagesWrapper
+          ref={this.messagesWrapper}
+          onScroll={this.handleWrapperScroll}
+        >
+          {this.isMessagesListFetched() && this.props.directChatMessages[this.getDirectChatRoomId()].map((value, index) => (
+            <React.Fragment key={index}>
+              {value.receiverId == this.props.authUser.uid ? (
+                <S.IncomingMessageWrapper key={index}>
+                  <S.Message>
+                    <S.MessageHeader>
+                      <S.MessageAuthorName>
+                        {this.state.receiver.displayName}
+                      </S.MessageAuthorName>
+                      <S.MessageTime>
+                        {moment(value.messageSendDate).format('HH:mm')}
+                      </S.MessageTime>
+                    </S.MessageHeader>
 
-                  <S.MessageText>
-                    {value.message}
-                  </S.MessageText>
-                </S.Message>
-              </S.IncomingMessageWrapper>
-            ) : (
-              <S.OutgoingMessageWrapper> 
-                <S.Message>
-                  <S.MessageHeader>
-                    <S.MessageAuthorName>
-                      {this.props.authUser.displayName}
-                    </S.MessageAuthorName>
-                    <S.MessageTime>
-                      {moment(value.messageSendDate).format('HH:mm')}
-                    </S.MessageTime>
-                  </S.MessageHeader>
+                    <S.MessageText>
+                      {value.message}
+                    </S.MessageText>
+                  </S.Message>
+                </S.IncomingMessageWrapper>
+              ) : (
+                <S.OutgoingMessageWrapper> 
+                  <S.Message>
+                    <S.MessageHeader>
+                      <S.MessageAuthorName>
+                        {this.props.authUser.displayName}
+                      </S.MessageAuthorName>
+                      <S.MessageTime>
+                        {moment(value.messageSendDate).format('HH:mm')}
+                      </S.MessageTime>
+                    </S.MessageHeader>
 
-                  <S.MessageText>
-                    {value.message}
-                  </S.MessageText>
-                </S.Message>
-              </S.OutgoingMessageWrapper>
-            )}
-            <S.MessagesEnd ref={(el) => { this.messagesEnd = el; }} />
-          </React.Fragment>
-        ))}
-      </S.MessagesWrapper>
+                    <S.MessageText>
+                      {value.message}
+                    </S.MessageText>
+                  </S.Message>
+                </S.OutgoingMessageWrapper>
+              )}
+            </React.Fragment>
+          ))}
+          
+          <S.MessagesEnd ref={(el) => { this.messagesEnd = el; }} />
+        </S.MessagesWrapper>
+
+        <S.ScrollToBottomArrow 
+          onClick={this.scrollToBottom}
+          isScrolledDown={this.state.isMessageWrapperScrolledDown}
+        > 
+          <S.ScrollArrowIcon src={this.links.arrowIcon} />
+        </S.ScrollToBottomArrow>
+      </S.MessagesScrollWrapper>
 
       <S.MessageInputSectionWrapper>
         <S.MessageInputWrapper>
