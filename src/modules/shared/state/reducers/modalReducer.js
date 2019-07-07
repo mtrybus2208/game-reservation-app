@@ -1,7 +1,7 @@
 import { actionTypes } from '../actions/actionTypes';
 
 const initialState = {
-  modalType: 'DELETE_GAME_MODAL',
+  modalType: null,
   modalProps: {}
 }
 

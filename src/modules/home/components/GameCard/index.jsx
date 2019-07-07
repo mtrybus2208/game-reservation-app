@@ -13,6 +13,7 @@ const propTypes = {
   customTitle: PropTypes.node,
   customPosition: PropTypes.bool,
   deleteGame: PropTypes.func,
+  showModal: PropTypes.func,
   gameId: PropTypes.number,
   isReservedByUser: PropTypes.bool,
   showSpinner: PropTypes.bool,
@@ -33,12 +34,18 @@ const GameCard = ({
   gameId,
   isReservedByUser,
   showSpinner,
+  showModal,
 }) => {
   useEffect(() => {
   })
 
   const handlerDeleteGame = () => {
-    deleteGame(gameId);
+    showModal({
+      modalProps: {
+        gameId,
+      },
+      modalType: 'DELETE_GAME_MODAL'
+    })
   }
 
   const avatar = user && (user.photoUrl || user.photoURL)

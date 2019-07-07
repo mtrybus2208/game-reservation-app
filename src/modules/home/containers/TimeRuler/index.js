@@ -4,9 +4,11 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { getAllReservedGames } from '@/modules/home/state/selectors/entieties';
 import { getTimeLine, getWorkdayInPixels, getArrayOfWorkdayHours, getActualDateInPixels } from '@/modules/home/state/selectors';
-import * as fromActions from '@/modules/home/state/actions';
 import GameCard from '@/modules/home/components/GameCard';
-import MockGameCard from '@/modules/home/components/MockGameCard';
+import MockGameCard from '@/modules/home/containers/MockGameCard';
+import { withGameReservation } from '@/modules/home/HOC/withGameReservation';
+import * as fromActions from '@/modules/home/state/actions';
+import * as fromSharedActions from '@/modules/shared/state/actions';
 import * as S from './styles';
 
 const propTypes = {
@@ -19,6 +21,7 @@ const propTypes = {
   onBlockTimeLine: PropTypes.func,
   onMoveTimeLine: PropTypes.func,
   deleteGame: PropTypes.func,
+  showModal: PropTypes.func,
   actualDateInPixels: PropTypes.number,
   sessionState: PropTypes.object,
 };
@@ -45,27 +48,29 @@ class TimeRuler extends Component {
 
   wrapperEl = React.createRef();
 
+  MockedWithResevation = withGameReservation(MockGameCard);
+ 
+  componentDidUpdate() { }
+
+  getDistanceInMinutes(timeGame) {
+    return moment.duration(timeGame.diff(this.props.timeLine.workdayStart)).asMinutes();
+  }
+
+  getGameTimes(game) {
+    return ['startDate', 'endDate']
+      .map(type =>
+        this.getDistanceInMinutes(moment(game[type])) * this.props.timeLine.timeConverter);
+  }
+
   createReservedIntervals(games) {
     return games && games.map(game => {
-      const starGame = moment(game.startDate);
-      const distanceInMinutes = moment.duration(starGame.diff(this.props.timeLine.workdayStart)).asMinutes();
-      const startTime = distanceInMinutes * this.props.timeLine.timeConverter;
-
-      const endGame = moment(game.endDate);
-      const distanceInMinutesEnd = moment.duration(endGame.diff(this.props.timeLine.workdayStart)).asMinutes();
-      const endTime = distanceInMinutesEnd * this.props.timeLine.timeConverter;
+      const [startTime, endTime] = this.getGameTimes(game);
       return [Math.abs(startTime), Math.abs(startTime) + (Math.abs(endTime) - Math.abs(startTime))];
     });
   };
 
   renderGameCard(game) {
-    const starGame = moment(game.startDate);
-    const distanceInMinutes = moment.duration(starGame.diff(this.props.timeLine.workdayStart)).asMinutes();
-    const startTime = distanceInMinutes * this.props.timeLine.timeConverter;
-
-    const endGame = moment(game.endDate);
-    const distanceInMinutesEnd = moment.duration(endGame.diff(this.props.timeLine.workdayStart)).asMinutes();
-    const endTime = distanceInMinutesEnd * this.props.timeLine.timeConverter;
+    const [startTime, endTime] = this.getGameTimes(game);
 
     const player = game.player && {
       name: game.player.displayName,
@@ -79,6 +84,7 @@ class TimeRuler extends Component {
         key={game.id}
         gameId={game.id}
         deleteGame={this.props.deleteGame}
+        showModal={this.props.showModal}
         user={player}
         display={
           {
@@ -101,26 +107,17 @@ class TimeRuler extends Component {
           this.props.reservedGames && this.props.reservedGames.map(game => this.renderGameCard(game))
         }
         {
-          this.props.gameReservation.editMode &&
-          this.props.gameReservation.time &&
-          this.props.gameReservation.gameType &&
-          <MockGameCard
-            display={
-              {
-                gameTime: `${this.props.gameReservation.time.duration}min`,
-                gameType: this.props.gameReservation.gameType.name,
-                size: this.minutesToPixels(this.props.gameReservation.time.duration),
-                left: 200,
-              }
-            }
-            onBlockTimeLine={this.props.onBlockTimeLine}
-            onMoveTimeLine={this.props.onMoveTimeLine}
-            startPosition={this.props.startPosition}
-            setStart={this.props.setStart}
-            initialCardPosition={this.props.wrapperScrollPosition}
-            reservedIntervals={this.createReservedIntervals(this.props.reservedGames)}
-            showSpinner={this.props.timeLine.isAddGameFetching}
-            actualDateInPixels={this.props.actualDateInPixels}
+          <this.MockedWithResevation          
+              gameReservation={this.props.gameReservation}
+              timeConverter={this.props.timeLine.timeConverter}
+              onBlockTimeLine={this.props.onBlockTimeLine}
+              onMoveTimeLine={this.props.onMoveTimeLine}
+              startPosition={this.props.startPosition}
+              setStart={this.props.setStart}
+              initialCardPosition={this.props.wrapperScrollPosition}
+              reservedIntervals={this.createReservedIntervals(this.props.reservedGames)}
+              showSpinner={this.props.timeLine.isAddGameFetching}
+              actualDateInPixels={this.props.actualDateInPixels}
           />
         }
         <S.TimeRuler
@@ -156,6 +153,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   deleteGame: payload => {
     dispatch(fromActions.deleteGame(payload));
+  },
+  showModal: payload => {
+    dispatch(fromSharedActions.showModal(payload));
   },
 });
 

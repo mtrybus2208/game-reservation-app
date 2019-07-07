@@ -8,25 +8,36 @@ import * as fromHomeActions from '@/modules/home/state/actions';
 const propTypes = {
   deleteGame: PropTypes.func,
   hideModal: PropTypes.func,
+  modalProps: PropTypes.obj,
 };
 
 const defaultProps = { 
 }; 
 
 class DeleteGameModal extends PureComponent {
+
+  handlerDeleteGame = this.handlerDeleteGame.bind(this);
+
+  handlerDeleteGame() {
+    const { deleteGame, modalProps } = this.props;
+    deleteGame(modalProps.gameId);
+  }
+
   render() {
     return (
       <BaseModal
         title="Do You want to delete this game?"
-        onConfirm={this.props.deleteGame}
+        onConfirm={this.handlerDeleteGame}
         onDecline={this.props.hideModal}
       />
     );
   }
 }
 
-const mapStateToProps = ({ }) => (
-  { }
+const mapStateToProps = ({ modal }) => (
+  {
+    modalProps: modal.modalProps,
+  }
 );
 
 const mapDispatchToProps = dispatch => {

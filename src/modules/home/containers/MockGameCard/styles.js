@@ -69,7 +69,7 @@ export const MockGameCard = styled.div`
   right: 0;
   top: 0;
   bottom: 0;
-  background: ${({ isAbleToReserve }) => isAbleToReserve ? 'rgba(103, 16, 16, 0.41)' : 'rgba(1, 66, 23, 0.3)'};
+  background: ${({ isAbleToReserve }) => isAbleToReserve ? 'rgba(103, 16, 16, .41)' : 'rgba(1, 66, 23, .3)'};
 `;
 
 export const AnimatedIcon = styled.div`

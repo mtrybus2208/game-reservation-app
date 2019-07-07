@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import { throttled } from '@/helpers';
 import GameCard from '@/modules/home/components/GameCard';
 import BaseIcon from '@/modules/shared/components/BaseIcon';
+import withUser from '@/modules/home/HOC/withUser';
 import * as fromActions from '@/modules/home/state/actions';
 import * as S from './styles';
 
 const propTypes = {
   initialCardPosition: PropTypes.number,
-  sessionState: PropTypes.object,
   display: PropTypes.object,
   onBlockTimeLine: PropTypes.func,
   onMoveTimeLine: PropTypes.func,
@@ -17,7 +17,6 @@ const propTypes = {
   reservedIntervals: PropTypes.array,
   showSpinner: PropTypes.bool,
   actualDateInPixels: PropTypes.number,
-  isAddGameFetching: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -40,6 +39,8 @@ class MockGameCard extends React.PureComponent {
   animLoop = this.animLoop.bind(this); 
   myRef = React.createRef();
   running = true; 
+
+  GameCardWithUser = withUser(GameCard);
 
   componentDidMount() {
     const { current } = this.myRef; 
@@ -232,8 +233,7 @@ class MockGameCard extends React.PureComponent {
         isDragging={isDragging}
         ref={this.myRef}
       >
-        <GameCard
-          user={this.props.sessionState.authUser}
+        <this.GameCardWithUser
           display={this.props.display}
           customTitle={this.customTitle}
           customPosition
@@ -242,15 +242,13 @@ class MockGameCard extends React.PureComponent {
           <S.MockGameCard
             isAbleToReserve={isAbleToReserve}
           />
-        </GameCard>
+        </this.GameCardWithUser>
       </S.CardWrap>
     );
   }
 };
 
-const mapStateToProps = state => ({
-  sessionState: state.sessionState,
-  isAddGameFetching: state.timeLine.isAddGameFetching,
+const mapStateToProps = state => ({ 
 });
 
 const mapDispatchToProps = dispatch => ({
