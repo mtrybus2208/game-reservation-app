@@ -276,10 +276,6 @@ export const MessageButtonImage = styled.img`
   width: 23px;
 `;
 
-export const MessagesEnd = styled.div` 
-
-`;
-
 export const MessageTime = styled.div`
 
 `;

@@ -56,18 +56,18 @@ class DirectChatWrapper extends Component {
   componentDidMount() {
     this.setupReceiverData(this.props.receiverId);
 
-    if(this.props.isDirectChatRoomNotSaved(this.getDirectChatRoomId())) { 
+    if (this.props.isDirectChatRoomNotSaved(this.getDirectChatRoomId())) { 
       this.props.saveOpenedDirectChatRoomId(this.getDirectChatRoomId()); 
       this.fetchDirectChatMessages(this.getDirectChatRoomId());
     }
 
-    if(this.isWebsocketNotConnected(this.props.directChatWebsocket)) {
+    if (this.isWebsocketNotConnected(this.props.directChatWebsocket)) {
       this.handleFirstWebsocketConnection();
     }
   }
 
   componentDidUpdate() {
-    if(this.isEndOfMessagesDivReady() && this.state.isFirstMessagesScrollNotDone) {
+    if (this.isEndOfMessagesDivReady() && this.state.isFirstMessagesScrollNotDone) {
       this.scrollToBottom();
 
       this.setState({
@@ -75,7 +75,7 @@ class DirectChatWrapper extends Component {
       })
     }
 
-    if(this.isWebsocketFirstConnection(this.props.directChatWebsocket)) {
+    if (this.isWebsocketFirstConnection(this.props.directChatWebsocket)) {
       this.setWebsocketMessageReceiveHandler(this.props.directChatWebsocket);
       this.setWebsocketConnectionSustain(this.props.directChatWebsocket);
     }
@@ -139,12 +139,12 @@ class DirectChatWrapper extends Component {
     websocket.onmessage = (event) => {
       const websocketMessage = JSON.parse(event.data);
 
-      if(this.isDirectChatMessage(websocketMessage)) {
+      if (this.isDirectChatMessage(websocketMessage)) {
         const directChatMessage = websocketMessage.responseBody;
 
         this.props.addDirectChatMessage(directChatMessage);
 
-        if(this.hasUserDirectChatOpened()) {
+        if (this.hasUserDirectChatOpened()) {
           this.scrollToBottom();
         }
       }
@@ -176,7 +176,7 @@ class DirectChatWrapper extends Component {
 
       const openState = 1;
 
-      if(websocket.readyState === openState) {
+      if (websocket.readyState === openState) {
         websocket.send('');
       } else {
         clearInterval(websocketRefreshInterval);
@@ -187,7 +187,7 @@ class DirectChatWrapper extends Component {
   handleEnterClick = (event) => {
     const enterButtonKeyCode = 13;
 
-    if(event.charCode === enterButtonKeyCode) {
+    if (event.charCode === enterButtonKeyCode) {
       event.preventDefault();
       this.sendMessageHandler();
     }
@@ -198,7 +198,7 @@ class DirectChatWrapper extends Component {
   }
 
   sendMessage() {
-    if(this.isNotAnonymousUser() && this.validateTypedMessage()) {
+    if (this.isNotAnonymousUser() && this.validateTypedMessage()) {
 
       const playerMessage = JSON.parse(
         `{
@@ -306,7 +306,7 @@ class DirectChatWrapper extends Component {
             </React.Fragment>
           ))}
           
-          <S.MessagesEnd ref={(el) => { this.messagesEnd = el; }} />
+          <div ref={(el) => { this.messagesEnd = el; }} />
         </S.MessagesWrapper>
 
         <S.ScrollToBottomArrow 
