@@ -28,6 +28,7 @@ class GlobalChatWrapper extends Component {
   state = {
     typedMessage: '',
     isMessageWrapperScrolledDown: true,
+    notifyAboutNewMessage: false,
   };
 
   links = {
@@ -47,6 +48,8 @@ class GlobalChatWrapper extends Component {
       const websocketConnection = new WebSocket(this.links.socketConnectionApiUrl);
       this.props.setGlobalChatWebsocketConnection(websocketConnection);
     }
+
+    this.scrollToBottom();
   }
 
   componentDidUpdate() {
@@ -80,7 +83,7 @@ class GlobalChatWrapper extends Component {
           this.setState({
             typedMessage: '',
           })
-        )
+        );
     }
   }
 
@@ -94,7 +97,7 @@ class GlobalChatWrapper extends Component {
         this.getMessageAuthorById(globalChatMessage.playerId)
           .then(author => {
             this.updateMessagesList(author, globalChatMessage);
-            this.handleWrapperScroll();
+            this.handleScrollToBottomOnMessageReceive(author);
           })
           .catch(() =>
             console.log('Couldn\'t update messages list')
@@ -118,9 +121,24 @@ class GlobalChatWrapper extends Component {
     this.props.addGlobalChatMessage(message);
   }
 
+  handleScrollToBottomOnMessageReceive = (author) => {
+    const isMessageCreatedByCurrentLoggedUser = author.data.id === this.props.authUser.uid;
+
+    if (isMessageCreatedByCurrentLoggedUser) {
+      this.scrollToBottom();
+    } else {
+      if (this.isMessageWrapperScrolledDown()) {
+        this.scrollToBottom();
+      } else {
+        this.setState({
+          notifyAboutNewMessage: true,
+        });
+      }
+    }
+  }
+
   setWebsocketConnectionSustain = (websocket) => {
     const websocketRefreshInterval = setInterval(() => {
-
       const openState = 1;
 
       if (websocket.readyState === openState) {
@@ -164,7 +182,13 @@ class GlobalChatWrapper extends Component {
   handleWrapperScroll = () => {
     this.setState({
       isMessageWrapperScrolledDown: this.isMessageWrapperScrolledDown(),
-    })
+    });
+
+    if(this.isMessageWrapperScrolledDown()) {
+      this.setState({
+        notifyAboutNewMessage: false,
+      });
+    }
   }
 
   isMessageWrapperScrolledDown = () => {
@@ -214,7 +238,7 @@ class GlobalChatWrapper extends Component {
               </S.Message>
             ))} 
 
-            <S.MessagesEnd ref={(el) => { this.messagesEnd = el; }} />
+            <div ref={(el) => { this.messagesEnd = el; }} />
           </S.MessagesWrapper>
 
           <S.ScrollToBottomArrow 
@@ -223,6 +247,10 @@ class GlobalChatWrapper extends Component {
           > 
             <S.ScrollArrowIcon src={this.links.arrowIcon} />
           </S.ScrollToBottomArrow>
+
+          <S.NewMessageNotificationLabel notifyAboutNewMessage={this.state.notifyAboutNewMessage}>
+            You have new message(s)
+          </S.NewMessageNotificationLabel>
         </S.MessagesScrollWrapper>
 
         <S.MessageInputWrapper>

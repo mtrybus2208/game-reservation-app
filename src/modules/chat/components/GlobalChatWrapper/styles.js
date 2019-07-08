@@ -196,10 +196,19 @@ export const MessageButton = styled.button`
   }
 `;
 
-export const MessageButtonIcon = styled.img`
-  width: 25px;
+export const NewMessageNotificationLabel = styled.div`
+  display: ${props => (props.notifyAboutNewMessage ? 'block' : 'none')};
+  position: absolute;
+  padding: 5px 20px;
+  bottom: 23px;
+  left: 50px;
+  border: 1px solid #ce8d08;
+  background: #111315;
+  color: #ce8d08;
+  font-size: 10px;
+  text-transform: uppercase;
 `;
 
-export const MessagesEnd = styled.div`
-
+export const MessageButtonIcon = styled.img`
+  width: 25px;
 `;
