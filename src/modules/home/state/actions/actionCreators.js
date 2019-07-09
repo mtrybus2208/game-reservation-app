@@ -34,12 +34,6 @@ export const setGameTime = payload =>
     payload,
   });
 
-export const zoomTimeLine = payload =>
-  ({
-    type: actionTypes.ZOOM_TIMELINE,
-    payload,
-  });
-
 export const setCurrentReservationTime = payload =>
   ({
     type: actionTypes.SET_CURRENT_RESERVATION_TIME,

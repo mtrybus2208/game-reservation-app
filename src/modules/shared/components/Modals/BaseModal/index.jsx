@@ -6,6 +6,7 @@ const propTypes = {
   title: PropTypes.string,
   onConfirm: PropTypes.func,
   onDecline: PropTypes.func,
+  isLoading: PropTypes.bool,
 };
 
 const defaultProps = {
@@ -16,6 +17,7 @@ const BaseModal = ({
   title,
   onConfirm,
   onDecline,
+  isLoading,
 }) =>
   (
     <S.Modal>
@@ -23,14 +25,18 @@ const BaseModal = ({
         <S.Title>{title}</S.Title>
       </S.Header>
       <S.Body>
-        <button
-          onClick={onConfirm}
-        >OK</button>
-        <button
-          onClick={onDecline}
-        >NOT</button>
+        {
+          isLoading
+            ? '...Loading'
+            : (
+              <div>
+                <button onClick={onConfirm} >OK</button>
+                <button onClick={onDecline} >NOT</button>
+              </div>
+            )
+        }
       </S.Body>
-    </S.Modal> 
+    </S.Modal>
   );
 
 BaseModal.propTypes = propTypes;

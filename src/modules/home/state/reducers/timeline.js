@@ -15,6 +15,24 @@ const initialState = {
   reservedGames: [],
 };
 
+const addNewGameSuccess = (state, action) => (
+  {
+    ...state,
+    isAddGameFetching: false,
+    reservedGames: {
+      ...state.reservedGames,
+      byID: {
+        ...state.reservedGames.byID,
+        ...action.payload.byID,
+      },
+      allIds: [
+        ...state.reservedGames.allIds,
+        ...action.payload.allIds,
+      ],
+    }, 
+  }
+)
+
 export const timeLineReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ADD_NEW_GAME:
@@ -23,26 +41,11 @@ export const timeLineReducer = (state = initialState, action) => {
         isAddGameFetching: true,
       };
     case actionTypes.ADD_NEW_GAME_SUCCESS:
-      return {
-        ...state,
-        isAddGameFetching: false,
-        reservedGames: {
-          ...state.reservedGames,
-          byID: {
-            ...state.reservedGames.byID,
-            ...action.payload.byID,
-          },
-          allIds: [
-            ...state.reservedGames.allIds,
-            ...action.payload.allIds,
-          ],
-        },
-        
-      };
+      return addNewGameSuccess(state, action);
     case actionTypes.ADD_NEW_GAME_FAIL:
       return {
         ...state,
-        isAddGameFetching: false,
+        isAddGameFetching: false, 
       };
     case actionTypes.CHANGE_GAME_CONFIG_STATE:
       return {

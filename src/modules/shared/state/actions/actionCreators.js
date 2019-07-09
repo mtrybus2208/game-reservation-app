@@ -23,3 +23,13 @@ export const hideModal = () =>
   ({
     type: actionTypes.HIDE_MODAL,
   });
+
+export const startLoadingModal = () =>
+  ({
+    type: actionTypes.START_LOADING_MODAL,
+  });
+  
+export const stopLoadingModal = () =>
+  ({
+    type: actionTypes.STOP_LOADING_MODAL,
+  });

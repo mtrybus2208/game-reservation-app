@@ -9,11 +9,11 @@ const propTypes = {
   deleteGame: PropTypes.func,
   hideModal: PropTypes.func,
   modalProps: PropTypes.obj,
+  isLoading: PropTypes.bool,
 };
-
-const defaultProps = { 
-}; 
-
+const defaultProps = {
+  isLoading: false,
+};
 class DeleteGameModal extends PureComponent {
 
   handlerDeleteGame = this.handlerDeleteGame.bind(this);
@@ -29,6 +29,7 @@ class DeleteGameModal extends PureComponent {
         title="Do You want to delete this game?"
         onConfirm={this.handlerDeleteGame}
         onDecline={this.props.hideModal}
+        isLoading={this.props.isLoading}
       />
     );
   }
@@ -37,6 +38,7 @@ class DeleteGameModal extends PureComponent {
 const mapStateToProps = ({ modal }) => (
   {
     modalProps: modal.modalProps,
+    isLoading: modal.isLoading,
   }
 );
 
