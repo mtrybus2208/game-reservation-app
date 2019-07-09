@@ -3,7 +3,6 @@ import { actionTypes } from '../actions/actionTypes';
 const initialState = {
   modalType: null,
   modalProps: {},
-  isLoading: false,
 }
 
 export const modalReducer = (state = initialState, action) => {
@@ -18,16 +17,6 @@ export const modalReducer = (state = initialState, action) => {
       return {
         modalType: null,
         modalProps: {},
-      };
-    case actionTypes.START_LOADING_MODAL:
-      return {
-        ...state,
-        isLoading: true,
-      };
-    case actionTypes.STOP_LOADING_MODAL:
-      return {
-        ...state,
-        isLoading: false,
       };
     default:
       return state;

@@ -12,6 +12,7 @@ const initialState = {
   currentReservationTime: null,
   players: null,
   isAddGameFetching: false,
+  isDeleteGameFetching: false,
   reservedGames: [],
 };
 
@@ -45,13 +46,33 @@ export const timeLineReducer = (state = initialState, action) => {
     case actionTypes.ADD_NEW_GAME_FAIL:
       return {
         ...state,
-        isAddGameFetching: false, 
+        isAddGameFetching: false,
       };
+
+    case actionTypes.DELETE_GAME:
+      return {
+        ...state,
+        isDeleteGameFetching: true,
+      };
+      
+    case actionTypes.DELETE_GAME_SUCCESS:
+      return {
+        ...state,
+        isDeleteGameFetching: false,
+      };
+
+    case actionTypes.DELETE_GAME_FAIL:
+      return {
+        ...state,
+        isDeleteGameFetching: false,
+      };
+
     case actionTypes.CHANGE_GAME_CONFIG_STATE:
       return {
         ...state,
         gameConfigOpen: action.payload,
       };
+      
     case actionTypes.FETCH_RESERVED_GAMES_SUCCESS:
       return {
         ...state,

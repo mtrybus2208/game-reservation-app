@@ -8,7 +8,7 @@ import * as fromHomeActions from '@/modules/home/state/actions';
 const propTypes = {
   deleteGame: PropTypes.func,
   hideModal: PropTypes.func,
-  modalProps: PropTypes.obj,
+  modalProps: PropTypes.any,
   isLoading: PropTypes.bool,
 };
 const defaultProps = {
@@ -29,16 +29,16 @@ class DeleteGameModal extends PureComponent {
         title="Do You want to delete this game?"
         onConfirm={this.handlerDeleteGame}
         onDecline={this.props.hideModal}
-        isLoading={this.props.isLoading}
+        isLoading={this.props.isDeleteGameFetching}
       />
     );
   }
 }
 
-const mapStateToProps = ({ modal }) => (
+const mapStateToProps = ({ modal, timeLine }) => (
   {
     modalProps: modal.modalProps,
-    isLoading: modal.isLoading,
+    isDeleteGameFetching: timeLine.isDeleteGameFetching,
   }
 );
 
