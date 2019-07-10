@@ -35,7 +35,8 @@ class GlobalChatWrapper extends Component {
     directChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg',
     emojiIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595074/smiling-emoticon.svg',
     sendMessageIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg',
-    arrowIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1562304350/down-arrow.svg',
+    arrowIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1562587604/arrow.svg',
+    newMessageNotificationIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1562587599/email.svg',
     socketConnectionApiUrl: `${WS_API_URL}/socket/chat/global`,
     getPlayerApiUrl: `${API_URL}/players`,
     sendMessageApiUrl: `${API_URL}/chat/global`,
@@ -245,12 +246,12 @@ class GlobalChatWrapper extends Component {
             onClick={this.scrollToBottom}
             isScrolledDown={this.state.isMessageWrapperScrolledDown}
           > 
-            <S.ScrollArrowIcon src={this.links.arrowIcon} />
+            <S.ScrollIcon src={this.state.notifyAboutNewMessage ? this.links.newMessageNotificationIcon : this.links.arrowIcon} />
+            
+            {this.state.notifyAboutNewMessage &&
+              <S.NewMessageNotifitacion />
+            }
           </S.ScrollToBottomArrow>
-
-          <S.NewMessageNotificationLabel notifyAboutNewMessage={this.state.notifyAboutNewMessage}>
-            You have new message(s)
-          </S.NewMessageNotificationLabel>
         </S.MessagesScrollWrapper>
 
         <S.MessageInputWrapper>

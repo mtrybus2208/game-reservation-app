@@ -137,16 +137,30 @@ export const ScrollToBottomArrow = styled.button`
   padding: 0;
   bottom: 15px;
   right: 15px;
-  border: none;
+  border: 1px solid #ce8d08;
   background: #111315;
-  border-radius: 40px;
+  border-radius: 25px;
   cursor: pointer;
 `;
 
-export const ScrollArrowIcon = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 40px;
+export const ScrollIcon = styled.img`
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+export const NewMessageNotifitacion = styled.div`
+  width: 8px;
+  height: 8px;
+  border: none;
+  border-radius: 5px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: #F00;
 `;
 
 export const MessageInputWrapper = styled.div`
@@ -194,19 +208,6 @@ export const MessageButton = styled.button`
   &:first-child {
     border-right: 1.5px solid #111;
   }
-`;
-
-export const NewMessageNotificationLabel = styled.div`
-  display: ${props => (props.notifyAboutNewMessage ? 'block' : 'none')};
-  position: absolute;
-  padding: 5px 20px;
-  bottom: 23px;
-  left: 50px;
-  border: 1px solid #ce8d08;
-  background: #111315;
-  color: #ce8d08;
-  font-size: 10px;
-  text-transform: uppercase;
 `;
 
 export const MessageButtonIcon = styled.img`
