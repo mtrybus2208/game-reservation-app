@@ -278,53 +278,56 @@ class DirectChatWrapper extends Component {
       </S.DirectChatPlayerInfo>
 
       <S.MessagesScrollWrapper>
-        <S.MessagesWrapper
-          ref={this.messagesWrapper}
-          onScroll={this.handleWrapperScroll}
+        <div 
+          style={{height: '100%'}}
         >
-          {this.isMessagesListFetched() && this.props.directChatMessages[this.getDirectChatRoomId()].map((value, index) => (
-            <React.Fragment key={index}>
-              {value.receiverId == this.props.authUser.uid ? (
-                <S.IncomingMessageWrapper key={index}>
-                  <S.Message>
-                    <S.MessageHeader>
-                      <S.MessageAuthorName>
-                        {this.state.receiver.displayName}
-                      </S.MessageAuthorName>
-                      <S.MessageTime>
-                        {moment(value.messageSendDate).format('HH:mm')}
-                      </S.MessageTime>
-                    </S.MessageHeader>
+          <S.MessagesWrapper
+            ref={this.messagesWrapper}
+            onScroll={this.handleWrapperScroll}
+          >
+            {this.isMessagesListFetched() && this.props.directChatMessages[this.getDirectChatRoomId()].map((value, index) => (
+              <React.Fragment key={index}>
+                {value.receiverId == this.props.authUser.uid ? (
+                  <S.IncomingMessageWrapper key={index}>
+                    <S.Message>
+                      <S.MessageHeader>
+                        <S.MessageAuthorName>
+                          {this.state.receiver.displayName}
+                        </S.MessageAuthorName>
+                        <S.MessageTime>
+                          {moment(value.messageSendDate).format('HH:mm')}
+                        </S.MessageTime>
+                      </S.MessageHeader>
 
-                    <S.MessageText>
-                      {value.message}
-                    </S.MessageText>
-                  </S.Message>
-                </S.IncomingMessageWrapper>
-              ) : (
-                <S.OutgoingMessageWrapper> 
-                  <S.Message>
-                    <S.MessageHeader>
-                      <S.MessageAuthorName>
-                        {this.props.authUser.displayName}
-                      </S.MessageAuthorName>
-                      <S.MessageTime>
-                        {moment(value.messageSendDate).format('HH:mm')}
-                      </S.MessageTime>
-                    </S.MessageHeader>
+                      <S.MessageText>
+                        {value.message}
+                      </S.MessageText>
+                    </S.Message>
+                  </S.IncomingMessageWrapper>
+                ) : (
+                  <S.OutgoingMessageWrapper> 
+                    <S.Message>
+                      <S.MessageHeader>
+                        <S.MessageAuthorName>
+                          {this.props.authUser.displayName}
+                        </S.MessageAuthorName>
+                        <S.MessageTime>
+                          {moment(value.messageSendDate).format('HH:mm')}
+                        </S.MessageTime>
+                      </S.MessageHeader>
 
-                    <S.MessageText>
-                      {value.message}
-                    </S.MessageText>
-                  </S.Message>
-                </S.OutgoingMessageWrapper>
-              )}
-            </React.Fragment>
-          ))}
-          
-          <div ref={(el) => { this.messagesEnd = el; }} />
-        </S.MessagesWrapper>
-
+                      <S.MessageText>
+                        {value.message}
+                      </S.MessageText>
+                    </S.Message>
+                  </S.OutgoingMessageWrapper>
+                )}
+              </React.Fragment>
+            ))}
+            
+            <div ref={(el) => { this.messagesEnd = el; }} />
+          </S.MessagesWrapper>
+        </div>
         {!this.state.isMessageWrapperScrolledDown &&
           <S.ScrollToBottomArrow 
             onClick={this.scrollToBottom}
