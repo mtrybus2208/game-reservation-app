@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { removeKeyInObj } from '@/helpers/dataManipulation';
 import { actionTypes } from './../actions/actionTypes';
 
 const initialState = {
@@ -30,9 +31,25 @@ const addNewGameSuccess = (state, action) => (
         ...state.reservedGames.allIds,
         ...action.payload.allIds,
       ],
-    }, 
+    },
   }
-)
+);
+
+const deleteGameSuccess = (state, action) => {
+  const byID = (removeKeyInObj(state.reservedGames.byID, action.payload.gameId)).toString();
+  const allIds = state.reservedGames.allIds.filter(item => item !== action.payload.gameId);
+  return (
+    {
+      ...state,
+      isDeleteGameFetching: false,
+      reservedGames: {
+        ...state.reservedGames,
+        byID,
+        allIds,
+      },
+    }
+  );
+}
 
 export const timeLineReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -56,10 +73,7 @@ export const timeLineReducer = (state = initialState, action) => {
       };
       
     case actionTypes.DELETE_GAME_SUCCESS:
-      return {
-        ...state,
-        isDeleteGameFetching: false,
-      };
+      return deleteGameSuccess(state, action);
 
     case actionTypes.DELETE_GAME_FAIL:
       return {

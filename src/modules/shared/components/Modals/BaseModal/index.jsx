@@ -20,11 +20,9 @@ const BaseModal = ({
   onDecline,
   isLoading,
 }) => {
-  
-  const ModalBodyWithLoading = WithLoading(
-  'PUSH_SPINNER', {
+  const ModalBodyWithLoading = WithLoading('PUSH_SPINNER', {
     size: 30,
-    color:"#bd790b",
+    color: '#bd790b',
   })(S.Body);
 
   return (

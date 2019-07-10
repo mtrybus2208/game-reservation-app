@@ -108,7 +108,7 @@ function* workDeleteGame({ payload }) {
     };
  
     yield call(deleteGame, data);
-    yield put({ type: actionTypes.DELETE_GAME_SUCCESS });
+    yield put({ type: actionTypes.DELETE_GAME_SUCCESS, payload: data });
     yield put({ type: actionSharedTypes.HIDE_MODAL });
   } catch (e) {
     yield put({ type: actionTypes.DELETE_GAME_FAIL, message: e.message });
