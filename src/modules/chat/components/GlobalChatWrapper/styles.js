@@ -130,7 +130,6 @@ export const PlayerPicture = styled.img`
 `;
 
 export const ScrollToBottomArrow = styled.button`
-  display: ${props => (props.isScrolledDown ? 'none' : 'block')};
   position: absolute;
   width: 40px;
   height: 40px;

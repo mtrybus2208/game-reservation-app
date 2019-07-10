@@ -194,8 +194,9 @@ class GlobalChatWrapper extends Component {
 
   isMessageWrapperScrolledDown = () => {
     const messagesWrapper = this.messagesWrapper.current;
+    const chatHeight = 200;
 
-    return messagesWrapper.scrollTop >= (messagesWrapper.scrollHeight - messagesWrapper.clientHeight - 200);
+    return messagesWrapper.scrollTop >= (messagesWrapper.scrollHeight - messagesWrapper.clientHeight - chatHeight);
   }
 
   render() {
@@ -242,16 +243,18 @@ class GlobalChatWrapper extends Component {
             <div ref={(el) => { this.messagesEnd = el; }} />
           </S.MessagesWrapper>
 
-          <S.ScrollToBottomArrow 
-            onClick={this.scrollToBottom}
-            isScrolledDown={this.state.isMessageWrapperScrolledDown}
-          > 
-            <S.ScrollIcon src={this.state.notifyAboutNewMessage ? this.links.newMessageNotificationIcon : this.links.arrowIcon} />
-            
-            {this.state.notifyAboutNewMessage &&
-              <S.NewMessageNotifitacion />
-            }
-          </S.ScrollToBottomArrow>
+          {!this.state.isMessageWrapperScrolledDown &&
+            <S.ScrollToBottomArrow 
+              onClick={this.scrollToBottom}
+            > 
+              <S.ScrollIcon src={this.state.notifyAboutNewMessage ? this.links.newMessageNotificationIcon : this.links.arrowIcon} />
+              
+              {this.state.notifyAboutNewMessage &&
+                <S.NewMessageNotifitacion />
+              }
+            </S.ScrollToBottomArrow>
+          }
+         
         </S.MessagesScrollWrapper>
 
         <S.MessageInputWrapper>
