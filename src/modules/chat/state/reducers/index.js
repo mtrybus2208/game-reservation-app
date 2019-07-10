@@ -3,7 +3,7 @@ import { actionTypes } from '../actions/actionTypes';
 export const initialState = {
   chatMode: 'GLOBAL',
   globalChatMessages: [],
-  directChatMessages: [],
+  directChatMessages: null,
 };
 
 export const chatReducer = (state = initialState, action) => {
