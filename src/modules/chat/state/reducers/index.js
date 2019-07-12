@@ -18,11 +18,19 @@ export const chatReducer = (state = initialState, action) => {
         ...state,
         chatMode: action.chatMode,
       };
-    case actionTypes.ADD_GLOBAL_CHAT_MESSAGE:
+    case actionTypes.ADD_GLOBAL_CHAT_MESSAGE: {
+      const maximumNumberOfGlobalChatMessages = 50;
+      const isMaximumNumberOfGlobalChatMessages = state.globalChatMessages.length === maximumNumberOfGlobalChatMessages;
+
+      if (isMaximumNumberOfGlobalChatMessages) {   
+        state.globalChatMessages.shift();
+      }
+
       return {
         ...state,
         globalChatMessages: [...state.globalChatMessages, action.message],
       };
+    }
     case actionTypes.FETCH_DIRECT_CHAT_MESSAGES_SUCCESS: {
       const directChatRoomId = Object.keys(action.messages)[0];
       
