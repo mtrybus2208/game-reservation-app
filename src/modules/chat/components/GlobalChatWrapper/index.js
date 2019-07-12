@@ -11,9 +11,13 @@ const propTypes = {
   authUser: PropTypes.object,
   globalChatMessages: PropTypes.array,
   globalChatWebsocket: PropTypes.object,
+  globalChatMessagesWrapper: PropTypes.object,
+  globalChatMessagesEnd: PropTypes.object,
   setDirectChatMode: PropTypes.func,
   addGlobalChatMessage: PropTypes.func,
-  setGlobalChatWebsocketConnection: PropTypes.func,
+  setGlobalChatWebsocketConnection: PropTypes.func, 
+  setGlobalChatMessagesWrapperReference: PropTypes.func, 
+  setGlobalChatMessagesEndReference: PropTypes.func, 
 };
 
 const defaultProps = { };
@@ -23,6 +27,7 @@ class GlobalChatWrapper extends Component {
   constructor(props) {
     super(props);
     this.messagesWrapper = React.createRef();
+    this.messagesEnd = React.createRef();
   }
 
   state = {
@@ -45,29 +50,25 @@ class GlobalChatWrapper extends Component {
   debouncedOnClick = debounced(200, this.sendMessage.bind(this));
 
   componentDidMount() {
-    if (this.isWebsocketNotConnected(this.props.globalChatWebsocket))  {
+    const isWebsocketNotConnected = this.props.globalChatWebsocket === null;
+
+    if (isWebsocketNotConnected)  {
       const websocketConnection = new WebSocket(this.links.socketConnectionApiUrl);
       this.props.setGlobalChatWebsocketConnection(websocketConnection);
     }
-
-    this.scrollToBottom();
   }
 
   componentDidUpdate() {
-    if (this.isWebsocketFirstConnection(this.props.globalChatWebsocket)) {
+    const isWebsocketFirstConnection = this.props.globalChatWebsocket.onmessage === null;
+
+    if (isWebsocketFirstConnection) {
       this.setWebsocketMessageReceiveHandler(this.props.globalChatWebsocket);
       this.setWebsocketConnectionSustain(this.props.globalChatWebsocket);
+      this.props.setGlobalChatMessagesWrapperReference(this.messagesWrapper);
+      this.props.setGlobalChatMessagesEndReference(this.messagesEnd)
     }
   }
-
-  isWebsocketNotConnected(websocket) {
-    return websocket === null;
-  }
-
-  isWebsocketFirstConnection(websocket) {
-    return websocket.onmessage === null;
-  }
-
+  
   sendMessage() {
     if (this.isNotAnonymousUser() && this.validateTypedMessage()) {
 
@@ -177,7 +178,7 @@ class GlobalChatWrapper extends Component {
   }
 
   scrollToBottom = () => {
-    this.messagesEnd.scrollIntoView({ behavior: "auto" });
+    this.props.globalChatMessagesEnd.current.scrollIntoView({ behavior: "auto" });
   }
 
   handleWrapperScroll = () => {
@@ -193,7 +194,7 @@ class GlobalChatWrapper extends Component {
   }
 
   isMessageWrapperScrolledDown = () => {
-    const messagesWrapper = this.messagesWrapper.current;
+    const messagesWrapper = this.props.globalChatMessagesWrapper.current;
     const chatHeight = 200;
 
     return messagesWrapper.scrollTop >= (messagesWrapper.scrollHeight - messagesWrapper.clientHeight - chatHeight);
@@ -240,7 +241,7 @@ class GlobalChatWrapper extends Component {
               </S.Message>
             ))} 
 
-            <div ref={(el) => { this.messagesEnd = el; }} />
+            <div ref={this.messagesEnd} />
           </S.MessagesWrapper>
 
           {!this.state.isMessageWrapperScrolledDown &&

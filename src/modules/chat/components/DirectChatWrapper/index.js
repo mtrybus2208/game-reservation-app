@@ -11,11 +11,15 @@ import moment from 'moment';
 const propTypes = { 
   setGlobalChatMode: PropTypes.func,
   setDirectChatWebsocketConnection: PropTypes.func,
+  setDirectChatMessagesWrapperReference: PropTypes.func, 
+  setDirectChatMessagesEndReference: PropTypes.func, 
   saveOpenedDirectChatRoomId: PropTypes.func,
   isDirectChatRoomNotSaved: PropTypes.func,
   fetchDirectChatMessages: PropTypes.func.isRequired,
   addDirectChatMessage: PropTypes.func.isRequired,
   directChatWebsocket: PropTypes.object,
+  directChatMessagesWrapper: PropTypes.object,
+  directChatMessagesEnd: PropTypes.object,
   authUser: PropTypes.object.isRequired,
   receiverId: PropTypes.string.isRequired,
   directChatMessages: PropTypes.object,
@@ -28,6 +32,7 @@ class DirectChatWrapper extends Component {
   constructor(props) {
     super(props);
     this.messagesWrapper = React.createRef();
+    this.messagesEnd = React.createRef();
   }
 
   state = {
@@ -66,8 +71,6 @@ class DirectChatWrapper extends Component {
     if (this.isWebsocketNotConnected(this.props.directChatWebsocket)) {
       this.handleFirstWebsocketConnection();
     }
-
-    this.scrollToBottom();
   }
 
   componentDidUpdate() {
@@ -84,6 +87,8 @@ class DirectChatWrapper extends Component {
     if (this.isWebsocketFirstConnection(this.props.directChatWebsocket)) {
       this.setWebsocketMessageReceiveHandler(this.props.directChatWebsocket);
       this.setWebsocketConnectionSustain(this.props.directChatWebsocket);
+      this.props.setDirectChatMessagesWrapperReference(this.messagesWrapper);
+      this.props.setDirectChatMessagesEndReference(this.messagesEnd)
     }
   }
 
@@ -172,10 +177,6 @@ class DirectChatWrapper extends Component {
     }
   }
 
-  scrollToBottom = () => {
-    this.messagesEnd.scrollIntoView({ behavior: "auto" });
-  }
-
   openGlobalChat = () => {
     this.props.setGlobalChatMode();
   }
@@ -240,7 +241,11 @@ class DirectChatWrapper extends Component {
   }
 
   scrollToBottom = () => {
-    this.messagesEnd.scrollIntoView({ behavior: "auto" });
+    if (this.messagesEnd.current !== undefined && this.messagesEnd.current !== null) {
+      this.messagesEnd.current.scrollIntoView({ behavior: "auto" })
+    } else {
+      this.props.directChatMessagesEnd.current.scrollIntoView({ behavior: "auto" });
+    }
   }
 
   handleWrapperScroll = () => {
@@ -256,8 +261,10 @@ class DirectChatWrapper extends Component {
   }
 
   isMessageWrapperScrolledDown = () => {
-    const messagesWrapper = this.messagesWrapper.current;
     const chatHeight = 200;
+    const messagesWrapper = this.messagesEnd !== null && this.messagesWrapper.current !== undefined
+      ? this.messagesWrapper.current
+      : this.props.directChatMessagesWrapper.current;   
 
     return messagesWrapper.scrollTop >= (messagesWrapper.scrollHeight - messagesWrapper.clientHeight - chatHeight);
   }
@@ -278,56 +285,53 @@ class DirectChatWrapper extends Component {
       </S.DirectChatPlayerInfo>
 
       <S.MessagesScrollWrapper>
-        <div 
-          style={{height: '100%'}}
+        <S.MessagesWrapper
+          ref={this.messagesWrapper}
+          onScroll={this.handleWrapperScroll}
         >
-          <S.MessagesWrapper
-            ref={this.messagesWrapper}
-            onScroll={this.handleWrapperScroll}
-          >
-            {this.isMessagesListFetched() && this.props.directChatMessages[this.getDirectChatRoomId()].map((value, index) => (
-              <React.Fragment key={index}>
-                {value.receiverId == this.props.authUser.uid ? (
-                  <S.IncomingMessageWrapper key={index}>
-                    <S.Message>
-                      <S.MessageHeader>
-                        <S.MessageAuthorName>
-                          {this.state.receiver.displayName}
-                        </S.MessageAuthorName>
-                        <S.MessageTime>
-                          {moment(value.messageSendDate).format('HH:mm')}
-                        </S.MessageTime>
-                      </S.MessageHeader>
+          {this.isMessagesListFetched() && this.props.directChatMessages[this.getDirectChatRoomId()].map((value, index) => (
+            <React.Fragment key={index}>
+              {value.receiverId == this.props.authUser.uid ? (
+                <S.IncomingMessageWrapper key={index}>
+                  <S.Message>
+                    <S.MessageHeader>
+                      <S.MessageAuthorName>
+                        {this.state.receiver.displayName}
+                      </S.MessageAuthorName>
+                      <S.MessageTime>
+                        {moment(value.messageSendDate).format('HH:mm')}
+                      </S.MessageTime>
+                    </S.MessageHeader>
 
-                      <S.MessageText>
-                        {value.message}
-                      </S.MessageText>
-                    </S.Message>
-                  </S.IncomingMessageWrapper>
-                ) : (
-                  <S.OutgoingMessageWrapper> 
-                    <S.Message>
-                      <S.MessageHeader>
-                        <S.MessageAuthorName>
-                          {this.props.authUser.displayName}
-                        </S.MessageAuthorName>
-                        <S.MessageTime>
-                          {moment(value.messageSendDate).format('HH:mm')}
-                        </S.MessageTime>
-                      </S.MessageHeader>
+                    <S.MessageText>
+                      {value.message}
+                    </S.MessageText>
+                  </S.Message>
+                </S.IncomingMessageWrapper>
+              ) : (
+                <S.OutgoingMessageWrapper> 
+                  <S.Message>
+                    <S.MessageHeader>
+                      <S.MessageAuthorName>
+                        {this.props.authUser.displayName}
+                      </S.MessageAuthorName>
+                      <S.MessageTime>
+                        {moment(value.messageSendDate).format('HH:mm')}
+                      </S.MessageTime>
+                    </S.MessageHeader>
 
-                      <S.MessageText>
-                        {value.message}
-                      </S.MessageText>
-                    </S.Message>
-                  </S.OutgoingMessageWrapper>
-                )}
-              </React.Fragment>
-            ))}
-            
-            <div ref={(el) => { this.messagesEnd = el; }} />
-          </S.MessagesWrapper>
-        </div>
+                    <S.MessageText>
+                      {value.message}
+                    </S.MessageText>
+                  </S.Message>
+                </S.OutgoingMessageWrapper>
+              )}
+            </React.Fragment>
+          ))}
+          
+          <div ref={this.messagesEnd} />
+        </S.MessagesWrapper>
+
         {!this.state.isMessageWrapperScrolledDown &&
           <S.ScrollToBottomArrow 
             onClick={this.scrollToBottom}

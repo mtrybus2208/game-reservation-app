@@ -19,7 +19,11 @@ class ChatSidebar extends Component {
         super(props)
 
         this.setGlobalChatWebsocketConnection = this.setGlobalChatWebsocketConnection.bind(this);
+        this.setGlobalChatMessagesWrapperReference = this.setGlobalChatMessagesWrapperReference.bind(this);
+        this.setGlobalChatMessagesEndReference = this.setGlobalChatMessagesEndReference.bind(this);
         this.setDirectChatWebsocketConnection = this.setDirectChatWebsocketConnection.bind(this);
+        this.setDirectChatMessagesWrapperReference = this.setDirectChatMessagesWrapperReference.bind(this);
+        this.setDirectChatMessagesEndReference = this.setDirectChatMessagesEndReference.bind(this);
         this.saveOpenedDirectChatRoomId = this.saveOpenedDirectChatRoomId.bind(this);
         this.isDirectChatRoomNotSaved = this.isDirectChatRoomNotSaved.bind(this);
     }
@@ -28,6 +32,10 @@ class ChatSidebar extends Component {
         globalChatWebsocket: null,
         directChatWebsocket: null,
         openedDirectChatRooms: [],
+        globalChatMessagesWrapper: null,
+        globalChatMessagesEnd: null,
+        directChatMessagesWrapper: null,
+        directChatMessagesEnd: null,
     };
 
     setGlobalChatWebsocketConnection(websocket) {
@@ -36,9 +44,33 @@ class ChatSidebar extends Component {
         });
     }
 
+    setGlobalChatMessagesWrapperReference(reference) {
+        this.setState({
+            globalChatMessagesWrapper: Object.assign({}, reference),
+        });
+    }
+
+    setGlobalChatMessagesEndReference(reference) {
+        this.setState({
+            globalChatMessagesEnd: Object.assign({}, reference),
+        });
+    }
+
     setDirectChatWebsocketConnection(websocket) {
         this.setState({
             directChatWebsocket: websocket,
+        });
+    }
+
+    setDirectChatMessagesWrapperReference(reference) {
+        this.setState({
+            directChatMessagesWrapper: Object.assign({}, reference),
+        });
+    }
+
+    setDirectChatMessagesEndReference(reference) {
+        this.setState({
+            directChatMessagesEnd: Object.assign({}, reference),
         });
     }
 
@@ -60,7 +92,11 @@ class ChatSidebar extends Component {
                         authUser={this.props.authUser} 
                         receiverId={this.props.chat.chatMode}
                         directChatWebsocket={this.state.directChatWebsocket}
+                        directChatMessagesWrapper={this.state.directChatMessagesWrapper}
+                        directChatMessagesEnd={this.state.directChatMessagesEnd}
                         setDirectChatWebsocketConnection={this.setDirectChatWebsocketConnection}
+                        setDirectChatMessagesWrapperReference={this.setDirectChatMessagesWrapperReference}
+                        setDirectChatMessagesEndReference={this.setDirectChatMessagesEndReference}
                         saveOpenedDirectChatRoomId={this.saveOpenedDirectChatRoomId}
                         isDirectChatRoomNotSaved={this.isDirectChatRoomNotSaved}
                         directChatMessages={this.props.chat.directChatMessages}
@@ -70,7 +106,11 @@ class ChatSidebar extends Component {
                         authUser={this.props.authUser} 
                         globalChatMessages={this.props.chat.globalChatMessages}
                         globalChatWebsocket={this.state.globalChatWebsocket}
-                        setGlobalChatWebsocketConnection={this.setGlobalChatWebsocketConnection}
+                        globalChatMessagesWrapper={this.state.globalChatMessagesWrapper}
+                        globalChatMessagesEnd={this.state.globalChatMessagesEnd}
+                        setGlobalChatWebsocketConnection={this.setGlobalChatWebsocketConnection} 
+                        setGlobalChatMessagesWrapperReference={this.setGlobalChatMessagesWrapperReference}
+                        setGlobalChatMessagesEndReference={this.setGlobalChatMessagesEndReference}
                     />
                 )}
             </React.Fragment>
