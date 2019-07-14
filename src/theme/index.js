@@ -6,6 +6,8 @@ const theme = {
   borderColor: '#ccc',
   baseFontColor: '#484747',
   darkFontColor: '#111315',
+  success: '#1a3e24',
+  error: '#581a1a',
   borderRadius: {
     button: '25px',
   },

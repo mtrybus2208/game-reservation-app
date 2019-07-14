@@ -34,7 +34,23 @@ export const Body = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 15px;
+  align-items: stretch;
   flex: 1 1 100%;
 `;
- 
+
+export const ActionBox = styled.div`
+  color: ${props => props.theme.accent};
+  display: flex;
+  flex: 1 1 auto;
+`;
+
+export const ActionItem = styled.div`
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:first-child {
+    border-right: 1px solid #08090a;
+  }
+`;

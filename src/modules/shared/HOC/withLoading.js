@@ -1,5 +1,6 @@
 import React from 'react';
 import { PushSpinner, ClapSpinner } from 'react-spinners-kit';
+import { Centered } from '@/modules/shared/components/AppGrid';
 
 const SPINNERS = {
   PUSH_SPINNER: PushSpinner,
@@ -13,7 +14,12 @@ const WithLoading = (type, conf) => Component =>
     const SpecificSpinner = SPINNERS[type];
 
     return (
-      <SpecificSpinner {...conf} />
+      <Component {...props} >
+        <Centered>
+          <SpecificSpinner {...conf} />
+        </Centered>
+      </Component>
+
     );
   };
 

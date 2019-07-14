@@ -126,6 +126,10 @@ module.exports = {
         exclude: /(config|node_modules|registerServiceWorker.js|nodeTest.js|reactNotes.jsx|webpack.config)/,
       },
       {
+        test: /\.svg$/,
+        use: ['@svgr/webpack', 'url-loader'],
+      },
+      {
         // "oneOf" will traverse all following loaders until one will
         // match the requirements. When no loader matches it will fall
         // back to the "file" loader at the end of the loader list.

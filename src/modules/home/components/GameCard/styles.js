@@ -127,7 +127,7 @@ export const InfoRow = styled.div`
   position: relative;
 `;
 
-export const CloseIcon = styled.div`
+export const CloseIconBox = styled.div`
   height: 20px;
   width: 20px;
   display: flex;

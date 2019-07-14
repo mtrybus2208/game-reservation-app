@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { ClapSpinner } from 'react-spinners-kit';
+import { ThemeContext } from 'styled-components';
 import Avatar from '@/modules/shared/components/Avatar';
 import CircleItem from '@/modules/shared/components/CircleItem';
 import BaseIcon from '@/modules/shared/components/BaseIcon';
+import  { ReactComponent as CloseIcon }  from '@/assets/Icons/close.svg';
 import * as S from './styles';
 
 const propTypes = {
@@ -36,8 +38,7 @@ const GameCard = ({
   showSpinner,
   showModal,
 }) => {
-  useEffect(() => {
-  })
+  const theme = useContext(ThemeContext);
 
   const handlerDeleteGame = () => {
     showModal({
@@ -63,14 +64,15 @@ const GameCard = ({
           <span>{display.gameTime}</span>
           {
             isReservedByUser && (
-              <S.CloseIcon
+              <S.CloseIconBox
                 onClick={handlerDeleteGame}
               >
-                <BaseIcon
-                  path="https://res.cloudinary.com/dfmqgkkbx/image/upload/v1560257452/close-button.svg"
-                  size="15px"
+                <CloseIcon
+                  fill={theme.accent}
+                  width="15px"
+                  height="15px"
                 />
-              </S.CloseIcon>
+              </S.CloseIconBox>
             )
           }
         </S.InfoRow>
