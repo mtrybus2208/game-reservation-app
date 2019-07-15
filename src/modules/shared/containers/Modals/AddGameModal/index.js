@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import BaseModal from '@/modules/shared/components/Modals/BaseModal';
+import AddGameTitle from '@/modules/shared/components/Modals/BaseModal/components/AddGameTitle';
+import { getHoursFromPixels } from '@/modules/home/state/selectors';
 import * as fromActions from '@/modules/shared/state/actions';
 import * as fromHomeActions from '@/modules/home/state/actions';
 
@@ -13,6 +15,10 @@ const AddGameModal = () => {
 
   const isAddGameFetching = useSelector(({ timeLine }) => timeLine.isAddGameFetching);
 
+  const currentReservationTime = useSelector(state => getHoursFromPixels(state));
+
+  const duration = useSelector(({ gameReservationState }) => (gameReservationState.time || {}).duration);
+
   const dispatch = useDispatch();
 
   const handlerHideModal = () => dispatch(fromActions.hideModal());
@@ -21,7 +27,12 @@ const AddGameModal = () => {
 
   return (
     <BaseModal
-      title="Do You want to reserve game at: 13:00?"
+      customTitle={
+        <AddGameTitle
+          gameStartTime={currentReservationTime}
+          duration={duration}
+        />
+      }
       onConfirm={handlerAddGame}
       onDecline={handlerHideModal}
       isLoading={isAddGameFetching}

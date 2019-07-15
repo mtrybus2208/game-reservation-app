@@ -36,7 +36,7 @@ const addNewGameSuccess = (state, action) => (
 );
 
 const deleteGameSuccess = (state, action) => {
-  const byID = (removeKeyInObj(state.reservedGames.byID, action.payload.gameId)).toString();
+  const byID = removeKeyInObj(state.reservedGames.byID, (action.payload.gameId).toString());
   const allIds = state.reservedGames.allIds.filter(item => item !== action.payload.gameId);
   return (
     {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import * as S from './styles';
 
 const propTypes = {
-  actionColors: PropTypes.obj,
+  actionColors: PropTypes.object,
   onAction: PropTypes.func,
   onEnter: PropTypes.func,
   onLeave: PropTypes.func,

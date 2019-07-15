@@ -9,6 +9,7 @@ import * as S from './styles';
 
 const propTypes = {
   title: PropTypes.string,
+  customTitle: PropTypes.object,
   onConfirm: PropTypes.func,
   onDecline: PropTypes.func,
   isLoading: PropTypes.bool,
@@ -24,6 +25,7 @@ const BaseModal = ({
   onConfirm,
   onDecline,
   isLoading,
+  customTitle,
 }) => {
   const theme = useContext(ThemeContext);
 
@@ -35,7 +37,7 @@ const BaseModal = ({
   return (
     <S.Modal>
       <S.Header>
-        <S.Title>{title}</S.Title>
+        <S.Title>{customTitle || title}</S.Title>
       </S.Header>
         <ModalBodyWithLoading isLoading={isLoading}>
           <S.ActionBox>
