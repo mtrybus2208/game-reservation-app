@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import DeleteGameModal from '@/modules/shared/containers/Modals/DeleteGameModal';
+import AddGameModal from '@/modules/shared/containers/Modals/AddGameModal';
 import ModalWrapper from '@/modules/shared/components/Modals/ModalWrapper';
 
 const propTypes = {
@@ -14,8 +15,8 @@ const defaultProps = {
 
 const MODAL_COMPONENTS = {
   DELETE_GAME_MODAL: DeleteGameModal,
-  // ADD_GAME_MODAL: AddGameModal,
-}
+  ADD_GAME_MODAL: AddGameModal,
+};
 
 class ModalRoot extends PureComponent {
 

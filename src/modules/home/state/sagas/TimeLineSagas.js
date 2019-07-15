@@ -94,6 +94,7 @@ function* workAddNewGame({ payload }) {
     const reservedGames = yield call(makeEntieties, [data]);
     yield put({ type: actionTypes.ADD_NEW_GAME_SUCCESS, payload: reservedGames });
     yield put({ type: actionTypes.HIDE_USER_RESERVATION_CARD });
+    yield put({ type: actionSharedTypes.HIDE_MODAL });
   } catch (e) {
     yield put({ type: actionTypes.ADD_NEW_GAME_FAIL, message: e.message });
   }

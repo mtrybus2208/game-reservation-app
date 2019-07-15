@@ -45,9 +45,9 @@ const GameCard = ({
       modalProps: {
         gameId,
       },
-      modalType: 'DELETE_GAME_MODAL'
-    })
-  }
+      modalType: 'DELETE_GAME_MODAL',
+    });
+  };
 
   const avatar = user && (user.photoUrl || user.photoURL)
     ? <Avatar path={(user.photoUrl || user.photoURL)} />

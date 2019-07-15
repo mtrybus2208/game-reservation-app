@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { PushSpinner } from 'react-spinners-kit';
 import { GAMES, GAMES_DURATION } from '@/constants/gameSettings';
+import * as fromSharedActions from '@/modules/shared/state/actions';
 import {
   getReservationInHours,
   getHoursFromPixels,
@@ -20,7 +21,7 @@ const propTypes = {
   endLastReservation: PropTypes.string,
   addNewGame: PropTypes.func.isRequired,
   setGameTime: PropTypes.func.isRequired,
-  setGameType: PropTypes.func.isRequired,
+  showModal: PropTypes.func,
 };
 
 class GameReservation extends Component {
@@ -44,6 +45,13 @@ class GameReservation extends Component {
     this.props.setGameTime(time);
   }
 
+  handlerAddGame = () => () => {
+    this.props.showModal({
+      modalProps: { },
+      modalType: 'ADD_GAME_MODAL',
+    });
+  };
+
   render() {
     const { isAddGameFetching } = this.props.timeLine;
     return (
@@ -63,7 +71,7 @@ class GameReservation extends Component {
         <S.CtaWrapper>
           <BaseButton.Cta 
             maxWidth="480px"
-            onClick={this.addNewGame()}
+            onClick={this.handlerAddGame()}
           >
             <PushSpinner
               size={30}
@@ -97,6 +105,9 @@ const mapDispatchToProps = dispatch => ({
   },
   setGameTime: payload => {
     dispatch(fromActions.setGameTime(payload));
+  },
+  showModal: payload => {
+    dispatch(fromSharedActions.showModal(payload));
   },
 });
 
