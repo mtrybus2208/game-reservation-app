@@ -79,7 +79,7 @@ export const MessagesWrapper = styled.div`
   align-items: center;
   padding-bottom: 35px;
   width: 100%;
-  height: calc(100% - 190px);
+  height: 100%;
   background: #16181b;
   overflow: auto;
   
@@ -94,6 +94,12 @@ export const MessagesWrapper = styled.div`
   &::-webkit-scrollbar-thumb {
     background: #1b1e22;
   }
+`;
+
+export const MessagesScrollWrapper = styled.div`
+  height: calc(100% - 190px);
+  width: 100%;
+  position: relative;
 `;
 
 export const IncomingMessageWrapper = styled.div`
@@ -245,14 +251,42 @@ export const MessageButton = styled.button`
   }
 `;
 
+export const ScrollToBottomArrow = styled.button`
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  bottom: 15px;
+  right: 15px;
+  border: 1px solid #ce8d08;
+  background: #111315;
+  border-radius: 25px;
+  cursor: pointer;
+`;
+
+export const ScrollIcon = styled.img`
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+export const NewMessageNotifitacion = styled.div`
+  width: 8px;
+  height: 8px;
+  border: none;
+  border-radius: 5px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: #F00;
+`;
+
 export const MessageButtonImage = styled.img`
   height: 23px;
   width: 23px;
-`;
-
-
-export const MessagesEnd = styled.div` 
-
 `;
 
 export const MessageTime = styled.div`

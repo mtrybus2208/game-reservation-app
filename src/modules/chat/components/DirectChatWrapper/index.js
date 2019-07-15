@@ -18,12 +18,17 @@ const propTypes = {
   directChatWebsocket: PropTypes.object,
   authUser: PropTypes.object.isRequired,
   receiverId: PropTypes.string.isRequired,
-  directChatMessages: PropTypes.any,
+  directChatMessages: PropTypes.object,
 };
 
 const defaultProps = { };
 
 class DirectChatWrapper extends Component {
+
+  constructor(props) {
+    super(props);
+    this.messagesWrapper = React.createRef();
+  }
 
   state = {
     typedMessage: '',
@@ -34,10 +39,14 @@ class DirectChatWrapper extends Component {
       photoUrl: '',
     },
     isFirstMessagesScrollNotDone: true,
+    isMessageWrapperScrolledDown: true,
+    notifyAboutNewMessage: false,
   };
 
   links = {
     globalChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553015547/message.svg',
+    arrowIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1562587604/arrow.svg',
+    newMessageNotificationIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1562587599/email.svg',
     getPlayerApiUrl: `${API_URL}/players`,
     socketConnectionApiUrl: `${WS_API_URL}/socket/chat/direct`,
     sendMessageApiUrl: `${API_URL}/chat/direct/messages`,
@@ -49,18 +58,22 @@ class DirectChatWrapper extends Component {
   componentDidMount() {
     this.setupReceiverData(this.props.receiverId);
 
-    if(this.props.isDirectChatRoomNotSaved(this.getDirectChatRoomId())) { 
+    if (this.props.isDirectChatRoomNotSaved(this.getDirectChatRoomId())) { 
       this.props.saveOpenedDirectChatRoomId(this.getDirectChatRoomId()); 
       this.fetchDirectChatMessages(this.getDirectChatRoomId());
     }
 
-    if(this.isWebsocketNotConnected(this.props.directChatWebsocket)) {
+    if (this.isWebsocketNotConnected(this.props.directChatWebsocket)) {
       this.handleFirstWebsocketConnection();
     }
+
+    this.scrollToBottom();
   }
 
   componentDidUpdate() {
-    if(this.isEndOfMessagesDivReady() && this.state.isFirstMessagesScrollNotDone) {
+    const isFirstMessagesFetch = this.state.isFirstMessagesScrollNotDone && this.props.directChatMessages !== null;
+
+    if (isFirstMessagesFetch) {
       this.scrollToBottom();
 
       this.setState({
@@ -68,7 +81,7 @@ class DirectChatWrapper extends Component {
       })
     }
 
-    if(this.isWebsocketFirstConnection(this.props.directChatWebsocket)) {
+    if (this.isWebsocketFirstConnection(this.props.directChatWebsocket)) {
       this.setWebsocketMessageReceiveHandler(this.props.directChatWebsocket);
       this.setWebsocketConnectionSustain(this.props.directChatWebsocket);
     }
@@ -131,29 +144,32 @@ class DirectChatWrapper extends Component {
   setWebsocketMessageReceiveHandler = (websocket) => {
     websocket.onmessage = (event) => {
       const websocketMessage = JSON.parse(event.data);
+      const isDirectChatMessage = websocketMessage.responseType === 'DIRECT_CHAT';
 
-      if(this.isDirectChatMessage(websocketMessage)) {
+      if (isDirectChatMessage) {
         const directChatMessage = websocketMessage.responseBody;
+        const messageAuthorId = directChatMessage.senderId;
 
         this.props.addDirectChatMessage(directChatMessage);
-
-        if(this.hasUserDirectChatOpened()) {
-          this.scrollToBottom();
-        }
+        this.handleScrollToBottomOnMessageReceive(messageAuthorId);
       }
     };
   }
 
-  isDirectChatMessage(message) {
-    return message.responseType === 'DIRECT_CHAT';
-  }
+  handleScrollToBottomOnMessageReceive = (messageAuthorId) => {
+    const isMessageCreatedByCurrentLoggedUser = messageAuthorId === this.props.authUser.uid;
 
-  isEndOfMessagesDivReady = () => {
-    return this.messagesEnd !== undefined;
-  }
-
-  hasUserDirectChatOpened = () => {
-    return this.messagesEnd !== null;
+    if (isMessageCreatedByCurrentLoggedUser) {
+      this.scrollToBottom();
+    } else {
+      if (this.isMessageWrapperScrolledDown()) {
+        this.scrollToBottom();
+      } else {
+        this.setState({
+          notifyAboutNewMessage: true,
+        });
+      }
+    }
   }
 
   scrollToBottom = () => {
@@ -169,7 +185,7 @@ class DirectChatWrapper extends Component {
 
       const openState = 1;
 
-      if(websocket.readyState === openState) {
+      if (websocket.readyState === openState) {
         websocket.send('');
       } else {
         clearInterval(websocketRefreshInterval);
@@ -180,7 +196,7 @@ class DirectChatWrapper extends Component {
   handleEnterClick = (event) => {
     const enterButtonKeyCode = 13;
 
-    if(event.charCode === enterButtonKeyCode) {
+    if (event.charCode === enterButtonKeyCode) {
       event.preventDefault();
       this.sendMessageHandler();
     }
@@ -191,7 +207,7 @@ class DirectChatWrapper extends Component {
   }
 
   sendMessage() {
-    if(this.isNotAnonymousUser() && this.validateTypedMessage()) {
+    if (this.isNotAnonymousUser() && this.validateTypedMessage()) {
 
       const playerMessage = JSON.parse(
         `{
@@ -223,6 +239,29 @@ class DirectChatWrapper extends Component {
     return this.props.directChatMessages && this.props.directChatMessages[this.getDirectChatRoomId()] !== undefined;
   }
 
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "auto" });
+  }
+
+  handleWrapperScroll = () => {
+    this.setState({
+      isMessageWrapperScrolledDown: this.isMessageWrapperScrolledDown(),
+    });
+
+    if(this.isMessageWrapperScrolledDown()) {
+      this.setState({
+        notifyAboutNewMessage: false,
+      });
+    }
+  }
+
+  isMessageWrapperScrolledDown = () => {
+    const messagesWrapper = this.messagesWrapper.current;
+    const chatHeight = 200;
+
+    return messagesWrapper.scrollTop >= (messagesWrapper.scrollHeight - messagesWrapper.clientHeight - chatHeight);
+  }
+
   render() {
     return (
     <S.DirectChatWrapper> 
@@ -238,48 +277,69 @@ class DirectChatWrapper extends Component {
         <S.PlayerNameInfo>{this.state.receiver.displayName}</S.PlayerNameInfo>
       </S.DirectChatPlayerInfo>
 
-      <S.MessagesWrapper>
-        {this.isMessagesListFetched() && this.props.directChatMessages[this.getDirectChatRoomId()].map((value, index) => (
-          <React.Fragment key={index}>
-            {value.receiverId == this.props.authUser.uid ? (
-              <S.IncomingMessageWrapper key={index}>
-                <S.Message>
-                  <S.MessageHeader>
-                    <S.MessageAuthorName>
-                      {this.state.receiver.displayName}
-                    </S.MessageAuthorName>
-                    <S.MessageTime>
-                      {moment(value.messageSendDate).format('HH:mm')}
-                    </S.MessageTime>
-                  </S.MessageHeader>
+      <S.MessagesScrollWrapper>
+        <div 
+          style={{height: '100%'}}
+        >
+          <S.MessagesWrapper
+            ref={this.messagesWrapper}
+            onScroll={this.handleWrapperScroll}
+          >
+            {this.isMessagesListFetched() && this.props.directChatMessages[this.getDirectChatRoomId()].map((value, index) => (
+              <React.Fragment key={index}>
+                {value.receiverId == this.props.authUser.uid ? (
+                  <S.IncomingMessageWrapper key={index}>
+                    <S.Message>
+                      <S.MessageHeader>
+                        <S.MessageAuthorName>
+                          {this.state.receiver.displayName}
+                        </S.MessageAuthorName>
+                        <S.MessageTime>
+                          {moment(value.messageSendDate).format('HH:mm')}
+                        </S.MessageTime>
+                      </S.MessageHeader>
 
-                  <S.MessageText>
-                    {value.message}
-                  </S.MessageText>
-                </S.Message>
-              </S.IncomingMessageWrapper>
-            ) : (
-              <S.OutgoingMessageWrapper> 
-                <S.Message>
-                  <S.MessageHeader>
-                    <S.MessageAuthorName>
-                      {this.props.authUser.displayName}
-                    </S.MessageAuthorName>
-                    <S.MessageTime>
-                      {moment(value.messageSendDate).format('HH:mm')}
-                    </S.MessageTime>
-                  </S.MessageHeader>
+                      <S.MessageText>
+                        {value.message}
+                      </S.MessageText>
+                    </S.Message>
+                  </S.IncomingMessageWrapper>
+                ) : (
+                  <S.OutgoingMessageWrapper> 
+                    <S.Message>
+                      <S.MessageHeader>
+                        <S.MessageAuthorName>
+                          {this.props.authUser.displayName}
+                        </S.MessageAuthorName>
+                        <S.MessageTime>
+                          {moment(value.messageSendDate).format('HH:mm')}
+                        </S.MessageTime>
+                      </S.MessageHeader>
 
-                  <S.MessageText>
-                    {value.message}
-                  </S.MessageText>
-                </S.Message>
-              </S.OutgoingMessageWrapper>
-            )}
-            <S.MessagesEnd ref={(el) => { this.messagesEnd = el; }} />
-          </React.Fragment>
-        ))}
-      </S.MessagesWrapper>
+                      <S.MessageText>
+                        {value.message}
+                      </S.MessageText>
+                    </S.Message>
+                  </S.OutgoingMessageWrapper>
+                )}
+              </React.Fragment>
+            ))}
+            
+            <div ref={(el) => { this.messagesEnd = el; }} />
+          </S.MessagesWrapper>
+        </div>
+        {!this.state.isMessageWrapperScrolledDown &&
+          <S.ScrollToBottomArrow 
+            onClick={this.scrollToBottom}
+          > 
+            <S.ScrollIcon src={this.state.notifyAboutNewMessage ? this.links.newMessageNotificationIcon : this.links.arrowIcon} />
+            
+            {this.state.notifyAboutNewMessage &&
+              <S.NewMessageNotifitacion />
+            }
+          </S.ScrollToBottomArrow>
+        }
+      </S.MessagesScrollWrapper>
 
       <S.MessageInputSectionWrapper>
         <S.MessageInputWrapper>
@@ -317,7 +377,7 @@ class DirectChatWrapper extends Component {
 };
 
 const mapStateToProps = () => ({
-  
+
 });
 
 const mapDispatchToProps = (dispatch) => {
