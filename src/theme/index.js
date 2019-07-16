@@ -18,7 +18,8 @@ const theme = {
   grey: {
     base: '#eee',
     light: '#e6e5e5',
-    dark: '#f0e5e5',
+    semiDark: '#aaa',
+    dark: '#383838',
   },
   shadow: {
     base: 'rgba(0, 0, 0, .12) 0 1px 6px',

@@ -2,15 +2,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { PushSpinner } from 'react-spinners-kit';
 import { GAMES, GAMES_DURATION } from '@/constants/gameSettings';
 import * as fromSharedActions from '@/modules/shared/state/actions';
 import {
   getReservationInHours,
   getHoursFromPixels,
 } from '@/modules/home/state/selectors';
+import ReservationButton from '@/modules/home/components/ReservationButton';
 import * as fromActions from '../../state/actions';
-import BaseButton from '../../../shared/components/BaseButton';
 import NewGameConfig from '../../components/NewGameConfig';
 import * as S from './styles';
 
@@ -25,13 +24,14 @@ const propTypes = {
 };
 
 class GameReservation extends Component {
-
   state = {
     games: GAMES,
     duration: GAMES_DURATION,
     selectedTime: null,
     selectedGame: null,
   }
+
+  handlerAddGame = this.handlerAddGame.bind(this);
 
   addNewGame = () => () => {
     this.props.addNewGame();
@@ -45,7 +45,7 @@ class GameReservation extends Component {
     this.props.setGameTime(time);
   }
 
-  handlerAddGame = () => () => {
+  handlerAddGame() {
     this.props.showModal({
       modalProps: { },
       modalType: 'ADD_GAME_MODAL',
@@ -69,17 +69,10 @@ class GameReservation extends Component {
           currentReservationTime={this.props.currentReservationTime}
         />
         <S.CtaWrapper>
-          <BaseButton.Cta 
-            maxWidth="480px"
-            onClick={this.handlerAddGame()}
-          >
-            <PushSpinner
-              size={30}
-              color="#141619"
-              loading={isAddGameFetching}
-            />
-            {!isAddGameFetching && <span>Reserve Game</span>}
-          </BaseButton.Cta>
+          <ReservationButton
+            onAction={this.handlerAddGame}
+            isLoading={isAddGameFetching}
+          />
         </S.CtaWrapper>
       </React.Fragment>
     );
