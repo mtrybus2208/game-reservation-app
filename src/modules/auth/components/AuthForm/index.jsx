@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import BaseButton from '@/modules/shared/components/BaseButton';
+import ActionButton from '@/modules/home/components/ActionButton';
 import useForm from '@/modules/auth/helpers/useForm';
 import Input from '@/modules/auth/components/AuthForm/Input';
 import * as S from './styles';
@@ -34,7 +34,9 @@ const AuthForm = ({ formType, fields, changeHandler, submitHandler }) => {
       ))}
       <S.FormItem>
         <S.ButtonWrapper>
-          <BaseButton.Cta>{formType}</BaseButton.Cta>
+          <ActionButton
+            info={formType}
+          /> 
         </S.ButtonWrapper>
       </S.FormItem>
 

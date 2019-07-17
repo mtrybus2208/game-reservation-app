@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { lighten } from 'polished';
 import BaseButton from '@/modules/shared/components/BaseButton';
 
-export const ReservationButton = styled(BaseButton)`
+export const ActionButton = styled(BaseButton)`
   background: ${props => props.isBlocked ? props.theme.grey.dark : props.theme.accent};
   color: ${props => props.color || props.theme.darkFontColor};
   display: flex;

@@ -8,7 +8,7 @@ import {
   getReservationInHours,
   getHoursFromPixels,
 } from '@/modules/home/state/selectors';
-import ReservationButton from '@/modules/home/components/ReservationButton';
+import ReservationButton from '@/modules/home/containers/ReservationButton';
 import * as fromActions from '../../state/actions';
 import NewGameConfig from '../../components/NewGameConfig';
 import * as S from './styles';
@@ -18,9 +18,7 @@ const propTypes = {
   sessionState: PropTypes.object.isRequired,
   gameReservation: PropTypes.object,
   endLastReservation: PropTypes.string,
-  addNewGame: PropTypes.func.isRequired,
   setGameTime: PropTypes.func.isRequired,
-  showModal: PropTypes.func,
 };
 
 class GameReservation extends Component {
@@ -31,12 +29,6 @@ class GameReservation extends Component {
     selectedGame: null,
   }
 
-  handlerAddGame = this.handlerAddGame.bind(this);
-
-  addNewGame = () => () => {
-    this.props.addNewGame();
-  }
-
   handleTypeSelect = game => () => {
     this.props.setGameType(game);
   };
@@ -45,15 +37,7 @@ class GameReservation extends Component {
     this.props.setGameTime(time);
   }
 
-  handlerAddGame() {
-    this.props.showModal({
-      modalProps: { },
-      modalType: 'ADD_GAME_MODAL',
-    });
-  };
-
   render() {
-    const { isAddGameFetching } = this.props.timeLine;
     return (
       <React.Fragment>
         <NewGameConfig
@@ -69,10 +53,7 @@ class GameReservation extends Component {
           currentReservationTime={this.props.currentReservationTime}
         />
         <S.CtaWrapper>
-          <ReservationButton
-            onAction={this.handlerAddGame}
-            isLoading={isAddGameFetching}
-          />
+          <ReservationButton />
         </S.CtaWrapper>
       </React.Fragment>
     );
@@ -90,17 +71,11 @@ const mapStateToProps = state => (
 );
 
 const mapDispatchToProps = dispatch => ({
-  addNewGame: payload => {
-    dispatch(fromActions.addNewGame(payload));
-  },
   setGameType: payload => {
     dispatch(fromActions.setGameType(payload));
   },
   setGameTime: payload => {
     dispatch(fromActions.setGameTime(payload));
-  },
-  showModal: payload => {
-    dispatch(fromSharedActions.showModal(payload));
   },
 });
 

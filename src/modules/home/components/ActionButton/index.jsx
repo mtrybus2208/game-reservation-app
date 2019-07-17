@@ -7,16 +7,17 @@ const propTypes = {
   isBlocked: PropTypes.bool,
   isLoading: PropTypes.bool,
   info: PropTypes.string,
-  onAction: PropTypes.function,
+  onAction: PropTypes.func,
 };
 
 const defaultProps = {
   isBlocked: false,
   isLoading: false,
   info: 'reserve game',
+  onAction: null,
 };
 
-const ReservationButton = ({
+const ActionButton = ({
   isBlocked,
   info,
   isLoading,
@@ -28,7 +29,7 @@ const ReservationButton = ({
   })(S.InfoBox);
 
   return (
-    <S.ReservationButton
+    <S.ActionButton
       isBlocked={isBlocked}
       onClick={onAction}
     >
@@ -37,10 +38,10 @@ const ReservationButton = ({
       >
         <S.Info>{info}</S.Info>
       </InfoBoxWithLoading>
-    </S.ReservationButton>
+    </S.ActionButton>
   );
 };
 
-ReservationButton.propTypes = propTypes;
-ReservationButton.defaultProps = defaultProps;
-export default ReservationButton;
+ActionButton.propTypes = propTypes;
+ActionButton.defaultProps = defaultProps;
+export default ActionButton;
