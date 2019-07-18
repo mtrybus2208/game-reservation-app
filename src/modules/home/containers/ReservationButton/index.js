@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import ActionButton from '@/modules/home/components/ActionButton';
 import * as fromSharedActions from '@/modules/shared/state/actions';
+import withReservationControl from '@/modules/home/HOC/withReservationControl';
 import * as fromHomeActions from '@/modules/home/state/actions';
 
 const propTypes = {};
@@ -19,18 +20,15 @@ const ReservationButton = () => {
     modalType: 'ADD_GAME_MODAL',
   }));
 
-  if (!user) {
-    return (
-      <ActionButton
-        onAction={handlerAddGame}
-        isBlocked
-        info="Please login to reserve the game"
-      />
-    );
-  }
+  const ActionButtonWithReservation = withReservationControl({
+    isLogged: false,
+    isTimeSelected: false,
+    isTypeSelected: false,
+    isTooLate: true,
+  })(ActionButton);
 
   return (
-    <ActionButton
+    <ActionButtonWithReservation
       onAction={handlerAddGame}
       isLoading={isAddGameFetching}
     />
