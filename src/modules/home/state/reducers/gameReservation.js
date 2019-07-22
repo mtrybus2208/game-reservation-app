@@ -1,6 +1,7 @@
 import { actionTypes } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
+  isReservationBlocked: false,
   editMode: false,
   gameType: null,
   time: null,
@@ -31,6 +32,12 @@ export const gameReservationReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         editMode: false,
+      };
+    }
+    case actionTypes.SET_RESERVATION_PERMISSION: {
+      return {
+        ...state,
+        isReservationBlocked: action.payload,
       };
     }
     default:

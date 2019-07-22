@@ -5,6 +5,7 @@ import { throttled } from '@/helpers';
 import GameCard from '@/modules/home/components/GameCard';
 import BaseIcon from '@/modules/shared/components/BaseIcon';
 import withUser from '@/modules/home/HOC/withUser';
+import { getIsReservationBlocked } from '@/modules/home/state/selectors/gameReservation';
 import * as fromActions from '@/modules/home/state/actions';
 import * as S from './styles';
 
@@ -14,8 +15,10 @@ const propTypes = {
   onBlockTimeLine: PropTypes.func,
   onMoveTimeLine: PropTypes.func,
   setCurrentReservationTime: PropTypes.func,
+  setReservationPermission: PropTypes.func,
   reservedIntervals: PropTypes.array,
   showSpinner: PropTypes.bool,
+  isReservationBlocked: PropTypes.bool,
   actualDateInPixels: PropTypes.number,
 };
 
@@ -26,7 +29,6 @@ const defaultProps = {
 class MockGameCard extends React.PureComponent {
   state = {
     isDragging: false,
-    isAbleToReserve: false,
     isAbleToMove: false,
     originalX: 0, 
     translateX: this.props.initialCardPosition,
@@ -127,11 +129,12 @@ class MockGameCard extends React.PureComponent {
       });
   }
 
-  setAbilityToReserve = pos => (
-    this.setState({
-      isAbleToReserve: this.isReservedCardHovered(pos),
-    })
-  );
+  setAbilityToReserve = pos => {
+    return this.props.isReservationBlocked !== this.isReservedCardHovered(pos) &&
+    this.props.setReservationPermission({
+      payload: this.isReservedCardHovered(pos),
+    });
+  };
 
   handlerSetCurrentReservation = (pos) => () => {
     this.setAbilityToReserve(pos);
@@ -221,12 +224,12 @@ class MockGameCard extends React.PureComponent {
   }
 
   render() {
-    const { translateX, translateY, isDragging, isAbleToReserve } = this.state;
+    const { translateX, translateY, isDragging } = this.state;
     return (
       <S.CardWrap
         size={this.props.display.size}  
         isAbleToMove={this.state.isAbleToMove}
-        isAbleToReserve={isAbleToReserve}
+        isAbleToReserve={this.props.isReservationBlocked}
         onMouseDown={this.handleMouseDown} 
         x={translateX}
         y={translateY}
@@ -239,21 +242,23 @@ class MockGameCard extends React.PureComponent {
           customPosition
           showSpinner={this.props.showSpinner}
         >
-          <S.MockGameCard
-            isAbleToReserve={isAbleToReserve}
-          />
+          <S.MockGameCard isAbleToReserve={this.props.isReservationBlocked} />
         </this.GameCardWithUser>
       </S.CardWrap>
     );
   }
 };
 
-const mapStateToProps = state => ({ 
+const mapStateToProps = state => ({
+  isReservationBlocked: getIsReservationBlocked(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   setCurrentReservationTime: payload => {
     dispatch(fromActions.setCurrentReservationTime(payload));
+  },
+  setReservationPermission: payload => {
+    dispatch(fromActions.setReservationPermission(payload));
   },
 });
 

@@ -5,7 +5,7 @@ import { actionTypes } from './../actions/actionTypes';
 const initialState = {
   endLastReservation: moment('10:00 am', 'HH:mm a'),
   actualTime: moment(),
-  workdayStart: moment('10:00 am', 'HH:mm a'),
+  workdayStart: moment('7:00 am', 'HH:mm a'),
   workdayEnd: moment('11:00 pm', 'HH:mm a'),
   gameConfigOpen: false,
   timeConverter: 12,

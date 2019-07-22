@@ -45,3 +45,9 @@ export const hideUserReservationCard = () =>
     type: actionTypes.HIDE_USER_RESERVATION_CARD,
   });
 
+export const setReservationPermission = ({ payload }) =>
+  ({
+    type: actionTypes.SET_RESERVATION_PERMISSION,
+    payload,
+  });
+

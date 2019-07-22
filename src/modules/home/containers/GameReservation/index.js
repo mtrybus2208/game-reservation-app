@@ -4,10 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { GAMES, GAMES_DURATION } from '@/constants/gameSettings';
 import * as fromSharedActions from '@/modules/shared/state/actions';
-import {
-  getReservationInHours,
-  getHoursFromPixels,
-} from '@/modules/home/state/selectors';
+import { getHoursFromPixels } from '@/modules/home/state/selectors';
 import ReservationButton from '@/modules/home/containers/ReservationButton';
 import * as fromActions from '../../state/actions';
 import NewGameConfig from '../../components/NewGameConfig';
@@ -64,7 +61,6 @@ const mapStateToProps = state => (
   {
     timeLine: state.timeLine,
     currentReservationTime: getHoursFromPixels(state),
-    endLastReservation: getReservationInHours(state),
     sessionState: state.sessionState,
     gameReservation: state.gameReservationState,
   }

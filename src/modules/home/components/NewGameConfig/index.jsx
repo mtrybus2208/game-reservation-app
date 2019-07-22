@@ -17,7 +17,6 @@ const propTypes = {
   games: PropTypes.array,
   selectedGame: PropTypes.object,
   selectedTime: PropTypes.object,
-  endLastReservation: PropTypes.string,
   currentReservationTime: PropTypes.any,
 };
 
@@ -31,9 +30,8 @@ const NewGameConfig = ({
   duration,
   games,
   selectedTime,
-  endLastReservation,
   onTimeSelect,
-  currentReservationTime
+  currentReservationTime,
 }) => {
 
   const avatar = authUser && authUser.photoURL

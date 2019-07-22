@@ -6,7 +6,7 @@ const propTypes = {
 };
 
 export const withSettingsControl = (isTimeSelected, isTypeSelected) =>
-  Component => ({ isBlocked }, props) => {
+  Component => props => {
     const key = `${isTimeSelected}-${isTypeSelected}`;
     const notification = {
       'false-false': 'please select game type and time to reserve the game',
@@ -15,12 +15,12 @@ export const withSettingsControl = (isTimeSelected, isTypeSelected) =>
       'true-true': undefined,
     };
 
-    if (isBlocked) return (<Component {...props} />);
+    if (props.isBlocked) return (<Component {...props} />);
     return (
       <Component
+        {...props}
         isBlocked={!!notification[key]}
         info={notification[key]}
-        {...props}
       />
     );
   };
