@@ -10,7 +10,7 @@ const propTypes = {
 
 const defaultProps = {
   path: 'https://res.cloudinary.com/duo6ruqkc/image/upload/v1550848181/child_rtmjgd.png',
-  size: 'medium',
+  size: 'md',
   rounded: true,
 };
 

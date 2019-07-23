@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Avatar /> should matches the snapshot 1`] = `
+<div
+  className="sc-bdVaJa koQlSN"
+  size={100}
+>
+  <div
+    className="sc-bwzfXH hOPghm"
+  >
+    <img
+      className="sc-htpNat iDhxrz"
+      src="https://res.cloudinary.com/duo6ruqkc/image/upload/v1550848181/child_rtmjgd.png"
+    />
+  </div>
+</div>
+`;
+
+exports[`<Avatar /> should matches the snapshot2 1`] = `
+<div
+  className="sc-bdVaJa koQlSN"
+  size={100}
+>
+  <div
+    className="sc-bwzfXH hOPghm"
+  >
+    <img
+      className="sc-htpNat iDhxrz"
+      src="https://res.cloudinary.com/duo6ruqkc/image/upload/v1550848181/child_rtmjgd.png"
+    />
+  </div>
+</div>
+`;
