@@ -31,3 +31,9 @@ exports[`<Avatar /> should matches the snapshot2 1`] = `
   </div>
 </div>
 `;
+
+exports[`<Avatar /> should render without crashing given the props 1`] = `
+<ContextConsumer>
+  <Component />
+</ContextConsumer>
+`;
