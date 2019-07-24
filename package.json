@@ -17,6 +17,7 @@
     "chalk": "1.1.3",
     "connected-react-router": "^6.5.2",
     "css-loader": "0.28.7",
+    "cypress": "^3.4.0",
     "dotenv": "4.0.0",
     "dotenv-expand": "4.2.0",
     "enzyme-to-json": "^3.3.5",
@@ -84,7 +85,8 @@
     "coverage": "node scripts/test.js --env=jsdom --coverage && npm run coverage-report-open",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
-    "coverage-report-open": "open coverage/lcov-report/index.html"
+    "coverage-report-open": "open coverage/lcov-report/index.html",
+    "cypress": "cypress open"
   },
   "devDependencies": {
     "@babel/core": "^7.3.3",
