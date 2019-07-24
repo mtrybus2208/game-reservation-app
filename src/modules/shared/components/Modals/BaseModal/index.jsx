@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import WithLoading from '@/modules/shared/HOC/withLoading';
 import ModalActionButton from '@/modules/shared/components/Modals/BaseModal/components/ModalActionButton';
-import  { ReactComponent as ConfirmIcon }  from '@/assets/Icons/confirm.svg';
-import  { ReactComponent as CloseIcon }  from '@/assets/Icons/close.svg';
+import { ReactComponent as ConfirmIcon } from '@/assets/Icons/confirm.svg';
+import { ReactComponent as CloseIcon } from '@/assets/Icons/close.svg';
 import { ThemeContext } from 'styled-components';
 import * as S from './styles';
 
@@ -46,7 +46,7 @@ const BaseModal = ({
                 onAction={onConfirm}
                 actionColors={{
                   base: theme.accent,
-                  hover: theme.success
+                  hover: theme.success,
                 }}
               >
                 <ConfirmIcon

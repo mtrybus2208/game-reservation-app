@@ -1,10 +1,7 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import { create } from 'react-test-renderer';
+import { shallow, mount, render } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import 'jest-styled-components';
-import { ThemeProvider } from 'styled-components';
-import theme from '@/theme';
 import Avatar from './index';
 import * as S from './styles';
 
@@ -14,13 +11,9 @@ describe('<Avatar />', () => {
   });
 
   it('should matches the snapshot', () => {
-    const avatar = create(
-      <ThemeProvider theme={theme}>
-        <Avatar />
-      </ThemeProvider>,
-    ).toJSON();
+    const avatar = shallow(<Avatar />);
 
-    expect(avatar).toMatchSnapshot();
+    expect(toJson(avatar)).toMatchSnapshot();
   });
 
   it('should render without crashing given the props', () => {
@@ -29,12 +22,7 @@ describe('<Avatar />', () => {
       size: 'md',
       rounded: true,
     };
-
-    const avatar = shallow((
-      <ThemeProvider theme={theme}>
-        <Avatar {...props} />
-      </ThemeProvider>
-    ));
+    const avatar = shallow((<Avatar {...props} />));
 
     expect(toJson(avatar)).toMatchSnapshot();
   });
@@ -42,14 +30,12 @@ describe('<Avatar />', () => {
   it('should set the path prop as the `src` prop on the S.Image component', () => {
     const props = {
       path: 'test',
+      size: 'md',
       rounded: true,
-    }; 
-    const wrapper = shallow(
-      <ThemeProvider theme={theme}>
-        <Avatar {...props} />
-      </ThemeProvider>
-    );  
-    const PickerComponent = wrapper.find(S.Avatar);
-    expect(PickerComponent).to.have.lengthOf(1);
+    };
+    const wrapper = shallow(<Avatar {...props} />);
+    const SImage = wrapper.find(S.Image);
+
+    expect(SImage.props().src).toBe(props.path);
   });
 });

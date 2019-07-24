@@ -80,9 +80,11 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom",
+    "test": "node scripts/test.js --env=jsdom --runInBand",
+    "coverage": "node scripts/test.js --env=jsdom --coverage && npm run coverage-report-open",
     "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "coverage-report-open": "open coverage/lcov-report/index.html"
   },
   "devDependencies": {
     "@babel/core": "^7.3.3",
@@ -101,6 +103,8 @@
     "eslint-plugin-react": "^7.9.1"
   },
   "jest": {
+    "verbose": true,
+    "collectCoverage": true,
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,mjs}"
     ],
@@ -126,6 +130,9 @@
       "^react-native$": "react-native-web",
       "^@(.*)$": "<rootDir>/src$1"
     },
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
     "moduleFileExtensions": [
       "web.js",
       "mjs",

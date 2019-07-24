@@ -14,6 +14,8 @@ export const Avatar = styled.div`
     pointer-events: none;
 `;
 
+Avatar.displayName = 'StyledAvatar';
+
 Avatar.propTypes = {
   size: PropTypes.number,
   rounded: PropTypes.bool,
