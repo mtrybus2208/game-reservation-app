@@ -21,7 +21,7 @@ const MODAL_COMPONENTS = {
 class ModalRoot extends PureComponent {
 
   render() {
-    const { modalType, modalProps } = this.props.modal;
+    const { modalType } = this.props.modal;
 
     if (!modalType) {
       return null;
@@ -29,7 +29,7 @@ class ModalRoot extends PureComponent {
 
     const SpecificModal = MODAL_COMPONENTS[modalType];
 
-    return (  
+    return (
       <ModalWrapper>
         <SpecificModal />;
       </ModalWrapper>

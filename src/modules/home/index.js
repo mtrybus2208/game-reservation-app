@@ -1,22 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ReservationButton from '@/modules/home/containers/ReservationButton';
 import AppGrid from '../shared/components/AppGrid';
 import TimeLine from './containers/Timeline';
-import GameReservation from './containers/GameReservation';
+import NewGameConfig from './containers/NewGameConfig';
 import * as S from './styles';
 
 const propTypes = {};
 
 const defaultProps = {};
 
-const Home = ({}) => (
+const Home = () => (
   <S.Home>
     <S.TimeLineWrapper>
       <TimeLine />
     </S.TimeLineWrapper>
 
     <S.ReservationWrapper>
-      <GameReservation />
+      <NewGameConfig />
+      <S.CtaWrapper>
+        <ReservationButton />
+      </S.CtaWrapper>
     </S.ReservationWrapper>
   </S.Home>
 );

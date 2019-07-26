@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
  
-export const withGameReservation = (Component) => (props) =>
+export const withGameReservation = Component => props =>
   (
     !props.gameReservation.editMode ||
     !props.gameReservation.time ||

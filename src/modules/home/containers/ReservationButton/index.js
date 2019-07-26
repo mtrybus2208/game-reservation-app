@@ -27,7 +27,6 @@ const ReservationButton = () => {
   }));
 
   useEffect(() => {
-    console.log('YOU NEED TO RESET GAMESETTING STATE AT REDIRECT!');
   });
 
   const ComposedActionButton = compose(

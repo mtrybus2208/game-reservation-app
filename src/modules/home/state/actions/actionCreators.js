@@ -51,3 +51,8 @@ export const setReservationPermission = ({ payload }) =>
     payload,
   });
 
+export const resetGameSettings = () =>
+  ({
+    type: actionTypes.RESET_GAME_SETTINGS,
+  });
+

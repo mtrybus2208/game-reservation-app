@@ -30,4 +30,22 @@ export const Body = styled.div`
   justify-content: center;
   align-items: center;
   flex: 1 1 100%;
+  position: relative;
 `;
+
+export const Blocked = styled.div`
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: yellow;
+    position: absolute;
+    background: rgba(25, 29, 32, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    flex-direction: column;
+`;
+

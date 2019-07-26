@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import BaseModal from '@/modules/shared/components/Modals/BaseModal';
@@ -9,14 +10,15 @@ const propTypes = {
   deleteGame: PropTypes.func,
   hideModal: PropTypes.func,
   modalProps: PropTypes.any,
-  isLoading: PropTypes.bool,
+  isDeleteGameFetching: PropTypes.bool,
 };
 const defaultProps = {
-  isLoading: false,
+  isDeleteGameFetching: false,
 };
 class DeleteGameModal extends PureComponent {
 
   handlerDeleteGame = this.handlerDeleteGame.bind(this);
+  boundActionCreators = bindActionCreators(fromHomeActions, this.props.dispatch);
 
   handlerDeleteGame() {
     const { deleteGame, modalProps } = this.props;
@@ -44,13 +46,10 @@ const mapStateToProps = ({ modal, timeLine }) => (
 
 const mapDispatchToProps = dispatch => {
   return {
-    hideModal: () => {
-      dispatch(fromActions.hideModal());
-    },
-
-    deleteGame: payload => {
-      dispatch(fromHomeActions.deleteGame(payload));
-    },
+    ...bindActionCreators({
+      ...fromHomeActions,
+      ...fromActions,
+    }, dispatch),
   };
 };
 

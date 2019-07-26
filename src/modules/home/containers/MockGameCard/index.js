@@ -40,7 +40,8 @@ class MockGameCard extends React.PureComponent {
   resetInterval = this.resetInterval.bind(this);
   animLoop = this.animLoop.bind(this); 
   myRef = React.createRef();
-  running = true; 
+  running = true;
+  animationId = null;
 
   GameCardWithUser = withUser(GameCard);
 
@@ -57,13 +58,17 @@ class MockGameCard extends React.PureComponent {
   componentWillUnmount() {
     window.removeEventListener('mousemove', this.handleMouseMove);
     window.removeEventListener('mouseup', this.handleMouseUp);
+    if (this.animationId) {
+      window.cancelAnimationFrame(this.animationId);
+      this.animationId = undefined;
+    }
   }
 
   animLoop(render, element) {
     let lastFrame = +new Date();
     const loop = now => {
       if (this.running !== false) {
-        requestAnimationFrame(loop, element);
+        this.animationId = requestAnimationFrame(loop, element);
         if (this.state.able !== false) {
           this.running = render( now - lastFrame );
           lastFrame = now;

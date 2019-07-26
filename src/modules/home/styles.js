@@ -61,3 +61,23 @@ export const ReservationWrapper = styled.div`
     margin: 0 40px 40px;
   }
 `;
+
+export const CtaWrapper = styled.div`
+  position: fixed;
+  bottom: 30px;
+  left: 20px;
+  right: 20px;
+  height: 50px;
+  display: flex;
+  background:  ${props => props.theme.base.light};
+  height: 50px;
+  padding: 0;
+  margin: 0;
+  justify-content: flex-start;
+  align-items: stretch;
+  font-size: 11px;
+  @media ${({ theme }) => theme.media.tablet} {
+    position: static;
+    height: 80px;
+  }
+`;

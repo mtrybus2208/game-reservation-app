@@ -7,7 +7,6 @@ const INITIAL_STATE = {
   time: null,
 };
 
-
 export const gameReservationReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case actionTypes.SET_GAME_TYPE: {
@@ -32,6 +31,14 @@ export const gameReservationReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         editMode: false,
+      };
+    }
+    case actionTypes.RESET_GAME_SETTINGS: {
+      return {
+        ...state,
+        editMode: false,
+        gameType: null,
+        time: null,
       };
     }
     case actionTypes.SET_RESERVATION_PERMISSION: {
