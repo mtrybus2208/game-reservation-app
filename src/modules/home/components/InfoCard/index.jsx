@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { ThemeContext } from 'styled-components';
 import NotAllowed from '@/modules/shared/components/NotAllowed';
 import * as S from './styles';
 
@@ -15,8 +14,6 @@ const defaultProps = {
 };
 
 const InfoCard = ({ children, header, isBlocked }) => {
-  const theme = useContext(ThemeContext);
-
   return (
     <S.InfoCard>
       {header && <S.Header>{header}</S.Header>}
