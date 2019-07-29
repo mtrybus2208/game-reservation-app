@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NotAllowed /> should matches the snapshot 1`] = `
+<styled.div>
+  <styled.div>
+    <icon-mock
+      fill="#bd790b"
+      height="40px"
+      width="40px"
+    />
+    <styled.p
+      size="12px"
+    >
+      Not Allowed
+    </styled.p>
+  </styled.div>
+</styled.div>
+`;

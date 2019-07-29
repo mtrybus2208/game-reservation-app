@@ -106,7 +106,7 @@
   },
   "jest": {
     "verbose": true,
-    "collectCoverage": true,
+    "collectCoverage": false,
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,mjs}"
     ],
@@ -130,7 +130,8 @@
     ],
     "moduleNameMapper": {
       "^react-native$": "react-native-web",
-      "^@(.*)$": "<rootDir>/src$1"
+      "^@(.*)$": "<rootDir>/src$1",
+      "\\.svg": "<rootDir>/__mocks__/svgrMock.js"
     },
     "snapshotSerializers": [
       "enzyme-to-json/serializer"

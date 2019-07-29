@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { ThemeContext } from 'styled-components';
-import  { ReactComponent as Alert }  from '@/assets/Icons/alert.svg';
+import theme from '@/theme';
+import  { ReactComponent as Alert }  from '../../../../assets/Icons/alert.svg';
 import * as S from './styles';
 
 const propTypes = {
-  icon: PropTypes.function,
+  customIcon: PropTypes.node,
   msg: PropTypes.string,
   size: PropTypes.string,
   iconColor: PropTypes.string,
@@ -13,9 +13,10 @@ const propTypes = {
 };
 
 const defaultProps = {
-  customIcon: null,
   msg: 'Not Allowed',
   size: 'sm',
+  iconColor: theme.accent,
+  fontColor: 'inherit',
 };
 
 const sizesObj = {
@@ -40,25 +41,27 @@ const NotAllowed = ({
   iconColor,
   fontColor,
 }) => {
-  const theme = useContext(ThemeContext);
-  const Icon = customIcon || Alert;
+  const iconData = {
+    fill: iconColor,
+    width: sizesObj[size].width,
+    height: sizesObj[size].width,
+  };
 
-   return(
-      <S.NotAllowed>
-        <S.Content>
-          <Icon
-              fill={iconColor || theme.accent}
-              width={sizesObj[size]['width']}
-              height={sizesObj[size]['width']}
-          />
-          <S.Info
-            size={sizesObj[size]['font']}
-          >
-            {msg}
-          </S.Info>
-        </S.Content>
-      </S.NotAllowed>
-   )
+  return (
+    <S.NotAllowed>
+      <S.Content>
+        {
+          customIcon
+            ? React.cloneElement(customIcon, iconData)
+            : <Alert {...iconData} />
+        }
+
+        <S.Info size={sizesObj[size].font} >
+          {msg}
+        </S.Info>
+      </S.Content>
+    </S.NotAllowed>
+  )
 };
 
 NotAllowed.propTypes = propTypes;

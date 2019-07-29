@@ -8,13 +8,12 @@ import TimeCircle from '@/modules/home/components/TimeCircle';
 import CircleItem from '@/modules/shared/components/CircleItem';
 import InfoCard from '@/modules/home/components/InfoCard';
 import GameTypeItem from '@/modules/home/components/GameTypeItem';
-import {
-  withSessionControl,
-  withSettingsControl,
-  withTimePermission,
-} from '@/modules/home/HOC/reservationControl';
+import { withSessionControl } from '@/modules/home/HOC/reservationControl';
 import * as fromActions from '@/modules/home/state/actions';
-import { GAMES, GAMES_DURATION } from '@/constants/gameSettings';
+import {
+  GAMES,
+  GAMES_DURATION
+} from '@/constants/gameSettings';
 import * as S from './styles';
 
 const propTypes = { };
@@ -24,14 +23,19 @@ const defaultProps = {};
 const NewGameConfig = () => {
   const authUser = useSelector(({ sessionState }) => sessionState.authUser);
   const currentReservationTime = useSelector(state => getHoursFromPixels(state));
-  const [gameType, duration] = useSelector(({ gameReservationState }) =>
-    [(gameReservationState.gameType || {}), (gameReservationState.gameType || {})]);
+  const [gameType, duration] = useSelector(
+    ({ gameReservationState }) => [(gameReservationState.gameType || {}), (gameReservationState.time || {})]);
 
   const dispatch = useDispatch();
   const handlerTypeSelect = game => () => dispatch(fromActions.setGameType(game));
   const handlerTimeSelect = time => () => dispatch(fromActions.setGameTime(time));
 
   const InfoCardWithSession = withSessionControl(!!authUser)(InfoCard);
+
+  useEffect(() => {
+    console.log(duration);
+    console.log(gameType);
+  });
 
   return (
     <S.NewGameConfig>
