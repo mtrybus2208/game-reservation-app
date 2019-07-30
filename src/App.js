@@ -31,6 +31,14 @@ const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
   }
+
+  ::selection{
+    background: ${theme.accent};
+  }
+  
+  img::selection{
+    background: transparent;
+  }
   
   body {
     margin: 0;
@@ -39,6 +47,7 @@ const GlobalStyle = createGlobalStyle`
     color: #747a81;
     background: #141619;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: ${theme.accent};
   }
 `;
 
