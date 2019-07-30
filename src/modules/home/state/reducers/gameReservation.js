@@ -1,7 +1,7 @@
 import { actionTypes } from '../actions/actionTypes';
 
 const INITIAL_STATE = {
-  isReservationBlocked: false,
+  isReservationBlocked: true,
   editMode: false,
   gameType: null,
   time: null,
