@@ -30,13 +30,13 @@ export const CardWrap = styled.div.attrs({
   background: rgba(1, 66, 23, 0.3);
   top: 101px;
   z-index: 6;
-  border: ${({ isAbleToMove, isAbleToReserve }) => {
+  border: ${({ isAbleToMove, isAbleToReserve, theme }) => {
     if (isAbleToReserve) {
-      return '3px solid rgba(103, 16, 16, 0.9)';
+      return `3px solid ${theme.error}`;
     }
 
     if (isAbleToMove && !isAbleToReserve) {
-      return '3px solid #014217';
+      return `3px solid ${theme.success}`;
     }
 
     return 'none';

@@ -25,10 +25,7 @@ const ReservationButton = () => {
     modalProps: {},
     modalType: 'ADD_GAME_MODAL',
   }));
-
-  useEffect(() => {
-  });
-
+  
   const ComposedActionButton = compose(
     withSessionControl(!!user),
     withSettingsControl(!!gameType, !!time),

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TimeRuler from '@/modules/home/containers/TimeRuler';
 import { getTimeLine, getActualDateInPixels } from '@/modules/home/state/selectors';
+import { getIsReservationBlocked } from '@/modules/home/state/selectors/gameReservation';
 import * as fromActions from '../../state/actions';
 import * as S from './styles';
 
@@ -96,6 +97,7 @@ class TimeLine extends Component {
     return (
       <S.TimeLineWrapper
         isBlocked={this.state.isBlocked}
+        isReservationBlocked={this.props.isReservationBlocked}
         ref={this.setWrapperRef}
       >
         <S.TimeLine
@@ -122,6 +124,7 @@ class TimeLine extends Component {
 const mapStateToProps = state => ({
   timeLine: getTimeLine(state),
   actualDateInPixels: getActualDateInPixels(state),
+  isReservationBlocked: getIsReservationBlocked(state),
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -6,7 +6,17 @@ export const TimeLineWrapper = styled.div`
   border-radius: 0;
   height: 100%;
   position: relative;
-  border: ${({ isBlocked }) => isBlocked ? '3px solid #014217' : 'none'};
+  border: ${({ isBlocked, isReservationBlocked, theme }) => {
+    if (isBlocked && !isReservationBlocked) {
+      return `3px solid ${theme.success}`;
+    }
+
+    if (isBlocked && isReservationBlocked) {
+      return `3px solid ${theme.error}`;
+    }
+
+    return 'none';
+  }};
   border-left: none;
   border-right: none;
 
