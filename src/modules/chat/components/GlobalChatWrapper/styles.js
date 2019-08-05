@@ -10,8 +10,9 @@ export const GlobalChatWrapper = styled.div`
 
 export const MessagesWrapper = styled.div`
   width: 100%;
-  height: calc(100% - 200px);
+  height: 100%;
   overflow-y: auto;
+  position: relative;
 
   &::-webkit-scrollbar {
     width: 10px;
@@ -24,6 +25,12 @@ export const MessagesWrapper = styled.div`
   &::-webkit-scrollbar-thumb {
     background: #1b1e22;
   }
+`;
+
+export const MessagesScrollWrapper = styled.div`
+  height: calc(100% - 200px);
+  width: 100%;
+  position: relative;
 `;
 
 export const Message = styled.div`
@@ -120,6 +127,39 @@ export const PlayerPicture = styled.img`
   width: 48px;
   height: 48px;
   border-radius: 50%;
+`;
+
+export const ScrollToBottomArrow = styled.button`
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  bottom: 15px;
+  right: 15px;
+  border: 1px solid #ce8d08;
+  background: #111315;
+  border-radius: 25px;
+  cursor: pointer;
+`;
+
+export const ScrollIcon = styled.img`
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+
+export const NewMessageNotifitacion = styled.div`
+  width: 8px;
+  height: 8px;
+  border: none;
+  border-radius: 5px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: #F00;
 `;
 
 export const MessageInputWrapper = styled.div`
