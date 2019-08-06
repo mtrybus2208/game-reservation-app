@@ -29,13 +29,7 @@ const NewGameConfig = () => {
   const dispatch = useDispatch();
   const handlerTypeSelect = game => () => dispatch(fromActions.setGameType(game));
   const handlerTimeSelect = time => () => dispatch(fromActions.setGameTime(time));
-
   const InfoCardWithSession = withSessionControl(!!authUser)(InfoCard);
-
-  useEffect(() => {
-    console.log(duration);
-    console.log(gameType);
-  });
 
   return (
     <S.NewGameConfig>
@@ -71,7 +65,7 @@ const NewGameConfig = () => {
 
       <InfoCardWithSession header="game time">
         <S.GameTimeBox>
-          { GAMES_DURATION.map(time => (
+          {GAMES_DURATION.map(time => (
             <S.TimeItem
               key={time.id}
               onClick={handlerTimeSelect(time)}
