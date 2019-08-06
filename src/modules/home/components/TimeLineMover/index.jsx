@@ -1,6 +1,7 @@
-import React, { useState, useRef, useEffect, useReducer } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TimeRuler from '@/modules/home/containers/TimeRuler';
+import useDragToScroll from '@/modules/home/hooks/useDragToScroll';
 import * as S from './styles';
 
 const propTypes = {
@@ -13,48 +14,23 @@ const TimeLineMover = React.memo(({
   actualDateInPixels,
   isReservationBlocked,
 }) => {
-  const initialState = {
-    isBlocked: false,
-    startX: undefined,
-    isDown: false,
-    scrollLeft: undefined,
-    startPosition: false,
-  };
+  const [isBlocked, setIsBlocked] = useState(false);
+  const [startPosition, setStartPosition] = useState(false);
 
-  const reducer = (state, newState) => ({ ...state, ...newState });
-  const [state, setState] = useReducer(reducer, initialState);
+  const timeLineRef = useRef();
+
+  const {
+    mouseLeave,
+    mouseMove,
+    mouseUp,
+    mouseDown,
+  } = useDragToScroll(timeLineRef, isBlocked);
 
   useEffect(() => {
     handlerMoveTimeLine(actualDateInPixels);
   }, []);
 
-  const timeLineRef = useRef();
-
-  const mouseLeave = () => setState({ isDown: false });
-
-  const setIsBlocked = isBlocked => setState({ isBlocked });
-
-  const mouseMove = e => {
-    const { current } = timeLineRef;
-    if (!state.isDown || state.isBlocked) return;
-    e.preventDefault();
-    const x = e.pageX - current.offsetLeft;
-    const walk = (x - state.startX);
-    current.scrollLeft = state.scrollLeft - walk;
-  };
-
-  const mouseUp = () => setState({ isDown: false });
-
-  const mouseDown = e => {
-    const { current } = timeLineRef;
-    setState({
-      isDown: true,
-      startX: (e.pageX - current.offsetLeft),
-      scrollLeft: current.scrollLeft,
-    });
-  };
-
-  const setStart = data => setState({ startPosition: data });
+  const setStart = data => setStartPosition(data);
 
   const handlerMoveTimeLine = modifier => {
     const { current } = timeLineRef;
@@ -69,7 +45,7 @@ const TimeLineMover = React.memo(({
 
   return (
     <S.TimeLineWrapper
-      isBlocked={state.isBlocked}
+      isBlocked={isBlocked}
       isReservationBlocked={isReservationBlocked}
     >
       <S.TimeLineMover
@@ -82,7 +58,7 @@ const TimeLineMover = React.memo(({
         <TimeRuler
           onBlockTimeLine={setIsBlocked}
           onMoveTimeLine={handlerMoveTimeLine}
-          startPosition={state.startPosition}
+          startPosition={startPosition}
           setStart={setStart}
           wrapperScrollPosition={getWrapperScrollPosition()}
         />
