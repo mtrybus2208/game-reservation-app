@@ -46,8 +46,6 @@ class TimeRuler extends Component {
     return m * this.props.timeLine.timeConverter;
   }
 
-  wrapperEl = React.createRef();
-
   MockedWithResevation = withGameReservation(MockGameCard);
  
   componentDidUpdate() { }
@@ -100,9 +98,7 @@ class TimeRuler extends Component {
 
   render() {
     return (
-      <S.Wrapper
-        ref={this.wrapperEl}
-      >
+      <S.Wrapper>
         {
           this.props.reservedGames && this.props.reservedGames.map(game => this.renderGameCard(game))
         }
