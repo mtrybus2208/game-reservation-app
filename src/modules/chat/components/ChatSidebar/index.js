@@ -55,7 +55,7 @@ class ChatSidebar extends Component {
     render() {
         return ( 
             <React.Fragment>
-                {this.props.chat.chatMode !== 'GLOBAL' ? (
+                {/* {this.props.chat.chatMode !== 'GLOBAL' ? (
                     <DirectChatWrapper 
                         authUser={this.props.authUser} 
                         receiverId={this.props.chat.chatMode}
@@ -72,7 +72,7 @@ class ChatSidebar extends Component {
                         globalChatWebsocket={this.state.globalChatWebsocket}
                         setGlobalChatWebsocketConnection={this.setGlobalChatWebsocketConnection}
                     />
-                )}
+                )} */}
             </React.Fragment>
         )
     }

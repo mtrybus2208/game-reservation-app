@@ -14,6 +14,7 @@ module.exports = {
     "import/extensions": "off",
     "no-extra-boolean-cast": "off",
     "no-confusing-arrow": "off",
+    "no-use-before-define": "off",
   },
   env: {
     browser: true,
