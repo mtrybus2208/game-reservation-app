@@ -50,8 +50,8 @@ const TimeLineMover = React.memo(({
     >
       <S.TimeLineMover
         ref={timeLineRef}
-        onMouseDown={mouseDown}
         onMouseLeave={mouseLeave}
+        onMouseDown={mouseDown}
         onMouseUp={mouseUp}
         onMouseMove={mouseMove}
       >
