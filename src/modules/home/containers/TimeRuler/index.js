@@ -29,45 +29,45 @@ const propTypes = {
 
 const defaultProps = {};
 class TimeRuler extends Component {
-  state = {
-    cardPosition: 0,
-  };
+  // state = {
+  //   cardPosition: 0,
+  // };
 
-  setCardPosition(cardPosition) {
-    this.setState({
-      cardPosition,
-    });
-  }
+  // setCardPosition(cardPosition) {
+  //   this.setState({
+  //     cardPosition,
+  //   });
+  // }
 
-  hoursToPixels(h) {
-    return h * 60 * this.props.timeLine.timeConverter;
-  }
+  // hoursToPixels(h) {
+  //   return h * 60 * this.props.timeLine.timeConverter;
+  // }
 
-  minutesToPixels(m) {
-    return m * this.props.timeLine.timeConverter;
-  }
+  // minutesToPixels(m) {
+  //   return m * this.props.timeLine.timeConverter;
+  // }
 
-  MockedWithResevation = withGameReservation(MockGameCard);
+  // MockedWithResevation = withGameReservation(MockGameCard);
  
   componentDidUpdate() { }
 
-  getDistanceInMinutes(timeGame) {
-    return moment.duration(timeGame.diff(this.props.timeLine.workdayStart)).asMinutes();
-  }
+  // getDistanceInMinutes(timeGame) {
+  //   return moment.duration(timeGame.diff(this.props.timeLine.workdayStart)).asMinutes();
+  // }
 
-  getGameTimes(game) {
-    return ['startDate', 'endDate']
-      .map(type =>
-        this.getDistanceInMinutes(moment(game[type])) * this.props.timeLine.timeConverter);
-  }
+  // getGameTimes(game) {
+  //   return ['startDate', 'endDate']
+  //     .map(type =>
+  //       this.getDistanceInMinutes(moment(game[type])) * this.props.timeLine.timeConverter);
+  // }
 
-  createReservedIntervals(games) {
-    return games && games.map(game => {
-      const [startTime, endTime] = this.getGameTimes(game);
-      return [Math.abs(startTime), Math.abs(startTime) + (Math.abs(endTime) - Math.abs(startTime))];
-    });
-  };
-
+  // createReservedIntervals(games) {
+  //   return games && games.map(game => {
+  //     const [startTime, endTime] = this.getGameTimes(game);
+  //     return [Math.abs(startTime), Math.abs(startTime) + (Math.abs(endTime) - Math.abs(startTime))];
+  //   });
+  // };
+  // to niech idzie do kompnentu nad jMOverem i w propsie do movera zrenderowane
   renderGameCard(game) {
     const [startTime, endTime] = this.getGameTimes(game);
 
@@ -98,25 +98,15 @@ class TimeRuler extends Component {
   };
 
   render() {
+    // idea
+    // 8 
     return (
       <CenteredWrapper>
-        {
+        {/* {
           this.props.reservedGames && this.props.reservedGames.map(game => this.renderGameCard(game))
-        }
-        {
-          <this.MockedWithResevation          
-              gameReservation={this.props.gameReservation}
-              timeConverter={this.props.timeLine.timeConverter}
-              onBlockTimeLine={this.props.onBlockTimeLine}
-              onMoveTimeLine={this.props.onMoveTimeLine}
-              startPosition={this.props.startPosition}
-              setStart={this.props.setStart}
-              initialCardPosition={this.props.wrapperScrollPosition}
-              reservedIntervals={this.createReservedIntervals(this.props.reservedGames)}
-              showSpinner={this.props.timeLine.isAddGameFetching}
-              actualDateInPixels={this.props.actualDateInPixels}
-          />
-        }
+        } */}
+        {gameCards}
+        <PresentationCardRoot />
         <Ruler />
       </CenteredWrapper>
     );
@@ -145,3 +135,19 @@ const mapDispatchToProps = dispatch => ({
 TimeRuler.propTypes = propTypes;
 TimeRuler.defaultProps = defaultProps;
 export default connect(mapStateToProps, mapDispatchToProps)(TimeRuler);
+
+
+// {
+//   <this.MockedWithResevation          
+//       // gameReservation={this.props.gameReservation}//1
+//       // timeConverter={this.props.timeLine.timeConverter}//1
+//       // onBlockTimeLine={this.props.onBlockTimeLine}//1
+//       // onMoveTimeLine={this.props.onMoveTimeLine}//1
+//       // startPosition={this.props.startPosition}//1
+//       // setStart={this.props.setStart}
+//       // initialCardPosition={this.props.wrapperScrollPosition}
+//       // reservedIntervals={this.createReservedIntervals(this.props.reservedGames)}// skasuj i obsluz to w srodku masz w helpesach
+//       // showSpinner={this.props.timeLine.isAddGameFetching}// mam
+//       // actualDateInPixels={this.props.actualDateInPixels}
+//   />
+// }

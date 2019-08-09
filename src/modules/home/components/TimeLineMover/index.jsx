@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import TimeRuler from '@/modules/home/containers/TimeRuler';
 import useDragToScroll from '@/modules/home/hooks/useDragToScroll';
+import { CenteredWrapper } from '@/modules/shared/components/AppGrid';
+import PresentationCardRoot from '@/modules/home/containers/PresentationCardRoot';
 import * as S from './styles';
 
 const propTypes = {
@@ -55,13 +57,26 @@ const TimeLineMover = React.memo(({
         onMouseMove={mouseMove}
         onMouseDown={mouseDown}
       >
-        <TimeRuler
+        {/* <TimeRuler
           onBlockTimeLine={setIsBlocked}
           onMoveTimeLine={handlerMoveTimeLine}
           startPosition={startPosition}
           setStart={setStart}
           wrapperScrollPosition={getWrapperScrollPosition()}
-        />
+        /> */}
+        <CenteredWrapper>
+        {/* {
+          // wyrenderowane pliki
+          this.props.reservedGames && this.props.reservedGames.map(game => this.renderGameCard(game))
+        } */}
+          <PresentationCardRoot         
+              onBlockTimeLine={setIsBlocked}
+              onMoveTimeLine={handlerMoveTimeLine}
+              initialCardPosition={getWrapperScrollPosition()}
+          />
+          <Ruler />
+      </CenteredWrapper>
+
       </S.TimeLineMover>
     </S.TimeLineWrapper>
   );

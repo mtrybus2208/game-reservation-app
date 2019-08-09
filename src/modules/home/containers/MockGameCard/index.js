@@ -133,7 +133,7 @@ class MockGameCard extends React.PureComponent {
         const [start, end] = posArr;
         return (fullPos >= start && pos <= end);
       });
-  }
+  } 
 
   setAbilityToReserve = pos => {
     return this.props.isReservationBlocked !== this.isReservedCardHovered(pos) &&
@@ -240,7 +240,7 @@ class MockGameCard extends React.PureComponent {
         x={translateX}
         y={translateY}
         isDragging={isDragging}
-        ref={this.myRef}
+        ref={this.myRef}// uzyj forward refa ze starblitza i zrob z tego komponent
       >
         <this.GameCardWithUser
           display={this.props.display}
