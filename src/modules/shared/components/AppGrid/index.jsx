@@ -56,4 +56,8 @@ export const Centered = styled.div`
   align-items: center;
 `;
 
+export const CenteredWrapper = styled(Centered)`
+    height: 100%;
+`;
+
 export default AppGrid;

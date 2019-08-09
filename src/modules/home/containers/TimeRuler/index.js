@@ -5,11 +5,12 @@ import { connect } from 'react-redux';
 import { getAllReservedGames } from '@/modules/home/state/selectors/entieties';
 import { getTimeLine, getWorkdayInPixels, getArrayOfWorkdayHours, getActualDateInPixels } from '@/modules/home/state/selectors';
 import GameCard from '@/modules/home/components/GameCard';
+import Ruler from '@/modules/home/containers/Ruler';
+import { CenteredWrapper } from '@/modules/shared/components/AppGrid';
 import MockGameCard from '@/modules/home/containers/MockGameCard';
 import { withGameReservation } from '@/modules/home/HOC/withGameReservation';
 import * as fromActions from '@/modules/home/state/actions';
 import * as fromSharedActions from '@/modules/shared/state/actions';
-import * as S from './styles';
 
 const propTypes = {
   timeLine: PropTypes.object.isRequired,
@@ -98,7 +99,7 @@ class TimeRuler extends Component {
 
   render() {
     return (
-      <S.Wrapper>
+      <CenteredWrapper>
         {
           this.props.reservedGames && this.props.reservedGames.map(game => this.renderGameCard(game))
         }
@@ -116,22 +117,8 @@ class TimeRuler extends Component {
               actualDateInPixels={this.props.actualDateInPixels}
           />
         }
-        <S.TimeRuler
-          height={this.props.workdayInPixels}
-          timeConverter={this.props.timeLine.timeConverter}
-        >
-          {
-            this.props.arrayOfWorkdayHours.map((h, i) => (
-              <S.HoursDivider
-                key={`t-${i}`}
-                width={60 * this.props.timeLine.timeConverter}
-                position={this.hoursToPixels(i)}
-                time={h}
-              />
-            ))
-          }
-        </S.TimeRuler>
-      </S.Wrapper>
+        <Ruler />
+      </CenteredWrapper>
     );
   }
 }

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-export const TimeRuler = styled.div`
+export const Ruler = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
@@ -13,12 +13,6 @@ export const TimeRuler = styled.div`
     height: 100%;
     min-height: auto;
   }
-`;
-
-export const Wrapper = styled.div`
-    display: flex; 
-    align-items: center;
-    height: 100%;
 `;
 
 export const HoursDivider = styled.div` 
@@ -51,5 +45,3 @@ HoursDivider.propTypes = {
   time: PropTypes.string,
   width: PropTypes.number,
 };
-
-export default TimeRuler;

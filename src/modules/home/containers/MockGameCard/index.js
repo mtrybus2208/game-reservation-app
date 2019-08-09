@@ -6,10 +6,12 @@ import GameCard from '@/modules/home/components/GameCard';
 import BaseIcon from '@/modules/shared/components/BaseIcon';
 import withUser from '@/modules/home/HOC/withUser';
 import { getIsReservationBlocked } from '@/modules/home/state/selectors/gameReservation';
+import { getTimeLine } from '@/modules/home/state/selectors';
 import * as fromActions from '@/modules/home/state/actions';
 import * as S from './styles';
 
 const propTypes = {
+  timeLine: PropTypes.object,
   initialCardPosition: PropTypes.number,
   display: PropTypes.object,
   onBlockTimeLine: PropTypes.func,
@@ -23,7 +25,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-  showSpinner: false,
 };
 
 class MockGameCard extends React.PureComponent {
@@ -245,7 +246,7 @@ class MockGameCard extends React.PureComponent {
           display={this.props.display}
           customTitle={this.customTitle}
           customPosition
-          showSpinner={this.props.showSpinner}
+          showSpinner={this.props.timeLine.showSpinner}
         >
           <S.MockGameCard isAbleToReserve={this.props.isReservationBlocked} />
         </this.GameCardWithUser>
@@ -256,6 +257,7 @@ class MockGameCard extends React.PureComponent {
 
 const mapStateToProps = state => ({
   isReservationBlocked: getIsReservationBlocked(state),
+  timeLine: getTimeLine(state),
 });
 
 const mapDispatchToProps = dispatch => ({
