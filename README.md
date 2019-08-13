@@ -4,6 +4,7 @@ Reservly is a tool for reserving game match queue
 ## Frontend technology stack
 * React
 * Redux
+* Saga
 * Styled components
 
 ## How to run?
