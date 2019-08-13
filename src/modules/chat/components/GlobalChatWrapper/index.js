@@ -8,6 +8,7 @@ import { WS_API_URL, API_URL } from '@/constants/api';
 import * as S from './styles';
 
 const propTypes = {
+  isGlobalChatMode: PropTypes.bool,
   authUser: PropTypes.object,
   globalChatMessages: PropTypes.array,
   globalChatWebsocket: PropTypes.object,
@@ -201,7 +202,9 @@ class GlobalChatWrapper extends Component {
 
   render() {
     return (
-      <S.GlobalChatWrapper>
+      <S.GlobalChatWrapper
+        isGlobalChatMode={this.props.isGlobalChatMode}
+      >
         <S.MessagesScrollWrapper>
           <S.MessagesWrapper 
             ref={this.messagesWrapper}

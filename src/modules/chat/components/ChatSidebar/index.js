@@ -55,24 +55,24 @@ class ChatSidebar extends Component {
     render() {
         return ( 
             <React.Fragment>
-                {this.props.chat.chatMode !== 'GLOBAL' ? (
-                    <DirectChatWrapper 
-                        authUser={this.props.authUser} 
-                        receiverId={this.props.chat.chatMode}
-                        directChatWebsocket={this.state.directChatWebsocket}
-                        setDirectChatWebsocketConnection={this.setDirectChatWebsocketConnection}
-                        saveOpenedDirectChatRoomId={this.saveOpenedDirectChatRoomId}
-                        isDirectChatRoomNotSaved={this.isDirectChatRoomNotSaved}
-                        directChatMessages={this.props.chat.directChatMessages}
-                    />
-                    ) : (
-                    <GlobalChatWrapper 
-                        authUser={this.props.authUser} 
-                        globalChatMessages={this.props.chat.globalChatMessages}
-                        globalChatWebsocket={this.state.globalChatWebsocket}
-                        setGlobalChatWebsocketConnection={this.setGlobalChatWebsocketConnection}
-                    />
-                )}
+                <DirectChatWrapper 
+                    isDirectChatMode={this.props.chat.chatMode !== 'GLOBAL'}
+                    authUser={this.props.authUser} 
+                    receiverId={this.props.chat.chatMode}
+                    directChatWebsocket={this.state.directChatWebsocket}
+                    setDirectChatWebsocketConnection={this.setDirectChatWebsocketConnection}
+                    saveOpenedDirectChatRoomId={this.saveOpenedDirectChatRoomId}
+                    isDirectChatRoomNotSaved={this.isDirectChatRoomNotSaved}
+                    directChatMessages={this.props.chat.directChatMessages}
+                />
+                
+                <GlobalChatWrapper 
+                    isGlobalChatMode={this.props.chat.chatMode === 'GLOBAL'}
+                    authUser={this.props.authUser} 
+                    globalChatMessages={this.props.chat.globalChatMessages}
+                    globalChatWebsocket={this.state.globalChatWebsocket}
+                    setGlobalChatWebsocketConnection={this.setGlobalChatWebsocketConnection}
+                />
             </React.Fragment>
         )
     }

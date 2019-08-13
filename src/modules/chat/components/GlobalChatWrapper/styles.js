@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const GlobalChatWrapper = styled.div`
   height: 100%;
-  display: flex;
+  display: ${props => (props.isGlobalChatMode ? 'flex' : 'none')};
   flex-direction: column;
   align-items: center;
   background: #1b1e22;

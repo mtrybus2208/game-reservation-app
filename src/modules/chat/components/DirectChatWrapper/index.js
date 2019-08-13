@@ -8,7 +8,8 @@ import { WS_API_URL, API_URL } from '@/constants/api';
 import axios from 'axios';
 import moment from 'moment';
 
-const propTypes = { 
+const propTypes = {
+  isDirectChatMode: PropTypes.bool,
   setGlobalChatMode: PropTypes.func,
   setDirectChatWebsocketConnection: PropTypes.func,
   saveOpenedDirectChatRoomId: PropTypes.func,
@@ -16,7 +17,7 @@ const propTypes = {
   fetchDirectChatMessages: PropTypes.func.isRequired,
   addDirectChatMessage: PropTypes.func.isRequired,
   directChatWebsocket: PropTypes.object,
-  authUser: PropTypes.object.isRequired,
+  authUser: PropTypes.object,
   receiverId: PropTypes.string.isRequired,
   directChatMessages: PropTypes.object,
 };
@@ -55,8 +56,19 @@ class DirectChatWrapper extends Component {
 
   debouncedOnClick = debounced(200, this.sendMessage.bind(this)); 
 
-  componentDidMount() {
-    this.setupReceiverData(this.props.receiverId);
+  componentDidUpdate() {
+    const isAnonymousUser = this.props.authUser === null;
+    const isNotDefaultReceiver = this.props.receiverId !== 'GLOBAL';
+    const isReceiverChange = this.state.receiver.id !== this.props.receiverId;
+
+    if(isAnonymousUser) {
+      return;
+    }
+
+    if (isNotDefaultReceiver && isReceiverChange) {
+      this.setupReceiverData(this.props.receiverId);
+      this.scrollToBottom();
+    }
 
     if (this.props.isDirectChatRoomNotSaved(this.getDirectChatRoomId())) { 
       this.props.saveOpenedDirectChatRoomId(this.getDirectChatRoomId()); 
@@ -65,20 +77,6 @@ class DirectChatWrapper extends Component {
 
     if (this.isWebsocketNotConnected(this.props.directChatWebsocket)) {
       this.handleFirstWebsocketConnection();
-    }
-
-    this.scrollToBottom();
-  }
-
-  componentDidUpdate() {
-    const isFirstMessagesFetch = this.state.isFirstMessagesScrollNotDone && this.props.directChatMessages !== null;
-
-    if (isFirstMessagesFetch) {
-      this.scrollToBottom();
-
-      this.setState({
-        isFirstMessagesScrollNotDone: false,
-      })
     }
 
     if (this.isWebsocketFirstConnection(this.props.directChatWebsocket)) {
@@ -123,7 +121,7 @@ class DirectChatWrapper extends Component {
   }
 
   isWebsocketFirstConnection(websocket) {
-    return websocket.onmessage === null;
+    return websocket && websocket.onmessage === null;
   }
 
   fetchCurrentDirectChatMessages() {
@@ -264,7 +262,9 @@ class DirectChatWrapper extends Component {
 
   render() {
     return (
-    <S.DirectChatWrapper> 
+    <S.DirectChatWrapper 
+      isDirectChatMode={this.props.isDirectChatMode}
+    > 
       <S.GlobalChatReturn onClick={this.openGlobalChat}>
         <S.GlobalChatIcon src={this.links.globalChatIcon} />
         <S.GlobalChatInfo>Global chat</S.GlobalChatInfo>
