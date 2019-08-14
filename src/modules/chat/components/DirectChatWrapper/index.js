@@ -11,12 +11,8 @@ import moment from 'moment';
 const propTypes = {
   isDirectChatMode: PropTypes.bool,
   setGlobalChatMode: PropTypes.func,
-  setDirectChatWebsocketConnection: PropTypes.func,
-  saveOpenedDirectChatRoomId: PropTypes.func,
-  isDirectChatRoomNotSaved: PropTypes.func,
   fetchDirectChatMessages: PropTypes.func.isRequired,
   addDirectChatMessage: PropTypes.func.isRequired,
-  directChatWebsocket: PropTypes.object,
   authUser: PropTypes.object,
   receiverId: PropTypes.string.isRequired,
   directChatMessages: PropTypes.object,
@@ -39,6 +35,8 @@ class DirectChatWrapper extends Component {
       email: '',
       photoUrl: '',
     },
+    directChatWebsocket: null,
+    openedDirectChatRooms: [],
     isFirstMessagesScrollNotDone: true,
     isMessageWrapperScrolledDown: true,
     notifyAboutNewMessage: false,
@@ -60,6 +58,8 @@ class DirectChatWrapper extends Component {
     const isAnonymousUser = this.props.authUser === null;
     const isNotDefaultReceiver = this.props.receiverId !== 'GLOBAL';
     const isReceiverChange = this.state.receiver.id !== this.props.receiverId;
+    const isWebsocketNotConnected = this.state.directChatWebsocket === null;
+    const isWebsocketFirstConnection = this.state.directChatWebsocket && this.state.directChatWebsocket.onmessage === null;
 
     if(isAnonymousUser) {
       return;
@@ -67,21 +67,20 @@ class DirectChatWrapper extends Component {
 
     if (isNotDefaultReceiver && isReceiverChange) {
       this.setupReceiverData(this.props.receiverId);
-      this.scrollToBottom();
     }
 
-    if (this.props.isDirectChatRoomNotSaved(this.getDirectChatRoomId())) { 
-      this.props.saveOpenedDirectChatRoomId(this.getDirectChatRoomId()); 
+    if (this.isDirectChatRoomNotSaved(this.getDirectChatRoomId())) { 
+      this.saveOpenedDirectChatRoomId(this.getDirectChatRoomId()); 
       this.fetchDirectChatMessages(this.getDirectChatRoomId());
     }
 
-    if (this.isWebsocketNotConnected(this.props.directChatWebsocket)) {
+    if (isWebsocketNotConnected) {
       this.handleFirstWebsocketConnection();
     }
 
-    if (this.isWebsocketFirstConnection(this.props.directChatWebsocket)) {
-      this.setWebsocketMessageReceiveHandler(this.props.directChatWebsocket);
-      this.setWebsocketConnectionSustain(this.props.directChatWebsocket);
+    if (isWebsocketFirstConnection) {
+      this.setWebsocketMessageReceiveHandler(this.state.directChatWebsocket);
+      this.setWebsocketConnectionSustain(this.state.directChatWebsocket);
     }
   }
 
@@ -89,11 +88,18 @@ class DirectChatWrapper extends Component {
     const directChatWebsocketConnectionUrl = `${this.links.socketConnectionApiUrl}?receiverId=${this.props.authUser.uid}`;
     const websocketConnection = new WebSocket(directChatWebsocketConnectionUrl);
 
-    this.props.setDirectChatWebsocketConnection(websocketConnection);
+    this.setDirectChatWebsocketConnection(websocketConnection);
+  }
+
+  setDirectChatWebsocketConnection(websocket) {
+    this.setState({
+      directChatWebsocket: websocket,
+    });
   }
   
   isFirstChatRoomConnection = () => {
-    return this.props.directChatMessages === null || this.props.directChatMessages[this.getDirectChatRoomId()] === undefined;
+    return this.props.directChatMessages === null 
+        || this.props.directChatMessages[this.getDirectChatRoomId()] === undefined;
   }
 
   fetchDirectChatMessages = (directChatRoomId) => {
@@ -112,16 +118,18 @@ class DirectChatWrapper extends Component {
       })
   }
 
+  saveOpenedDirectChatRoomId(chatRoomId) {
+    this.setState(prevState => ({
+        openedDirectChatRooms: [...prevState.openedDirectChatRooms, chatRoomId]
+    }));
+  }
+
+  isDirectChatRoomNotSaved(chatRoomId) {
+    return !this.state.openedDirectChatRooms.includes(chatRoomId);
+  }
+
   getReceiver = (receiverId) => {
     return axios.get(`${this.links.getPlayerApiUrl}/${receiverId}`)
-  }
-
-  isWebsocketNotConnected(websocket) {
-    return websocket === null;
-  }
-
-  isWebsocketFirstConnection(websocket) {
-    return websocket && websocket.onmessage === null;
   }
 
   fetchCurrentDirectChatMessages() {
@@ -205,7 +213,9 @@ class DirectChatWrapper extends Component {
   }
 
   sendMessage() {
-    if (this.isNotAnonymousUser() && this.validateTypedMessage()) {
+    const isNotAnonymousUser = this.props.authUser !== null;
+
+    if (isNotAnonymousUser && this.validateTypedMessage()) {
 
       const playerMessage = JSON.parse(
         `{
@@ -227,10 +237,6 @@ class DirectChatWrapper extends Component {
 
   validateTypedMessage = () => {
     return this.state.typedMessage.length >= 2 && this.state.typedMessage.length <= 250;
-  }
-
-  isNotAnonymousUser = () => {
-    return this.props.authUser !== null;
   }
 
   isMessagesListFetched = () => {

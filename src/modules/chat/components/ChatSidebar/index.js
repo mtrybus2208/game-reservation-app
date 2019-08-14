@@ -19,37 +19,16 @@ class ChatSidebar extends Component {
         super(props)
 
         this.setGlobalChatWebsocketConnection = this.setGlobalChatWebsocketConnection.bind(this);
-        this.setDirectChatWebsocketConnection = this.setDirectChatWebsocketConnection.bind(this);
-        this.saveOpenedDirectChatRoomId = this.saveOpenedDirectChatRoomId.bind(this);
-        this.isDirectChatRoomNotSaved = this.isDirectChatRoomNotSaved.bind(this);
     }
 
     state = {
         globalChatWebsocket: null,
-        directChatWebsocket: null,
-        openedDirectChatRooms: [],
     };
 
     setGlobalChatWebsocketConnection(websocket) {
         this.setState({
             globalChatWebsocket: websocket,
         });
-    }
-
-    setDirectChatWebsocketConnection(websocket) {
-        this.setState({
-            directChatWebsocket: websocket,
-        });
-    }
-
-    saveOpenedDirectChatRoomId(chatRoomId) {
-        this.setState(prevState => ({
-            openedDirectChatRooms: [...prevState.openedDirectChatRooms, chatRoomId]
-        }));
-    }
-
-    isDirectChatRoomNotSaved(chatRoomId) {
-        return !this.state.openedDirectChatRooms.includes(chatRoomId);
     }
 
     render() {
@@ -59,10 +38,6 @@ class ChatSidebar extends Component {
                     isDirectChatMode={this.props.chat.chatMode !== 'GLOBAL'}
                     authUser={this.props.authUser} 
                     receiverId={this.props.chat.chatMode}
-                    directChatWebsocket={this.state.directChatWebsocket}
-                    setDirectChatWebsocketConnection={this.setDirectChatWebsocketConnection}
-                    saveOpenedDirectChatRoomId={this.saveOpenedDirectChatRoomId}
-                    isDirectChatRoomNotSaved={this.isDirectChatRoomNotSaved}
                     directChatMessages={this.props.chat.directChatMessages}
                 />
                 
