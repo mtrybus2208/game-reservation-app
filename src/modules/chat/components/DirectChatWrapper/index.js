@@ -132,21 +132,6 @@ class DirectChatWrapper extends Component {
     return axios.get(`${this.links.getPlayerApiUrl}/${receiverId}`)
   }
 
-  fetchCurrentDirectChatMessages() {
-    const chatRoomId = this.getDirectChatRoomId();
-
-    return axios.get(`${this.links.sendMessageApiUrl}/chat-room/${chatRoomId}`);
-  }
-  
-  getDirectChatRoomId() {
-    const authUserId = this.props.authUser.uid;
-    const receiverId = this.props.receiverId;
-
-    return authUserId > receiverId
-      ? `${authUserId}_${receiverId}`
-      : `${receiverId}_${authUserId}`;
-  }
-
   setWebsocketMessageReceiveHandler = (websocket) => {
     websocket.onmessage = (event) => {
       const websocketMessage = JSON.parse(event.data);
@@ -176,10 +161,6 @@ class DirectChatWrapper extends Component {
         });
       }
     }
-  }
-
-  scrollToBottom = () => {
-    this.messagesEnd.scrollIntoView({ behavior: "auto" });
   }
 
   openGlobalChat = () => {
@@ -241,6 +222,15 @@ class DirectChatWrapper extends Component {
 
   isMessagesListFetched = () => {
     return this.props.directChatMessages && this.props.directChatMessages[this.getDirectChatRoomId()] !== undefined;
+  }
+
+  getDirectChatRoomId() {
+    const authUserId = this.props.authUser.uid;
+    const receiverId = this.props.receiverId;
+
+    return authUserId > receiverId
+      ? `${authUserId}_${receiverId}`
+      : `${receiverId}_${authUserId}`;
   }
 
   scrollToBottom = () => {

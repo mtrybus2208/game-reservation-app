@@ -16,19 +16,7 @@ const defaultProps = { };
 class ChatSidebar extends Component {
 
     constructor(props) {
-        super(props)
-
-        this.setGlobalChatWebsocketConnection = this.setGlobalChatWebsocketConnection.bind(this);
-    }
-
-    state = {
-        globalChatWebsocket: null,
-    };
-
-    setGlobalChatWebsocketConnection(websocket) {
-        this.setState({
-            globalChatWebsocket: websocket,
-        });
+        super(props);
     }
 
     render() {
@@ -45,8 +33,6 @@ class ChatSidebar extends Component {
                     isGlobalChatMode={this.props.chat.chatMode === 'GLOBAL'}
                     authUser={this.props.authUser} 
                     globalChatMessages={this.props.chat.globalChatMessages}
-                    globalChatWebsocket={this.state.globalChatWebsocket}
-                    setGlobalChatWebsocketConnection={this.setGlobalChatWebsocketConnection}
                 />
             </React.Fragment>
         )
