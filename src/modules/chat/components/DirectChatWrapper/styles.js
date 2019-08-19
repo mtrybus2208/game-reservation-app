@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const DirectChatWrapper = styled.div`
   height: 100%;
-  display: flex;
+  display: ${props => (props.isDirectChatMode ? 'flex' : 'none')};
   flex-direction: column;
   align-items: center;
   background: #1b1e22;

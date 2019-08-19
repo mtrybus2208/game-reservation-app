@@ -16,63 +16,24 @@ const defaultProps = { };
 class ChatSidebar extends Component {
 
     constructor(props) {
-        super(props)
-
-        this.setGlobalChatWebsocketConnection = this.setGlobalChatWebsocketConnection.bind(this);
-        this.setDirectChatWebsocketConnection = this.setDirectChatWebsocketConnection.bind(this);
-        this.saveOpenedDirectChatRoomId = this.saveOpenedDirectChatRoomId.bind(this);
-        this.isDirectChatRoomNotSaved = this.isDirectChatRoomNotSaved.bind(this);
-    }
-
-    state = {
-        globalChatWebsocket: null,
-        directChatWebsocket: null,
-        openedDirectChatRooms: [],
-    };
-
-    setGlobalChatWebsocketConnection(websocket) {
-        this.setState({
-            globalChatWebsocket: websocket,
-        });
-    }
-
-    setDirectChatWebsocketConnection(websocket) {
-        this.setState({
-            directChatWebsocket: websocket,
-        });
-    }
-
-    saveOpenedDirectChatRoomId(chatRoomId) {
-        this.setState(prevState => ({
-            openedDirectChatRooms: [...prevState.openedDirectChatRooms, chatRoomId]
-        }));
-    }
-
-    isDirectChatRoomNotSaved(chatRoomId) {
-        return !this.state.openedDirectChatRooms.includes(chatRoomId);
+        super(props);
     }
 
     render() {
         return ( 
             <React.Fragment>
-                {this.props.chat.chatMode !== 'GLOBAL' ? (
-                    <DirectChatWrapper 
-                        authUser={this.props.authUser} 
-                        receiverId={this.props.chat.chatMode}
-                        directChatWebsocket={this.state.directChatWebsocket}
-                        setDirectChatWebsocketConnection={this.setDirectChatWebsocketConnection}
-                        saveOpenedDirectChatRoomId={this.saveOpenedDirectChatRoomId}
-                        isDirectChatRoomNotSaved={this.isDirectChatRoomNotSaved}
-                        directChatMessages={this.props.chat.directChatMessages}
-                    />
-                    ) : (
-                    <GlobalChatWrapper 
-                        authUser={this.props.authUser} 
-                        globalChatMessages={this.props.chat.globalChatMessages}
-                        globalChatWebsocket={this.state.globalChatWebsocket}
-                        setGlobalChatWebsocketConnection={this.setGlobalChatWebsocketConnection}
-                    />
-                )}
+                <DirectChatWrapper 
+                    isDirectChatMode={this.props.chat.chatMode !== 'GLOBAL'}
+                    authUser={this.props.authUser} 
+                    receiverId={this.props.chat.chatMode}
+                    directChatMessages={this.props.chat.directChatMessages}
+                />
+                
+                <GlobalChatWrapper 
+                    isGlobalChatMode={this.props.chat.chatMode === 'GLOBAL'}
+                    authUser={this.props.authUser} 
+                    globalChatMessages={this.props.chat.globalChatMessages}
+                />
             </React.Fragment>
         )
     }

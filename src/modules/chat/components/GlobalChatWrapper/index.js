@@ -8,12 +8,11 @@ import { WS_API_URL, API_URL } from '@/constants/api';
 import * as S from './styles';
 
 const propTypes = {
+  isGlobalChatMode: PropTypes.bool,
   authUser: PropTypes.object,
   globalChatMessages: PropTypes.array,
-  globalChatWebsocket: PropTypes.object,
   setDirectChatMode: PropTypes.func,
   addGlobalChatMessage: PropTypes.func,
-  setGlobalChatWebsocketConnection: PropTypes.func,
 };
 
 const defaultProps = { };
@@ -29,6 +28,7 @@ class GlobalChatWrapper extends Component {
     typedMessage: '',
     isMessageWrapperScrolledDown: true,
     notifyAboutNewMessage: false,
+    globalChatWebsocket: null,
   };
 
   links = {
@@ -45,27 +45,23 @@ class GlobalChatWrapper extends Component {
   debouncedOnClick = debounced(200, this.sendMessage.bind(this));
 
   componentDidMount() {
-    if (this.isWebsocketNotConnected(this.props.globalChatWebsocket))  {
+    const isWebsocketNotConnected = this.state.globalChatWebsocket === null;
+
+    if (isWebsocketNotConnected)  {
       const websocketConnection = new WebSocket(this.links.socketConnectionApiUrl);
-      this.props.setGlobalChatWebsocketConnection(websocketConnection);
+      this.setGlobalChatWebsocketConnection(websocketConnection);
     }
 
     this.scrollToBottom();
   }
 
   componentDidUpdate() {
-    if (this.isWebsocketFirstConnection(this.props.globalChatWebsocket)) {
-      this.setWebsocketMessageReceiveHandler(this.props.globalChatWebsocket);
-      this.setWebsocketConnectionSustain(this.props.globalChatWebsocket);
+    const isWebsocketFirstConnection = this.state.globalChatWebsocket.onmessage === null;
+
+    if (isWebsocketFirstConnection) {
+      this.setWebsocketMessageReceiveHandler(this.state.globalChatWebsocket);
+      this.setWebsocketConnectionSustain(this.state.globalChatWebsocket);
     }
-  }
-
-  isWebsocketNotConnected(websocket) {
-    return websocket === null;
-  }
-
-  isWebsocketFirstConnection(websocket) {
-    return websocket.onmessage === null;
   }
 
   sendMessage() {
@@ -86,6 +82,12 @@ class GlobalChatWrapper extends Component {
           })
         );
     }
+  }
+
+  setGlobalChatWebsocketConnection(websocket) {
+    this.setState({
+      globalChatWebsocket: websocket,
+    });
   }
 
   setWebsocketMessageReceiveHandler = (websocket) => {
@@ -201,7 +203,9 @@ class GlobalChatWrapper extends Component {
 
   render() {
     return (
-      <S.GlobalChatWrapper>
+      <S.GlobalChatWrapper
+        isGlobalChatMode={this.props.isGlobalChatMode}
+      >
         <S.MessagesScrollWrapper>
           <S.MessagesWrapper 
             ref={this.messagesWrapper}
