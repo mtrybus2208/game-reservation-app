@@ -77,7 +77,6 @@ export const MessagesWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 35px;
   width: 100%;
   height: 100%;
   background: #16181b;
@@ -106,12 +105,12 @@ export const IncomingMessageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin-top: 25px;
+  padding-bottom: 25px;
   width: 80%;
   height: auto;
 
   &:first-child {
-    margin-top: 50px;
+    padding-top: 50px;
   }
 
   @media ${({ theme }) => theme.media.laptop} {
@@ -122,12 +121,12 @@ export const IncomingMessageWrapper = styled.div`
 export const OutgoingMessageWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-top: 25px;
+  padding-bottom: 25px;
   width: 80%;
   height: auto;
 
   &:first-child {
-    margin-top: 50px;
+    padding-top: 50px;
   }
 
   @media ${({ theme }) => theme.media.laptop} {
