@@ -11,8 +11,10 @@ const propTypes = {
   isGlobalChatMode: PropTypes.bool,
   authUser: PropTypes.object,
   globalChatMessages: PropTypes.array,
+  isInitialScrollToBottomNotDone: PropTypes.bool,
   setDirectChatMode: PropTypes.func,
   addGlobalChatMessage: PropTypes.func,
+  setInitialScrollToBottomFlag: PropTypes.func,
 };
 
 const defaultProps = { };
@@ -175,7 +177,9 @@ class GlobalChatWrapper extends Component {
 
   openDirectChat = (event) => {
     const playerId = event.currentTarget.id;
+    
     this.props.setDirectChatMode(playerId);
+    this.props.setInitialScrollToBottomFlag(true);
   }
 
   scrollToBottom = () => {
