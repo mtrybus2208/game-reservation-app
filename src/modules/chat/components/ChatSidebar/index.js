@@ -17,6 +17,18 @@ class ChatSidebar extends Component {
 
     constructor(props) {
         super(props);
+
+        this.setInitialScrollToBottomFlag = this.setInitialScrollToBottomFlag.bind(this);
+    }
+
+    state = {
+        isInitialScrollToBottomNotDone: true,
+    }
+
+    setInitialScrollToBottomFlag = (isDone) => {
+        this.setState({
+            isInitialScrollToBottomNotDone: isDone,
+        });
     }
 
     render() {
@@ -27,12 +39,16 @@ class ChatSidebar extends Component {
                     authUser={this.props.authUser} 
                     receiverId={this.props.chat.chatMode}
                     directChatMessages={this.props.chat.directChatMessages}
+                    isInitialScrollToBottomNotDone={this.state.isInitialScrollToBottomNotDone}
+                    setInitialScrollToBottomFlag={this.setInitialScrollToBottomFlag}
                 />
                 
                 <GlobalChatWrapper 
                     isGlobalChatMode={this.props.chat.chatMode === 'GLOBAL'}
                     authUser={this.props.authUser} 
                     globalChatMessages={this.props.chat.globalChatMessages}
+                    isInitialScrollToBottomNotDone={this.state.isInitialScrollToBottomNotDone}
+                    setInitialScrollToBottomFlag={this.setInitialScrollToBottomFlag}
                 />
             </React.Fragment>
         )
@@ -42,4 +58,3 @@ class ChatSidebar extends Component {
 ChatSidebar.propTypes = propTypes;
 ChatSidebar.defaultProps = defaultProps;
 export default ChatSidebar;
-

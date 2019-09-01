@@ -16,6 +16,8 @@ const propTypes = {
   authUser: PropTypes.object,
   receiverId: PropTypes.string.isRequired,
   directChatMessages: PropTypes.object,
+  isInitialScrollToBottomNotDone: PropTypes.bool,
+  setInitialScrollToBottomFlag: PropTypes.func,
 };
 
 const defaultProps = { };
@@ -60,6 +62,7 @@ class DirectChatWrapper extends Component {
     const isReceiverChange = this.state.receiver.id !== this.props.receiverId;
     const isWebsocketNotConnected = this.state.directChatWebsocket === null;
     const isWebsocketFirstConnection = this.state.directChatWebsocket && this.state.directChatWebsocket.onmessage === null;
+    const areMessagesLoaded = this.messagesWrapper.current.childNodes.length > 1;
 
     if(isAnonymousUser) {
       return;
@@ -81,6 +84,12 @@ class DirectChatWrapper extends Component {
     if (isWebsocketFirstConnection) {
       this.setWebsocketMessageReceiveHandler(this.state.directChatWebsocket);
       this.setWebsocketConnectionSustain(this.state.directChatWebsocket);
+    }
+
+    if(this.props.isInitialScrollToBottomNotDone && areMessagesLoaded) {
+      this.scrollToBottom();
+
+      this.props.setInitialScrollToBottomFlag(false);
     }
   }
 
