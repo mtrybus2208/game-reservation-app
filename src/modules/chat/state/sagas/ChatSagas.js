@@ -15,15 +15,15 @@ const makeEntities = chatRoomMessages => {
   return chatRoomEntity;
 };
 
-const fetchDirectChatMessages = (directChatRoomId) => (
-  fetch(`${API_URL}/chat/direct/messages/chat-room/${directChatRoomId}`)
+const fetchDirectChatMessages = (directChatRoomId, firstElementNumber, numberOfElements) => (
+  fetch(`${API_URL}/chat/direct/messages/chat-room/${directChatRoomId}?firstElementNumber=${firstElementNumber}&numberOfElements=${numberOfElements}`)
     .then(response => response.json())
     .then(makeEntities)
 );
 
-function* workFetchDirectChatMessages({ directChatRoomId }) {
+function* workFetchDirectChatMessages({ directChatRoomId, firstElementNumber, numberOfElements }) {
   try {
-    const messages = yield call(fetchDirectChatMessages, directChatRoomId);
+    const messages = yield call(fetchDirectChatMessages, directChatRoomId, firstElementNumber, numberOfElements);
     yield put({ type: actionTypes.FETCH_DIRECT_CHAT_MESSAGES_SUCCESS, messages });
   } catch (e) {
     yield put({ type: actionTypes.FETCH_DIRECT_CHAT_MESSAGES_FAIL, message: e.message });

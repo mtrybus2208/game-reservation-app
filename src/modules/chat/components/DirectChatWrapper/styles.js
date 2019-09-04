@@ -139,7 +139,7 @@ export const Message = styled.div`
   flex-direction: column;
   align-items: center;
   width: 90%;
-  max-width: 250px;
+  max-width: 240px;
   height: auto;
   background: #111315;
 

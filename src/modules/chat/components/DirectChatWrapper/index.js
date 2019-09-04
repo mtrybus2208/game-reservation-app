@@ -63,6 +63,7 @@ class DirectChatWrapper extends Component {
     const isWebsocketNotConnected = this.state.directChatWebsocket === null;
     const isWebsocketFirstConnection = this.state.directChatWebsocket && this.state.directChatWebsocket.onmessage === null;
     const areMessagesLoaded = this.messagesWrapper.current.childNodes.length > 1;
+    const isMessagesWrapperScrolledToTop = this.messagesWrapper.current.scrollTop === 0;
 
     if(isAnonymousUser) {
       return;
@@ -91,6 +92,10 @@ class DirectChatWrapper extends Component {
 
       this.props.setInitialScrollToBottomFlag(false);
     }
+
+    if(isMessagesWrapperScrolledToTop && !this.props.isInitialScrollToBottomNotDone) {
+      console.log('LOAD')
+    }
   }
 
   handleFirstWebsocketConnection() {
@@ -111,8 +116,10 @@ class DirectChatWrapper extends Component {
         || this.props.directChatMessages[this.getDirectChatRoomId()] === undefined;
   }
 
-  fetchDirectChatMessages = (directChatRoomId) => {
-    this.props.fetchDirectChatMessages(directChatRoomId);
+  fetchDirectChatMessages = (directChatRoomId, firstElementNumber = 0) => {
+    const numberOfElements = 15;
+
+    this.props.fetchDirectChatMessages(directChatRoomId, firstElementNumber, numberOfElements);
   }
 
   setupReceiverData = (receiverId) => {
@@ -387,8 +394,8 @@ const mapStateToProps = () => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchDirectChatMessages: (directChatRoomId) => {
-      dispatch(fromActions.fetchDirectChatMessages(directChatRoomId));
+    fetchDirectChatMessages: (directChatRoomId, firstElementNumber, numberOfElements) => {
+      dispatch(fromActions.fetchDirectChatMessages(directChatRoomId, firstElementNumber, numberOfElements));
     },
     setGlobalChatMode: () => {
       dispatch(fromActions.setGlobalChatMode());
