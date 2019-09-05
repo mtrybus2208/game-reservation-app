@@ -75,7 +75,7 @@ class DirectChatWrapper extends Component {
 
     if (this.isDirectChatRoomNotSaved(this.getDirectChatRoomId())) { 
       this.saveOpenedDirectChatRoomId(this.getDirectChatRoomId()); 
-      this.fetchDirectChatMessages(this.getDirectChatRoomId());
+      this.fetchDirectChatMessages();
     }
 
     if (isWebsocketNotConnected) {
@@ -94,7 +94,9 @@ class DirectChatWrapper extends Component {
     }
 
     if(isMessagesWrapperScrolledToTop && !this.props.isInitialScrollToBottomNotDone) {
-      console.log('LOAD')
+      const numberOfNextMessage = this.messagesWrapper.current.childNodes.length;
+
+      this.fetchDirectChatMessages(numberOfNextMessage);
     }
   }
 
@@ -116,10 +118,10 @@ class DirectChatWrapper extends Component {
         || this.props.directChatMessages[this.getDirectChatRoomId()] === undefined;
   }
 
-  fetchDirectChatMessages = (directChatRoomId, firstElementNumber = 0) => {
+  fetchDirectChatMessages = (firstElementNumber = 0) => {
     const numberOfElements = 15;
 
-    this.props.fetchDirectChatMessages(directChatRoomId, firstElementNumber, numberOfElements);
+    this.props.fetchDirectChatMessages(this.getDirectChatRoomId(), firstElementNumber, numberOfElements);
   }
 
   setupReceiverData = (receiverId) => {

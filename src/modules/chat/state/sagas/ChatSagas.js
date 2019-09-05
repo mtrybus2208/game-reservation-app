@@ -6,12 +6,12 @@ import { API_URL } from '@/constants/api';
 const makeEntities = chatRoomMessages => {
   const chatRoomEntity = chatRoomMessages.reduce((messages, message) => ({
       ...messages,
-      [message.chatRoomId]: [
-        ...(messages[message.chatRoomId] || []), 
-        message
+      [message.chatRoomId]: [ 
+        message,
+        ...(messages[message.chatRoomId] || [])
       ],
   }), {});
-  
+
   return chatRoomEntity;
 };
 
