@@ -5,11 +5,11 @@ import { API_URL } from '@/constants/api';
 
 const makeEntities = chatRoomMessages => {
   const chatRoomEntity = chatRoomMessages.reduce((messages, message) => ({
-      ...messages,
-      [message.chatRoomId]: [ 
-        message,
-        ...(messages[message.chatRoomId] || [])
-      ],
+    ...messages,
+    [message.chatRoomId]: [ 
+      message,
+      ...(messages[message.chatRoomId] || []),
+    ],
   }), {});
 
   return chatRoomEntity;
@@ -24,9 +24,16 @@ const fetchDirectChatMessages = (directChatRoomId, firstElementNumber, numberOfE
 function* workFetchDirectChatMessages({ directChatRoomId, firstElementNumber, numberOfElements }) {
   try {
     const messages = yield call(fetchDirectChatMessages, directChatRoomId, firstElementNumber, numberOfElements);
-    yield put({ type: actionTypes.FETCH_DIRECT_CHAT_MESSAGES_SUCCESS, messages });
-  } catch (e) {
-    yield put({ type: actionTypes.FETCH_DIRECT_CHAT_MESSAGES_FAIL, message: e.message });
+    
+    yield put({
+      type: actionTypes.FETCH_DIRECT_CHAT_MESSAGES_SUCCESS,
+      messages, 
+    });
+  } catch (error) {
+    yield put({
+      type: actionTypes.FETCH_DIRECT_CHAT_MESSAGES_FAIL,
+      message: error.message,
+    });
   }
 }
 

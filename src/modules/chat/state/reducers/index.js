@@ -39,8 +39,8 @@ export const chatReducer = (state = initialState, action) => {
         directChatMessages: {
           ...state.directChatMessages,
           [directChatRoomId]: [
-            ...(state.directChatMessages && state.directChatMessages[directChatRoomId] || []),
             ...action.messages[directChatRoomId],
+            ...(state.directChatMessages && state.directChatMessages[directChatRoomId] || []),
           ],
         },
       };
