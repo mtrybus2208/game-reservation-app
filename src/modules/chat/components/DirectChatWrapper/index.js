@@ -42,6 +42,10 @@ class DirectChatWrapper extends Component {
     isFirstMessagesScrollNotDone: true,
     isMessageWrapperScrolledDown: true,
     notifyAboutNewMessage: false,
+    shouldScrollToElementBeforeFetch: false,
+    messageToScrollTo: null,
+    numberOfElements: 15,
+    previousNumberOfMessages: 0,
   };
 
   links = {
@@ -62,10 +66,11 @@ class DirectChatWrapper extends Component {
     const isReceiverChange = this.state.receiver.id !== this.props.receiverId;
     const isWebsocketNotConnected = this.state.directChatWebsocket === null;
     const isWebsocketFirstConnection = this.state.directChatWebsocket && this.state.directChatWebsocket.onmessage === null;
-    const areMessagesLoaded = this.messagesWrapper.current.childNodes.length > 1;
+    const currentNumberOfMessages = this.messagesWrapper.current.childNodes.length;
+    const areMessagesLoaded = currentNumberOfMessages > 1;
     const isMessagesWrapperScrolledToTop = this.messagesWrapper.current.scrollTop === 0;
 
-    if(isAnonymousUser) {
+    if (isAnonymousUser) {
       return;
     }
 
@@ -87,16 +92,31 @@ class DirectChatWrapper extends Component {
       this.setWebsocketConnectionSustain(this.state.directChatWebsocket);
     }
 
-    if(this.props.isInitialScrollToBottomNotDone && areMessagesLoaded) {
+    if (this.props.isInitialScrollToBottomNotDone && areMessagesLoaded) {
       this.scrollToBottom();
 
       this.props.setInitialScrollToBottomFlag(false);
     }
 
-    if(isMessagesWrapperScrolledToTop && !this.props.isInitialScrollToBottomNotDone) {
+    if (isMessagesWrapperScrolledToTop && !this.props.isInitialScrollToBottomNotDone && !this.state.shouldScrollToElementBeforeFetch) {
       const numberOfNextMessage = this.messagesWrapper.current.childNodes.length;
 
+      this.setState({
+        shouldScrollToElementBeforeFetch: true,
+        previousNumberOfMessages: currentNumberOfMessages,
+      });
+
       this.fetchDirectChatMessages(numberOfNextMessage);
+    }
+
+    if (this.state.shouldScrollToElementBeforeFetch && currentNumberOfMessages > this.state.previousNumberOfMessages) {
+      const previousLastMessage = this.messagesWrapper.current.childNodes[currentNumberOfMessages - this.state.previousNumberOfMessages];
+
+      previousLastMessage.scrollIntoView({ behavior: "auto" });
+
+      this.setState({
+        shouldScrollToElementBeforeFetch: false,
+      });
     }
   }
 
@@ -119,9 +139,7 @@ class DirectChatWrapper extends Component {
   }
 
   fetchDirectChatMessages = (firstElementNumber = 0) => {
-    const numberOfElements = 15;
-
-    this.props.fetchDirectChatMessages(this.getDirectChatRoomId(), firstElementNumber, numberOfElements);
+    this.props.fetchDirectChatMessages(this.getDirectChatRoomId(), firstElementNumber, this.state.numberOfElements);
   }
 
   setupReceiverData = (receiverId) => {
