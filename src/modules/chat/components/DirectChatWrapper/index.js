@@ -201,6 +201,14 @@ class DirectChatWrapper extends Component {
 
   openGlobalChat = () => {
     this.props.setGlobalChatMode();
+    this.resetChatRoomData();
+  }
+
+  resetChatRoomData = () => {
+    this.setState({
+      shouldScrollToElementBeforeFetch: false,
+      previousNumberOfMessages: 0,
+    });
   }
 
   setWebsocketConnectionSustain = (websocket) => {
