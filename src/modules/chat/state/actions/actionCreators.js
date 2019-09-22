@@ -23,8 +23,10 @@ export const addDirectChatMessage = (message) =>
     message,
   });
 
-export const fetchDirectChatMessages = (directChatRoomId) => 
+export const fetchDirectChatMessages = (directChatRoomId, firstElementNumber, numberOfElements) => 
   ({ 
     type: actionTypes.FETCH_DIRECT_CHAT_MESSAGES,
     directChatRoomId,
+    firstElementNumber, 
+    numberOfElements,
   });

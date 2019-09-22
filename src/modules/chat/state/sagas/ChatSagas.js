@@ -5,28 +5,35 @@ import { API_URL } from '@/constants/api';
 
 const makeEntities = chatRoomMessages => {
   const chatRoomEntity = chatRoomMessages.reduce((messages, message) => ({
-      ...messages,
-      [message.chatRoomId]: [
-        ...(messages[message.chatRoomId] || []), 
-        message
-      ],
+    ...messages,
+    [message.chatRoomId]: [ 
+      message,
+      ...(messages[message.chatRoomId] || []),
+    ],
   }), {});
-  
+
   return chatRoomEntity;
 };
 
-const fetchDirectChatMessages = (directChatRoomId) => (
-  fetch(`${API_URL}/chat/direct/messages/chat-room/${directChatRoomId}`)
+const fetchDirectChatMessages = (directChatRoomId, firstElementNumber, numberOfElements) => (
+  fetch(`${API_URL}/chat/direct/messages/chat-room/${directChatRoomId}?firstElementNumber=${firstElementNumber}&numberOfElements=${numberOfElements}`)
     .then(response => response.json())
     .then(makeEntities)
 );
 
-function* workFetchDirectChatMessages({ directChatRoomId }) {
+function* workFetchDirectChatMessages({ directChatRoomId, firstElementNumber, numberOfElements }) {
   try {
-    const messages = yield call(fetchDirectChatMessages, directChatRoomId);
-    yield put({ type: actionTypes.FETCH_DIRECT_CHAT_MESSAGES_SUCCESS, messages });
-  } catch (e) {
-    yield put({ type: actionTypes.FETCH_DIRECT_CHAT_MESSAGES_FAIL, message: e.message });
+    const messages = yield call(fetchDirectChatMessages, directChatRoomId, firstElementNumber, numberOfElements);
+    
+    yield put({
+      type: actionTypes.FETCH_DIRECT_CHAT_MESSAGES_SUCCESS,
+      messages, 
+    });
+  } catch (error) {
+    yield put({
+      type: actionTypes.FETCH_DIRECT_CHAT_MESSAGES_FAIL,
+      message: error.message,
+    });
   }
 }
 
