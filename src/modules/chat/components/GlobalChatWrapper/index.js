@@ -13,6 +13,7 @@ const propTypes = {
   globalChatMessages: PropTypes.array,
   isInitialScrollToBottomNotDone: PropTypes.bool,
   setDirectChatMode: PropTypes.func,
+  setActivePlayersMode: PropTypes.func,
   addGlobalChatMessage: PropTypes.func,
   setInitialScrollToBottomFlag: PropTypes.func,
 };
@@ -175,6 +176,10 @@ class GlobalChatWrapper extends Component {
     return this.state.typedMessage.length >= 2 && this.state.typedMessage.length <= 250;
   }
 
+  openActivePlayersMode = () => {
+    this.props.setActivePlayersMode();
+  }
+
   openDirectChat = (event) => {
     const playerId = event.currentTarget.id;
     
@@ -210,6 +215,11 @@ class GlobalChatWrapper extends Component {
       <S.GlobalChatWrapper
         isGlobalChatMode={this.props.isGlobalChatMode}
       >
+        <S.ActivePlayersOpen onClick={this.openActivePlayersMode}>
+          <S.ActivePlayersIcon />
+          <S.ActivePlayersInfo>Active players</S.ActivePlayersInfo>
+        </S.ActivePlayersOpen>
+
         <S.MessagesScrollWrapper>
           <S.MessagesWrapper 
             ref={this.messagesWrapper}
@@ -307,6 +317,9 @@ const mapDispatchToProps = dispatch => {
   return {
     setDirectChatMode: (playerId) => {
       dispatch(fromActions.setDirectChatMode(playerId));
+    },
+    setActivePlayersMode: () => {
+      dispatch(fromActions.setActivePlayersMode());
     },
     addGlobalChatMessage: (message) => {
       dispatch(fromActions.addGlobalChatMessage(message));
