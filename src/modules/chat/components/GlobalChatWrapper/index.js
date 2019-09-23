@@ -36,6 +36,7 @@ class GlobalChatWrapper extends Component {
 
   links = {
     directChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg',
+    multipleUsersIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1569238504/multiple-users.svg',
     emojiIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595074/smiling-emoticon.svg',
     sendMessageIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg',
     arrowIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1562587604/arrow.svg',
@@ -216,7 +217,7 @@ class GlobalChatWrapper extends Component {
         isGlobalChatMode={this.props.isGlobalChatMode}
       >
         <S.ActivePlayersOpen onClick={this.openActivePlayersMode}>
-          <S.ActivePlayersIcon />
+          <S.ActivePlayersIcon src={this.links.multipleUsersIcon} />
           <S.ActivePlayersInfo>Active players</S.ActivePlayersInfo>
         </S.ActivePlayersOpen>
 
