@@ -23,6 +23,7 @@ class ActivePlayersWrapper extends Component {
 
     links = {
         globalChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553015547/message.svg',
+        playerSearchIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1569241158/magnifier.svg',
     }
 
     openGlobalChat = () => {
@@ -38,6 +39,13 @@ class ActivePlayersWrapper extends Component {
                     <S.GlobalChatIcon src={this.links.globalChatIcon} />
                     <S.GlobalChatInfo>Global chat</S.GlobalChatInfo>
                 </S.GlobalChatReturn>
+
+                <S.PlayerSearch>
+                    <S.PlayerSearchInput type="text" />
+                    <S.PlayerSearchButton>
+                        <S.PlayerSearchIcon src={this.links.playerSearchIcon}/>
+                    </S.PlayerSearchButton>
+                </S.PlayerSearch>
 
             </S.ActivePlayersWrapper>
         )
