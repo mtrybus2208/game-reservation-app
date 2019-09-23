@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import axios from 'axios';
+import { WS_API_URL, API_URL } from '@/constants/api';
 import * as fromActions from '../../state/actions';
 import * as S from './styles';
 
@@ -18,12 +20,35 @@ class ActivePlayersWrapper extends Component {
     }
 
     state = {
-
+        players: [],
     }
 
     links = {
         globalChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553015547/message.svg',
         playerSearchIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1569241158/magnifier.svg',
+    }
+
+    componentDidMount() {
+        this.fetchAllPlayers();
+    }
+
+    componentDidUpdate() {
+
+    }
+
+    fetchAllPlayers = () => {
+        const fetchAllPlayersUrl = `${API_URL}/players`;
+
+        axios
+            .get(fetchAllPlayersUrl)
+            .then(response => 
+                this.setState({
+                    players: response.data,
+                })
+            )
+            .catch(error => 
+                console.log(error.response)
+            );
     }
 
     openGlobalChat = () => {
@@ -46,6 +71,19 @@ class ActivePlayersWrapper extends Component {
                         <S.PlayerSearchIcon src={this.links.playerSearchIcon}/>
                     </S.PlayerSearchButton>
                 </S.PlayerSearch>
+
+                
+                {this.state.players.map((value, index) => (
+                    <S.Player key={index}>
+                        <S.PlayerPictureWrapper>
+                            <S.PlayerPicture src={value.photoUrl} />
+                        </S.PlayerPictureWrapper>
+
+                        <S.PlayerName>
+                            {value.displayName}
+                        </S.PlayerName>
+                    </S.Player>
+                ))}
 
             </S.ActivePlayersWrapper>
         )

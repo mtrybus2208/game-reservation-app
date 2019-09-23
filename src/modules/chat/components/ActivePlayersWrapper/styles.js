@@ -43,14 +43,14 @@ export const PlayerSearch = styled.div`
   justify-content: space-between;
   height: 35px;
   width: 100%;
-  background: #484f5a;
+  background: #262d38;
 `;
 
 export const PlayerSearchInput = styled.input`
   height: 100%;
   width: calc(100% - 30px);
-  padding: 0 5px;
-  background: #484f5a;
+  padding: 0 10px;
+  background: #262d38;
   border: none;
   color: #FFF;
 `;
@@ -72,4 +72,50 @@ export const PlayerSearchButton = styled.button`
 export const PlayerSearchIcon = styled.img`
   width: 20px;
   height: 20px;
+`;
+
+export const Player = styled.button`
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  min-height: 60px;
+  padding: 0;
+  background: #181c1f;
+  border: 0;
+
+  &:hover {
+    cursor: pointer;
+    background: #141619;
+  }
+`;
+
+export const PlayerPictureWrapper = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 20px;
+  border-radius: 50%;
+  background: #23272d;
+`;
+
+export const PlayerPicture = styled.img`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+`;
+
+export const PlayerName = styled.div`
+  width: calc(100% - 80px);
+  margin: 10px 0;
+  font-family: Roboto;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: .3px;
+  color: #ce8d08;
 `;
