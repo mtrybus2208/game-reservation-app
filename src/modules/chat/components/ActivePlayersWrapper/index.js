@@ -84,7 +84,6 @@ class ActivePlayersWrapper extends Component {
                         </S.PlayerName>
                     </S.Player>
                 ))}
-
             </S.ActivePlayersWrapper>
         )
     }

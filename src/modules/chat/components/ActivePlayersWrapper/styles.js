@@ -6,6 +6,21 @@ export const ActivePlayersWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   background: #1b1e22;
+  overflow-y: scroll;
+
+  scrollbar-color: #1b1e22 #111315;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: #111315;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: #1b1e22;
+  }
 `;
 
 export const GlobalChatReturn = styled.button`
@@ -14,6 +29,7 @@ export const GlobalChatReturn = styled.button`
   align-items: center;
   width: 100%;
   height: 40px;
+  min-height: 40px;
   border: none;
   background: #111315;
   cursor: pointer;
@@ -42,6 +58,7 @@ export const PlayerSearch = styled.div`
   display: flex;
   justify-content: space-between;
   height: 35px;
+  min-height: 35px;
   width: 100%;
   background: #262d38;
 `;
@@ -52,7 +69,7 @@ export const PlayerSearchInput = styled.input`
   padding: 0 10px;
   background: #262d38;
   border: none;
-  color: #FFF;
+  color: #fff;
 `;
 
 export const PlayerSearchButton = styled.button`
