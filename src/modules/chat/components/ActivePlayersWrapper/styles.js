@@ -17,6 +17,10 @@ export const GlobalChatReturn = styled.button`
   border: none;
   background: #111315;
   cursor: pointer;
+
+  &:hover {
+    background: #141619;
+  }
 `;
 
 export const GlobalChatIcon = styled.img`
