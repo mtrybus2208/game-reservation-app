@@ -14,6 +14,7 @@ export const GlobalChatReturn = styled.button`
   align-items: center;
   width: 100%;
   height: 40px;
+  min-height: 40px;
   border: none;
   background: #111315;
   cursor: pointer;
@@ -85,6 +86,8 @@ export const MessagesWrapper = styled.div`
   height: 100%;
   background: #16181b;
   overflow: auto;
+  
+  scrollbar-color: #1b1e22 #111315;
   
   &::-webkit-scrollbar {
     width: 10px;
