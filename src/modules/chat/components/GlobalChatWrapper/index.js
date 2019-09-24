@@ -216,10 +216,15 @@ class GlobalChatWrapper extends Component {
       <S.GlobalChatWrapper
         isGlobalChatMode={this.props.isGlobalChatMode}
       >
-        <S.ActivePlayersOpen onClick={this.openActivePlayersMode}>
-          <S.ActivePlayersIcon src={this.links.multipleUsersIcon} />
-          <S.ActivePlayersInfo>Active players</S.ActivePlayersInfo>
-        </S.ActivePlayersOpen>
+        {
+          this.isNotAnonymousUser() && (
+            <S.ActivePlayersOpen onClick={this.openActivePlayersMode}>
+              <S.ActivePlayersIcon src={this.links.multipleUsersIcon} />
+              <S.ActivePlayersInfo>Active players</S.ActivePlayersInfo>
+            </S.ActivePlayersOpen>
+          )
+        }
+        
 
         <S.MessagesScrollWrapper>
           <S.MessagesWrapper 
