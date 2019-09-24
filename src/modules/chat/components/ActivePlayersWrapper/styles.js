@@ -72,18 +72,13 @@ export const PlayerSearchInput = styled.input`
   color: #fff;
 `;
 
-export const PlayerSearchButton = styled.button`
+export const PlayerSearchIconWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100%;
   width: 35px;
-  padding: 0;
-  margin: 0;
-  background: #373e49;
   border: none;
-
-  &:hover {
-    background: #262d38;
-    cursor: pointer;
-  }
 `;
 
 export const PlayerSearchIcon = styled.img`

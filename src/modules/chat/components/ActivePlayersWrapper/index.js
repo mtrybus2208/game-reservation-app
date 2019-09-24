@@ -23,7 +23,8 @@ class ActivePlayersWrapper extends Component {
     }
 
     state = {
-        players: [],
+        allPlayers: [],
+        filteredPlayers: [],
     }
 
     links = {
@@ -46,7 +47,8 @@ class ActivePlayersWrapper extends Component {
             .get(fetchAllPlayersUrl)
             .then(response => 
                 this.setState({
-                    players: response.data,
+                    allPlayers: response.data,
+                    filteredPlayers: response.data,
                 })
             )
             .catch(error => 
@@ -65,6 +67,24 @@ class ActivePlayersWrapper extends Component {
         this.props.setInitialScrollToBottomFlag(true);
     }
 
+    searchPlayersByGivenText = (event) => {
+        const searchedPlayerName = event.target.value.toLowerCase();
+
+        if (searchedPlayerName) {
+            const filteredPlayers = this.state.allPlayers.filter(player =>
+                player.displayName.toLowerCase().includes(searchedPlayerName)
+            );
+
+            this.setState({
+                filteredPlayers: filteredPlayers,
+            });
+        } else {
+            this.setState({
+                filteredPlayers: this.state.allPlayers,
+            });
+        }
+    }
+
     render() {
         return ( 
             <S.ActivePlayersWrapper isActivePlayersListMode={this.props.isActivePlayersListMode}>
@@ -74,13 +94,17 @@ class ActivePlayersWrapper extends Component {
                 </S.GlobalChatReturn>
 
                 <S.PlayerSearch>
-                    <S.PlayerSearchInput type="text" />
-                    <S.PlayerSearchButton>
-                        <S.PlayerSearchIcon src={this.links.playerSearchIcon}/>
-                    </S.PlayerSearchButton>
+                    <S.PlayerSearchInput 
+                        type="text"
+                        maxLength="60"
+                        onChange={this.searchPlayersByGivenText}
+                    />
+                    <S.PlayerSearchIconWrapper>
+                        <S.PlayerSearchIcon src={this.links.playerSearchIcon} />
+                    </S.PlayerSearchIconWrapper>
                 </S.PlayerSearch>
 
-                {this.state.players.map((value, index) => (
+                {this.state.filteredPlayers.map((value, index) => (
                     this.props.authUser && value.id !== this.props.authUser.uid && (
                         <S.Player 
                             key={index}
