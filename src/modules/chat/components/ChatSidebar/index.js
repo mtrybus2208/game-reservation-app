@@ -54,6 +54,8 @@ class ChatSidebar extends Component {
 
                 <ActivePlayersWrapper
                     isActivePlayersListMode={this.props.chat.chatMode === 'ACTIVE_PLAYERS'}
+                    setInitialScrollToBottomFlag={this.setInitialScrollToBottomFlag}
+                    authUser={this.props.authUser} 
                 />
             </React.Fragment>
         )

@@ -6,7 +6,7 @@ export const ActivePlayersWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   background: #1b1e22;
-  overflow-y: scroll;
+  overflow-y: auto;
 
   scrollbar-color: #1b1e22 #111315;
 

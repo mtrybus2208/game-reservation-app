@@ -8,6 +8,9 @@ import * as S from './styles';
 
 const propTypes = { 
     setGlobalChatMode: PropTypes.func,
+    setDirectChatMode: PropTypes.func,
+    setInitialScrollToBottomFlag: PropTypes.func,
+    authUser: PropTypes.object,
     isActivePlayersListMode: PropTypes.bool,
 };
 
@@ -55,11 +58,16 @@ class ActivePlayersWrapper extends Component {
         this.props.setGlobalChatMode();
     }
 
+    openDirectChat = (event) => {   
+        const playerId = event.currentTarget.id;
+
+        this.props.setDirectChatMode(playerId);
+        this.props.setInitialScrollToBottomFlag(true);
+    }
+
     render() {
         return ( 
-            <S.ActivePlayersWrapper
-                isActivePlayersListMode={this.props.isActivePlayersListMode}
-            >
+            <S.ActivePlayersWrapper isActivePlayersListMode={this.props.isActivePlayersListMode}>
                 <S.GlobalChatReturn onClick={this.openGlobalChat}>
                     <S.GlobalChatIcon src={this.links.globalChatIcon} />
                     <S.GlobalChatInfo>Global chat</S.GlobalChatInfo>
@@ -72,18 +80,23 @@ class ActivePlayersWrapper extends Component {
                     </S.PlayerSearchButton>
                 </S.PlayerSearch>
 
-                
                 {this.state.players.map((value, index) => (
-                    <S.Player key={index}>
-                        <S.PlayerPictureWrapper>
-                            <S.PlayerPicture src={value.photoUrl} />
-                        </S.PlayerPictureWrapper>
+                    this.props.authUser && value.id !== this.props.authUser.uid && (
+                        <S.Player 
+                            key={index}
+                            id={value.id}
+                            onClick={this.openDirectChat}
+                        >
+                            <S.PlayerPictureWrapper>
+                                <S.PlayerPicture src={value.photoUrl} />
+                            </S.PlayerPictureWrapper>
 
-                        <S.PlayerName>
-                            {value.displayName}
-                        </S.PlayerName>
-                    </S.Player>
-                ))}
+                            <S.PlayerName>
+                                {value.displayName}
+                            </S.PlayerName>
+                        </S.Player>
+                    )
+                ))}  
             </S.ActivePlayersWrapper>
         )
     }
@@ -95,6 +108,9 @@ const mapStateToProps = () => ({
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        setDirectChatMode: (playerId) => {
+            dispatch(fromActions.setDirectChatMode(playerId));
+        },
         setGlobalChatMode: () => {
             dispatch(fromActions.setGlobalChatMode());
         },
