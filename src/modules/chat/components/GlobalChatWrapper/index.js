@@ -213,9 +213,7 @@ class GlobalChatWrapper extends Component {
 
   render() {
     return (
-      <S.GlobalChatWrapper
-        isGlobalChatMode={this.props.isGlobalChatMode}
-      >
+      <S.GlobalChatWrapper isGlobalChatMode={this.props.isGlobalChatMode}>
         {
           this.isNotAnonymousUser() && (
             <S.ActivePlayersOpen onClick={this.openActivePlayersMode}>
@@ -225,7 +223,6 @@ class GlobalChatWrapper extends Component {
           )
         }
         
-
         <S.MessagesScrollWrapper>
           <S.MessagesWrapper 
             ref={this.messagesWrapper}
