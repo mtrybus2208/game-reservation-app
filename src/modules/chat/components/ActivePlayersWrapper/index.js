@@ -24,6 +24,7 @@ class ActivePlayersWrapper extends Component {
 
     state = {
         allPlayers: [],
+        activePlayers: [],
         filteredPlayers: [],
     }
 
@@ -34,6 +35,7 @@ class ActivePlayersWrapper extends Component {
 
     componentDidMount() {
         this.fetchAllPlayers();
+        this.fetchActivePlayers();
     }
 
     componentDidUpdate() {
@@ -49,6 +51,21 @@ class ActivePlayersWrapper extends Component {
                 this.setState({
                     allPlayers: response.data,
                     filteredPlayers: response.data,
+                })
+            )
+            .catch(error => 
+                console.log(error.response)
+            );
+    }
+
+    fetchActivePlayers = () => {
+        const fetchActivePlayersUrl = `${API_URL}/players/active`;
+
+        axios
+            .get(fetchActivePlayersUrl)
+            .then(response => 
+                this.setState({
+                    activePlayers: response.data,
                 })
             )
             .catch(error => 
