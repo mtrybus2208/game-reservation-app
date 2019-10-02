@@ -26,14 +26,19 @@ class ActivePlayersWrapper extends Component {
         allPlayers: [],
         activePlayers: [],
         filteredPlayers: [],
+        activePlayersWebsocket: null,
     }
 
     links = {
         globalChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553015547/message.svg',
         playerSearchIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1569241158/magnifier.svg',
+        fetchAllPlayersUrl: `${API_URL}/players`,
+        fetchActivePlayersUrl: `${API_URL}/players/active`,
+        socketConnectionApiUrl: `${WS_API_URL}/socket/players/active?playerId=${this.props.authUser.uid}`,
     }
 
     componentDidMount() {
+        this.openActivePlayersWebsocket();
         this.fetchAllPlayers();
         this.fetchActivePlayers();
     }
@@ -42,11 +47,48 @@ class ActivePlayersWrapper extends Component {
 
     }
 
-    fetchAllPlayers = () => {
-        const fetchAllPlayersUrl = `${API_URL}/players`;
+    openActivePlayersWebsocket = () => {
+        const isWebsocketNotConnected = this.state.activePlayersWebsocket === null;
 
+        if (isWebsocketNotConnected)  {
+            const websocketConnection = new WebSocket(this.links.socketConnectionApiUrl);
+
+            this.setWebsocketMessageReceiveHandler(websocketConnection);
+            this.setWebsocketConnectionSustain(websocketConnection);
+            
+            this.setState({
+                activePlayersWebsocket: websocketConnection,
+            });
+        }
+    }
+
+    setWebsocketMessageReceiveHandler = (websocket) => {
+        websocket.onmessage = (event) => {
+            const websocketMessage = JSON.parse(event.data);
+            const isActivePlayersListChange = 
+                    websocketMessage.responseType === 'ACTIVE_USER_REGISTER' || websocketMessage.responseType === 'ACTIVE_USER_UNREGISTER';
+
+            if(isActivePlayersListChange) {
+                changeActivePlayersListState(websocketMessage.responseType, websocketMessage.responseBody);
+            }
+        };
+    }
+
+    setWebsocketConnectionSustain = (websocket) => {
+        const websocketRefreshInterval = setInterval(() => {
+            const openState = 1;
+
+            if (websocket.readyState === openState) {
+                websocket.send('');
+            } else {
+                clearInterval(websocketRefreshInterval);
+            }
+        }, 60000);
+    }
+
+    fetchAllPlayers = () => {
         axios
-            .get(fetchAllPlayersUrl)
+            .get(this.links.fetchAllPlayersUrl)
             .then(response => 
                 this.setState({
                     allPlayers: response.data,
@@ -59,10 +101,8 @@ class ActivePlayersWrapper extends Component {
     }
 
     fetchActivePlayers = () => {
-        const fetchActivePlayersUrl = `${API_URL}/players/active`;
-
         axios
-            .get(fetchActivePlayersUrl)
+            .get(this.links.fetchActivePlayersUrl)
             .then(response => 
                 this.setState({
                     activePlayers: response.data,
