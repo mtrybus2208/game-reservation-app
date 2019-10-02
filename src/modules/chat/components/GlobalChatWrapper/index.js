@@ -97,8 +97,9 @@ class GlobalChatWrapper extends Component {
   setWebsocketMessageReceiveHandler = (websocket) => {
     websocket.onmessage = (event) => {
       const websocketMessage = JSON.parse(event.data);
+      const isGlobalChatMessage = websocketMessage.responseType === 'GLOBAL_CHAT';
 
-      if(this.isGlobalChatMessage(websocketMessage)) {
+      if(isGlobalChatMessage) {
         const globalChatMessage = websocketMessage.responseBody;
         
         this.getMessageAuthorById(globalChatMessage.playerId)
@@ -111,10 +112,6 @@ class GlobalChatWrapper extends Component {
           );
       }
     };
-  }
-
-  isGlobalChatMessage = (websocketMessage) => {
-    return websocketMessage.responseType === 'GLOBAL_CHAT';
   }
 
   getMessageAuthorById = (playerId) => {
