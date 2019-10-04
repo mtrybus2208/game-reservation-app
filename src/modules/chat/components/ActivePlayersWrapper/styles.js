@@ -94,7 +94,7 @@ export const Player = styled.button`
   width: 100%;
   min-height: 60px;
   padding: 0;
-  background: #181c1f;
+  background: ${props => (props.isActive ? 'pink' : '#181c1f')};
   border: 0;
 
   &:hover {
