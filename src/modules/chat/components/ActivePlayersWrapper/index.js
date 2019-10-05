@@ -90,19 +90,21 @@ class ActivePlayersWrapper extends Component {
                 }
             })
 
-            const inactivePlayersListWithRemovedPlayer = this.state.inactivePlayers.filter(inactivePlayer => 
-                inactivePlayer.id !== playerId    
-            );
-            const activePlayersListWithNewPlayer = this.state.activePlayers;
+            if (activatedPlayer) {
+                const inactivePlayersListWithRemovedPlayer = this.state.inactivePlayers.filter(inactivePlayer => 
+                    inactivePlayer.id !== playerId    
+                );
+                const activePlayersListWithNewPlayer = this.state.activePlayers;
 
-            activePlayersListWithNewPlayer.push(activatedPlayer);
-            activePlayersListWithNewPlayer.sort((first, second) => first.displayName.localeCompare(second.displayName));
+                activePlayersListWithNewPlayer.push(activatedPlayer);
+                activePlayersListWithNewPlayer.sort((first, second) => first.displayName.localeCompare(second.displayName));
 
-            this.setState({
-                inactivePlayers: inactivePlayersListWithRemovedPlayer,
-                activePlayers: activePlayersListWithNewPlayer,
-                filteredPlayers: [...activePlayersListWithNewPlayer, ...inactivePlayersListWithRemovedPlayer],
-            });        
+                this.setState({
+                    inactivePlayers: inactivePlayersListWithRemovedPlayer,
+                    activePlayers: activePlayersListWithNewPlayer,
+                    filteredPlayers: [...activePlayersListWithNewPlayer, ...inactivePlayersListWithRemovedPlayer],
+                }); 
+            }       
         } else {
             let inactivatedPlayer = null;
 
@@ -113,19 +115,21 @@ class ActivePlayersWrapper extends Component {
                 }
             })
 
-            const activePlayersListWithRemovedPlayer = this.state.activePlayers.filter(activePlayer => 
-                activePlayer.id !== playerId    
-            );
-            const inactivePlayersListWithNewPlayer = this.state.inactivePlayers;
-
-            inactivePlayersListWithNewPlayer.push(inactivatedPlayer);
-            inactivePlayersListWithNewPlayer.sort((first, second) => first.displayName.localeCompare(second.displayName));
-
-            this.setState({
-                inactivePlayers: inactivePlayersListWithNewPlayer,
-                activePlayers: activePlayersListWithRemovedPlayer,
-                filteredPlayers: [...activePlayersListWithRemovedPlayer, ...inactivePlayersListWithNewPlayer],
-            });   
+            if (inactivatedPlayer) {
+                const activePlayersListWithRemovedPlayer = this.state.activePlayers.filter(activePlayer => 
+                    activePlayer.id !== playerId    
+                );
+                const inactivePlayersListWithNewPlayer = this.state.inactivePlayers;
+    
+                inactivePlayersListWithNewPlayer.push(inactivatedPlayer);
+                inactivePlayersListWithNewPlayer.sort((first, second) => first.displayName.localeCompare(second.displayName));
+    
+                this.setState({
+                    inactivePlayers: inactivePlayersListWithNewPlayer,
+                    activePlayers: activePlayersListWithRemovedPlayer,
+                    filteredPlayers: [...activePlayersListWithRemovedPlayer, ...inactivePlayersListWithNewPlayer],
+                });
+            }
         }
     }
 
@@ -217,6 +221,11 @@ class ActivePlayersWrapper extends Component {
         }
     }
 
+    isNotQuickBookingUserId = (playerId) => {
+        const quickBookingUserId = 'fABCOJdXkNhnklHfqIlgr9h4jQF2';
+        return playerId !== quickBookingUserId;
+    }
+
     render() {
         return ( 
             <S.ActivePlayersWrapper isActivePlayersListMode={this.props.isActivePlayersListMode}>
@@ -237,7 +246,7 @@ class ActivePlayersWrapper extends Component {
                 </S.PlayerSearch>
 
                 {this.state.filteredPlayers.map((player, index) => (
-                    this.props.authUser && player.id !== this.props.authUser.uid && (
+                    this.props.authUser && player.id !== this.props.authUser.uid && this.isNotQuickBookingUserId(player.id) && (
                         <S.Player 
                             key={index}
                             id={player.id}
