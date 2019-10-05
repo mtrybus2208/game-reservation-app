@@ -35,7 +35,6 @@ class ActivePlayersWrapper extends Component {
         playerSearchIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1569241158/magnifier.svg',
         fetchInactivePlayersUrl: `${API_URL}/players`,
         fetchActivePlayersUrl: `${API_URL}/players/active`,
-        socketConnectionApiUrl: `${WS_API_URL}/socket/players/active?playerId=${this.props.authUser.uid}`,
     }
 
     componentDidMount() {
@@ -55,8 +54,9 @@ class ActivePlayersWrapper extends Component {
     openActivePlayersWebsocket = () => {
         const isWebsocketNotConnected = this.state.activePlayersWebsocket === null;
 
-        if (isWebsocketNotConnected)  {
-            const websocketConnection = new WebSocket(this.links.socketConnectionApiUrl);
+        if (isWebsocketNotConnected && this.props.authUser)  {
+            const socketConnectionApiUrl = `${WS_API_URL}/socket/players/active?playerId=${this.props.authUser.uid}`;
+            const websocketConnection = new WebSocket(socketConnectionApiUrl);
 
             this.setWebsocketMessageReceiveHandler(websocketConnection);
             this.setWebsocketConnectionSustain(websocketConnection);
@@ -73,7 +73,7 @@ class ActivePlayersWrapper extends Component {
             const isActivePlayersListChange = 
                     websocketMessage.responseType === 'ACTIVE_PLAYER_REGISTER' || websocketMessage.responseType === 'ACTIVE_PLAYER_UNREGISTER';
 
-            if(isActivePlayersListChange) {
+            if (isActivePlayersListChange && !this.state.isInitialFetchNotDone) {
                 this.changeActivePlayersListState(websocketMessage.responseType, websocketMessage.responseBody);
             }
         };
@@ -81,30 +81,51 @@ class ActivePlayersWrapper extends Component {
 
     changeActivePlayersListState = (action, playerId) => {
         if (action === 'ACTIVE_PLAYER_REGISTER') {
-            // let activatedPlayer = null;
-            // let activatedPlayerIndex = null;
+            let activatedPlayer = null;
 
-            // this.state.inactivePlayers.forEach((inactivePlayer, index) => {
-            //     if (inactivePlayer.id === playerId) {
-            //         activatedPlayer = inactivePlayer;
-            //         activatedPlayerIndex = index;
-            //         activatedPlayer.active = true;
-            //     }
-            // })
+            this.state.inactivePlayers.forEach(inactivePlayer => {
+                if (inactivePlayer.id === playerId) {
+                    activatedPlayer = inactivePlayer;
+                    activatedPlayer.active = true;
+                }
+            })
 
-            // const inactivePlayersListWithRemovedPlayer = this.state.inactivePlayers.splice(activatedPlayerIndex, 1);
-            // const activePlayersListWithNewPlayer = this.state.activePlayers;
+            const inactivePlayersListWithRemovedPlayer = this.state.inactivePlayers.filter(inactivePlayer => 
+                inactivePlayer.id !== playerId    
+            );
+            const activePlayersListWithNewPlayer = this.state.activePlayers;
 
-            // activePlayersListWithNewPlayer.push(activatedPlayer);
-            // activePlayersListWithNewPlayer.sort((first, second) => first.firstname.localeCompare(second.firstname));
+            activePlayersListWithNewPlayer.push(activatedPlayer);
+            activePlayersListWithNewPlayer.sort((first, second) => first.displayName.localeCompare(second.displayName));
 
-            // this.setState({
-            //     inactivePlayers: inactivePlayersListWithRemovedPlayer,
-            //     activePlayers: activePlayersListWithNewPlayer,
-            //     filteredPlayers: [...activePlayersListWithNewPlayer, ...inactivePlayersListWithRemovedPlayer],
-            // });        
+            this.setState({
+                inactivePlayers: inactivePlayersListWithRemovedPlayer,
+                activePlayers: activePlayersListWithNewPlayer,
+                filteredPlayers: [...activePlayersListWithNewPlayer, ...inactivePlayersListWithRemovedPlayer],
+            });        
         } else {
+            let inactivatedPlayer = null;
 
+            this.state.activePlayers.forEach(activePlayer => {
+                if (activePlayer.id === playerId) {
+                    inactivatedPlayer = activePlayer;
+                    inactivatedPlayer.active = false;
+                }
+            })
+
+            const activePlayersListWithRemovedPlayer = this.state.activePlayers.filter(activePlayer => 
+                activePlayer.id !== playerId    
+            );
+            const inactivePlayersListWithNewPlayer = this.state.inactivePlayers;
+
+            inactivePlayersListWithNewPlayer.push(inactivatedPlayer);
+            inactivePlayersListWithNewPlayer.sort((first, second) => first.displayName.localeCompare(second.displayName));
+
+            this.setState({
+                inactivePlayers: inactivePlayersListWithNewPlayer,
+                activePlayers: activePlayersListWithRemovedPlayer,
+                filteredPlayers: [...activePlayersListWithRemovedPlayer, ...inactivePlayersListWithNewPlayer],
+            });   
         }
     }
 
@@ -221,10 +242,10 @@ class ActivePlayersWrapper extends Component {
                             key={index}
                             id={player.id}
                             onClick={this.openDirectChat}
-                            isActive={player.active}
                         >
                             <S.PlayerPictureWrapper>
                                 <S.PlayerPicture src={player.photoUrl} />
+                                <S.ActivePlayerLight isActive={player.active} />
                             </S.PlayerPictureWrapper>
 
                             <S.PlayerName>

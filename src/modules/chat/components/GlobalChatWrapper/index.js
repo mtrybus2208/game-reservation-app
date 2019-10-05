@@ -41,7 +41,6 @@ class GlobalChatWrapper extends Component {
     sendMessageIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg',
     arrowIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1562587604/arrow.svg',
     newMessageNotificationIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1562587599/email.svg',
-    socketConnectionApiUrl: `${WS_API_URL}/socket/chat/global?playerId=${this.props.authUser.uid}`,
     getPlayerApiUrl: `${API_URL}/players`,
     sendMessageApiUrl: `${API_URL}/chat/global`,
   }
@@ -51,8 +50,10 @@ class GlobalChatWrapper extends Component {
   componentDidMount() {
     const isWebsocketNotConnected = this.state.globalChatWebsocket === null;
 
-    if (isWebsocketNotConnected)  {
-      const websocketConnection = new WebSocket(this.links.socketConnectionApiUrl);
+    if (isWebsocketNotConnected && this.props.authUser)  {
+      const socketConnectionApiUrl = `${WS_API_URL}/socket/chat/global?playerId=${this.props.authUser.uid}`;
+      const websocketConnection = new WebSocket(socketConnectionApiUrl);
+
       this.setGlobalChatWebsocketConnection(websocketConnection);
     }
 
@@ -60,7 +61,7 @@ class GlobalChatWrapper extends Component {
   }
 
   componentDidUpdate() {
-    const isWebsocketFirstConnection = this.state.globalChatWebsocket.onmessage === null;
+    const isWebsocketFirstConnection = this.state.globalChatWebsocket && this.state.globalChatWebsocket.onmessage === null;
 
     if (isWebsocketFirstConnection) {
       this.setWebsocketMessageReceiveHandler(this.state.globalChatWebsocket);

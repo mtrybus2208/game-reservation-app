@@ -94,7 +94,7 @@ export const Player = styled.button`
   width: 100%;
   min-height: 60px;
   padding: 0;
-  background: ${props => (props.isActive ? 'pink' : '#181c1f')};
+  background: #181c1f;
   border: 0;
 
   &:hover {
@@ -119,6 +119,18 @@ export const PlayerPicture = styled.img`
   width: 32px;
   height: 32px;
   border-radius: 50%;
+`;
+
+export const ActivePlayerLight = styled.img`
+  display: ${props => (props.isActive ? 'block' : 'none')};
+  position: absolute;
+  padding: 2px;
+  left: 3px;
+  bottom: 3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #3aeb34;
 `;
 
 export const PlayerName = styled.div`
