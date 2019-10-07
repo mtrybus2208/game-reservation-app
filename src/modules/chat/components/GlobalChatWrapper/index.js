@@ -13,6 +13,7 @@ const propTypes = {
   globalChatMessages: PropTypes.array,
   isInitialScrollToBottomNotDone: PropTypes.bool,
   setDirectChatMode: PropTypes.func,
+  setActivePlayersMode: PropTypes.func,
   addGlobalChatMessage: PropTypes.func,
   setInitialScrollToBottomFlag: PropTypes.func,
 };
@@ -35,11 +36,11 @@ class GlobalChatWrapper extends Component {
 
   links = {
     directChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg',
+    multipleUsersIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1569238504/multiple-users.svg',
     emojiIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595074/smiling-emoticon.svg',
     sendMessageIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg',
     arrowIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1562587604/arrow.svg',
     newMessageNotificationIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1562587599/email.svg',
-    socketConnectionApiUrl: `${WS_API_URL}/socket/chat/global`,
     getPlayerApiUrl: `${API_URL}/players`,
     sendMessageApiUrl: `${API_URL}/chat/global`,
   }
@@ -49,8 +50,10 @@ class GlobalChatWrapper extends Component {
   componentDidMount() {
     const isWebsocketNotConnected = this.state.globalChatWebsocket === null;
 
-    if (isWebsocketNotConnected)  {
-      const websocketConnection = new WebSocket(this.links.socketConnectionApiUrl);
+    if (isWebsocketNotConnected && this.props.authUser)  {
+      const socketConnectionApiUrl = `${WS_API_URL}/socket/chat/global?playerId=${this.props.authUser.uid}`;
+      const websocketConnection = new WebSocket(socketConnectionApiUrl);
+
       this.setGlobalChatWebsocketConnection(websocketConnection);
     }
 
@@ -58,7 +61,7 @@ class GlobalChatWrapper extends Component {
   }
 
   componentDidUpdate() {
-    const isWebsocketFirstConnection = this.state.globalChatWebsocket.onmessage === null;
+    const isWebsocketFirstConnection = this.state.globalChatWebsocket && this.state.globalChatWebsocket.onmessage === null;
 
     if (isWebsocketFirstConnection) {
       this.setWebsocketMessageReceiveHandler(this.state.globalChatWebsocket);
@@ -95,8 +98,9 @@ class GlobalChatWrapper extends Component {
   setWebsocketMessageReceiveHandler = (websocket) => {
     websocket.onmessage = (event) => {
       const websocketMessage = JSON.parse(event.data);
+      const isGlobalChatMessage = websocketMessage.responseType === 'GLOBAL_CHAT';
 
-      if(this.isGlobalChatMessage(websocketMessage)) {
+      if(isGlobalChatMessage) {
         const globalChatMessage = websocketMessage.responseBody;
         
         this.getMessageAuthorById(globalChatMessage.playerId)
@@ -109,10 +113,6 @@ class GlobalChatWrapper extends Component {
           );
       }
     };
-  }
-
-  isGlobalChatMessage = (websocketMessage) => {
-    return websocketMessage.responseType === 'GLOBAL_CHAT';
   }
 
   getMessageAuthorById = (playerId) => {
@@ -175,6 +175,10 @@ class GlobalChatWrapper extends Component {
     return this.state.typedMessage.length >= 2 && this.state.typedMessage.length <= 250;
   }
 
+  openActivePlayersMode = () => {
+    this.props.setActivePlayersMode();
+  }
+
   openDirectChat = (event) => {
     const playerId = event.currentTarget.id;
     
@@ -207,9 +211,16 @@ class GlobalChatWrapper extends Component {
 
   render() {
     return (
-      <S.GlobalChatWrapper
-        isGlobalChatMode={this.props.isGlobalChatMode}
-      >
+      <S.GlobalChatWrapper isGlobalChatMode={this.props.isGlobalChatMode}>
+        {
+          this.isNotAnonymousUser() && (
+            <S.ActivePlayersOpen onClick={this.openActivePlayersMode}>
+              <S.ActivePlayersIcon src={this.links.multipleUsersIcon} />
+              <S.ActivePlayersInfo>Active players</S.ActivePlayersInfo>
+            </S.ActivePlayersOpen>
+          )
+        }
+        
         <S.MessagesScrollWrapper>
           <S.MessagesWrapper 
             ref={this.messagesWrapper}
@@ -307,6 +318,9 @@ const mapDispatchToProps = dispatch => {
   return {
     setDirectChatMode: (playerId) => {
       dispatch(fromActions.setDirectChatMode(playerId));
+    },
+    setActivePlayersMode: () => {
+      dispatch(fromActions.setActivePlayersMode());
     },
     addGlobalChatMessage: (message) => {
       dispatch(fromActions.addGlobalChatMessage(message));

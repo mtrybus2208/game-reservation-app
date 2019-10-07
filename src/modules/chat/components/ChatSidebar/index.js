@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import GlobalChatWrapper from '../GlobalChatWrapper/index';
 import DirectChatWrapper from '../DirectChatWrapper/index';
+import ActivePlayersWrapper from '../ActivePlayersWrapper/index';
 import { connect } from 'react-redux';
 import * as fromActions from '../../state/actions';
 import * as S from './styles';
@@ -35,7 +36,7 @@ class ChatSidebar extends Component {
         return ( 
             <React.Fragment>
                 <DirectChatWrapper 
-                    isDirectChatMode={this.props.chat.chatMode !== 'GLOBAL'}
+                    isDirectChatMode={this.props.chat.chatMode !== 'GLOBAL' && this.props.chat.chatMode !== 'ACTIVE_PLAYERS'}
                     authUser={this.props.authUser} 
                     receiverId={this.props.chat.chatMode}
                     directChatMessages={this.props.chat.directChatMessages}
@@ -49,6 +50,12 @@ class ChatSidebar extends Component {
                     globalChatMessages={this.props.chat.globalChatMessages}
                     isInitialScrollToBottomNotDone={this.state.isInitialScrollToBottomNotDone}
                     setInitialScrollToBottomFlag={this.setInitialScrollToBottomFlag}
+                />
+
+                <ActivePlayersWrapper
+                    isActivePlayersListMode={this.props.chat.chatMode === 'ACTIVE_PLAYERS'}
+                    setInitialScrollToBottomFlag={this.setInitialScrollToBottomFlag}
+                    authUser={this.props.authUser} 
                 />
             </React.Fragment>
         )

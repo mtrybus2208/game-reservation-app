@@ -8,7 +8,12 @@ export const setDirectChatMode = (chatMode) =>
 
 export const setGlobalChatMode = () =>
   ({
-    type: actionTypes.SET_GLOBAL_CHAT_MODE
+    type: actionTypes.SET_GLOBAL_CHAT_MODE,
+  });
+
+export const setActivePlayersMode = () =>
+  ({
+    type: actionTypes.SET_ACTIVE_PLAYERS_MODE,
   });
 
 export const addGlobalChatMessage = (message) =>

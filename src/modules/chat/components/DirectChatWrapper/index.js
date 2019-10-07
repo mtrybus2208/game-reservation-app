@@ -62,7 +62,7 @@ class DirectChatWrapper extends Component {
 
   componentDidUpdate() {
     const isAnonymousUser = this.props.authUser === null;
-    const isNotDefaultReceiver = this.props.receiverId !== 'GLOBAL';
+    const isNotDefaultReceiver = this.props.receiverId !== 'GLOBAL' && this.props.receiverId !== 'ACTIVE_PLAYERS';
     const isReceiverChange = this.state.receiver.id !== this.props.receiverId;
     const isWebsocketNotConnected = this.state.directChatWebsocket === null;
     const isWebsocketFirstConnection = this.state.directChatWebsocket && this.state.directChatWebsocket.onmessage === null;
