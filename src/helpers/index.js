@@ -39,3 +39,6 @@ export const debounced = (delay, fn) => {
     }, delay);
   };
 };
+
+export const detectDirection = e =>
+  (e.movementX || e.mozMovementX || e.webkitMovementX || 0);

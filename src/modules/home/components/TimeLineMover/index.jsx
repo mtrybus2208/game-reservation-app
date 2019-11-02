@@ -1,87 +1,49 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import TimeRuler from '@/modules/home/containers/TimeRuler';
+import Ruler from '@/modules/home/containers/Ruler';
 import useDragToScroll from '@/modules/home/hooks/useDragToScroll';
-import { CenteredWrapper } from '@/modules/shared/components/AppGrid';
-import PresentationCardRoot from '@/modules/home/containers/PresentationCardRoot';
+import PresentationCardMover from '@/modules/home/components/PresentationCardMover';
 import * as S from './styles';
 
 const propTypes = {
-  isReservationBlocked: PropTypes.bool,
+  timeLine: PropTypes.object.isRequired,
+  workdayInPixels: PropTypes.number,
 };
 
-const defaultProps = { };
+const defaultProps = {};
 
-const TimeLineMover = React.memo(({
-  actualDateInPixels,
-  isReservationBlocked,
-}) => {
-  const [isBlocked, setIsBlocked] = useState(false);
-  const [startPosition, setStartPosition] = useState(false);
-
-  const timeLineRef = useRef();
-
+const TimeLineMover = ({ workdayInPixels }) => {
+  const childRef = useRef();
+  const containerdRef = useRef();
+  const wrapperRef = useRef();
   const {
     mouseLeave,
     mouseMove,
     mouseUp,
     mouseDown,
-  } = useDragToScroll(timeLineRef, isBlocked);
-
-  useEffect(() => {
-    handlerMoveTimeLine(actualDateInPixels);
-  }, []);
-
-  const setStart = data => setStartPosition(data);
-
-  const handlerMoveTimeLine = modifier => {
-    const { current } = timeLineRef;
-    current.scrollLeft += modifier;
-    return current.scrollLeft;
-  };
-
-  const getWrapperScrollPosition = () => {
-    const { current } = timeLineRef;
-    return current ? current.scrollLeft : 0;
-  };
+  } = useDragToScroll(wrapperRef, false);
 
   return (
     <S.TimeLineWrapper
-      isBlocked={isBlocked}
-      isReservationBlocked={isReservationBlocked}
+      ref={wrapperRef}
+      onMouseLeave={mouseLeave}
+      onMouseUp={mouseUp}
+      onMouseMove={mouseMove}
+      onMouseDown={mouseDown}
     >
       <S.TimeLineMover
-        ref={timeLineRef}
-        onMouseLeave={mouseLeave}
-        onMouseUp={mouseUp}
-        onMouseMove={mouseMove}
-        onMouseDown={mouseDown}
+        ref={containerdRef}
+        size={workdayInPixels}
       >
-        {/* <TimeRuler
-          onBlockTimeLine={setIsBlocked}
-          onMoveTimeLine={handlerMoveTimeLine}
-          startPosition={startPosition}
-          setStart={setStart}
-          wrapperScrollPosition={getWrapperScrollPosition()}
-        /> */}
-        <CenteredWrapper>
-        {/* {
-          // wyrenderowane pliki
-          this.props.reservedGames && this.props.reservedGames.map(game => this.renderGameCard(game))
-        } */}
-          <PresentationCardRoot         
-              onBlockTimeLine={setIsBlocked}
-              onMoveTimeLine={handlerMoveTimeLine}
-              initialCardPosition={getWrapperScrollPosition()}
-          />
-          <Ruler />
-      </CenteredWrapper>
-
+        <PresentationCardMover
+          wrapperRef={wrapperRef}
+        />
+        <Ruler />
       </S.TimeLineMover>
-    </S.TimeLineWrapper>
-  );
-});
+  </S.TimeLineWrapper>
+  ); 
+};
 
 TimeLineMover.propTypes = propTypes;
 TimeLineMover.defaultProps = defaultProps;
-export default TimeLineMover;
+export default React.memo(TimeLineMover);

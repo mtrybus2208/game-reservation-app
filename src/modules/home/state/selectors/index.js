@@ -22,12 +22,9 @@ export const getActualDateMinutes = createSelector(
 export const getWorkdayInHours = state => (getWorkdayInMinutes(state) / 60);
 
 export const getWorkdayInPixels = createSelector(
-  getTimeLine,
-  getWorkdayInHours,
-  (timeLine, workdayInMin) => {
-    const { timeConverter } = timeLine;
-    return workdayInMin * timeConverter;
-  },
+  getTimeConverter,
+  getWorkdayInMinutes,
+  (timeConverter, workdayInMin) => workdayInMin * timeConverter,
 );
 
 export const getActualDateInPixels = createSelector(

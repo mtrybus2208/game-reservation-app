@@ -1,79 +1,26 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
-import BaseModal from '@/modules/shared/components/Modals/BaseModal';
-import AddGameTitle from '@/modules/shared/components/Modals/BaseModal/components/AddGameTitle';
-import { getActualDateInPixels } from '@/modules/home/state/selectors';
-import { getHoursFromPixels } from '@/modules/home/state/selectors';
-import * as fromActions from '@/modules/shared/state/actions';
-import * as fromHomeActions from '@/modules/home/state/actions';
+// import React, { memo, forwardRef } from 'react';
+// import * as S from './styles';
 
-const propTypes = {
-  onBlockTimeLine: PropTypes.func,
-  onMoveTimeLine: PropTypes.func,
-  initialCardPosition: PropTypes.number,
-};
-const defaultProps = {};
+// const Child = ({ 
+//   onMouseDown,
+//   onMouseUp,
+//   translateX,
+// }, ref) => {
 
-const PresentationCardRoot = ({
-  onBlockTimeLine,
-  onMoveTimeLine,
-  initialCardPosition,
-}) => {
-  const gameReservation = useSelector(({ gameReservationState }) => gameReservationState);
-  const { timeConverter, isAddGameFetching } = useSelector(({ timeLine }) => timeLine);
-  const actualDateInPixels = useSelector(state => getActualDateInPixels(state));
+//   return (
+//     <S.Child
+//       ref={ref}
+//       onMouseDown={onMouseDown}
+//       onMouseUp={onMouseUp}
+//       x={translateX}
+//     >
+//       <S.Body>
+//         <div>
+//           <span>Move me! :D</span>
+//         </div>
+//       </S.Body>
+//     </S.Child>
+//   );
+// };
 
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  const modalProps = useSelector(({ modal }) => modal.modalProps);
-  const isAddGameFetching = useSelector(({ timeLine }) => timeLine.isAddGameFetching);
-  const currentReservationTime = useSelector(state => getHoursFromPixels(state));
-
-  const dispatch = useDispatch();
-  const handlerHideModal = () => dispatch(fromActions.hideModal());
-  const handlerAddGame = () => dispatch(fromHomeActions.addNewGame(modalProps.gameId));
-
-  return (
-    <BaseModal
-      customTitle={
-        <AddGameTitle
-          gameStartTime={currentReservationTime}
-          duration={duration}
-        />
-      }
-      onConfirm={handlerAddGame}
-      onDecline={handlerHideModal}
-      isLoading={isAddGameFetching}
-    />
-  );
-};
-
-PresentationCardRoot.propTypes = propTypes;
-PresentationCardRoot.defaultProps = defaultProps;
-export default PresentationCardRoot;
+// export default memo(forwardRef(Child));

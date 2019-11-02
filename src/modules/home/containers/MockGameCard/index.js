@@ -15,7 +15,7 @@ const propTypes = {
   initialCardPosition: PropTypes.number,
   display: PropTypes.object,
   onBlockTimeLine: PropTypes.func,
-  onMoveTimeLine: PropTypes.func,
+  onMoveTimeLine: PropTypes.func, 
   setCurrentReservationTime: PropTypes.func,
   setReservationPermission: PropTypes.func,
   reservedIntervals: PropTypes.array,
