@@ -17,8 +17,8 @@ const rotate = keyframes`
 `;
 
 export const CardWrap = styled.div.attrs({
-  style: ({ x, y }) => ({ 
-    left: `${x}px`, 
+  style: ({ x, y }) => ({
+    left: `${x}px`,
   }),
 })`
   cursor: grab;
@@ -44,7 +44,7 @@ export const CardWrap = styled.div.attrs({
   border-top: none;
   border-bottom: none;
   left: 0;
-  
+
   ${({ isDragging }) =>
     isDragging && css`
     opacity: 0.8;
@@ -62,6 +62,22 @@ CardWrap.propTypes = {
   size: PropTypes.number,
   cardPosition: PropTypes.number,
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const MockGameCard = styled.div`
   position: absolute;

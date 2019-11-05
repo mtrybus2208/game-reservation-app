@@ -1,10 +1,19 @@
 import React, { memo, forwardRef } from 'react';
+import PropTypes from 'prop-types';
 import * as S from './styles';
 
-const PresentationCard = ({ 
+const propTypes = {
+  onMouseDown: PropTypes.func,
+  onMouseUp: PropTypes.func,
+  translateX: PropTypes.string,
+  children: PropTypes.node,
+};
+
+const PresentationCard = ({
   onMouseDown,
   onMouseUp,
   translateX,
+  children,
 }, ref) => {
 
   return (
@@ -15,12 +24,11 @@ const PresentationCard = ({
       x={translateX}
     >
       <S.Body>
-        <div>
-          <span>Move me! :D</span>
-        </div>
+        {children}
       </S.Body>
     </S.PresentationCard>
   );
 };
 
+PresentationCard.propTypes = propTypes;
 export default memo(forwardRef(PresentationCard));

@@ -1,4 +1,4 @@
-import React from 'react'; 
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { throttled } from '@/helpers';
@@ -15,7 +15,7 @@ const propTypes = {
   initialCardPosition: PropTypes.number,
   display: PropTypes.object,
   onBlockTimeLine: PropTypes.func,
-  onMoveTimeLine: PropTypes.func, 
+  onMoveTimeLine: PropTypes.func,
   setCurrentReservationTime: PropTypes.func,
   setReservationPermission: PropTypes.func,
   reservedIntervals: PropTypes.array,
@@ -31,15 +31,15 @@ class MockGameCard extends React.PureComponent {
   state = {
     isDragging: false,
     isAbleToMove: false,
-    originalX: 0, 
+    originalX: 0,
     translateX: this.props.initialCardPosition,
-    lastTranslateX: 0, 
+    lastTranslateX: 0,
     able: false,
     intervalDirection: null,
   };
-   
+
   resetInterval = this.resetInterval.bind(this);
-  animLoop = this.animLoop.bind(this); 
+  animLoop = this.animLoop.bind(this);
   myRef = React.createRef();
   running = true;
   animationId = null;
@@ -47,7 +47,7 @@ class MockGameCard extends React.PureComponent {
   GameCardWithUser = withUser(GameCard);
 
   componentDidMount() {
-    const { current } = this.myRef; 
+    const { current } = this.myRef;
     this.setAbilityToReserve(parseInt(current.style.left, 10));
     this.animLoop(() => {
       if (this.state.able) {
@@ -93,7 +93,7 @@ class MockGameCard extends React.PureComponent {
     window.addEventListener('mouseup', this.handleMouseUp);
 
     this.setState(prev =>
-      ({ 
+      ({
         lastTranslateX: parseInt(this.myRef.current.style.left, 10),
         originalX: clientX,
         isDragging: true,
@@ -104,7 +104,7 @@ class MockGameCard extends React.PureComponent {
       this.props.onBlockTimeLine(true);
     },
     );
-  }; 
+  };
 
   resetInterval(clientX) {
     this.setState({
@@ -133,7 +133,7 @@ class MockGameCard extends React.PureComponent {
         const [start, end] = posArr;
         return (fullPos >= start && pos <= end);
       });
-  } 
+  }
 
   setAbilityToReserve = pos => {
     return this.props.isReservationBlocked !== this.isReservedCardHovered(pos) &&
@@ -196,14 +196,14 @@ class MockGameCard extends React.PureComponent {
   handleMouseUp = () => {
     window.removeEventListener('mousemove', this.handleMouseMove);
     window.removeEventListener('mouseup', this.handleMouseUp);
-    
+
     this.setState(prev => ({
       originalX: 0,
       originalY: 0,
       lastTranslateX: prev.able ? parseInt(this.myRef.current.style.left, 10) : this.state.translateX,
 
       isDragging: false,
-      isAbleToMove: false, 
+      isAbleToMove: false,
       able: false,
     }), () => {
       this.props.onBlockTimeLine(false);
@@ -233,10 +233,10 @@ class MockGameCard extends React.PureComponent {
     const { translateX, translateY, isDragging } = this.state;
     return (
       <S.CardWrap
-        size={this.props.display.size}  
+        size={this.props.display.size}
         isAbleToMove={this.state.isAbleToMove}
         isAbleToReserve={this.props.isReservationBlocked}
-        onMouseDown={this.handleMouseDown} 
+        onMouseDown={this.handleMouseDown}
         x={translateX}
         y={translateY}
         isDragging={isDragging}

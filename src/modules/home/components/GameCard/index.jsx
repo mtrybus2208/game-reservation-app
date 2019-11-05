@@ -99,7 +99,7 @@ const GameCard = ({
               <S.SubTitle>{user && user.profession}</S.SubTitle>
             </React.Fragment>
           )
-        )} 
+        )}
       </S.TitleBox>
       <S.InfoType>
         <span>{display.gameType}</span>

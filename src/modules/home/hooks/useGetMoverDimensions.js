@@ -10,8 +10,8 @@ const useGetMoverDimensions = ref => {
   useEffect(() => {
     setDimension({
       start: 0,
-      end: ref.current.offsetParent.offsetWidth,
-      movedElSize: ref.current.offsetWidth,
+      end: ref.current ? ref.current.offsetParent.offsetWidth : 0,
+      movedElSize: ref.current ? ref.current.offsetWidth : 0,
     });
   }, [ref.current]);
 

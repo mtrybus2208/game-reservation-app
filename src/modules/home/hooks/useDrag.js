@@ -3,15 +3,15 @@ import useMover from '@/modules/home/hooks/useMover';
 import useGetMoverDimensions from '@/modules/home/hooks/useGetMoverDimensions';
 import { detectDirection } from '@/helpers';
 
-const useDrag = (ref, wrapperRef) => { 
+const useDrag = (ref, wrapperRef) => {
   const [isDragging, setIsDragging] = useState(false);
   const [translateX, setTranslateX] = useState(0);
   const [originalX, setOriginalX] = useState(0);
-  const [lastTranslateX, setLastTranslateX] = useState(0); 
+  const [lastTranslateX, setLastTranslateX] = useState(0);
   const [onEdge, setOnEdge] = useState(false);
   const [count, setAllowAnimation] = useMover();
   const [ELS_PARAMS] = useGetMoverDimensions(ref);
-  
+
   useEffect(() => {
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
@@ -25,15 +25,15 @@ const useDrag = (ref, wrapperRef) => {
     if (onEdge === 'right' || onEdge === 'left') {
       setIsDragging(false);
       setAllowAnimation(true);
-    } 
-  }, [onEdge]); 
+    }
+  }, [onEdge]);
 
   useLayoutEffect(() => {
     if (!wrapperRef.current) { return; }
     const { current } = wrapperRef;
     if (onEdge === 'left') {
       calcTranslateX(translateX - count);
-      current.scrollLeft -= count;  
+      current.scrollLeft -= count;
     } else {
       current.scrollLeft += count;
       calcTranslateX(translateX + count);
@@ -95,14 +95,14 @@ const useDrag = (ref, wrapperRef) => {
     setIsDragging(false);
     setAllowAnimation(false);
     setOnEdge(false);
-    setLastTranslateX(parseInt(ref.current.style.left, 10));
+    setLastTranslateX(parseInt(ref.current && ref.current.style.left, 10));
     setOriginalX(0);
   };
 
   const handlerMouseDown = e => {
     e.stopPropagation();
     setIsDragging(true);
-    setLastTranslateX(parseInt(ref.current.style.left, 10));
+    setLastTranslateX(parseInt(ref.current && ref.current.style.left, 10));
     setOriginalX(e.clientX);
   };
 

@@ -14,3 +14,9 @@ export const getTimeAndType = createSelector(
     time,
   }),
 );
+
+export const getReservationIsAllowed = createSelector(
+  getGameReservationState,
+  ({ gameType, time, editMode }) => (gameType && time && editMode),
+);
+
