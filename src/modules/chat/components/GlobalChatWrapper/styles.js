@@ -2,10 +2,41 @@ import styled from 'styled-components';
 
 export const GlobalChatWrapper = styled.div`
   height: 100%;
-  display: flex;
+  display: ${props => (props.isGlobalChatMode ? 'flex' : 'none')};
   flex-direction: column;
   align-items: center;
   background: #1b1e22;
+`;
+
+export const ActivePlayersOpen = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  min-height: 40px;
+  border: none;
+  background: #111315;
+  cursor: pointer;
+
+  &:hover {
+    background: #141619;
+  }
+`;
+
+export const ActivePlayersIcon = styled.img`
+  width: 16px;
+`;
+
+export const ActivePlayersInfo = styled.span`
+  margin-left: 12px;
+  font-size: 10px;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: .3px;
+  text-align: left;
+  text-transform: uppercase;
+  color: #858b92;
 `;
 
 export const MessagesWrapper = styled.div`
@@ -13,6 +44,8 @@ export const MessagesWrapper = styled.div`
   height: 100%;
   overflow-y: auto;
   position: relative;
+
+  scrollbar-color: #1b1e22 #111315;
 
   &::-webkit-scrollbar {
     width: 10px;

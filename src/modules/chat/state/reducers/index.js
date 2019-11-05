@@ -13,6 +13,11 @@ export const chatReducer = (state = initialState, action) => {
         ...state,
         chatMode: 'GLOBAL',
       };
+    case actionTypes.SET_ACTIVE_PLAYERS_MODE:
+      return {
+        ...state,
+        chatMode: 'ACTIVE_PLAYERS',
+      };
     case actionTypes.SET_DIRECT_CHAT_MODE:
       return {
         ...state,
@@ -39,8 +44,8 @@ export const chatReducer = (state = initialState, action) => {
         directChatMessages: {
           ...state.directChatMessages,
           [directChatRoomId]: [
-            ...(state.directChatMessages && state.directChatMessages[directChatRoomId] || []),
             ...action.messages[directChatRoomId],
+            ...(state.directChatMessages && state.directChatMessages[directChatRoomId] || []),
           ],
         },
       };

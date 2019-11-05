@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const DirectChatWrapper = styled.div`
   height: 100%;
-  display: flex;
+  display: ${props => (props.isDirectChatMode ? 'flex' : 'none')};
   flex-direction: column;
   align-items: center;
   background: #1b1e22;
@@ -14,9 +14,14 @@ export const GlobalChatReturn = styled.button`
   align-items: center;
   width: 100%;
   height: 40px;
+  min-height: 40px;
   border: none;
   background: #111315;
   cursor: pointer;
+
+  &:hover {
+    background: #141619;
+  }
 `;
 
 export const GlobalChatIcon = styled.img`
@@ -77,11 +82,12 @@ export const MessagesWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 35px;
   width: 100%;
   height: 100%;
   background: #16181b;
   overflow: auto;
+  
+  scrollbar-color: #1b1e22 #111315;
   
   &::-webkit-scrollbar {
     width: 10px;
@@ -106,12 +112,12 @@ export const IncomingMessageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin-top: 25px;
+  padding-bottom: 25px;
   width: 80%;
   height: auto;
 
   &:first-child {
-    margin-top: 50px;
+    padding-top: 50px;
   }
 
   @media ${({ theme }) => theme.media.laptop} {
@@ -122,12 +128,12 @@ export const IncomingMessageWrapper = styled.div`
 export const OutgoingMessageWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-top: 25px;
+  padding-bottom: 25px;
   width: 80%;
   height: auto;
 
   &:first-child {
-    margin-top: 50px;
+    padding-top: 50px;
   }
 
   @media ${({ theme }) => theme.media.laptop} {
@@ -140,7 +146,7 @@ export const Message = styled.div`
   flex-direction: column;
   align-items: center;
   width: 90%;
-  max-width: 250px;
+  max-width: 240px;
   height: auto;
   background: #111315;
 

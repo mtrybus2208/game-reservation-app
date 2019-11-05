@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import GlobalChatWrapper from '../GlobalChatWrapper/index';
 import DirectChatWrapper from '../DirectChatWrapper/index';
+import ActivePlayersWrapper from '../ActivePlayersWrapper/index';
 import { connect } from 'react-redux';
 import * as fromActions from '../../state/actions';
 import * as S from './styles';
@@ -16,63 +17,46 @@ const defaultProps = { };
 class ChatSidebar extends Component {
 
     constructor(props) {
-        super(props)
+        super(props);
 
-        this.setGlobalChatWebsocketConnection = this.setGlobalChatWebsocketConnection.bind(this);
-        this.setDirectChatWebsocketConnection = this.setDirectChatWebsocketConnection.bind(this);
-        this.saveOpenedDirectChatRoomId = this.saveOpenedDirectChatRoomId.bind(this);
-        this.isDirectChatRoomNotSaved = this.isDirectChatRoomNotSaved.bind(this);
+        this.setInitialScrollToBottomFlag = this.setInitialScrollToBottomFlag.bind(this);
     }
 
     state = {
-        globalChatWebsocket: null,
-        directChatWebsocket: null,
-        openedDirectChatRooms: [],
-    };
+        isInitialScrollToBottomNotDone: true,
+    }
 
-    setGlobalChatWebsocketConnection(websocket) {
+    setInitialScrollToBottomFlag = (isDone) => {
         this.setState({
-            globalChatWebsocket: websocket,
+            isInitialScrollToBottomNotDone: isDone,
         });
-    }
-
-    setDirectChatWebsocketConnection(websocket) {
-        this.setState({
-            directChatWebsocket: websocket,
-        });
-    }
-
-    saveOpenedDirectChatRoomId(chatRoomId) {
-        this.setState(prevState => ({
-            openedDirectChatRooms: [...prevState.openedDirectChatRooms, chatRoomId]
-        }));
-    }
-
-    isDirectChatRoomNotSaved(chatRoomId) {
-        return !this.state.openedDirectChatRooms.includes(chatRoomId);
     }
 
     render() {
         return ( 
             <React.Fragment>
-                {/* {this.props.chat.chatMode !== 'GLOBAL' ? (
-                    <DirectChatWrapper 
-                        authUser={this.props.authUser} 
-                        receiverId={this.props.chat.chatMode}
-                        directChatWebsocket={this.state.directChatWebsocket}
-                        setDirectChatWebsocketConnection={this.setDirectChatWebsocketConnection}
-                        saveOpenedDirectChatRoomId={this.saveOpenedDirectChatRoomId}
-                        isDirectChatRoomNotSaved={this.isDirectChatRoomNotSaved}
-                        directChatMessages={this.props.chat.directChatMessages}
-                    />
-                    ) : (
-                    <GlobalChatWrapper 
-                        authUser={this.props.authUser} 
-                        globalChatMessages={this.props.chat.globalChatMessages}
-                        globalChatWebsocket={this.state.globalChatWebsocket}
-                        setGlobalChatWebsocketConnection={this.setGlobalChatWebsocketConnection}
-                    />
-                )} */}
+                <DirectChatWrapper 
+                    isDirectChatMode={this.props.chat.chatMode !== 'GLOBAL' && this.props.chat.chatMode !== 'ACTIVE_PLAYERS'}
+                    authUser={this.props.authUser} 
+                    receiverId={this.props.chat.chatMode}
+                    directChatMessages={this.props.chat.directChatMessages}
+                    isInitialScrollToBottomNotDone={this.state.isInitialScrollToBottomNotDone}
+                    setInitialScrollToBottomFlag={this.setInitialScrollToBottomFlag}
+                />
+                
+                <GlobalChatWrapper 
+                    isGlobalChatMode={this.props.chat.chatMode === 'GLOBAL'}
+                    authUser={this.props.authUser} 
+                    globalChatMessages={this.props.chat.globalChatMessages}
+                    isInitialScrollToBottomNotDone={this.state.isInitialScrollToBottomNotDone}
+                    setInitialScrollToBottomFlag={this.setInitialScrollToBottomFlag}
+                />
+
+                <ActivePlayersWrapper
+                    isActivePlayersListMode={this.props.chat.chatMode === 'ACTIVE_PLAYERS'}
+                    setInitialScrollToBottomFlag={this.setInitialScrollToBottomFlag}
+                    authUser={this.props.authUser} 
+                />
             </React.Fragment>
         )
     }
@@ -81,4 +65,3 @@ class ChatSidebar extends Component {
 ChatSidebar.propTypes = propTypes;
 ChatSidebar.defaultProps = defaultProps;
 export default ChatSidebar;
-

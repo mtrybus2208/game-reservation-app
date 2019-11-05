@@ -8,12 +8,14 @@ import { WS_API_URL, API_URL } from '@/constants/api';
 import * as S from './styles';
 
 const propTypes = {
+  isGlobalChatMode: PropTypes.bool,
   authUser: PropTypes.object,
   globalChatMessages: PropTypes.array,
-  globalChatWebsocket: PropTypes.object,
+  isInitialScrollToBottomNotDone: PropTypes.bool,
   setDirectChatMode: PropTypes.func,
+  setActivePlayersMode: PropTypes.func,
   addGlobalChatMessage: PropTypes.func,
-  setGlobalChatWebsocketConnection: PropTypes.func,
+  setInitialScrollToBottomFlag: PropTypes.func,
 };
 
 const defaultProps = { };
@@ -29,15 +31,16 @@ class GlobalChatWrapper extends Component {
     typedMessage: '',
     isMessageWrapperScrolledDown: true,
     notifyAboutNewMessage: false,
+    globalChatWebsocket: null,
   };
 
   links = {
     directChatIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553587606/message-yellow.svg',
+    multipleUsersIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1569238504/multiple-users.svg',
     emojiIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595074/smiling-emoticon.svg',
     sendMessageIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553595060/send-button.svg',
     arrowIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1562587604/arrow.svg',
     newMessageNotificationIcon: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1562587599/email.svg',
-    socketConnectionApiUrl: `${WS_API_URL}/socket/chat/global`,
     getPlayerApiUrl: `${API_URL}/players`,
     sendMessageApiUrl: `${API_URL}/chat/global`,
   }
@@ -45,27 +48,25 @@ class GlobalChatWrapper extends Component {
   debouncedOnClick = debounced(200, this.sendMessage.bind(this));
 
   componentDidMount() {
-    if (this.isWebsocketNotConnected(this.props.globalChatWebsocket))  {
-      const websocketConnection = new WebSocket(this.links.socketConnectionApiUrl);
-      this.props.setGlobalChatWebsocketConnection(websocketConnection);
+    const isWebsocketNotConnected = this.state.globalChatWebsocket === null;
+
+    if (isWebsocketNotConnected && this.props.authUser)  {
+      const socketConnectionApiUrl = `${WS_API_URL}/socket/chat/global?playerId=${this.props.authUser.uid}`;
+      const websocketConnection = new WebSocket(socketConnectionApiUrl);
+
+      this.setGlobalChatWebsocketConnection(websocketConnection);
     }
 
     this.scrollToBottom();
   }
 
   componentDidUpdate() {
-    if (this.isWebsocketFirstConnection(this.props.globalChatWebsocket)) {
-      this.setWebsocketMessageReceiveHandler(this.props.globalChatWebsocket);
-      this.setWebsocketConnectionSustain(this.props.globalChatWebsocket);
+    const isWebsocketFirstConnection = this.state.globalChatWebsocket && this.state.globalChatWebsocket.onmessage === null;
+
+    if (isWebsocketFirstConnection) {
+      this.setWebsocketMessageReceiveHandler(this.state.globalChatWebsocket);
+      this.setWebsocketConnectionSustain(this.state.globalChatWebsocket);
     }
-  }
-
-  isWebsocketNotConnected(websocket) {
-    return websocket === null;
-  }
-
-  isWebsocketFirstConnection(websocket) {
-    return websocket.onmessage === null;
   }
 
   sendMessage() {
@@ -88,11 +89,18 @@ class GlobalChatWrapper extends Component {
     }
   }
 
+  setGlobalChatWebsocketConnection(websocket) {
+    this.setState({
+      globalChatWebsocket: websocket,
+    });
+  }
+
   setWebsocketMessageReceiveHandler = (websocket) => {
     websocket.onmessage = (event) => {
       const websocketMessage = JSON.parse(event.data);
+      const isGlobalChatMessage = websocketMessage.responseType === 'GLOBAL_CHAT';
 
-      if(this.isGlobalChatMessage(websocketMessage)) {
+      if(isGlobalChatMessage) {
         const globalChatMessage = websocketMessage.responseBody;
         
         this.getMessageAuthorById(globalChatMessage.playerId)
@@ -105,10 +113,6 @@ class GlobalChatWrapper extends Component {
           );
       }
     };
-  }
-
-  isGlobalChatMessage = (websocketMessage) => {
-    return websocketMessage.responseType === 'GLOBAL_CHAT';
   }
 
   getMessageAuthorById = (playerId) => {
@@ -171,9 +175,15 @@ class GlobalChatWrapper extends Component {
     return this.state.typedMessage.length >= 2 && this.state.typedMessage.length <= 250;
   }
 
+  openActivePlayersMode = () => {
+    this.props.setActivePlayersMode();
+  }
+
   openDirectChat = (event) => {
     const playerId = event.currentTarget.id;
+    
     this.props.setDirectChatMode(playerId);
+    this.props.setInitialScrollToBottomFlag(true);
   }
 
   scrollToBottom = () => {
@@ -201,7 +211,16 @@ class GlobalChatWrapper extends Component {
 
   render() {
     return (
-      <S.GlobalChatWrapper>
+      <S.GlobalChatWrapper isGlobalChatMode={this.props.isGlobalChatMode}>
+        {
+          this.isNotAnonymousUser() && (
+            <S.ActivePlayersOpen onClick={this.openActivePlayersMode}>
+              <S.ActivePlayersIcon src={this.links.multipleUsersIcon} />
+              <S.ActivePlayersInfo>Active players</S.ActivePlayersInfo>
+            </S.ActivePlayersOpen>
+          )
+        }
+        
         <S.MessagesScrollWrapper>
           <S.MessagesWrapper 
             ref={this.messagesWrapper}
@@ -299,6 +318,9 @@ const mapDispatchToProps = dispatch => {
   return {
     setDirectChatMode: (playerId) => {
       dispatch(fromActions.setDirectChatMode(playerId));
+    },
+    setActivePlayersMode: () => {
+      dispatch(fromActions.setActivePlayersMode());
     },
     addGlobalChatMessage: (message) => {
       dispatch(fromActions.addGlobalChatMessage(message));
