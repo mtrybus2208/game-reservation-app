@@ -3,9 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import useDrag from '@/modules/home/hooks/useDrag';
 import PresentationCard from '@/modules/home/components/PresentationCardMover/components/PresentationCard';
 import { getReservationIsAllowed, getTimeAndType } from '@/modules/home/state/selectors/gameReservation';
+import { getAuthUser } from '@/modules/auth/state/selectors';
 import CardSkeleton from '@/modules/home/components/CardSkeleton';
+import Item from '@/modules/shared/components/Item';
 import Avatar from '@/modules/shared/components/Avatar';
 import CircleItem from '@/modules/shared/components/CircleItem';
+import { Box } from '@/modules/shared/components/AppGrid';
 
 const PresentationCardMover = ({ wrapperRef }) => {
   const childRef = useRef();
@@ -16,10 +19,12 @@ const PresentationCardMover = ({ wrapperRef }) => {
   } = useDrag(childRef, wrapperRef);
   const isReservationIsAllowed = useSelector(state => getReservationIsAllowed(state));
   const { gameType, time } = useSelector(state => getTimeAndType(state));
+  const user = useSelector(state => getAuthUser(state));
+  console.log(getAuthUser);
 
-  // const avatar = user && (user.photoUrl || user.photoURL)
-  //   ? <Avatar path={(user.photoUrl || user.photoURL)} />
-  //   : <Avatar />;
+  const avatar = user && (user.photoUrl || user.photoURL)
+    ? <Avatar path={(user.photoUrl || user.photoURL)} />
+    : <Avatar />;
 
   if(!isReservationIsAllowed) {
     return null;
@@ -32,14 +37,14 @@ const PresentationCardMover = ({ wrapperRef }) => {
       onMouseDown={handlerMouseDown}
     >
       <CardSkeleton
-        header={<div>time</div>}
-        footer={<div>gameType</div>}
+        header={<Item copy={`${time.duration} min`}/>}
+        footer={<Item copy={gameType.name}/>}
       >
-        <CircleItem
-          active={false}
-        >
-          <Avatar />
-        </CircleItem>
+        <Box>
+          <CircleItem  active={false} >
+            {avatar}
+          </CircleItem>
+        </Box>
       </CardSkeleton>
     </PresentationCard>
   );

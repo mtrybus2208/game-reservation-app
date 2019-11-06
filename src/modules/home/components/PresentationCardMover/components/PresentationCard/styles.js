@@ -25,7 +25,7 @@ export const PresentationCard = styled.div.attrs({
   cursor: grab;
   position: absolute;
   top: 101px;
-  bottom: 10px;
+  bottom: 0;
   left: 0;
   right: 0;
   user-select: none;

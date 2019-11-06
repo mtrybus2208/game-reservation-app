@@ -36,7 +36,7 @@ AppGrid.SidebarArea = styled.div`
   z-index: 10;
   background: #222;
 
-  @media ${({ theme }) => theme.media.tablet} {     
+  @media ${({ theme }) => theme.media.tablet} {
     left: 0;
   }
 `;
@@ -58,6 +58,13 @@ export const Centered = styled.div`
 
 export const CenteredWrapper = styled(Centered)`
     height: 100%;
+`;
+
+export const Box = styled.div`
+    height: 100px;
+    width: 100px;
+    display: flex;
+    opacity: 0.7;
 `;
 
 export default AppGrid;

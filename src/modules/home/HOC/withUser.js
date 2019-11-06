@@ -9,7 +9,7 @@ const propTypes = {
 export const withUser = (ComposedComponent) => {
   class SessionUser extends Component {
     componentDidMount() { }
-    
+
     render() {
       return (
         <ComposedComponent
@@ -24,7 +24,7 @@ export const withUser = (ComposedComponent) => {
       user: sessionState.authUser,
     }
   );
-  
+
   SessionUser.propTypes = propTypes;
   return connect(mapStateToProps)(SessionUser);
 }

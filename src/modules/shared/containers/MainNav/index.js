@@ -15,7 +15,7 @@ const propTypes = {
   closeChatWithRedirect: PropTypes.func,
 };
 
-const defaultProps = {}; 
+const defaultProps = {};
 
 const mobileIcons = {
   login: 'https://res.cloudinary.com/dfmqgkkbx/image/upload/v1553015547/login.svg',

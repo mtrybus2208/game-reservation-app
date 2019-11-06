@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-export const TimeLineWrapper = styled.div` 
+export const TimeLineWrapper = styled.div`
   overflow-x: auto;
   border-radius: 0;
   height: 100%;
@@ -21,12 +21,12 @@ export const TimeLineWrapper = styled.div`
   border-right: none;
 
   &::-webkit-scrollbar {
-    width: 0; 
+    width: 0;
     background: transparent;
   }
 
   &::-webkit-scrollbar-thumb {
-      background: #FF0000;
+      background: #262a30;
   }
 
   @media ${({ theme }) => theme.media.tablet} {
