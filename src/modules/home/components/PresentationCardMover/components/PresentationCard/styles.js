@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
 export const Body = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 `;
 
 export const PresentationCard = styled.div.attrs({
@@ -30,21 +30,20 @@ export const PresentationCard = styled.div.attrs({
   right: 0;
   user-select: none;
   z-index: 4;
-  border: ${({ isAbleToMove, isAbleToReserve, theme }) => {
-    if (isAbleToReserve) {
+  border: ${({ isAbleToReserve, theme }) => {
+    if (!isAbleToReserve) {
       return `3px solid ${theme.error}`;
     }
 
-    if (isAbleToMove && !isAbleToReserve) {
+    if (isAbleToReserve) {
       return `3px solid ${theme.success}`;
     }
 
     return 'none';
   }};
-
-  /* new */
-  background: ${({ isAbleToReserve }) => isAbleToReserve ? 'rgba(103, 16, 16, .41)' : 'rgba(1, 66, 23, .3)'};
+  background: ${({ isAbleToReserve }) =>
+    !isAbleToReserve ? 'rgba(103, 16, 16, .41)' : 'rgba(1, 66, 23, .3)'};
   &:hover {
-    opacity: .8;
+    opacity: 0.8;
   }
 `;

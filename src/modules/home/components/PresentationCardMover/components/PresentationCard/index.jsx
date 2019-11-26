@@ -7,28 +7,23 @@ const propTypes = {
   onMouseUp: PropTypes.func,
   translateX: PropTypes.string,
   children: PropTypes.node,
+  isAbleToReserve: PropTypes.bool,
 };
 
-const PresentationCard = ({
-  onMouseDown,
-  onMouseUp,
-  translateX,
-  children,
-}, ref) => {
-
-  return (
-    <S.PresentationCard
-      ref={ref}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      x={translateX}
-    >
-      <S.Body>
-        {children}
-      </S.Body>
-    </S.PresentationCard>
-  );
-};
+const PresentationCard = (
+  { onMouseDown, onMouseUp, translateX, children, isAbleToReserve },
+  ref,
+) => (
+  <S.PresentationCard
+    ref={ref}
+    onMouseDown={onMouseDown}
+    onMouseUp={onMouseUp}
+    x={translateX}
+    isAbleToReserve={isAbleToReserve}
+  >
+    <S.Body>{children}</S.Body>
+  </S.PresentationCard>
+);
 
 PresentationCard.propTypes = propTypes;
 export default memo(forwardRef(PresentationCard));

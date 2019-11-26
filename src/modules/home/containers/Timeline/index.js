@@ -21,14 +21,18 @@ const TimeLine = () => {
     dispatch(fromActions.fetchReservedGames());
   }, []);
 
+  const handlerSetCurrentReservationTime = newValue =>
+    dispatch(fromActions.setCurrentReservationTime(newValue));
+
   return (
     <TimeLineMover
       actualDateInPixels={actualDateInPixels}
       isReservationBlocked={isReservationBlocked}
       workdayInPixels={workdayInPixels}
+      setCurrentReservationTime={handlerSetCurrentReservationTime}
     />
   );
-}
+};
 
 TimeLine.propTypes = propTypes;
 export default TimeLine;

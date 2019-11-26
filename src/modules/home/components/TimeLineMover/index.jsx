@@ -8,20 +8,16 @@ import * as S from './styles';
 const propTypes = {
   timeLine: PropTypes.object.isRequired,
   workdayInPixels: PropTypes.number,
+  setCurrentReservationTime: PropTypes.func,
 };
 
 const defaultProps = {};
 
-const TimeLineMover = ({ workdayInPixels }) => {
+const TimeLineMover = ({ workdayInPixels, setCurrentReservationTime }) => {
   const childRef = useRef();
   const containerdRef = useRef();
   const wrapperRef = useRef();
-  const {
-    mouseLeave,
-    mouseMove,
-    mouseUp,
-    mouseDown,
-  } = useDragToScroll(wrapperRef, false);
+  const { mouseLeave, mouseMove, mouseUp, mouseDown } = useDragToScroll(wrapperRef, false);
 
   return (
     <S.TimeLineWrapper
@@ -31,17 +27,15 @@ const TimeLineMover = ({ workdayInPixels }) => {
       onMouseMove={mouseMove}
       onMouseDown={mouseDown}
     >
-      <S.TimeLineMover
-        ref={containerdRef}
-        size={workdayInPixels}
-      >
+      <S.TimeLineMover ref={containerdRef} size={workdayInPixels}>
         <PresentationCardMover
           wrapperRef={wrapperRef}
+          setCurrentReservationTime={setCurrentReservationTime}
         />
         <Ruler />
       </S.TimeLineMover>
-  </S.TimeLineWrapper>
-  ); 
+    </S.TimeLineWrapper>
+  );
 };
 
 TimeLineMover.propTypes = propTypes;
