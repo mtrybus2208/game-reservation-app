@@ -32,7 +32,7 @@
     "history": "^4.7.2",
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "object-assign": "4.1.1",
     "polished": "^3.0.3",
     "postcss-flexbugs-fixes": "3.2.0",
